@@ -21,4 +21,11 @@ dependencyResolutionManagement {
 
 rootProject.name = "travelin-android"
 include(":app")
- 
+include(":auth:data")
+include(":auth:domain")
+include(":auth:presentation")
+include(":core:presentation:designsystem")
+include(":core:presentation:ui")
+include(":core:database")
+include(":core:domain")
+include(":core:data")
