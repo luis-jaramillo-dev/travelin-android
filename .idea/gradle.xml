@@ -16,6 +16,9 @@
             <option value="$PROJECT_DIR$/auth/domain" />
             <option value="$PROJECT_DIR$/auth/presentation" />
             <option value="$PROJECT_DIR$/booking" />
+            <option value="$PROJECT_DIR$/booking/data" />
+            <option value="$PROJECT_DIR$/booking/domain" />
+            <option value="$PROJECT_DIR$/booking/presentation" />
             <option value="$PROJECT_DIR$/core" />
             <option value="$PROJECT_DIR$/core/data" />
             <option value="$PROJECT_DIR$/core/database" />
