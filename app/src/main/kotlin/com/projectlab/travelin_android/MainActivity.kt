@@ -33,6 +33,9 @@ class MainActivity : ComponentActivity() {
                         val navController = rememberNavController()
                         val navManager = NavigationManager(navController = navController)
 
+                        // This is a basic navigation host example for the app
+                        // It uses a NavHost to manage the navigation between different screens
+                        // TODO: Remove and implement your own navigation
                         NavHost(
                             navController = navController,
                             startDestination = "splashscreen",
@@ -108,6 +111,7 @@ fun SplashScreen(
     }
 }
 
+// TODO: Remove and implement your own screens in the correct packages
 @Composable
 fun LoginScreen(
     onNavigateToHome: (Unit) -> Unit
