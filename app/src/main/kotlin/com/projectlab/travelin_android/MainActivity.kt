@@ -57,24 +57,30 @@ class MainActivity : ComponentActivity() {
                             composable("login") {
                                 LoginScreen(
                                     onNavigateToHome = {
-                                        NavigationCommand.NavigateToRoute("home")
+                                        navManager.navigate(
+                                            NavigationCommand.NavigateToRoute("home")
+                                        )
                                     }
                                 )
                             }
                             composable("home") {
                                 HomeScreen(
                                     signOut = {
-                                        NavigationCommand.PopUpToRoute(
-                                            route = "login",
-                                            inclusive = false,
-                                            fallBackRoute = "splashscreen"
+                                        navManager.navigate(
+                                            NavigationCommand.PopUpToRoute(
+                                                route = "login",
+                                                inclusive = false,
+                                                fallBackRoute = "splashscreen"
+                                            )
                                         )
                                     },
                                     signOutInclusive = {
-                                        NavigationCommand.PopUpToRoute(
-                                            route = "login",
-                                            inclusive = true,
-                                            fallBackRoute = "splashscreen"
+                                        navManager.navigate(
+                                            NavigationCommand.PopUpToRoute(
+                                                route = "login",
+                                                inclusive = true,
+                                                fallBackRoute = "splashscreen"
+                                            )
                                         )
                                     }
                                 )
