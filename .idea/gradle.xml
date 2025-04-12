@@ -24,6 +24,9 @@
             <option value="$PROJECT_DIR$/core/presentation/ui" />
             <option value="$PROJECT_DIR$/feature" />
             <option value="$PROJECT_DIR$/feature/onboarding" />
+            <option value="$PROJECT_DIR$/feature/onboarding/data" />
+            <option value="$PROJECT_DIR$/feature/onboarding/domain" />
+            <option value="$PROJECT_DIR$/feature/onboarding/presentation" />
             <option value="$PROJECT_DIR$/navigation" />
           </set>
         </option>
