@@ -207,7 +207,7 @@ fun Onboarding1Screen() {
         Onboarding1Container(
             modifier = Modifier
                 .align(Alignment.BottomCenter)
-                .padding(16.dp)
+                .padding(top = 30.dp, bottom = 50.dp, start = 16.dp, end = 16.dp)
                 .fillMaxWidth()
                 .height(340.dp)
 
