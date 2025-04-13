@@ -3,6 +3,7 @@
   <component name="CompilerConfiguration">
     <bytecodeTargetLevel target="21">
       <module name="travelin-android.feature.main" target="11" />
+      <module name="travelin-android.feature.onboarding.presentation.test" target="11" />
       <module name="travelin-android.feature.test" target="11" />
     </bytecodeTargetLevel>
   </component>
