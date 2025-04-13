@@ -20,7 +20,7 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.projectlab.navigation.NavigationCommand
 import com.projectlab.navigation.NavigationManager
-import com.example.presentation.Onboarding1
+import com.example.presentation.*
 
 class MainActivity : ComponentActivity() {
     @SuppressLint("RestrictedApi")
@@ -59,6 +59,6 @@ fun ScreenOnboarding1(modifier: Modifier = Modifier) {
     Column(
         modifier = modifier
     ) {
-        Onboarding1(modifier = Modifier)
+        Onboarding1Screen()
     }
 }
