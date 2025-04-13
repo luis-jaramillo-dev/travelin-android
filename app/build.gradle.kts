@@ -51,8 +51,8 @@ dependencies {
     implementation(libs.androidx.activity.compose)
     implementation(libs.androidx.navigation.compose)
     implementation(project(":navigation"))
-    implementation(project(":feature"))
-    implementation(project(":feature:onboarding:presentation"))
+    // implementation(project(":feature"))
+    implementation(project(":feature:onboarding:presentation")) //cambiar luego
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
