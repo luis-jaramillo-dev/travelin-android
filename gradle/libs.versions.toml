@@ -1,4 +1,5 @@
 [versions]
+activityCompose = "1.10.1"
 agp = "8.8.0"
 kotlin = "1.9.24"
 coreKtx = "1.15.0"
@@ -19,6 +20,7 @@ androidx-espresso-core = { group = "androidx.test.espresso", name = "espresso-co
 androidx-appcompat = { group = "androidx.appcompat", name = "appcompat", version.ref = "appcompat" }
 
 # Compose y Material3
+androidx-activity-compose = {module= "androidx.activity:activity-compose", version.ref = "activityCompose"}
 material = { group = "com.google.android.material", name = "material", version.ref = "material" }
 androidx-compose-ui = { group = "androidx.compose.ui", name = "ui" }
 androidx-compose-ui-graphics = { group = "androidx.compose.ui", name = "ui-graphics" }
