@@ -9,6 +9,7 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.unit.dp
 import com.projectlab.travelin_android.ui.theme.TravelinTheme
 
 class MainActivity : ComponentActivity() {
@@ -17,10 +18,8 @@ class MainActivity : ComponentActivity() {
         setContent {
             TravelinTheme(dynamicColor = true) {
                 Scaffold(
-                    content = { paddingValues ->
-                        Column(
-                            modifier = Modifier.padding(paddingValues)
-                        ) {
+                    content = { padding ->
+                        Column(Modifier.padding(padding).padding(horizontal = 16.dp)) {
                             ExampleUI()
                         }
                     }
