@@ -1,0 +1,5 @@
+<resources>
+    <string name="title_activity_onboarding_page">OnboardingPage</string>
+    <string name="title_activity_onboarding_page_view">OnboardingPageView</string>
+    <string name="title_activity_onboarding_screen">OnboardingScreen</string>
+</resources>
