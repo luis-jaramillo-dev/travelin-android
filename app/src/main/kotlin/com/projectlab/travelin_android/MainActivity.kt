@@ -8,7 +8,6 @@ import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Button
 import androidx.compose.material3.MaterialTheme
@@ -21,7 +20,6 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.projectlab.navigation.NavigationCommand
 import com.projectlab.navigation.NavigationManager
-import com.example.presentation.*
 
 class MainActivity : ComponentActivity() {
     @SuppressLint("RestrictedApi")
@@ -29,8 +27,8 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         setContent {
-            Scaffold { _ ->
-                Box(modifier = Modifier.fillMaxSize()) {
+            Scaffold { paddingValues ->
+                Box(modifier = Modifier.padding(paddingValues)) {
                     MaterialTheme {
                         val navController = rememberNavController()
                         val navManager = NavigationManager(navController = navController)
@@ -40,25 +38,110 @@ class MainActivity : ComponentActivity() {
                         // TODO: Remove and implement your own navigation
                         NavHost(
                             navController = navController,
-                            startDestination = "ScreenOnboarding1", // usar "splashscreen" cuando probemos de "forma real"
+                            startDestination = "splashscreen",
                         ) {
-                            composable ("ScreenOnboarding1") {
-                                ScreenOnboarding1(modifier = Modifier)
-                            }
+                            composable("splashscreen") {
+                                SplashScreen(
+                                    onNavigateToLogin = {
+                                        navManager.navigate(
+                                            NavigationCommand.NavigateToRoute("login")
+                                        )
+                                        navController.currentBackStack.value.forEach {
+                                                entry ->
+                                            Log.d(
+                                                "BackStack",
+                                                "Back stack entry: ${entry.destination.route}"
+                                            )
+                                        }
+                                    }
 
+                                )
+                            }
+                            composable("login") {
+                                LoginScreen(
+                                    onNavigateToHome = {
+                                        navManager.navigate(
+                                            NavigationCommand.NavigateToRoute("home")
+                                        )
+                                    }
+                                )
+                            }
+                            composable("home") {
+                                HomeScreen(
+                                    signOut = {
+                                        navManager.navigate(
+                                            NavigationCommand.PopUpToRoute(
+                                                route = "login",
+                                                inclusive = false,
+                                                fallBackRoute = "splashscreen"
+                                            )
+                                        )
+                                    },
+                                    signOutInclusive = {
+                                        navManager.navigate(
+                                            NavigationCommand.PopUpToRoute(
+                                                route = "login",
+                                                inclusive = true,
+                                                fallBackRoute = "splashscreen"
+                                            )
+                                        )
+                                    }
+                                )
+                            }
                         }
                     }
                 }
             }
+
         }
     }
 }
 
 @Composable
-fun ScreenOnboarding1(modifier: Modifier = Modifier) {
-    Column(
-        modifier = modifier
-    ) {
-        Onboarding1Screen()
+fun SplashScreen(
+    onNavigateToLogin: (Unit) -> Unit
+) {
+    Column {
+        Text("SplashScreen")
+        Button(onClick = {
+            onNavigateToLogin.invoke(Unit)
+        }) {
+            Text("Go to Login")
+        }
+    }
+}
+
+// TODO: Remove and implement your own screens in the correct packages
+@Composable
+fun LoginScreen(
+    onNavigateToHome: (Unit) -> Unit
+) {
+    Column {
+        Text("LoginScreen")
+        Button(onClick = {
+            onNavigateToHome.invoke(Unit)
+        }) {
+            Text("Home")
+        }
+    }
+}
+
+@Composable
+fun HomeScreen(
+    signOut: (Unit) -> Unit,
+    signOutInclusive: (Unit) -> Unit
+) {
+    Column {
+        Text("HomeScreen")
+        Button({
+            signOut.invoke(Unit)
+        }) {
+            Text("Sign Out")
+        }
+        Button({
+            signOutInclusive.invoke(Unit)
+        }) {
+            Text("Sign Out Inclusive")
+        }
     }
 }
