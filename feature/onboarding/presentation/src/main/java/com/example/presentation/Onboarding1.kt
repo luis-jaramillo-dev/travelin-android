@@ -1,15 +1,13 @@
 package com.example.presentation
 
-
+// import androidx.compose.foundation.R
+//import androidx.compose.runtime.getValue
+//import androidx.compose.runtime.mutableStateOf
+//import androidx.compose.runtime.remember
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
-// import androidx.compose.foundation.R
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
-import androidx.compose.material3.Button
-import androidx.compose.material3.Text
-import androidx.compose.runtime.Composable
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -21,11 +19,11 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
-import androidx.compose.runtime.*
-//import androidx.compose.runtime.getValue
-//import androidx.compose.runtime.mutableStateOf
-//import androidx.compose.runtime.remember
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Text
+import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -34,8 +32,8 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.unit.dp
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.projectlab.feature.onboarding.presentation.R
 
@@ -53,12 +51,11 @@ fun Onboarding1BackgroundImage(modifier: Modifier = Modifier) {
     )
 }
 
-@Preview (showBackground = true)
+@Preview(showBackground = true)
 @Composable
 fun BackgroundImagePreview() {
     Onboarding1BackgroundImage()
 }
-
 
 /**
  * 2) Componente que muestra el título y descripción.
@@ -101,7 +98,6 @@ fun Onboarding1TitleAndDescriptionPreview() {
     )
 }
 
-
 /**
  * 3) Componente para el botón “Next”.
  */
@@ -121,7 +117,7 @@ fun Onboarding1Button(
             contentColor = MaterialTheme.colorScheme.onPrimary
         ),
 
-    ) {
+        ) {
         Text(text = buttonText)
     }
 }
@@ -158,7 +154,7 @@ fun Onboarding1Container(
 @Preview(showBackground = true)
 @Composable
 fun Onboarding1ContainerPreview() {
-    Onboarding1Container(){
+    Onboarding1Container() {
         Text(text = "Hola")
     }
 }
@@ -292,8 +288,8 @@ fun Onboarding1Screen() {
                 Onboarding1Button(
                     buttonText = "Next",
                     onClick = {
-                    // TODO: Agregar lógica para navegar a la siguiente pantalla, cambiando
-                    //  Onboarding1CustomDotsIndicator
+                        // TODO: Agregar lógica para navegar a la siguiente pantalla, cambiando
+                        //  Onboarding1CustomDotsIndicator
                     }
                 )
             }
@@ -306,6 +302,3 @@ fun Onboarding1Screen() {
 fun Onboarding1ScreenPreview() {
     Onboarding1Screen()
 }
-
-
-
