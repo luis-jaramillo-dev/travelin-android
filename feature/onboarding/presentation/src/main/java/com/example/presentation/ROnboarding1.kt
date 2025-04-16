@@ -42,7 +42,7 @@ import com.projectlab.feature.onboarding.presentation.R
  */
 @Composable
 fun Onboarding1BackgroundImage(modifier: Modifier = Modifier) {
-    val image = painterResource(id = R.drawable.onboarding1_background_jpg)
+    val image = painterResource(id = R.drawable.r_onboarding1_background_jpg)
     Image(
         painter = image,
         contentDescription = "Onboarding background image",
@@ -166,7 +166,7 @@ fun Onboarding1ContainerPreview() {
 fun Onboarding1ImageLogo(
     modifier: Modifier = Modifier
 ) {
-    val image = painterResource(id = R.drawable.image)
+    val image = painterResource(id = R.drawable.r_image)
     Image(
         painter = image,
         contentDescription = "Onboarding image",
