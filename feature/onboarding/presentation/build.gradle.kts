@@ -47,6 +47,11 @@ kotlin {
 }
 
 dependencies {
+    val composeBom = platform(libs.androidx.compose.bom)
+    implementation(composeBom)
+    testImplementation(composeBom)
+    androidTestImplementation(composeBom)
+
     // Dependencias básicas de Compose para el runtime y UI.
     implementation(libs.androidx.runtime.android)
     // Dependencias de Compose:
@@ -56,7 +61,6 @@ dependencies {
     implementation(libs.material)
     // Dependencias de Compose para Material3:
     implementation(libs.androidx.material3.android)
-    // implementation(libs.androidx.compose.ui.tooling.preview)
     implementation(libs.androidx.ui)
     implementation(libs.androidx.ui.graphics)
     implementation(libs.androidx.ui.tooling)
@@ -64,7 +68,4 @@ dependencies {
     implementation(libs.androidx.ui.test.junit4)
     debugImplementation(libs.androidx.ui.tooling)
     debugImplementation(libs.androidx.ui.test.manifest)
-
-
 }
-
