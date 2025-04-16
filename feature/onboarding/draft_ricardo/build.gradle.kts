@@ -5,7 +5,7 @@ plugins {
 }
 
 android {
-    namespace = "com.projectlab.feature.onboarding.presentation"
+    namespace = "com.projectlab.feature.onboarding.draft_ricardo"
     compileSdk = 35
 
     defaultConfig {

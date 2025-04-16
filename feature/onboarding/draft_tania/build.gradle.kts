@@ -5,7 +5,7 @@ plugins {
 }
 
 android {
-    namespace = "com.projectlab.feature.onboarding.presentation"
+    namespace = "com.projectlab.feature.onboarding.draft_tania"
     compileSdk = 35
 
     defaultConfig {
@@ -53,7 +53,12 @@ dependencies {
     implementation(libs.androidx.ui.tooling)
     implementation(libs.androidx.ui.tooling.preview)
     implementation(libs.androidx.ui.test.junit4)
+    implementation(libs.androidx.navigation.compose)
+    implementation(libs.kotlinx.serialization.json)
+    implementation(libs.lottie.compose)
+    implementation(libs.androidx.ui.text.google.fonts)
     implementation(platform(libs.androidx.compose.bom))
+    implementation(libs.accompanist.pager.indicators)
     testImplementation(platform(libs.androidx.compose.bom))
     androidTestImplementation(platform(libs.androidx.compose.bom))
     debugImplementation(libs.androidx.ui.tooling)
