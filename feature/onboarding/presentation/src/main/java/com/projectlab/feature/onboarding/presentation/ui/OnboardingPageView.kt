@@ -23,6 +23,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.projectlab.feature.onboarding.presentation.R
 import com.projectlab.feature.onboarding.presentation.data.OnboardingPage
@@ -86,7 +87,7 @@ fun OnboardingPageView(
                     ),
                 ) {
                     Text(
-                        text = "Next",
+                        text = stringResource(R.string.next),
                         style = MaterialTheme.typography.labelMedium,
                         modifier = Modifier.padding(vertical = 10.dp)
                     )

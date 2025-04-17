@@ -18,10 +18,10 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.projectlab.feature.onboarding.presentation.R
@@ -30,24 +30,24 @@ import com.projectlab.feature.onboarding.presentation.ui.theme.OnboardingTheme
 import kotlinx.coroutines.launch
 
 @Composable
-fun OnboardingScreen() {
+fun OnboardingScreen(onNavigateToLogin: () -> Unit) {
     val pagerState = rememberPagerState { 3 }
     val scope = rememberCoroutineScope()
 
     val pages = listOf(
         OnboardingPage(
-            title = "Get ready for the next trip",
-            description = "Find thousands of tourist destinations ready for you to visit",
+            title = stringResource(R.string.onboarding1_title),
+            description = stringResource(R.string.onboarding_body),
             backgroundImage = painterResource(id = R.drawable.onboarding1)
         ),
         OnboardingPage(
-            title = "Visit tourist attractions",
-            description = "Find thousands of tourist destinations ready for you to visit",
+            title = stringResource(R.string.onboarding2_title),
+            description = stringResource(R.string.onboarding_body),
             backgroundImage = painterResource(id = R.drawable.onboarding2)
         ),
         OnboardingPage(
-            title = "Lets explore the world",
-            description = "Find thousands of tourist destinations ready for you to visit",
+            title = stringResource(R.string.onboarding3_title),
+            description = stringResource(R.string.onboarding_body),
             backgroundImage = painterResource(id = R.drawable.onboarding3)
         )
     )
@@ -64,7 +64,7 @@ fun OnboardingScreen() {
                         if (page < pages.lastIndex) {
                             pagerState.animateScrollToPage(page + 1)
                         } else {
-                            println("finish onboarding")
+                            onNavigateToLogin()
                         }
                     }
                 }
@@ -102,6 +102,6 @@ fun OnboardingScreen() {
 @Composable
 fun OnboardingScreenPreview() {
     OnboardingTheme {
-        OnboardingScreen()
+        OnboardingScreen {}
     }
 }
