@@ -1,4 +1,4 @@
-package com.projectlab.onboarding.presentation.ui
+package com.projectlab.feature.onboarding.presentation.ui
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -25,8 +25,8 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.projectlab.feature.onboarding.draft_tania.R
-import com.projectlab.onboarding.presentation.data.OnboardingPage
+import com.projectlab.feature.onboarding.presentation.R
+import com.projectlab.feature.onboarding.presentation.data.OnboardingPage
 
 @Composable
 fun OnboardingPageView(

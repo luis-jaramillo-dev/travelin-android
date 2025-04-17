@@ -1,4 +1,4 @@
-package com.projectlab.onboarding.presentation.data
+package com.projectlab.feature.onboarding.presentation.data
 
 import androidx.compose.ui.graphics.painter.Painter
 
