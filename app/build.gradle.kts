@@ -29,6 +29,14 @@ android {
             )
         }
     }
+    buildFeatures {
+        compose = true
+    }
+
+    composeOptions {
+        kotlinCompilerExtensionVersion = "1.5.14"
+    }
+
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_11
         targetCompatibility = JavaVersion.VERSION_11
@@ -48,9 +56,18 @@ dependencies {
     implementation(libs.material)
     implementation(libs.androidx.runtime.android)
     implementation(libs.androidx.material3.android)
-    implementation(libs.androidx.activity.compose)
     implementation(libs.androidx.navigation.compose)
     implementation(project(":navigation"))
+    implementation(libs.compose.google.fonts)
+
+    // core system
+    implementation(projects.core.presentation.designsystem)
+    implementation(projects.core.presentation.ui)
+
+    // compose
+    implementation(platform(libs.androidx.compose.bom))
+    implementation(libs.androidx.activity.compose)
+
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
