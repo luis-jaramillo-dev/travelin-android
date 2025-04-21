@@ -62,3 +62,5 @@ compose = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "kotlin" }
 # Project defined plugins
 travelinandroid-android-application = { id = "travelinandroid.android.application" }
 travelinandroid-android-application-compose = { id = "travelinandroid.android.application.compose" }
+travelinandroid-android-library = { id = "travelinandroid.android.library" }
+travelinandroid-android-library-compose = { id = "travelinandroid.android.library.compose" }
