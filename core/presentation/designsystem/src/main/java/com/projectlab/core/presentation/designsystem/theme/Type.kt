@@ -1,12 +1,10 @@
-package com.projectlab.travelin_android.ui.theme
+package com.projectlab.core.presentation.designsystem.theme
 
-import com.projectlab.travelin_android.R
+import com.projectlab.core.presentation.designsystem.R
 
 import androidx.compose.material3.Typography
-import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.unit.sp
 
 import androidx.compose.ui.text.googlefonts.GoogleFont
 import androidx.compose.ui.text.googlefonts.Font
@@ -49,6 +47,8 @@ val AppTypography = Typography(
     bodySmall = baseline.bodySmall.copy(fontFamily = bodyFontFamily),
     labelLarge = baseline.labelLarge.copy(fontFamily = bodyFontFamily),
     labelMedium = baseline.labelMedium.copy(fontFamily = bodyFontFamily),
-    labelSmall = baseline.labelSmall.copy(fontFamily = bodyFontFamily),
+    labelSmall = baseline.labelSmall.copy(
+        fontFamily = bodyFontFamily,
+        fontWeight = FontWeight.Normal
+    ),
 )
-
