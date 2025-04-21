@@ -10,6 +10,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import com.auth.presentation.AuthScreen
 import com.projectlab.travelin_android.ui.theme.TravelinTheme
 
 class MainActivity : ComponentActivity() {
@@ -20,7 +21,7 @@ class MainActivity : ComponentActivity() {
                 Scaffold(
                     content = { padding ->
                         Column(Modifier.padding(padding).padding(horizontal = 16.dp)) {
-                            ExampleUI()
+                            AuthScreen()
                         }
                     }
                 )

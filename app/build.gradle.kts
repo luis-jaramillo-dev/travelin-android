@@ -28,6 +28,9 @@ dependencies {
     implementation(projects.core.presentation.designsystem)
     implementation(projects.core.presentation.ui)
 
+    // Auth Module
+    implementation(projects.auth.presentation)
+
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)

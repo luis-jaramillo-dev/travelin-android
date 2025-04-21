@@ -4,6 +4,10 @@ plugins {
 
 android {
     namespace = "com.projectlab.auth.presentation"
+
+    kotlinOptions {
+        jvmTarget = "11"
+    }
 }
 
 dependencies {
@@ -14,4 +18,8 @@ dependencies {
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
+
+    // core dependencies
+    implementation(projects.travelinAndroid.core.presentation.designsystem)
+    implementation(projects.travelinAndroid.core.presentation.ui)
 }
