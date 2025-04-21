@@ -5,19 +5,23 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.padding
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Place
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.projectlab.core.presentation.designsystem.BadgeInfo
 import com.projectlab.core.presentation.designsystem.BadgeOutline
+import com.projectlab.core.presentation.designsystem.BadgePriceUnit
 import com.projectlab.core.presentation.designsystem.ButtonOutline
 import com.projectlab.core.presentation.designsystem.ButtonPrimary
 import com.projectlab.core.presentation.designsystem.ButtonSecondary
 import com.projectlab.core.presentation.designsystem.ButtonTertiary
 import com.projectlab.core.presentation.designsystem.GradientBackground
-import com.projectlab.travelin_android.ui.theme.TravelinTheme
+import com.projectlab.core.presentation.designsystem.theme.TravelinTheme
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -105,3 +109,18 @@ fun BadgeOutlinePreview() {
     }
 }
 
+@Preview(showBackground = true)
+@Composable
+fun BadgePriceUnitPreview() {
+    TravelinTheme(dynamicColor = false, darkTheme = false) {
+        BadgePriceUnit("$200", "2 person")
+    }
+}
+
+@Preview(showBackground = true)
+@Composable
+fun BadgeInfoPreview() {
+    TravelinTheme(dynamicColor = false, darkTheme = false) {
+        BadgeInfo(title = "2 day 1 night", subtitle = "Duration", icon = Icons.Filled.Place)
+    }
+}

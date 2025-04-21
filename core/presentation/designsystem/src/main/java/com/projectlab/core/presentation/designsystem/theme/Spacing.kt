@@ -1,4 +1,4 @@
-package com.projectlab.travelin_android.ui.theme
+package com.projectlab.core.presentation.designsystem.theme
 
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable

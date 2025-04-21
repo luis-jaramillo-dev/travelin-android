@@ -1,6 +1,6 @@
-package com.projectlab.travelin_android.ui.theme
+package com.projectlab.core.presentation.designsystem.theme
 
-import com.projectlab.travelin_android.R
+import com.projectlab.core.presentation.designsystem.R
 
 import androidx.compose.material3.Typography
 import androidx.compose.ui.text.font.FontFamily
