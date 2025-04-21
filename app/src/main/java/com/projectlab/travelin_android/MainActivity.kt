@@ -11,7 +11,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.auth.presentation.AuthScreen
-import com.projectlab.travelin_android.ui.theme.TravelinTheme
+import com.projectlab.core.presentation.designsystem.TravelinTheme
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {

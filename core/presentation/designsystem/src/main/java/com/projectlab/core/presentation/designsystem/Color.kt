@@ -1,4 +1,4 @@
-package com.projectlab.travelin_android.ui.theme
+package com.projectlab.core.presentation.designsystem
 import androidx.compose.ui.graphics.Color
 
 val primaryLight = Color(0xFF00658E)

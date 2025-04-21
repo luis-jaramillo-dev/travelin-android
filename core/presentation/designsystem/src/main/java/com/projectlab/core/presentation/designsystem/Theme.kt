@@ -1,4 +1,4 @@
-package com.projectlab.travelin_android.ui.theme
+package com.projectlab.core.presentation.designsystem
 
 import android.os.Build
 import androidx.compose.foundation.isSystemInDarkTheme
