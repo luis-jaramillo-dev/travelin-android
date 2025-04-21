@@ -73,6 +73,8 @@ val surfaceContainerDark = Color(0xFF1B2024)
 val surfaceContainerHighDark = Color(0xFF262B2F)
 val surfaceContainerHighestDark = Color(0xFF30353A)
 
+val iconColorBlue = Color(35,183,246)   //#23B7F6)
+
 
 
 

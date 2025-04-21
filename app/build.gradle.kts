@@ -57,6 +57,7 @@ dependencies {
     // compose
     implementation(platform(libs.androidx.compose.bom))
     implementation(libs.androidx.activity.compose)
+    implementation(libs.androidx.ui.tooling.preview.android)
 
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
