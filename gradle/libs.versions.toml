@@ -30,6 +30,7 @@ androidx-compose-material3 = { group = "androidx.compose.material3", name = "mat
 androidx-compose-ui-tooling-preview = { group = "androidx.compose.ui", name = "ui-tooling-preview" }
 compose-google-fonts = { group = "androidx.compose.ui", name = "ui-text-google-fonts", version.ref = "composeGoogleFonts" }
 androidx-compose-material-icons = { group = "androidx.compose.material", name = "material-icons-extended" }
+androidx-ui-tooling-preview-android = { group = "androidx.compose.ui", name = "ui-tooling-preview-android" }
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }
