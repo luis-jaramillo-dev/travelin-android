@@ -43,5 +43,15 @@ gradlePlugin {
             id = libs.plugins.travelinandroid.android.application.compose.get().pluginId
             implementationClass = "AndroidComposeConventionPlugin"
         }
+
+        register("androidLibrary") {
+            id = libs.plugins.travelinandroid.android.library.asProvider().get().pluginId
+            implementationClass = "AndroidLibraryConventionPlugin"
+        }
+
+        register("androidLibraryCompose") {
+            id = libs.plugins.travelinandroid.android.library.compose.get().pluginId
+            implementationClass = "AndroidLibraryComposeConventionPlugin"
+        }
     }
 }
