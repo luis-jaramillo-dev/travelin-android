@@ -25,7 +25,6 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.projectlab.feature.onboarding.presentation.R
-import com.projectlab.feature.onboarding.presentation.data.OnboardingPage
 import com.projectlab.feature.onboarding.presentation.ui.theme.OnboardingTheme
 import kotlinx.coroutines.launch
 
