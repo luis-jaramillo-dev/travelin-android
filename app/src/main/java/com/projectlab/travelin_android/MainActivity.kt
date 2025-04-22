@@ -4,24 +4,33 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Place
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.projectlab.core.presentation.designsystem.BadgeInfo
-import com.projectlab.core.presentation.designsystem.BadgeOutline
-import com.projectlab.core.presentation.designsystem.BadgePriceUnit
-import com.projectlab.core.presentation.designsystem.ButtonOutline
-import com.projectlab.core.presentation.designsystem.ButtonPrimary
-import com.projectlab.core.presentation.designsystem.ButtonSecondary
-import com.projectlab.core.presentation.designsystem.ButtonTertiary
-import com.projectlab.core.presentation.designsystem.GradientBackground
+import com.projectlab.core.presentation.designsystem.component.BadgeInfo
+import com.projectlab.core.presentation.designsystem.component.BadgeOutline
+import com.projectlab.core.presentation.designsystem.component.BadgePriceUnit
+import com.projectlab.core.presentation.designsystem.component.ButtonOutline
+import com.projectlab.core.presentation.designsystem.component.ButtonPrimary
+import com.projectlab.core.presentation.designsystem.component.ButtonSecondary
+import com.projectlab.core.presentation.designsystem.component.ButtonTertiary
+import com.projectlab.core.presentation.designsystem.component.GradientBackground
 import com.projectlab.core.presentation.designsystem.theme.TravelinTheme
+import com.projectlab.core.presentation.designsystem.component.IconButtonHeart
+import com.projectlab.core.presentation.designsystem.component.ButtonHotel
+import com.projectlab.core.presentation.designsystem.component.ButtonOversea
+
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -42,10 +51,25 @@ class MainActivity : ComponentActivity() {
     }
 }
 
+@Preview
 @Composable
-fun ExampleUI() {
-    Text("Hello World!")
-}
+fun ExampleUI(modifier: Modifier = Modifier) {
+    var checked by remember { mutableStateOf(false) }
+    Column(
+        modifier = modifier.fillMaxSize()
+    )
+    { IconButtonHeart(
+        onCheckedChange =  {
+            checked = it
+        },
+        modifier = modifier,
+        checked = checked
+    )
+
+        ButtonHotel(modifier = modifier, onClick = {})
+        ButtonOversea(modifier = modifier, onClick = {})
+    }
+
 
 @Preview(showBackground = true)
 @Composable

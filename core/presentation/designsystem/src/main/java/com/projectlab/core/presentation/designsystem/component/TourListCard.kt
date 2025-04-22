@@ -35,7 +35,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.projectlab.core.data.mock.Activity
 import com.projectlab.core.data.mock.MockActivities
-import com.projectlab.presentation.designsystem.R
+import com.projectlab.core.presentation.designsystem.R
 
 
 

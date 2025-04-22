@@ -27,7 +27,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil.compose.AsyncImage
 import com.projectlab.core.data.mock.MockActivities
-import com.projectlab.presentation.designsystem.R
+import com.projectlab.core.presentation.designsystem.R
 
 @Composable
 fun GallerySection(
