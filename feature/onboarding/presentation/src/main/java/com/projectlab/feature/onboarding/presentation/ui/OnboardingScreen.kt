@@ -24,12 +24,15 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.projectlab.core.presentation.designsystem.theme.TravelinTheme
 import com.projectlab.feature.onboarding.presentation.R
-import com.projectlab.feature.onboarding.presentation.ui.theme.OnboardingTheme
 import kotlinx.coroutines.launch
 
 @Composable
-fun OnboardingScreen(onNavigateToLogin: () -> Unit) {
+fun OnboardingScreen(
+    modifier: Modifier = Modifier,
+    onNavigateToLogin: () -> Unit,
+) {
     val scope = rememberCoroutineScope()
 
     val pages = listOf(
@@ -52,7 +55,7 @@ fun OnboardingScreen(onNavigateToLogin: () -> Unit) {
 
     val pagerState = rememberPagerState { pages.size }
 
-    Box(modifier = Modifier.fillMaxSize()) {
+    Box(modifier = modifier.fillMaxSize()) {
         HorizontalPager(
             state = pagerState,
             modifier = Modifier.fillMaxSize(),
@@ -101,7 +104,7 @@ fun OnboardingScreen(onNavigateToLogin: () -> Unit) {
 @Preview(showBackground = true)
 @Composable
 fun OnboardingScreenPreview() {
-    OnboardingTheme {
+    TravelinTheme {
         OnboardingScreen {}
     }
 }

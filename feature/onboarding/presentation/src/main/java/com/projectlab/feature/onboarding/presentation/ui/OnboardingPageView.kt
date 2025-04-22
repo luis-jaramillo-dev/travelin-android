@@ -24,6 +24,7 @@ import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import com.projectlab.feature.onboarding.presentation.R
 
@@ -63,17 +64,22 @@ fun OnboardingPageView(
             Column(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .background(Color.White, RoundedCornerShape(15.dp))
+                    .background(MaterialTheme.colorScheme.surface, RoundedCornerShape(15.dp))
                     .padding(horizontal = 20.dp, vertical = 30.dp),
             ) {
                 Text(
                     text = page.title,
-                    style = MaterialTheme.typography.titleLarge,
+                    style = MaterialTheme.typography.headlineLarge.copy(
+                        fontWeight = FontWeight.SemiBold,
+                        color = MaterialTheme.colorScheme.onSurface,
+                    ),
                 )
                 Spacer(modifier = Modifier.height(10.dp))
                 Text(
                     text = page.description,
-                    style = MaterialTheme.typography.bodyMedium,
+                    style = MaterialTheme.typography.bodyMedium.copy(
+                        color = MaterialTheme.colorScheme.onSurface,
+                    ),
                     modifier = Modifier.alpha(0.8f),
                 )
                 Spacer(modifier = Modifier.height(68.dp))
@@ -87,7 +93,9 @@ fun OnboardingPageView(
                 ) {
                     Text(
                         text = stringResource(R.string.next),
-                        style = MaterialTheme.typography.labelMedium,
+                        style = MaterialTheme.typography.labelLarge.copy(
+                            fontWeight = FontWeight.Medium,
+                        ),
                         modifier = Modifier.padding(vertical = 10.dp),
                     )
                 }
