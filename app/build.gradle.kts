@@ -3,6 +3,7 @@ import org.gradle.internal.impldep.org.junit.experimental.categories.Categories.
 plugins {
 //    alias(libs.plugins.travelinandroid.android.application)
     alias(libs.plugins.travelinandroid.android.application.compose)
+    alias(libs.plugins.compose)
 }
 
 android {

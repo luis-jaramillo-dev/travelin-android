@@ -1,5 +1,6 @@
 plugins {
     alias(libs.plugins.travelinandroid.android.library.compose)
+    alias(libs.plugins.compose)
 }
 
 android {
