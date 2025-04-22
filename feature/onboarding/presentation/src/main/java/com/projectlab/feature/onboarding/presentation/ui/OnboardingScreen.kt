@@ -30,7 +30,6 @@ import kotlinx.coroutines.launch
 
 @Composable
 fun OnboardingScreen(onNavigateToLogin: () -> Unit) {
-    val pagerState = rememberPagerState { 3 }
     val scope = rememberCoroutineScope()
 
     val pages = listOf(
@@ -48,13 +47,15 @@ fun OnboardingScreen(onNavigateToLogin: () -> Unit) {
             title = stringResource(R.string.onboarding3_title),
             description = stringResource(R.string.onboarding_body),
             backgroundImage = painterResource(id = R.drawable.onboarding3)
-        )
+        ),
     )
+
+    val pagerState = rememberPagerState { pages.size }
 
     Box(modifier = Modifier.fillMaxSize()) {
         HorizontalPager(
             state = pagerState,
-            modifier = Modifier.fillMaxSize()
+            modifier = Modifier.fillMaxSize(),
         ) { page ->
             OnboardingPageView(
                 page = pages[page],
@@ -86,7 +87,7 @@ fun OnboardingScreen(onNavigateToLogin: () -> Unit) {
                         .padding(2.dp)
                         .clip(RoundedCornerShape(size = 999.dp))
                         .size(width = 15.dp, height = 6.dp)
-                        .background(Color.White.copy(alpha = opacity))
+                        .background(Color.White.copy(alpha = opacity)),
                 )
 
                 if (pageIndex != pagerState.pageCount - 1) {

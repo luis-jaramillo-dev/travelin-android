@@ -74,7 +74,7 @@ fun OnboardingPageView(
                 Text(
                     text = page.description,
                     style = MaterialTheme.typography.bodyMedium,
-                    modifier = Modifier.alpha(0.8f)
+                    modifier = Modifier.alpha(0.8f),
                 )
                 Spacer(modifier = Modifier.height(68.dp))
                 Button(
@@ -88,7 +88,7 @@ fun OnboardingPageView(
                     Text(
                         text = stringResource(R.string.next),
                         style = MaterialTheme.typography.labelMedium,
-                        modifier = Modifier.padding(vertical = 10.dp)
+                        modifier = Modifier.padding(vertical = 10.dp),
                     )
                 }
             }
