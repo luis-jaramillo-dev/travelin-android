@@ -12,6 +12,19 @@ jetbrainsKotlinJvm = "1.9.24"
 composeGoogleFonts = "1.7.8"
 material3 = "1.3.2"
 compose = "2025.04.00"
+composeCompiler = "1.5.14"
+
+# App versions
+projectTargetSdk = "35"
+projectCompileSdk = "35"
+projectMinSdk = "24"
+projectApplicationId = "com.projectlab.travelin_android"
+
+# AGP with tools must be updated together
+androidGradlePlugin = "8.8.0"
+androidTools = "31.9.0"
+ksp = "2.1.10-1.0.31"
+room = "2.6.1"
 
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
@@ -31,9 +44,24 @@ androidx-compose-ui-tooling-preview = { group = "androidx.compose.ui", name = "u
 compose-google-fonts = { group = "androidx.compose.ui", name = "ui-text-google-fonts", version.ref = "composeGoogleFonts" }
 androidx-compose-material-icons = { group = "androidx.compose.material", name = "material-icons-extended" }
 
+# Dependencies of the included build-logic
+android-gradlePlugin = { group = "com.android.tools.build", name = "gradle", version.ref = "androidGradlePlugin" }
+android-tools-common = { group = "com.android.tools", name = "common", version.ref = "androidTools" }
+compose-gradlePlugin = { module = "org.jetbrains.kotlin:kotlin-gradle-plugin", version.ref = "kotlin" }
+kotlin-gradlePlugin = { group = "org.jetbrains.kotlin", name = "kotlin-gradle-plugin", version.ref = "kotlin" }
+ksp-gradlePlugin = { group = "com.google.devtools.ksp", name = "com.google.devtools.ksp.gradle.plugin", version.ref = "ksp" }
+room-gradlePlugin = { group = "androidx.room", name = "room-gradle-plugin", version.ref = "room" }
+## Firebase has some gradle plugin that we can use on build logic
+
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }
 kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
 android-library = { id = "com.android.library", version.ref = "agp" }
 jetbrains-kotlin-jvm = { id = "org.jetbrains.kotlin.jvm", version.ref = "jetbrainsKotlinJvm" }
+compose = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "kotlin" }
 
+# Project defined plugins
+travelinandroid-android-application = { id = "travelinandroid.android.application" }
+travelinandroid-android-application-compose = { id = "travelinandroid.android.application.compose" }
+travelinandroid-android-library = { id = "travelinandroid.android.library" }
+travelinandroid-android-library-compose = { id = "travelinandroid.android.library.compose" }
