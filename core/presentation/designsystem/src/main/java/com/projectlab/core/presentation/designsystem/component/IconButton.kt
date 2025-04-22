@@ -1,4 +1,4 @@
-package com.projectlab.core.presentation.desingsystem.component
+package com.projectlab.core.presentation.designsystem.component
 
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Arrangement
@@ -26,7 +26,6 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.tooling.preview.Preview
 
 
@@ -315,5 +314,6 @@ fun IconButtonHeartPreview(modifier: Modifier = Modifier){
 
         ButtonHotel(modifier = modifier, onClick = {})
         ButtonOversea(modifier = modifier, onClick = {})
+        Rate(rate = 4)
     }
 }

@@ -18,19 +18,18 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.projectlab.core.presentation.designsystem.BadgeInfo
-import com.projectlab.core.presentation.designsystem.BadgeOutline
-import com.projectlab.core.presentation.designsystem.BadgePriceUnit
-import com.projectlab.core.presentation.designsystem.ButtonOutline
-import com.projectlab.core.presentation.designsystem.ButtonPrimary
-import com.projectlab.core.presentation.designsystem.ButtonSecondary
-import com.projectlab.core.presentation.designsystem.ButtonTertiary
-import com.projectlab.core.presentation.designsystem.GradientBackground
+import com.projectlab.core.presentation.designsystem.component.BadgeInfo
+import com.projectlab.core.presentation.designsystem.component.BadgeOutline
+import com.projectlab.core.presentation.designsystem.component.BadgePriceUnit
+import com.projectlab.core.presentation.designsystem.component.ButtonOutline
+import com.projectlab.core.presentation.designsystem.component.ButtonPrimary
+import com.projectlab.core.presentation.designsystem.component.ButtonSecondary
+import com.projectlab.core.presentation.designsystem.component.ButtonTertiary
+import com.projectlab.core.presentation.designsystem.component.GradientBackground
 import com.projectlab.core.presentation.designsystem.theme.TravelinTheme
-import com.projectlab.core.presentation.desingsystem.component.IconButtonHeart
-import com.projectlab.core.presentation.desingsystem.component.ButtonHotel
-import com.projectlab.core.presentation.desingsystem.component.ButtonOversea
-import com.projectlab.core.presentation.designsystem.theme.TravelinTheme
+import com.projectlab.core.presentation.designsystem.component.IconButtonHeart
+import com.projectlab.core.presentation.designsystem.component.ButtonHotel
+import com.projectlab.core.presentation.designsystem.component.ButtonOversea
 
 
 class MainActivity : ComponentActivity() {

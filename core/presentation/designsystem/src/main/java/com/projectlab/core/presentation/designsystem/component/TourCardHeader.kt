@@ -25,7 +25,7 @@ import androidx.compose.ui.unit.sp
 import coil.compose.AsyncImage
 import com.projectlab.core.data.mock.Activity
 import com.projectlab.core.data.mock.MockActivities.sampleActivity
-import com.projectlab.presentation.designsystem.R
+import com.projectlab.core.presentation.designsystem.R
 
 @Composable
 fun TourCardHeader(modifier: Modifier = Modifier, activity: Activity){
