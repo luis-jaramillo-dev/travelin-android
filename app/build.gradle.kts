@@ -58,6 +58,7 @@ dependencies {
     implementation(libs.androidx.compose.material3)
     implementation(libs.androidx.navigation.compose)
     implementation(project(":navigation"))
+    implementation(project(":feature:onboarding:presentation"))
     implementation(libs.compose.google.fonts)
 
     // core system
