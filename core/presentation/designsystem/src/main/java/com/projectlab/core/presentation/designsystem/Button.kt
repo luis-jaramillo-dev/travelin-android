@@ -7,6 +7,8 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.filled.KeyboardArrowRight
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonColors
 import androidx.compose.material3.ButtonDefaults
@@ -31,7 +33,8 @@ fun ButtonBase(
     colors: ButtonColors = ButtonDefaults.buttonColors(),
     border: BorderStroke? = null,
     shape: Shape = RoundedCornerShape(12.dp),
-    fullWidth: Boolean = false
+    fullWidth: Boolean = false,
+    horizontalArrangement: Arrangement.Horizontal = Arrangement.Center
 ) {
     val lastModifier = if (fullWidth) {
         modifier
@@ -51,7 +54,7 @@ fun ButtonBase(
     ) {
         Row(
             verticalAlignment = Alignment.CenterVertically,
-            horizontalArrangement = Arrangement.Center
+            horizontalArrangement = horizontalArrangement
         ) {
             if (iconStart != null) {
                 Icon(
@@ -164,7 +167,8 @@ fun ButtonOutline(
     enabled: Boolean = true,
     iconStart: ImageVector? = null,
     iconEnd: ImageVector? = null,
-    fullWidth: Boolean = true
+    fullWidth: Boolean = true,
+    horizontalArrangement: Arrangement.Horizontal = Arrangement.Center
 ) {
     ButtonBase(
         text = text,
@@ -180,5 +184,26 @@ fun ButtonOutline(
         ),
         border = BorderStroke(1.dp, MaterialTheme.colorScheme.outline),
         shape = RoundedCornerShape(6.dp)
+    )
+}
+
+@Composable
+fun ButtonIconTextArrow(
+    text: String,
+    onClick: () -> Unit,
+    modifier: Modifier = Modifier,
+    enabled: Boolean = true,
+    icon: ImageVector? = null,
+    fullWidth: Boolean = true
+) {
+    ButtonOutline(
+        text = text,
+        onClick = onClick,
+        modifier = modifier,
+        enabled = enabled,
+        iconStart = icon,
+        iconEnd = Icons.AutoMirrored.Filled.KeyboardArrowRight,
+        fullWidth = fullWidth,
+        horizontalArrangement = Arrangement.SpaceBetween
     )
 }
