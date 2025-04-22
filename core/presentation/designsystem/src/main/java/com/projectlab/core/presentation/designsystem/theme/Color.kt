@@ -62,7 +62,7 @@ val surfaceVariantDark = Color(0xFF3E4850)
 val onSurfaceVariantDark = Color(0xFFBEC8D1)
 val outlineDark = Color(0xFF88929B)
 val outlineVariantDark = Color(0xFF3E4850)
-val scrimDark = Color(0xFF000000)
+val scrimDark = Color(0xFFFFFFFF)
 val inverseSurfaceDark = Color(0xFFDFE3E8)
 val inverseOnSurfaceDark = Color(0xFF2C3135)
 val inversePrimaryDark = Color(0xFF49C9FF)
@@ -73,9 +73,6 @@ val surfaceContainerLowDark = Color(0xFF171C20)
 val surfaceContainerDark = Color(0xFF1B2024)
 val surfaceContainerHighDark = Color(0xFF262B2F)
 val surfaceContainerHighestDark = Color(0xFF30353A)
-
-val iconColorBlue = Color(35,183,246)   //#23B7F6)
-
 
 
 

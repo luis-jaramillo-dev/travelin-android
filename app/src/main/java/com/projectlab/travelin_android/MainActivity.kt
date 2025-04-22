@@ -26,11 +26,11 @@ import com.projectlab.core.presentation.designsystem.ButtonPrimary
 import com.projectlab.core.presentation.designsystem.ButtonSecondary
 import com.projectlab.core.presentation.designsystem.ButtonTertiary
 import com.projectlab.core.presentation.designsystem.GradientBackground
-import com.projectlab.travelin_android.ui.theme.TravelinTheme
 import com.projectlab.core.presentation.designsystem.theme.TravelinTheme
 import com.projectlab.core.presentation.desingsystem.component.IconButtonHeart
 import com.projectlab.core.presentation.desingsystem.component.ButtonHotel
 import com.projectlab.core.presentation.desingsystem.component.ButtonOversea
+import com.projectlab.core.presentation.designsystem.theme.TravelinTheme
 
 
 class MainActivity : ComponentActivity() {
@@ -51,6 +51,7 @@ class MainActivity : ComponentActivity() {
         }
     }
 }
+
 @Preview
 @Composable
 fun ExampleUI(modifier: Modifier = Modifier) {
@@ -69,7 +70,7 @@ fun ExampleUI(modifier: Modifier = Modifier) {
         ButtonHotel(modifier = modifier, onClick = {})
         ButtonOversea(modifier = modifier, onClick = {})
     }
-}
+
 
 @Preview(showBackground = true)
 @Composable
