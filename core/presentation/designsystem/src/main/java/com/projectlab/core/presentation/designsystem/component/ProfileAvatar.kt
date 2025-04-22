@@ -25,17 +25,15 @@ import com.projectlab.presentation.designsystem.R
 
 
 @Composable
-fun ProfileAvatarComponent (modifier: Modifier = Modifier){
-    val profileName = "John Doe"
-    val profileCountry = "Solar System"
-    val profileCity = "Mars"
+fun ProfileAvatarComponent (modifier: Modifier = Modifier, profileName: String, profileCountry: String, profileCity: String){
 
 
     Row(modifier = modifier) {
         ProfilePicture()
         Spacer(modifier = Modifier.width(24.dp))
-        Column(modifier = Modifier.height(68.dp), verticalArrangement = Arrangement.SpaceAround) {
+        Column(modifier = Modifier.height(68.dp), verticalArrangement = Arrangement.Center) {
             SearchPlaceText(modifier, profileName)
+            Spacer(modifier.height(10.dp))
             CurrentLocationText(modifier, profileCountry, profileCity)
         }
 
@@ -85,5 +83,5 @@ fun CurrentLocationText(modifier: Modifier = Modifier, country: String, city : S
 @Preview(showBackground = true)
 @Composable
 fun ProfileAvatarComponentPreview(){
-    ProfileAvatarComponent()
+    ProfileAvatarComponent(profileName = "John Doe", profileCountry = "Solar System", profileCity = "Mars")
 }

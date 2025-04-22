@@ -24,10 +24,8 @@ import androidx.compose.ui.unit.dp
 // Typography will be set up globally
 
 @Composable
-fun SearchPlaces (modifier: Modifier = Modifier){
-    val locationIcon = painterResource(R.drawable.placeholder_map_marker_alt)
-    val searchString = stringResource(R.string.search_global_nearby)
-    val location = "Mars"
+fun SearchPlaces (modifier: Modifier = Modifier, locationIcon: Painter, searchString: String, location: String){
+
     val currentText = stringResource(R.string.search_global_current, location)
 
     Row(modifier = modifier) {
@@ -76,7 +74,7 @@ fun CurrentLocationText(modifier: Modifier = Modifier, text: String){
 @Preview(showBackground = true)
 @Composable
 fun SearchPlacesPreview(){
-    SearchPlaces()
+    SearchPlaces(locationIcon = painterResource(R.drawable.placeholder_map_marker_alt), searchString = stringResource(R.string.search_global_nearby), location = "Mars")
 }
 
 

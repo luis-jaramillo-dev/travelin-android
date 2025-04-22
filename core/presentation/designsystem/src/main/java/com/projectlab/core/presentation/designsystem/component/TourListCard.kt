@@ -33,6 +33,8 @@ import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.projectlab.core.data.mock.Activity
+import com.projectlab.core.data.mock.MockActivities
 import com.projectlab.presentation.designsystem.R
 
 
@@ -40,22 +42,22 @@ import com.projectlab.presentation.designsystem.R
 
 
 @Composable
-fun TourListCard (modifier: Modifier = Modifier){
-    val rating = 3F
+fun TourListCard (modifier: Modifier = Modifier, activity: Activity){
+    val city = "Krong Siem Reap"
     Row {
-        ImageCardWithFavorite()
+        ImageCardWithFavorite(modifier = Modifier, image =  activity.pictures[0])
         Spacer(modifier = Modifier.width(15.dp))
         Column (modifier = Modifier.height(134.dp), verticalArrangement = Arrangement.SpaceAround){
-            TourName()
+            TourName(modifier = Modifier, activity.name)
             StarRatingBar(
                 maxStars = 5,
                 // Rating comes from API
-                rating = rating,
+                rating = activity.rating,
                 textColor = Color.Black
             )
-            TourCity()
-            PriceText()
-            DurationText()
+            TourCity(city)
+            PriceText(activity.price.amount)
+            DurationText(modifier = Modifier, activity.minimumDuration)
 
         }
     }
@@ -65,28 +67,27 @@ fun TourListCard (modifier: Modifier = Modifier){
 
 //Tour name comes from API
 @Composable
-fun TourName (modifier: Modifier = Modifier){
+fun TourName (modifier: Modifier = Modifier, name: String){
     Text(
         fontSize = 14.sp,
         fontWeight = FontWeight.W600,
-        text = "Camping 1 night at chongkranroy",
+        text = name,
         modifier = modifier.width(160.dp),
         maxLines = Int.MAX_VALUE
     )
 }
 
 @Composable
-fun TourCity (modifier: Modifier = Modifier){
+fun TourCity (city: String){
     Text(
         fontSize = 10.sp,
         fontWeight = FontWeight.W400,
-        text = "Krong Siem Reap")
+        text = city)
 }
 
 //Price comes from API
 @Composable
-fun PriceText (modifier: Modifier = Modifier){
-    val price = 25
+fun PriceText (price: String){
     val fromText = stringResource(R.string.tour_list_card_price_1, price)
     val personText = stringResource(R.string.tour_list_card_price_2)
     Text(
@@ -115,7 +116,7 @@ fun PriceText (modifier: Modifier = Modifier){
 }
 
 @Composable
-fun DurationText (modifier: Modifier = Modifier){
+fun DurationText (modifier: Modifier = Modifier, duration: String){
     Box(
         modifier = modifier
             .border(
@@ -124,7 +125,7 @@ fun DurationText (modifier: Modifier = Modifier){
             ).padding(start = 10.dp, top = 5.dp, end = 10.dp, bottom = 5.dp)
     ){
         Text(
-            text = stringResource(R.string.tour_list_card_duration),
+            text = duration,
         )
     }
 }
@@ -132,5 +133,5 @@ fun DurationText (modifier: Modifier = Modifier){
 @Preview(showBackground = true)
 @Composable
 fun TourListCardPreview(){
-    TourListCard()
+    TourListCard(activity = MockActivities.sampleActivity)
 }

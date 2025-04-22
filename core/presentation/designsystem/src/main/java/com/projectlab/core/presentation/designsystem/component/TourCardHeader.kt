@@ -90,7 +90,7 @@ fun TourCardHeader(modifier: Modifier = Modifier, activity: Activity){
                     )
                     Spacer(modifier = Modifier.height(10.dp))
 
-                    StarRatingBar(rating = 3F, textColor = Color.White)
+                    StarRatingBar(rating = activity.rating, textColor = Color.White)
                 }
             }
 

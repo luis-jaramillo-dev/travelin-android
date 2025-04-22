@@ -6,7 +6,8 @@ data class Activity(
     val description: String,
     val pictures: List<String>,
     val minimumDuration: String,
-    val price: Price
+    val price: Price,
+    val rating: Float
 )
 
 data class Price(
@@ -44,6 +45,7 @@ object MockActivities {
         price = Price(
             amount = "72.0",
             currencyCode = "EUR"
-        )
+        ),
+        rating = 3.5F
     )
 }

@@ -3,8 +3,8 @@
     <string name="search_global_nearby">Buscar lugares cercanos</string>
     <string name="search_global_current">Ubicación actual - %1$s</string>
     <string name="tour_list_card_reviews">%1$d reseñas</string>
-    <string name="tour_list_card_price_1">desde $%1$d/</string>
+    <string name="tour_list_card_price_1">desde $%1$s/</string>
     <string name="tour_list_card_duration">2 días 1 noche</string>
-    <string name="gallery_see_all">Ver todas las +%1$d fotos</string>
+    <string name="gallery_see_all">Ver todas las +%1$s fotos</string>
     <string name="tour_list_card_price_2">persona</string>
 </resources>
