@@ -1,5 +1,6 @@
 package com.projectlab.core.presentation.desingsystem.component
 
+import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -12,6 +13,8 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonColors
 import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.IconButton
+import androidx.compose.material3.IconButtonColors
 import androidx.compose.material3.IconToggleButton
 import androidx.compose.material3.IconToggleButtonColors
 import androidx.compose.material3.Text
@@ -119,9 +122,9 @@ fun ButtonOversea(
 
 @Composable
 fun IconButtonHeart(
+    modifier: Modifier = Modifier,
     checked: Boolean = false,
     onCheckedChange: (Boolean) -> Unit,
-    modifier: Modifier = Modifier,
     enabled: Boolean = true,
 ){
     IconToggleButton(
@@ -140,6 +143,157 @@ fun IconButtonHeart(
             IconHeartBorder(modifier)
         } else {
             IconHeartSelected(modifier, tint = Color(255,0,0))
+        }
+    }
+}
+
+@Composable
+fun TravelinIconButton(
+    onClick: () -> Unit,
+    modifier: Modifier = Modifier,
+    enabled: Boolean = true,
+    interactionSource: MutableInteractionSource = remember { MutableInteractionSource() },
+    icon: @Composable ()->Unit,
+    containerColor: Color  = Color.White,
+    contentColor: Color = Color.Black,
+    disabledContainerColor: Color = Color.Transparent,
+    disabledContentColor: Color = Color.White,
+) {
+    IconButton(
+        onClick = onClick,
+        modifier = modifier,
+        enabled = enabled,
+        interactionSource = interactionSource,
+        colors = IconButtonColors(
+            containerColor = containerColor,
+            contentColor = contentColor,
+            disabledContainerColor = disabledContainerColor,
+            disabledContentColor = disabledContentColor)
+    ) {
+        icon()
+    }
+}
+
+@Composable
+fun BackArrowIconButton(
+    onClick: () -> Unit,
+    modifier: Modifier = Modifier,
+    enabled: Boolean = true,
+    interactionSource: MutableInteractionSource = remember { MutableInteractionSource() },
+    iconSize: Int = 24,
+    alpha: Float = 1f,
+    containerColor: Color  = Color.White,
+    contentColor: Color = Color.Black,
+    disabledContainerColor: Color = Color.Transparent,
+    disabledContentColor: Color = Color.White
+) {
+    TravelinIconButton(
+        onClick = onClick,
+        modifier = modifier,
+        enabled = enabled,
+        interactionSource = interactionSource,
+        containerColor = containerColor,
+        contentColor = contentColor,
+        disabledContainerColor = disabledContainerColor,
+        disabledContentColor = disabledContentColor,
+        icon = { IconBackArrow(modifier = modifier, size = iconSize, alpha = alpha) }
+    )
+}
+
+@Composable
+fun BackIconButton(
+    onClick: () -> Unit,
+    modifier: Modifier = Modifier,
+    enabled: Boolean = true,
+    interactionSource: MutableInteractionSource = remember { MutableInteractionSource() },
+    iconSize: Int = 24,
+    alpha: Float = 1f,
+    containerColor: Color  = Color.White,
+    contentColor: Color = Color.Black,
+    disabledContainerColor: Color = Color.Transparent,
+    disabledContentColor: Color = Color.White
+) {
+    TravelinIconButton(
+        onClick = onClick,
+        modifier = modifier,
+        enabled = enabled,
+        interactionSource = interactionSource,
+        containerColor = containerColor,
+        contentColor = contentColor,
+        disabledContainerColor = disabledContainerColor,
+        disabledContentColor = disabledContentColor,
+        icon = { IconBack(modifier = modifier, size = iconSize, alpha = alpha) }
+    )
+}
+@Composable
+fun ForwardIconButton(
+    onClick: () -> Unit,
+    modifier: Modifier = Modifier,
+    enabled: Boolean = true,
+    interactionSource: MutableInteractionSource = remember { MutableInteractionSource() },
+    iconSize: Int = 24,
+    alpha: Float = 1f,
+    containerColor: Color  = Color.White,
+    contentColor: Color = Color.Black,
+    disabledContainerColor: Color = Color.Transparent,
+    disabledContentColor: Color = Color.White
+) {
+    TravelinIconButton(
+        onClick = onClick,
+        modifier = modifier,
+        enabled = enabled,
+        interactionSource = interactionSource,
+        containerColor = containerColor,
+        contentColor = contentColor,
+        disabledContainerColor = disabledContainerColor,
+        disabledContentColor = disabledContentColor,
+        icon = { IconForward(modifier = modifier, size = iconSize, alpha = alpha) }
+    )
+}
+
+@Composable
+fun ShareIconButton(
+    onClick: () -> Unit,
+    modifier: Modifier = Modifier,
+    enabled: Boolean = true,
+    interactionSource: MutableInteractionSource = remember { MutableInteractionSource() },
+    iconSize: Int = 24,
+    alpha: Float = 1f,
+    containerColor: Color  = Color.White,
+    contentColor: Color = Color.Black,
+    disabledContainerColor: Color = Color.Transparent,
+    disabledContentColor: Color = Color.White
+) {
+    TravelinIconButton(
+        onClick = onClick,
+        modifier = modifier,
+        enabled = enabled,
+        interactionSource = interactionSource,
+        containerColor = containerColor,
+        contentColor = contentColor,
+        disabledContainerColor = disabledContainerColor,
+        disabledContentColor = disabledContentColor,
+        icon = { IconShare(modifier = modifier, size = iconSize, alpha = alpha) }
+    )
+}
+
+@Composable
+fun Rate(
+    modifier: Modifier = Modifier,
+    rate: Int = 5,
+    iconSize: Int = 12,
+    alphaFull: Float = 1f,
+    tintFull: Color = Color(255,178,63),
+    alphaEmpty: Float = 0.2f,
+    tintEmpty: Color = Color.Black
+){
+    Row(){
+        for(i in 1..5 ){
+            if(i <= rate){
+                IconStar(modifier= modifier, size = iconSize, tint = tintFull, alpha = alphaFull)
+            } else {
+                IconStarEmpty(modifier = modifier, size = iconSize, tint = tintEmpty, alpha = alphaEmpty)
+            }
         }
     }
 }
