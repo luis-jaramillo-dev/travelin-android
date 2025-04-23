@@ -46,12 +46,12 @@ class MainActivity : ComponentActivity() {
                         composable<Screens.Onboarding> {
                             OnboardingScreen {
                                 navManager.navigate(
-                                    NavigationCommand.NavigateToRoute(Screens.Examble)
+                                    NavigationCommand.NavigateToRoute(Screens.Example)
                                 )
                             }
                         }
 
-                        composable<Screens.Examble> {
+                        composable<Screens.Example> {
                             Column(
                                 modifier = Modifier
                                     .padding(padding)

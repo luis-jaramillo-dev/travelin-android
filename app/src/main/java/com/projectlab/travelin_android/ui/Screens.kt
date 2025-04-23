@@ -7,5 +7,5 @@ sealed class Screens {
     object Onboarding
 
     @Serializable
-    object Examble
+    object Example
 }
