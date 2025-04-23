@@ -4,6 +4,7 @@ plugins {
 //    alias(libs.plugins.travelinandroid.android.application)
     alias(libs.plugins.travelinandroid.android.application.compose)
     alias(libs.plugins.compose)
+    alias(libs.plugins.kotlin.serialization)
 }
 
 android {
@@ -31,15 +32,19 @@ dependencies {
     implementation(libs.androidx.runtime.android)
     implementation(libs.androidx.compose.material3)
     implementation(libs.androidx.navigation.compose)
-    implementation(project(":navigation"))
     implementation(libs.compose.google.fonts)
+    implementation(libs.kotlinx.serialization.json)
 
     // core system
     implementation(projects.core.presentation.designsystem)
     implementation(projects.core.presentation.ui)
 
+    implementation(projects.navigation)
+    implementation(projects.feature.onboarding.presentation)
+
     testImplementation(libs.junit)
-    androidTestImplementation(libs.androidx.junit)
-    androidTestImplementation(libs.androidx.espresso.core)
+    // TODO check why these are giving issues
+//    androidTestImplementation(libs.androidx.junit)
+//    androidTestImplementation(libs.androidx.espresso.core)
     debugImplementation(libs.androidx.compose.ui.tooling)
 }

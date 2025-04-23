@@ -13,6 +13,9 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.navigation.compose.NavHost
+import androidx.navigation.compose.composable
+import androidx.navigation.compose.rememberNavController
 import com.projectlab.core.presentation.designsystem.BadgeInfo
 import com.projectlab.core.presentation.designsystem.BadgeOutline
 import com.projectlab.core.presentation.designsystem.BadgePriceUnit
@@ -22,21 +25,43 @@ import com.projectlab.core.presentation.designsystem.ButtonSecondary
 import com.projectlab.core.presentation.designsystem.ButtonTertiary
 import com.projectlab.core.presentation.designsystem.GradientBackground
 import com.projectlab.core.presentation.designsystem.theme.TravelinTheme
+import com.projectlab.feature.onboarding.presentation.ui.OnboardingScreen
+import com.projectlab.navigation.NavigationCommand
+import com.projectlab.navigation.NavigationManager
+import com.projectlab.travelin_android.ui.Screens
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
-            TravelinTheme(dynamicColor = true) {
-                Scaffold(
-                    content = { padding ->
-                        Column(Modifier
-                            .padding(padding)
-                            .padding(horizontal = 16.dp)) {
-                            ExampleUI()
+            Scaffold { padding ->
+                TravelinTheme(dynamicColor = false) {
+                    val navController = rememberNavController()
+                    val navManager = NavigationManager(navController)
+
+                    NavHost(
+                        navController = navController,
+                        startDestination = Screens.Onboarding,
+                    ) {
+                        composable<Screens.Onboarding> {
+                            OnboardingScreen {
+                                navManager.navigate(
+                                    NavigationCommand.NavigateToRoute(Screens.Examble)
+                                )
+                            }
+                        }
+
+                        composable<Screens.Examble> {
+                            Column(
+                                modifier = Modifier
+                                    .padding(padding)
+                                    .padding(horizontal = 16.dp)
+                            ) {
+                                ExampleUI()
+                            }
                         }
                     }
-                )
+                }
             }
         }
     }

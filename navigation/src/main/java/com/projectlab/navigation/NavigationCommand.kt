@@ -5,14 +5,14 @@ sealed class NavigationCommand {
     data object NavigateUp: NavigationCommand()
 
     data class NavigateToRoute(
-        val route: String,
+        val route: Any,
         val options: androidx.navigation.NavOptions? = null
     ) : NavigationCommand()
 
     data class PopUpToRoute(
-        val route: String,
+        val route: Any,
         val inclusive: Boolean,
-        val fallBackRoute: String,
+        val fallBackRoute: Any,
     ) : NavigationCommand()
 
 }
