@@ -32,8 +32,6 @@ dependencies {
     implementation(libs.androidx.runtime.android)
     implementation(libs.androidx.compose.material3)
     implementation(libs.androidx.navigation.compose)
-    implementation(project(":navigation"))
-    implementation(project(":feature:onboarding:presentation"))
     implementation(libs.compose.google.fonts)
     implementation(libs.kotlinx.serialization.json)
 
@@ -42,7 +40,10 @@ dependencies {
     implementation(projects.core.presentation.ui)
 
     implementation(projects.navigation)
+    // onboarding
     implementation(projects.feature.onboarding.presentation)
+    //implementation(project(":navigation"))
+    //implementation(project(":feature:onboarding:presentation"))
 
     testImplementation(libs.junit)
     // TODO check why these are giving issues
