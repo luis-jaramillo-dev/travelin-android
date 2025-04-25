@@ -24,14 +24,15 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.projectlab.core.presentation.designsystem.theme.TravelinTheme
 import com.projectlab.feature.onboarding.presentation.R
-import com.projectlab.feature.onboarding.presentation.data.OnboardingPage
-import com.projectlab.feature.onboarding.presentation.ui.theme.OnboardingTheme
 import kotlinx.coroutines.launch
 
 @Composable
-fun OnboardingScreen(onNavigateToLogin: () -> Unit) {
-    val pagerState = rememberPagerState { 3 }
+fun OnboardingScreen(
+    modifier: Modifier = Modifier,
+    onNavigateToLogin: () -> Unit,
+) {
     val scope = rememberCoroutineScope()
 
     val pages = listOf(
@@ -49,13 +50,15 @@ fun OnboardingScreen(onNavigateToLogin: () -> Unit) {
             title = stringResource(R.string.onboarding3_title),
             description = stringResource(R.string.onboarding_body),
             backgroundImage = painterResource(id = R.drawable.onboarding3)
-        )
+        ),
     )
 
-    Box(modifier = Modifier.fillMaxSize()) {
+    val pagerState = rememberPagerState { pages.size }
+
+    Box(modifier = modifier.fillMaxSize()) {
         HorizontalPager(
             state = pagerState,
-            modifier = Modifier.fillMaxSize()
+            modifier = Modifier.fillMaxSize(),
         ) { page ->
             OnboardingPageView(
                 page = pages[page],
@@ -87,7 +90,7 @@ fun OnboardingScreen(onNavigateToLogin: () -> Unit) {
                         .padding(2.dp)
                         .clip(RoundedCornerShape(size = 999.dp))
                         .size(width = 15.dp, height = 6.dp)
-                        .background(Color.White.copy(alpha = opacity))
+                        .background(Color.White.copy(alpha = opacity)),
                 )
 
                 if (pageIndex != pagerState.pageCount - 1) {
@@ -101,7 +104,7 @@ fun OnboardingScreen(onNavigateToLogin: () -> Unit) {
 @Preview(showBackground = true)
 @Composable
 fun OnboardingScreenPreview() {
-    OnboardingTheme {
+    TravelinTheme {
         OnboardingScreen {}
     }
 }
