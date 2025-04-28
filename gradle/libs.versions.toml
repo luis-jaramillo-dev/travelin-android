@@ -24,6 +24,7 @@ projectApplicationId = "com.projectlab.travelin_android"
 androidGradlePlugin = "8.8.0"
 androidTools = "31.9.0"
 ksp = "2.1.10-1.0.31"
+daggerHilt = "2.56.1"
 room = "2.6.1"
 
 [libraries]
@@ -39,7 +40,7 @@ androidx-compose-bom = { group = "androidx.compose", name = "compose-bom", versi
 androidx-activity-compose = { module = "androidx.activity:activity-compose", version.ref = "activityCompose" }
 androidx-compose-ui = { group = "androidx.compose.ui", name = "ui" }
 androidx-compose-ui-tooling = { group = "androidx.compose.ui", name = "ui-tooling" }
-androidx-compose-material3 = { group = "androidx.compose.material3", name = "material3", version.ref="material3" }
+androidx-compose-material3 = { group = "androidx.compose.material3", name = "material3", version.ref = "material3" }
 androidx-compose-ui-tooling-preview = { group = "androidx.compose.ui", name = "ui-tooling-preview" }
 compose-google-fonts = { group = "androidx.compose.ui", name = "ui-text-google-fonts", version.ref = "composeGoogleFonts" }
 androidx-compose-material-icons = { group = "androidx.compose.material", name = "material-icons-extended" }
@@ -59,7 +60,8 @@ kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
 android-library = { id = "com.android.library", version.ref = "agp" }
 jetbrains-kotlin-jvm = { id = "org.jetbrains.kotlin.jvm", version.ref = "jetbrainsKotlinJvm" }
 compose = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "kotlin" }
-devtools-ksp = { id ="com.google.devtools.ksp", version.ref = "ksp"}
+devtools-ksp = { id = "com.google.devtools.ksp", version.ref = "ksp" }
+dagger-hilt-android = { id = "com.google.dagger.hilt.android", version.ref = "daggerHilt" }
 
 # Project defined plugins
 travelinandroid-android-application = { id = "travelinandroid.android.application" }
