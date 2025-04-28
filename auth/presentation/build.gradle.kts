@@ -40,6 +40,9 @@ dependencies {
     implementation(platform(libs.androidx.compose.bom))
     implementation(libs.androidx.activity.compose)
 
+    // Hilt Navigation Compose
+    implementation(libs.androidx.hilt.navigation.compose)
+
     // Material3
     api(libs.androidx.compose.material3)
 
