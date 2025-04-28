@@ -59,6 +59,7 @@ kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
 android-library = { id = "com.android.library", version.ref = "agp" }
 jetbrains-kotlin-jvm = { id = "org.jetbrains.kotlin.jvm", version.ref = "jetbrainsKotlinJvm" }
 compose = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "kotlin" }
+devtools-ksp = { id ="com.google.devtools.ksp", version.ref = "ksp"}
 
 # Project defined plugins
 travelinandroid-android-application = { id = "travelinandroid.android.application" }
