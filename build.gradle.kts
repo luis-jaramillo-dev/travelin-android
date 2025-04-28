@@ -11,4 +11,7 @@ plugins {
     // Dagger Hilt
     alias(libs.plugins.dagger.hilt.android) apply false
 
+    // Compose
+    alias(libs.plugins.compose.compiler) apply false
+
 }
