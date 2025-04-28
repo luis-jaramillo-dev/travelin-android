@@ -8,4 +8,7 @@ plugins {
     // Ksp
     alias(libs.plugins.devtools.ksp) apply false
 
+    // Dagger Hilt
+    alias(libs.plugins.dagger.hilt.android) apply false
+
 }
