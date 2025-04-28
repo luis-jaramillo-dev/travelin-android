@@ -22,7 +22,9 @@ import com.projectlab.core.presentation.designsystem.ButtonSecondary
 import com.projectlab.core.presentation.designsystem.ButtonTertiary
 import com.projectlab.core.presentation.designsystem.GradientBackground
 import com.projectlab.core.presentation.designsystem.theme.TravelinTheme
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
