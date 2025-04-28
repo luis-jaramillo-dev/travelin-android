@@ -8,6 +8,8 @@ plugins {
     // Dagger Hilt
     alias(libs.plugins.dagger.hilt.android)
 
+    // Compose
+    alias(libs.plugins.compose.compiler)
 }
 
 android {
