@@ -41,6 +41,7 @@ dependencies {
     // core system
     implementation(projects.core.presentation.designsystem)
     implementation(projects.core.presentation.ui)
+    implementation(projects.auth.presentation)
 
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)

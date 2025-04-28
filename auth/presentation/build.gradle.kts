@@ -1,6 +1,8 @@
 plugins {
     alias(libs.plugins.android.library)
     alias(libs.plugins.kotlin.android)
+    // Compose
+    alias(libs.plugins.compose.compiler)
 }
 
 android {
@@ -8,7 +10,7 @@ android {
     compileSdk = 35
 
     defaultConfig {
-        minSdk = 25
+        minSdk = 24
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         consumerProguardFiles("consumer-rules.pro")
@@ -34,10 +36,23 @@ android {
 
 dependencies {
 
+    // Compose
+    implementation(platform(libs.androidx.compose.bom))
+    implementation(libs.androidx.activity.compose)
+
+    // Hilt Navigation Compose
+    implementation(libs.androidx.hilt.navigation.compose)
+
+    // Material3
+    api(libs.androidx.compose.material3)
+
+    // Core
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.appcompat)
-    implementation(libs.material)
+
+    // Testing
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
+
 }
