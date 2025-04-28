@@ -1,6 +1,15 @@
 plugins {
 //    alias(libs.plugins.travelinandroid.android.application)
     alias(libs.plugins.travelinandroid.android.application.compose)
+
+    // Ksp
+    alias(libs.plugins.devtools.ksp)
+
+    // Dagger Hilt
+    alias(libs.plugins.dagger.hilt.android)
+
+    // Compose
+    alias(libs.plugins.compose.compiler)
 }
 
 android {
@@ -19,6 +28,11 @@ android {
 }
 
 dependencies {
+
+    // Dagger Hilt + Ksp
+    implementation(libs.hilt.android)
+    ksp(libs.hilt.android.compiler)
+
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.appcompat)
     implementation(libs.material)
