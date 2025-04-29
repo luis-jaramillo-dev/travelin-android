@@ -45,6 +45,7 @@ dependencies {
 
     // Material3
     api(libs.androidx.compose.material3)
+    implementation(libs.androidx.compose.material.icons)
 
     // Core
     implementation(libs.androidx.core.ktx)
