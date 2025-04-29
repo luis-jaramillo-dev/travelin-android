@@ -3,6 +3,15 @@ plugins {
    // alias(libs.plugins.travelinandroid.android.application.compose)
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
+
+    // Ksp
+    alias(libs.plugins.devtools.ksp)
+
+    // Dagger Hilt
+    alias(libs.plugins.dagger.hilt.android)
+
+    // Compose
+    alias(libs.plugins.compose.compiler)
 }
 
 android {
@@ -61,10 +70,16 @@ android {
     debugImplementation(libs.androidx.compose.ui.tooling)
 }*/
 dependencies {
+
+    // Dagger Hilt + Ksp
+    implementation(libs.hilt.android)
+    ksp(libs.hilt.android.compiler)
+
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.appcompat)
     implementation(libs.material)
     implementation(libs.compose.google.fonts)
+
     // core system
     implementation(projects.core.presentation.designsystem)
     implementation(projects.core.presentation.ui)
