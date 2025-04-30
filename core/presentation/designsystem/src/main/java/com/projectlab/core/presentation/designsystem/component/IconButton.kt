@@ -1,4 +1,4 @@
-package com.projectlab.core.presentation.desingsystem.component
+package com.projectlab.core.presentation.designsystem.component
 
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Arrangement
@@ -26,7 +26,6 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.tooling.preview.Preview
 
 
@@ -86,7 +85,7 @@ fun ButtonHotel(
         colorContent = colorContent,
         disabledContainerColor = disabledContainerColor,
         disabledContentColor = disabledContentColor,
-        icon = {IconHotel(modifier, tint = iconColor)},
+        icon = { IconHotel(modifier, tint = iconColor) },
         text = text,
         width = width
     )
@@ -113,7 +112,7 @@ fun ButtonOversea(
         colorContent = colorContent,
         disabledContainerColor = disabledContainerColor,
         disabledContentColor = disabledContentColor,
-        icon =  {IconAirplane(modifier, tint = iconColor)} ,
+        icon =  { IconAirplane(modifier, tint = iconColor) } ,
         text = text,
         width = width
     )
