@@ -19,6 +19,9 @@ googleServices = "4.3.15"
 runtimeAndroid = "1.7.8"
 uiAndroid = "1.7.8"
 material3Android = "1.3.2"
+composeGoogleFonts = "1.7.8"
+material3 = "1.3.2"
+compose = "2025.04.00"
 uiToolingPreviewAndroid = "1.7.8"
 ksp = "2.1.10-1.0.31"
 daggerHilt = "2.56.1"
@@ -41,6 +44,7 @@ androidx-lifecycle-runtime-ktx = { group = "androidx.lifecycle", name = "lifecyc
 coil-compose = { module = "io.coil-kt:coil-compose", version.ref = "coilCompose" }
 hilt-android = { module = "com.google.dagger:hilt-android", version.ref = "daggerHilt" }
 hilt-android-compiler = { module = "com.google.dagger:hilt-android-compiler", version.ref = "daggerHilt" }
+coil-compose = { module = "io.coil-kt:coil-compose", version.ref = "coilCompose" }
 junit = { group = "junit", name = "junit", version.ref = "junit" }
 androidx-junit = { group = "androidx.test.ext", name = "junit", version.ref = "junitVersion" }
 androidx-espresso-core = { group = "androidx.test.espresso", name = "espresso-core", version.ref = "espressoCore" }
