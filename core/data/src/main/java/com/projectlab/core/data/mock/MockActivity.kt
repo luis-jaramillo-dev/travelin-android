@@ -3,6 +3,16 @@ package com.projectlab.core.data.mock
 import com.projectlab.core.data.model.Activity
 import com.projectlab.core.data.model.Price
 
+/**
+ * MockActivities contains predefined mock data used for UI development and testing.
+ *
+ * Usage:
+ * - Use this mock data when developing features that require an Activity instance,
+ *   especially when the backend is unavailable or the real data is not yet integrated.
+ * - Ideal for previews in Jetpack Compose or unit tests that need consistent input data.
+ *
+ */
+
 object MockActivities {
     val sampleActivity = Activity(
         id = "6379377",
