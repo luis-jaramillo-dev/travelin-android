@@ -15,6 +15,7 @@ compose = "2025.04.00"
 ksp = "2.1.10-1.0.31"
 daggerHilt = "2.56.1"
 hiltNavigationCompose = "1.2.0"
+navigationCompose = "2.8.9"
 
 composeCompiler = "1.5.14"
 # App versions
@@ -37,6 +38,7 @@ androidx-junit = { group = "androidx.test.ext", name = "junit", version.ref = "j
 androidx-espresso-core = { group = "androidx.test.espresso", name = "espresso-core", version.ref = "espressoCore" }
 androidx-appcompat = { group = "androidx.appcompat", name = "appcompat", version.ref = "appcompat" }
 androidx-hilt-navigation-compose = { module = "androidx.hilt:hilt-navigation-compose", version.ref = "hiltNavigationCompose" }
+androidx-navigation-compose = { module = "androidx.navigation:navigation-compose", version.ref = "navigationCompose" }
 
 # Compose y Material3
 material = { group = "com.google.android.material", name = "material", version.ref = "material" }
