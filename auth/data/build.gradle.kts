@@ -39,7 +39,6 @@ dependencies {
 
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.appcompat)
-    implementation(libs.material)
     implementation(libs.androidx.lifecycle.runtime.ktx)
 
     //Firebase
@@ -47,7 +46,7 @@ dependencies {
     implementation(libs.firebase.auth.ktx)
     implementation(libs.androidx.runtime.android)
     implementation(libs.androidx.ui.android)
-    implementation(libs.androidx.material3.android)
+    implementation(libs.androidx.compose.material3)
 
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
