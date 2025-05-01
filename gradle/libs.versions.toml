@@ -9,7 +9,7 @@ junit = "4.13.2"
 junitVersion = "1.2.1"
 espressoCore = "3.6.1"
 appcompat = "1.7.0"
-jetbrainsKotlinJvm = "1.9.24"
+jetbrainsKotlinJvm = "2.1.10"
 firebase = "33.13.0"
 googleServices = "4.4.2"
 runtimeAndroid = "1.8.0"
@@ -27,6 +27,7 @@ androidTools = "31.9.2"
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
 androidx-lifecycle-runtime-ktx = { group = "androidx.lifecycle", name = "lifecycle-runtime-ktx", version.ref = "runtimeKtx"}
 coil-compose = { module = "io.coil-kt:coil-compose", version.ref = "coilCompose" }
+firebase-firestore = { module = "com.google.firebase:firebase-firestore" }
 hilt-android = { module = "com.google.dagger:hilt-android", version.ref = "daggerHilt" }
 hilt-android-compiler = { module = "com.google.dagger:hilt-android-compiler", version.ref = "daggerHilt" }
 junit = { group = "junit", name = "junit", version.ref = "junit" }
@@ -44,7 +45,6 @@ compose-google-fonts = { group = "androidx.compose.ui", name = "ui-text-google-f
 androidx-compose-material-icons = { group = "androidx.compose.material", name = "material-icons-extended" }
 androidx-ui-tooling-preview-android = { group = "androidx.compose.ui", name = "ui-tooling-preview-android" }
 firebase = { group = "com.google.firebase", name = "firebase-bom", version.ref = "firebase" }
-firebase-auth-ktx = { group = "com.google.firebase", name = "firebase-auth-ktx" }
 androidx-runtime-android = { group = "androidx.compose.runtime", name = "runtime-android", version.ref = "runtimeAndroid" }
 androidx-ui-android = { group = "androidx.compose.ui", name = "ui-android", version.ref = "uiAndroid" }
 android-gradlePlugin = { group = "com.android.tools.build", name = "gradle", version.ref = "androidGradlePlugin" }
@@ -60,7 +60,6 @@ jetbrains-kotlin-jvm = { id = "org.jetbrains.kotlin.jvm", version.ref = "jetbrai
 compose-compiler = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "kotlin" }
 devtools-ksp = { id = "com.google.devtools.ksp", version.ref = "ksp" }
 dagger-hilt-android = { id = "com.google.dagger.hilt.android", version.ref = "daggerHilt" }
-google-services = { id = "com.google.gms.google-services", version.ref = "googleServices"}
 travelinandroid-android-application = { id = "travelinandroid.android.application" }
 travelinandroid-android-application-compose = { id = "travelinandroid.android.application.compose" }
 travelinandroid-android-library = { id = "travelinandroid.android.library" }
