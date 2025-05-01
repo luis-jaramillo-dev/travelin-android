@@ -40,7 +40,10 @@ dependencies {
     implementation(projects.core.presentation.ui)
 
     implementation(projects.navigation)
-    implementation(projects.feature.onboarding.presentation)
+    // onboarding
+    implementation(projects.feature.onboarding.presentation) // TODO check why this is giving issues
+    //implementation(project(":navigation"))
+    implementation(project(":feature:onboarding:presentation")) // TODO this must not be used in this way
 
     testImplementation(libs.junit)
     // TODO check why these are giving issues
