@@ -10,6 +10,9 @@ plugins {
 
     // Compose
     alias(libs.plugins.compose.compiler)
+
+    // Firebase
+    alias(libs.plugins.google.services)
 }
 
 android {
@@ -54,6 +57,11 @@ android {
 
 dependencies {
 
+    // Core System
+    implementation(projects.core.presentation.designsystem)
+    implementation(projects.core.presentation.ui)
+    implementation(projects.auth.presentation)
+
     // Dagger Hilt + Ksp
     implementation(libs.hilt.android)
     ksp(libs.hilt.android.compiler)
@@ -62,10 +70,6 @@ dependencies {
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.appcompat)
     implementation(libs.compose.google.fonts)
-
-    // Core System
-    implementation(projects.core.presentation.designsystem)
-    implementation(projects.core.presentation.ui)
 
     // UI
     implementation(platform(libs.androidx.compose.bom))
@@ -79,4 +83,5 @@ dependencies {
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
     debugImplementation(libs.androidx.compose.ui.tooling)
+
 }
