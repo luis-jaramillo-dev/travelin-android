@@ -10,6 +10,9 @@ plugins {
 
     // Compose
     alias(libs.plugins.compose.compiler)
+
+    // Google Services
+    alias(libs.plugins.google.services)
 }
 
 android {
@@ -66,6 +69,10 @@ dependencies {
     // Core System
     implementation(projects.core.presentation.designsystem)
     implementation(projects.core.presentation.ui)
+
+    // Firebase
+    implementation(platform(libs.firebase))
+    implementation(libs.firebase.firestore)
 
     // UI
     implementation(platform(libs.androidx.compose.bom))
