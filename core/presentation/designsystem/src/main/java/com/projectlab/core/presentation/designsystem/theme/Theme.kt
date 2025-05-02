@@ -119,7 +119,8 @@ fun TravelinTheme(
     }
 
     CompositionLocalProvider(
-        LocalSpacing provides Spacing()
+        LocalSpacing provides Spacing,
+        LocalCustomShapes provides CustomShapes,
     ) {
         MaterialTheme(
             colorScheme = colorScheme,
