@@ -7,4 +7,7 @@
     <string name="tour_list_card_duration">2 días 1 noche</string>
     <string name="gallery_see_all">Ver todas las +%1$s fotos</string>
     <string name="tour_list_card_price_2">persona</string>
+    <string name="calendar_button_accept">Aceptar</string>
+    <string name="calendar_button_cancel">Atrás</string>
+    <string name="calendar_title">Elige tu fecha de reserva</string>
 </resources>
