@@ -23,6 +23,8 @@ daggerHilt = "2.56.1"
 androidGradlePlugin = "8.8.2"
 androidTools = "31.9.2"
 uiTestJunit4 = "<version>"
+material3Android = "1.3.2"
+uiToolingPreviewAndroid = "1.8.0"
 
 [libraries]
 android-gradlePlugin = { group = "com.android.tools.build", name = "gradle", version.ref = "androidGradlePlugin" }
@@ -58,6 +60,8 @@ firebase = { group = "com.google.firebase", name = "firebase-bom", version.ref =
 firebase-auth-ktx = { group = "com.google.firebase", name = "firebase-auth-ktx" }
 kotlin-gradlePlugin = { group = "org.jetbrains.kotlin", name = "kotlin-gradle-plugin", version.ref = "kotlin" }
 ksp-gradlePlugin = { group = "com.google.devtools.ksp", name = "com.google.devtools.ksp.gradle.plugin", version.ref = "ksp" }
+androidx-material3-android = { group = "androidx.compose.material3", name = "material3-android", version.ref = "material3Android" }
+ui-tooling-preview-android = { group = "androidx.compose.ui", name = "ui-tooling-preview-android", version.ref = "uiToolingPreviewAndroid" }
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }
