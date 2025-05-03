@@ -1,8 +1,12 @@
 package com.projectlab.travelin_android
 
+import android.annotation.SuppressLint
 import android.os.Bundle
+import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import androidx.activity.enableEdgeToEdge
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
@@ -13,6 +17,9 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.navigation.compose.NavHost
+import androidx.navigation.compose.composable
+import androidx.navigation.compose.rememberNavController
 import com.projectlab.core.presentation.designsystem.BadgeInfo
 import com.projectlab.core.presentation.designsystem.BadgeOutline
 import com.projectlab.core.presentation.designsystem.BadgePriceUnit
@@ -23,22 +30,46 @@ import com.projectlab.core.presentation.designsystem.ButtonTertiary
 import com.projectlab.core.presentation.designsystem.GradientBackground
 import com.projectlab.core.presentation.designsystem.theme.TravelinTheme
 import dagger.hilt.android.AndroidEntryPoint
+import com.projectlab.feature.onboarding.presentation.ui.OnboardingScreen
+import com.projectlab.navigation.NavigationCommand
+import com.projectlab.navigation.NavigationManager
+import com.projectlab.travelin_android.ui.Screens
 
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {
+    @SuppressLint("RestrictedApi")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        enableEdgeToEdge()
         setContent {
-            TravelinTheme(dynamicColor = true) {
-                Scaffold(
-                    content = { padding ->
-                        Column(Modifier
-                            .padding(padding)
-                            .padding(horizontal = 16.dp)) {
-                            ExampleUI()
+            Scaffold { padding ->
+                TravelinTheme(dynamicColor = false) {
+                    val navController = rememberNavController()
+                    val navManager = NavigationManager(navController)
+
+                    NavHost(
+                        navController = navController,
+                        startDestination = Screens.Onboarding,
+                    ) {
+                        composable<Screens.Onboarding> {
+                            OnboardingScreen {
+                                navManager.navigate(
+                                    NavigationCommand.NavigateToRoute(Screens.Example)
+                                )
+                            }
+                        }
+
+                        composable<Screens.Example> {
+                            Column(
+                                modifier = Modifier
+                                    .padding(padding)
+                                    .padding(horizontal = 16.dp)
+                            ) {
+                                ExampleUI()
+                            }
                         }
                     }
-                )
+                }
             }
         }
     }
