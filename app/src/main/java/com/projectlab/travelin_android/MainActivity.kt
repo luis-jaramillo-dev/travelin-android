@@ -1,70 +1,73 @@
 package com.projectlab.travelin_android
 
-import android.os.Build
+import android.annotation.SuppressLint
 import android.os.Bundle
+import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
-import androidx.annotation.RequiresApi
-import androidx.compose.foundation.layout.Arrangement
+import androidx.activity.enableEdgeToEdge
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material3.Button
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Place
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.ui.Alignment
+import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.projectlab.core.presentation.designsystem.component.TravelinDatePicker
+import androidx.navigation.compose.NavHost
+import androidx.navigation.compose.composable
+import androidx.navigation.compose.rememberNavController
 import com.projectlab.core.presentation.designsystem.theme.TravelinTheme
-import java.time.LocalDate
+import dagger.hilt.android.AndroidEntryPoint
+import com.projectlab.feature.onboarding.presentation.ui.OnboardingScreen
+import com.projectlab.navigation.NavigationCommand
+import com.projectlab.navigation.NavigationManager
+import com.projectlab.travelin_android.ui.Screens
 
-
+@AndroidEntryPoint
 class MainActivity : ComponentActivity() {
-    @RequiresApi(Build.VERSION_CODES.O)
+    @SuppressLint("RestrictedApi")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        enableEdgeToEdge()
         setContent {
-            TravelinTheme() {
-                Scaffold(
-                    content = { padding ->
-                        val showDialog = remember { mutableStateOf(false) }
-                        val selectedDates = remember { mutableStateOf<Pair<Long?, Long?>?>(null) }
+            Scaffold { padding ->
+                TravelinTheme(dynamicColor = false) {
+                    val navController = rememberNavController()
+                    val navManager = NavigationManager(navController)
 
-                        Column(
-                            modifier = Modifier
-                                .fillMaxSize()
-                                .padding(24.dp),
-                            verticalArrangement = Arrangement.Center,
-                            horizontalAlignment = Alignment.CenterHorizontally
-                        ) {
-                            Button(onClick = { showDialog.value = true }) {
-                                Text("Open Calendar")
-                            }
-
-                            selectedDates.value?.let { (start, end) ->
-                                Text(
-                                    text = "Selected:\nStart = ${start ?: "-"}\nEnd = ${end ?: "-"}",
-                                    modifier = Modifier.padding(top = 16.dp)
-                                )
-                            }
-
-                            if (showDialog.value) {
-                                TravelinDatePicker(
-                                    onDismiss = { showDialog.value = false },
-                                    onConfirm = { dates ->
-                                        selectedDates.value = dates
-                                        showDialog.value = false
-                                    },
-                                    availableDateRange = LocalDate.now()..LocalDate.now().plusDays(30)
+                    NavHost(
+                        navController = navController,
+                        startDestination = Screens.Onboarding,
+                    ) {
+                        composable<Screens.Onboarding> {
+                            OnboardingScreen {
+                                navManager.navigate(
+                                    NavigationCommand.NavigateToRoute(Screens.Example)
                                 )
                             }
                         }
+
+                        composable<Screens.Example> {
+                            Column(
+                                modifier = Modifier
+                                    .padding(padding)
+                                    .padding(horizontal = 16.dp)
+                            ) {
+                                ExampleUI()
+                            }
+                        }
                     }
-                )
+                }
             }
         }
     }
+}
+
+@Composable
+fun ExampleUI() {
+    Text("Hello World!")
 }

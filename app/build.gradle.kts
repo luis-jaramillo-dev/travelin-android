@@ -1,6 +1,7 @@
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
+    alias(libs.plugins.kotlin.serialization)
 
     // Ksp
     alias(libs.plugins.devtools.ksp)
@@ -10,6 +11,9 @@ plugins {
 
     // Compose
     alias(libs.plugins.compose.compiler)
+
+    // Firebase
+    alias(libs.plugins.google.services)
 }
 
 android {
@@ -50,9 +54,17 @@ android {
     kotlinOptions {
         jvmTarget = "11"
     }
+    buildFeatures {
+        compose = true
+    }
 }
 
 dependencies {
+
+    // Core System
+    implementation(projects.core.presentation.designsystem)
+    implementation(projects.core.presentation.ui)
+    implementation(projects.auth.presentation)
 
     // Dagger Hilt + Ksp
     implementation(libs.hilt.android)
@@ -63,16 +75,29 @@ dependencies {
     implementation(libs.androidx.appcompat)
     implementation(libs.compose.google.fonts)
 
+    implementation(libs.androidx.runtime.android)
+    implementation(libs.kotlinx.serialization.json)
+
     // Core System
     implementation(projects.core.presentation.designsystem)
     implementation(projects.core.presentation.ui)
 
     // UI
     implementation(platform(libs.androidx.compose.bom))
+    implementation(libs.androidx.navigation.compose)
     implementation(libs.androidx.activity.compose)
     implementation(libs.androidx.compose.ui.tooling.preview)
+    implementation(libs.androidx.compose.material3)
     implementation(libs.androidx.ui.tooling.preview.android)
     implementation(libs.material)
+
+    // navigation
+    implementation(projects.navigation)
+    //implementation(project(":navigation"))
+
+    // onboarding
+    implementation(projects.feature.onboarding.presentation) // TODO check why this is giving issues
+    implementation(project(":feature:onboarding:presentation")) // TODO this must not be used in this way
 
     // Testing
     testImplementation(libs.junit)
