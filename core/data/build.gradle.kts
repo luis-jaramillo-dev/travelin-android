@@ -1,6 +1,12 @@
 plugins {
     alias(libs.plugins.android.library)
     alias(libs.plugins.kotlin.android)
+
+    // Dagger Hilt
+    alias(libs.plugins.dagger.hilt.android)
+
+    // KSP
+    alias(libs.plugins.devtools.ksp)
 }
 
 android {
@@ -36,10 +42,18 @@ dependencies {
 
     // Core System
     implementation(projects.core.domain)
+    implementation(projects.booking.data)
 
     // Core
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.appcompat)
+
+    // Dagger Hilt + Ksp
+    implementation(libs.hilt.android)
+    ksp(libs.hilt.android.compiler)
+
+    // Network
+    implementation(libs.okhttp.logging)
 
     // Testing
     testImplementation(libs.junit)
