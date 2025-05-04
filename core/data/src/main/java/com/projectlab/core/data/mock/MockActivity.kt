@@ -1,7 +1,7 @@
 package com.projectlab.core.data.mock
 
-import com.projectlab.core.data.model.Activity
-import com.projectlab.core.data.model.Price
+import com.projectlab.core.domain.model.Activity
+import com.projectlab.core.domain.model.Price
 
 /**
  * MockActivities contains predefined mock data used for UI development and testing.
@@ -14,7 +14,7 @@ import com.projectlab.core.data.model.Price
  */
 
 object MockActivities {
-    val sampleActivity = Activity(
+    val sampleActivity = com.projectlab.core.domain.model.Activity(
         id = "6379377",
         name = "Cena clandestina en DAME",
         description = "Join the latest culinary trend of immersive and social dining where local hosts invite you into their homes for a magical meal.\n\nDAME es un antiguo almacén que rinde homenaje a los locales clandestinos de la época de la Ley Seca, flirteando con la clandestinidad y elaborando la oferta gastronómica a partir de la mejor materia prima para sorprenderte.\n\nTu anfitrión, Mario, te ofrece un menú degustación de Tapas Gourmet maridados con vino y un delicioso cóctel mexicano.\n\nDe la decoración y la atmósfera hasta los ingredientes de temporada y la presentación de los platos, la experiencia de Mario es de alta calidad y no se lo puede perder!\n\n*Para grupos inferiores a 10 personas, el precio puede aumentar. Clica el tasto \"Privatiza y personaliza el evento\" para obtener una propuesta customizada.",
@@ -40,7 +40,7 @@ object MockActivities {
             "https://screen-api.vizeater.co/files/1488982/-/preview/-/progressive/yes/-/format/jpeg/image.jpg"
         ),
         minimumDuration = "3 horas",
-        price = Price(
+        price = com.projectlab.core.domain.model.Price(
             amount = "72.0",
             currencyCode = "EUR"
         ),

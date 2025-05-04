@@ -1,4 +1,4 @@
-package com.projectlab.core.data.model
+package com.projectlab.core.domain.model
 
 data class Price(
     val amount: String,

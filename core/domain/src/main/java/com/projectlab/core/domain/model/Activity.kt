@@ -1,4 +1,4 @@
-package com.projectlab.core.data.model
+package com.projectlab.core.domain.model
 
 data class Activity(
     val id: String,
@@ -6,6 +6,6 @@ data class Activity(
     val description: String,
     val pictures: List<String>,
     val minimumDuration: String,
-    val price: Price,
+    val price: com.projectlab.core.domain.model.Price,
     val rating: Float
 )

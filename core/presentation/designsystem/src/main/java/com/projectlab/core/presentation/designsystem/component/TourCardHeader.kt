@@ -23,12 +23,12 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil.compose.AsyncImage
-import com.projectlab.core.data.model.Activity
+import com.projectlab.core.domain.model.Activity
 import com.projectlab.core.data.mock.MockActivities.sampleActivity
 import com.projectlab.core.presentation.designsystem.R
 
 @Composable
-fun TourCardHeader(modifier: Modifier = Modifier, activity: Activity) {
+fun TourCardHeader(modifier: Modifier = Modifier, activity: com.projectlab.core.domain.model.Activity) {
     Box(
         modifier = Modifier
             .height(428.dp)
