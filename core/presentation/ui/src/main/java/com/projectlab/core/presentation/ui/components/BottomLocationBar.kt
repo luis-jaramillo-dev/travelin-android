@@ -23,6 +23,7 @@ import com.projectlab.core.presentation.ui.model.LocationData
 @Composable
 fun BottomLocationBar(
     location: LocationData?,
+    address: String?,
     onGetLocation: () -> Unit,
 ) {
     val labelText = if (location == null) {
@@ -45,10 +46,11 @@ fun BottomLocationBar(
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
             Text(
-                text = if (location == null)
-                    stringResource(R.string.location_not_available)
-                else
-                    stringResource(R.string.location) + ": ${location.latitude}, ${location.longitude}",
+                text = when {
+                    location == null -> stringResource(R.string.location_not_available)
+                    address.isNullOrBlank() -> stringResource(R.string.getting_location)
+                    else -> stringResource(R.string.location) + ": $address"
+                },
                 style = MaterialTheme.typography.titleLarge
             )
 

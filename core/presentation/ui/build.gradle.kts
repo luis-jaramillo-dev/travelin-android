@@ -60,6 +60,7 @@ dependencies {
 
     // Core System
     implementation(projects.core.presentation.designsystem)
+    implementation(libs.play.services.maps)
 
     // Testing
     testImplementation(libs.junit)

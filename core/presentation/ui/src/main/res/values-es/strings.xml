@@ -10,4 +10,5 @@
     <string name="update_location">Actualizar Ubicación</string>
     <string name="did_you_change_location">¿Cambiaste de ubicación?</string>
     <string name="update">Actualizar</string>
+    <string name="getting_location">Obteniendo ubicación…</string>
 </resources>

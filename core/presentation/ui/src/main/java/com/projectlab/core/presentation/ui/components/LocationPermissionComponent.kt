@@ -7,6 +7,7 @@ import android.widget.Toast
 import androidx.compose.runtime.Composable
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -24,6 +25,14 @@ fun LocationPermissionComponent(
     showBottomBar: MutableState<Boolean>,
 ) {
     val permissionState = remember { mutableStateOf(LocationPermissionState.NOT_REQUESTED) }
+    val location = viewModel.location.value
+
+    LaunchedEffect(location) {
+        if (location != null && viewModel.address.value.isNullOrBlank()) {
+            val address = locationUtils.reverseGeocodeLocation(location)
+            viewModel.updateAddress(address)
+        }
+    }
 
     val requestPermissionLauncher = rememberLauncherForActivityResult(
         contract = ActivityResultContracts.RequestMultiplePermissions()
@@ -64,6 +73,7 @@ fun LocationPermissionComponent(
     if (showBottomBar.value) {
         BottomLocationBar(
             location = viewModel.location.value,
+            address = viewModel.address.value,
             onGetLocation = {
                 requestPermissionLauncher.launch(
                     arrayOf(
@@ -71,10 +81,12 @@ fun LocationPermissionComponent(
                         Manifest.permission.ACCESS_COARSE_LOCATION
                     )
                 )
-            },
+            }
+
         )
     } else {
         CenterLocationPrompt(
+            address = viewModel.address.value,
             onGetLocation = {
                 showBottomBar.value = true
                 requestPermissionLauncher.launch(
@@ -88,7 +100,8 @@ fun LocationPermissionComponent(
                 permissionState.value = LocationPermissionState.DENIED
                 showBottomBar.value = true
             },
-            viewModel = viewModel
+            viewModel = viewModel,
+
         )
     }
 }

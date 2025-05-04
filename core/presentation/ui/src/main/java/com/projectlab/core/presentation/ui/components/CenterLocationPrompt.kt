@@ -27,10 +27,12 @@ import com.projectlab.core.presentation.ui.viewmodel.LocationViewModel
 fun CenterLocationPrompt(
     viewModel: LocationViewModel,
     onGetLocation: () -> Unit,
-    onReject: () -> Unit
+    onReject: () -> Unit,
+    address: String?,
 ) {
     val location = viewModel.location.value
     val buttonsVisible = remember { mutableStateOf(true) }
+
 
     TravelinTheme(dynamicColor = false, darkTheme = false) {
         Column(
@@ -46,7 +48,7 @@ fun CenterLocationPrompt(
                 )
             } else {
                 Text(
-                    text = stringResource(R.string.location) + ": ${location.latitude}, ${location.longitude}",
+                    text = stringResource(R.string.location) + ": $address",
                     style = MaterialTheme.typography.titleLarge
                 )
             }
