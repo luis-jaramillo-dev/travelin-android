@@ -2,8 +2,11 @@ plugins {
     alias(libs.plugins.android.library)
     alias(libs.plugins.kotlin.android)
 
-    //google services
-    alias(libs.plugins.google.services)
+    // Ksp
+    alias(libs.plugins.devtools.ksp)
+
+    // Dagger Hilt
+    alias(libs.plugins.dagger.hilt.android)
 }
 
 android {
@@ -37,17 +40,15 @@ android {
 
 dependencies {
 
-    implementation(libs.androidx.core.ktx)
-    implementation(libs.androidx.appcompat)
-    implementation(libs.androidx.lifecycle.runtime.ktx)
+    // Core System
+    implementation(projects.core.domain)
+    implementation(projects.auth.domain)
 
-    //Firebase
-    implementation(platform(libs.firebase))
-    implementation(libs.firebase.auth.ktx)
-    implementation(libs.androidx.runtime.android)
-    implementation(libs.androidx.ui.android)
-    implementation(libs.androidx.compose.material3)
+    // Dagger Hilt + Ksp
+    implementation(libs.hilt.android)
+    ksp(libs.hilt.android.compiler)
 
+    // Testing
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
