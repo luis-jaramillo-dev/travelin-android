@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="results_near_you">Results near you</string>
+    <string name="get_location">Get Location</string>
+    <string name="no_thanks">No, thanks</string>
+    <string name="location_not_available">Location not available</string>
+    <string name="location_permission_required">Location permission required</string>
+    <string name="permission_denied_enable">Permission denied. Enable it in settings.</string>
+</resources>

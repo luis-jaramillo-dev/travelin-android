@@ -1,6 +1,7 @@
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
+    alias(libs.plugins.kotlin.serialization)
 
     // Ksp
     alias(libs.plugins.devtools.ksp)
@@ -53,6 +54,9 @@ android {
     kotlinOptions {
         jvmTarget = "11"
     }
+    buildFeatures {
+        compose = true
+    }
 }
 
 dependencies {
@@ -71,17 +75,33 @@ dependencies {
     implementation(libs.androidx.appcompat)
     implementation(libs.compose.google.fonts)
 
+    implementation(libs.androidx.runtime.android)
+    implementation(libs.kotlinx.serialization.json)
+
+    // Core System
+    implementation(projects.core.presentation.designsystem)
+    implementation(projects.core.presentation.ui)
+
     // UI
     implementation(platform(libs.androidx.compose.bom))
+    implementation(libs.androidx.navigation.compose)
     implementation(libs.androidx.activity.compose)
     implementation(libs.androidx.compose.ui.tooling.preview)
+    implementation(libs.androidx.compose.material3)
     implementation(libs.androidx.ui.tooling.preview.android)
     implementation(libs.material)
+
+    // navigation
+    implementation(projects.navigation)
+    //implementation(project(":navigation"))
+
+    // onboarding
+    implementation(projects.feature.onboarding.presentation) // TODO check why this is giving issues
+    implementation(project(":feature:onboarding:presentation")) // TODO this must not be used in this way
 
     // Testing
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
     debugImplementation(libs.androidx.compose.ui.tooling)
-
 }
