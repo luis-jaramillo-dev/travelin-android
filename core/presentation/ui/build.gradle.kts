@@ -55,10 +55,11 @@ dependencies {
     implementation(libs.androidx.compose.ui)
     implementation(libs.androidx.activity.compose)
     implementation(libs.androidx.material3.android)
+    implementation(libs.ui.tooling.preview.android)
+    implementation(libs.play.services.location)
 
     // Core System
     implementation(projects.core.presentation.designsystem)
-    implementation(libs.ui.tooling.preview.android)
 
     // Testing
     testImplementation(libs.junit)

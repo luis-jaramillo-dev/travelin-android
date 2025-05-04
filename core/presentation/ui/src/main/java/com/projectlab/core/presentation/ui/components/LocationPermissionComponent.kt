@@ -7,20 +7,21 @@ import android.widget.Toast
 import androidx.compose.runtime.Composable
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.core.app.ActivityCompat
 import com.projectlab.core.presentation.ui.R
 import com.projectlab.core.presentation.ui.model.LocationPermissionState
 import com.projectlab.core.presentation.ui.utils.LocationUtils
+import com.projectlab.core.presentation.ui.viewmodel.LocationViewModel
 
 @Composable
 fun LocationPermissionComponent(
     locationUtils: LocationUtils,
+    viewModel: LocationViewModel,
     context: Context,
-    isBottomBar: Boolean = false,
-    onPermissionGranted: () -> Unit,
-    onPermissionRejected: () -> Unit,
+    showBottomBar: MutableState<Boolean>,
 ) {
     val permissionState = remember { mutableStateOf(LocationPermissionState.NOT_REQUESTED) }
 
@@ -31,8 +32,7 @@ fun LocationPermissionComponent(
             permissions[Manifest.permission.ACCESS_FINE_LOCATION] == true &&
             permissions[Manifest.permission.ACCESS_COARSE_LOCATION] == true
         ) {
-            permissionState.value = LocationPermissionState.GRANTED
-            onPermissionGranted()
+            locationUtils.requestLocationUpdates(viewModel = viewModel)
         } else {
             val rationaleRequired = ActivityCompat.shouldShowRequestPermissionRationale(
                 context as Activity,
@@ -45,36 +45,50 @@ fun LocationPermissionComponent(
             permissionState.value = LocationPermissionState.DENIED
 
             if (rationaleRequired) {
-                Toast.makeText(context, context.getString(R.string.location_permission_required), Toast.LENGTH_SHORT).show()
+                Toast.makeText(
+                    context,
+                    context.getString(R.string.location_permission_required),
+                    Toast.LENGTH_SHORT
+                ).show()
             } else {
-                Toast.makeText(context, context.getString(R.string.permission_denied_enable), Toast.LENGTH_SHORT).show()
+                Toast.makeText(
+                    context,
+                    context.getString(R.string.permission_denied_enable),
+                    Toast.LENGTH_SHORT
+                ).show()
             }
 
-            onPermissionRejected()
         }
     }
 
-    if (isBottomBar) {
+    if (showBottomBar.value) {
         BottomLocationBar(
+            location = viewModel.location.value,
             onGetLocation = {
-                requestPermissionLauncher.launch(arrayOf(
-                    Manifest.permission.ACCESS_FINE_LOCATION,
-                    Manifest.permission.ACCESS_COARSE_LOCATION
-                ))
+                requestPermissionLauncher.launch(
+                    arrayOf(
+                        Manifest.permission.ACCESS_FINE_LOCATION,
+                        Manifest.permission.ACCESS_COARSE_LOCATION
+                    )
+                )
             },
         )
     } else {
         CenterLocationPrompt(
             onGetLocation = {
-                requestPermissionLauncher.launch(arrayOf(
-                    Manifest.permission.ACCESS_FINE_LOCATION,
-                    Manifest.permission.ACCESS_COARSE_LOCATION
-                ))
+                showBottomBar.value = true
+                requestPermissionLauncher.launch(
+                    arrayOf(
+                        Manifest.permission.ACCESS_FINE_LOCATION,
+                        Manifest.permission.ACCESS_COARSE_LOCATION
+                    )
+                )
             },
             onReject = {
                 permissionState.value = LocationPermissionState.DENIED
-                onPermissionRejected()
-            }
+                showBottomBar.value = true
+            },
+            viewModel = viewModel
         )
     }
 }

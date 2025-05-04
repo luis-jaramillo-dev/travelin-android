@@ -6,4 +6,8 @@
     <string name="location_not_available">Location not available</string>
     <string name="location_permission_required">Location permission required</string>
     <string name="permission_denied_enable">Permission denied. Enable it in settings.</string>
+    <string name="location">Location</string>
+    <string name="update_location">Update Location</string>
+    <string name="did_you_change_location">Did you change location?</string>
+    <string name="update">Update</string>
 </resources>

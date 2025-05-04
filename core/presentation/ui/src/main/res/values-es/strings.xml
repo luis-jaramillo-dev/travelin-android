@@ -6,4 +6,8 @@
     <string name="location_not_available">Ubicación no disponible</string>
     <string name="location_permission_required">Permisos de ubicación requeridos</string>
     <string name="permission_denied_enable">Permiso denegado. Modificar en las configuraciones.</string>
+    <string name="location">Ubicación</string>
+    <string name="update_location">Actualizar Ubicación</string>
+    <string name="did_you_change_location">¿Cambiaste de ubicación?</string>
+    <string name="update">Actualizar</string>
 </resources>
