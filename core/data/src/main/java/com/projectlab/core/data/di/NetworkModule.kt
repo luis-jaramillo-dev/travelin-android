@@ -3,6 +3,7 @@ package com.projectlab.core.data.di
 import android.content.Context
 import android.content.SharedPreferences
 import com.projectlab.core.data.network.AuthInterceptor
+import com.projectlab.core.data.remote.AmadeusApiService
 import com.projectlab.core.data.repository.TokenProviderImpl
 import com.projectlab.core.domain.repository.TokenProvider
 import dagger.Module
@@ -11,6 +12,8 @@ import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
 import okhttp3.Interceptor
 import okhttp3.OkHttpClient
+import retrofit2.Retrofit
+import retrofit2.converter.gson.GsonConverterFactory
 import javax.inject.Singleton
 
 @Module
@@ -25,8 +28,21 @@ object NetworkModule {
 
     @Provides
     @Singleton
-    fun provideTokenProvider(sharedPreferences: SharedPreferences): TokenProvider {
-        return TokenProviderImpl(sharedPreferences)
+    fun provideAmadeusApiService(): AmadeusApiService {
+        return Retrofit.Builder()
+            .baseUrl("https://api.amadeus.com/")
+            .addConverterFactory(GsonConverterFactory.create())
+            .build()
+            .create(AmadeusApiService::class.java)
+    }
+
+    @Provides
+    @Singleton
+    fun provideTokenProvider(
+        sharedPreferences: SharedPreferences,
+        amadeusApiService: AmadeusApiService
+    ): TokenProvider {
+        return TokenProviderImpl(sharedPreferences, amadeusApiService)
     }
 
     @Provides

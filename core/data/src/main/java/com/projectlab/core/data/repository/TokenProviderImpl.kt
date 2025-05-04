@@ -1,11 +1,12 @@
 package com.projectlab.core.data.repository
 
 import android.content.SharedPreferences
-import com.projectlab.booking.data.activities.remote.AmadeusApiService
+import com.projectlab.core.data.remote.AmadeusApiService
 import com.projectlab.core.data.remote.AccessTokenResponse
 import com.projectlab.core.domain.repository.TokenProvider
 import javax.inject.Inject
 import androidx.core.content.edit
+import com.projectlab.core.data.config.Config
 
 class TokenProviderImpl @Inject constructor(
     private val sharedPreferences: SharedPreferences,
@@ -34,7 +35,11 @@ class TokenProviderImpl @Inject constructor(
     }
 
     private suspend fun fetchNewAccessToken(): AccessTokenResponse {
-        val response = amadeusApiService.getAccessToken()
+        val response = amadeusApiService.getAccessToken(
+            clientId = Config.apiKey,
+            clientSecret = Config.apiSecret
+
+        )
         return response
     }
 

@@ -1,6 +1,5 @@
-package com.projectlab.booking.data.activities.remote
+package com.projectlab.core.data.remote
 
-import com.projectlab.core.data.remote.AccessTokenResponse
 import retrofit2.http.Field
 import retrofit2.http.FormUrlEncoded
 import retrofit2.http.POST

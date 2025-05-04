@@ -1,6 +1,6 @@
 package com.projectlab.booking.data.activities.repository
 
-import com.projectlab.booking.data.activities.remote.AmadeusApiService
+import com.projectlab.core.data.remote.AmadeusApiService
 import com.projectlab.core.data.config.Config
 
 class AuthTokenRepository(

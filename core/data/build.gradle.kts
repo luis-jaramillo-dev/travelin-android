@@ -42,7 +42,6 @@ dependencies {
 
     // Core System
     implementation(projects.core.domain)
-    implementation(projects.booking.data)
 
     // Core
     implementation(libs.androidx.core.ktx)
@@ -53,7 +52,10 @@ dependencies {
     ksp(libs.hilt.android.compiler)
 
     // Network
+    implementation(libs.retrofit)
+    implementation(libs.converter.gson)
     implementation(libs.okhttp.logging)
+    implementation(libs.gson)
 
     // Testing
     testImplementation(libs.junit)

@@ -50,6 +50,10 @@ dependencies {
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.appcompat)
 
+    // Core System
+    implementation(projects.core.data)
+    implementation(projects.core.domain)
+
     // UI
     implementation(platform(libs.androidx.compose.bom))
     implementation(libs.compose.google.fonts)
@@ -59,9 +63,6 @@ dependencies {
     implementation(libs.androidx.compose.ui.tooling.preview)
     implementation(libs.coil.compose)
     api(libs.androidx.compose.material3)
-
-    // Core System
-    implementation(projects.core.data)
 
     // Testing
     debugImplementation(libs.androidx.compose.ui.tooling)
