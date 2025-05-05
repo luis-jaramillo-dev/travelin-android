@@ -1,5 +1,3 @@
-import org.gradle.internal.impldep.org.junit.experimental.categories.Categories.CategoryFilter.include
-
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
@@ -63,6 +61,11 @@ android {
 
 dependencies {
 
+    // Core System
+    implementation(projects.core.presentation.designsystem)
+    implementation(projects.core.presentation.ui)
+    implementation(projects.auth.presentation)
+
     // Dagger Hilt + Ksp
     implementation(libs.hilt.android)
     ksp(libs.hilt.android.compiler)
@@ -102,8 +105,7 @@ dependencies {
 
     // Testing
     testImplementation(libs.junit)
-    // TODO check why these are giving issues
-//    androidTestImplementation(libs.androidx.junit)
-//    androidTestImplementation(libs.androidx.espresso.core)
+    androidTestImplementation(libs.androidx.junit)
+    androidTestImplementation(libs.androidx.espresso.core)
     debugImplementation(libs.androidx.compose.ui.tooling)
 }
