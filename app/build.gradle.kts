@@ -65,6 +65,7 @@ dependencies {
     implementation(projects.core.presentation.designsystem)
     implementation(projects.core.presentation.ui)
     implementation(projects.auth.presentation)
+    implementation(projects.booking.presentation)
 
     // Dagger Hilt + Ksp
     implementation(libs.hilt.android)

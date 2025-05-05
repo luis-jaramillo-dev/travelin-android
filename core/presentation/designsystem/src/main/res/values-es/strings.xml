@@ -7,4 +7,17 @@
     <string name="tour_list_card_duration">2 días 1 noche</string>
     <string name="gallery_see_all">Ver todas las +%1$s fotos</string>
     <string name="tour_list_card_price_2">persona</string>
+    <string name="results_near_you">Resultados cerca de ti</string>
+    <string name="get_location">Obtener ubicación</string>
+    <string name="no_thanks">No, gracias</string>
+    <string name="location_not_available">Ubicación no disponible</string>
+    <string name="location_permission_required">Permisos de ubicación requeridos</string>
+    <string name="permission_denied_enable">Permiso denegado. Modificar en las configuraciones.</string>
+    <string name="location">Ubicación</string>
+    <string name="update_location">Actualizar Ubicación</string>
+    <string name="did_you_change_location">¿Cambiaste de ubicación?</string>
+    <string name="update">Actualizar</string>
+    <string name="getting_location">Obteniendo ubicación…</string>
+    <string name="search_city_placeholder">Buscar ciudad</string>
+    <string name="searching_results_for">Buscando resultados para</string>
 </resources>

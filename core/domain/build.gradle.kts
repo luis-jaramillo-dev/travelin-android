@@ -4,6 +4,12 @@ plugins {
 
     // Compose
     alias(libs.plugins.compose.compiler)
+
+    // Dagger Hilt
+    alias(libs.plugins.dagger.hilt.android)
+
+    // KSP
+    alias(libs.plugins.devtools.ksp)
 }
 
 android {
@@ -57,6 +63,10 @@ dependencies {
     implementation(libs.androidx.material3.android)
     implementation(libs.ui.tooling.preview.android)
 
+    // Dagger Hilt + Ksp
+    implementation(libs.hilt.android)
+    ksp(libs.hilt.android.compiler)
+    
     // Testing
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)

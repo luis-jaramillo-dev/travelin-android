@@ -4,6 +4,7 @@ import android.content.Context
 import android.content.SharedPreferences
 import com.projectlab.core.data.network.AuthInterceptor
 import com.projectlab.core.data.remote.AmadeusApiService
+import com.projectlab.core.data.repository.ActivitiesApiService
 import com.projectlab.core.data.repository.TokenProviderImpl
 import com.projectlab.core.domain.repository.TokenProvider
 import dagger.Module
@@ -34,6 +35,16 @@ object NetworkModule {
             .addConverterFactory(GsonConverterFactory.create())
             .build()
             .create(AmadeusApiService::class.java)
+    }
+
+    @Provides
+    @Singleton
+    fun provideActivitiesApiService(): ActivitiesApiService {
+        return Retrofit.Builder()
+            .baseUrl("https://test.api.amadeus.com")
+            .addConverterFactory(GsonConverterFactory.create())
+            .build()
+            .create(ActivitiesApiService::class.java)
     }
 
     @Provides

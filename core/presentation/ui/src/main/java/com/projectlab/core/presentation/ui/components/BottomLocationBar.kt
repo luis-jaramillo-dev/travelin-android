@@ -2,7 +2,6 @@ package com.projectlab.core.presentation.ui.components
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
@@ -17,13 +16,12 @@ import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.unit.dp
 import com.projectlab.core.presentation.designsystem.ButtonPrimary
 import com.projectlab.core.presentation.designsystem.theme.TravelinTheme
-import com.projectlab.core.presentation.ui.R
+import com.projectlab.core.presentation.designsystem.R
 import com.projectlab.core.presentation.ui.model.LocationData
 
 @Composable
 fun BottomLocationBar(
     location: LocationData?,
-    address: String?,
     onGetLocation: () -> Unit,
 ) {
     val labelText = if (location == null) {
@@ -39,42 +37,26 @@ fun BottomLocationBar(
     }
 
     TravelinTheme(dynamicColor = false, darkTheme = false) {
-        Column(
+        Row(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(top = 16.dp),
-            horizontalAlignment = Alignment.CenterHorizontally
+                .background(MaterialTheme.colorScheme.tertiaryContainer)
+                .padding(16.dp),
+            horizontalArrangement = Arrangement.SpaceBetween,
+            verticalAlignment = Alignment.CenterVertically,
         ) {
             Text(
-                text = when {
-                    location == null -> stringResource(R.string.location_not_available)
-                    address.isNullOrBlank() -> stringResource(R.string.getting_location)
-                    else -> stringResource(R.string.location) + ": $address"
-                },
-                style = MaterialTheme.typography.titleLarge
+                labelText,
+                style = MaterialTheme.typography.titleMedium
             )
-
-            Row(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .background(MaterialTheme.colorScheme.tertiaryContainer)
-                    .padding(16.dp),
-                horizontalArrangement = Arrangement.SpaceBetween,
-                verticalAlignment = Alignment.CenterVertically,
-            ) {
-                Text(
-                    labelText,
-                    style = MaterialTheme.typography.titleMedium
-                )
-                ButtonPrimary(
-                    onClick = onGetLocation,
-                    text = buttonText,
-                    fullWidth = false,
-                    modifier = Modifier.semantics {
-                        contentDescription = "Give Location Permission"
-                    }
-                )
-            }
+            ButtonPrimary(
+                onClick = onGetLocation,
+                text = buttonText,
+                fullWidth = false,
+                modifier = Modifier.semantics {
+                    contentDescription = "Give Location Permission"
+                }
+            )
         }
     }
 }

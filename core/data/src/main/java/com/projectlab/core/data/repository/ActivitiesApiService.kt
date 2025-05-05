@@ -1,4 +1,4 @@
-package com.projectlab.booking.data.activities.remote
+package com.projectlab.core.data.repository
 
 import com.projectlab.core.data.remote.ActivitiesSearchResponse
 import retrofit2.http.GET

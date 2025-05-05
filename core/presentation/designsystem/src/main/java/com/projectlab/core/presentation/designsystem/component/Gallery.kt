@@ -26,7 +26,6 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil.compose.AsyncImage
-import com.projectlab.core.data.mock.MockActivities
 import com.projectlab.core.presentation.designsystem.R
 
 @Composable
@@ -112,10 +111,4 @@ fun GalleryImage(url: String, modifier: Modifier = Modifier) {
         contentScale = ContentScale.Crop,
         modifier = modifier.clip(RoundedCornerShape(1.dp))
     )
-}
-
-@Preview (showBackground = true)
-@Composable
-fun GallerySectionPreview(){
-    GallerySection(images = MockActivities.sampleActivity.pictures, onSeeAllClick = {  } )
 }

@@ -16,12 +16,14 @@ import com.google.android.gms.location.LocationServices
 import com.google.android.gms.location.Priority
 import com.projectlab.core.presentation.ui.model.LocationData
 import com.projectlab.core.presentation.ui.viewmodel.LocationViewModel
+import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import java.io.IOException
 import java.util.Locale
+import javax.inject.Inject
 
-class LocationUtils(val context: Context) {
+class LocationUtils @Inject constructor (@ApplicationContext val context: Context) {
 
     private val _fusedLocationClient: FusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(context)
 
@@ -35,7 +37,7 @@ class LocationUtils(val context: Context) {
                     viewModel.updateLocation(location)
                 }
             }
-            
+
         }
 
         val locationRequest = LocationRequest.Builder(Priority.PRIORITY_HIGH_ACCURACY, 1000).build()
@@ -75,16 +77,24 @@ class LocationUtils(val context: Context) {
         }
     }
 
-    suspend fun getCoordinatesFromLocation(city: String, country: String): LocationData? = withContext(Dispatchers.IO) {
+    suspend fun getCoordinatesFromLocation(locationName: String): LocationData? = withContext(Dispatchers.IO) {
         try {
             val geocoder = Geocoder(context, Locale.getDefault())
-            val addressList = geocoder.getFromLocationName("$city, $country", 1)
+            val addressList = geocoder.getFromLocationName(locationName, 1)
 
             return@withContext if (!addressList.isNullOrEmpty()) {
                 val address = addressList[0]
                 val latitude = address.latitude
                 val longitude = address.longitude
-                LocationData(latitude, longitude)
+                val city = address.locality ?: address.subAdminArea ?: ""
+                val country = address.countryName ?: ""
+
+                LocationData(
+                    latitude = latitude,
+                    longitude = longitude,
+                    city = city,
+                    country = country
+                )
             } else {
                 null
             }
@@ -93,5 +103,19 @@ class LocationUtils(val context: Context) {
         } catch (e: Exception) {
             null
         }
+    }
+
+    @SuppressLint("MissingPermission")
+    fun getCurrentLocation(): LocationData? {
+        var locationData: LocationData? = null
+        _fusedLocationClient.lastLocation.addOnSuccessListener { location ->
+            location?.let {
+                locationData = LocationData(
+                    latitude = it.latitude,
+                    longitude = it.longitude
+                )
+            }
+        }
+        return locationData
     }
 }

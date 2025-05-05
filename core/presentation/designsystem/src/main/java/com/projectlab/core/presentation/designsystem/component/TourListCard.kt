@@ -20,11 +20,11 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.projectlab.core.domain.model.Activity
+import com.projectlab.core.data.model.ActivityDto
 import com.projectlab.core.presentation.designsystem.R
 
 @Composable
-fun TourListCard(modifier: Modifier = Modifier, activity: com.projectlab.core.domain.model.Activity) {
+fun TourListCard(modifier: Modifier = Modifier, activity: ActivityDto) {
     val city = "Krong Siem Reap"
     Row {
         ImageCardWithFavorite(modifier = Modifier, image = activity.pictures[0])
@@ -38,7 +38,7 @@ fun TourListCard(modifier: Modifier = Modifier, activity: com.projectlab.core.do
                 textColor = Color.Black
             )
             TourCity(city)
-            PriceText(activity.price.amount)
+            PriceText(activity.price.toString())
             DurationText(modifier = Modifier, activity.minimumDuration)
 
         }

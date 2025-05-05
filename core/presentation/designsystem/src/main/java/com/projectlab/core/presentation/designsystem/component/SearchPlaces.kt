@@ -20,36 +20,22 @@ import com.projectlab.core.presentation.designsystem.R
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 
-// Typography will be set up globally
-
 @Composable
 fun SearchPlaces(
     modifier: Modifier = Modifier,
-    locationIcon: Painter,
+    locationIcon: @Composable (Modifier) -> Unit,
     searchString: String,
     location: String
 ) {
     val currentText = stringResource(R.string.search_global_current, location)
 
     Row(modifier = modifier) {
-        LocationIcon(modifier, locationIcon)
+        locationIcon(modifier)
         Spacer(modifier = Modifier.width(20.dp))
-        Column(modifier = Modifier.height(38.dp), verticalArrangement = Arrangement.SpaceAround) {
+        Column(verticalArrangement = Arrangement.SpaceAround) {
             SearchPlaceText(modifier, searchString)
             CurrentLocationText(modifier, currentText)
         }
-    }
-}
-
-// The placeholder icon will be replaced by the official icon from the design system once it's ready to use
-@Composable
-fun LocationIcon(modifier: Modifier = Modifier, icon: Painter) {
-
-    Box(modifier = modifier) {
-        Image(
-            painter = icon,
-            contentDescription = "Location icon"
-        )
     }
 }
 
@@ -75,7 +61,7 @@ fun CurrentLocationText(modifier: Modifier = Modifier, text: String) {
 @Composable
 fun SearchPlacesPreview() {
     SearchPlaces(
-        locationIcon = painterResource(R.drawable.placeholder_map_marker_alt),
+        locationIcon = { modifier -> IconLocation(modifier) },
         searchString = stringResource(R.string.search_global_nearby),
         location = "Mars"
     )

@@ -18,6 +18,8 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import com.projectlab.booking.presentation.activities.search.SearchActivityScreen
+import com.projectlab.booking.presentation.activities.search.SearchActivityScreenWithHilt
 import com.projectlab.core.presentation.designsystem.BadgeInfo
 import com.projectlab.core.presentation.designsystem.BadgeOutline
 import com.projectlab.core.presentation.designsystem.BadgePriceUnit
@@ -52,6 +54,13 @@ class MainActivity : ComponentActivity() {
                         composable<Screens.Onboarding> {
                             OnboardingScreen {
                                 navManager.navigate(
+                                    NavigationCommand.NavigateToRoute(Screens.SearchActivity)
+                                )
+                            }
+                        }
+                        composable<Screens.SearchActivity> {
+                            SearchActivityScreenWithHilt {
+                                navManager.navigate(
                                     NavigationCommand.NavigateToRoute(Screens.Example)
                                 )
                             }
@@ -65,6 +74,7 @@ class MainActivity : ComponentActivity() {
                                 ExampleUI()
                             }
                         }
+
                     }
                 }
             }
@@ -75,82 +85,4 @@ class MainActivity : ComponentActivity() {
 @Composable
 fun ExampleUI() {
     Text("Hello World!")
-}
-
-@Preview(showBackground = true)
-@Composable
-fun GradientPreview() {
-    TravelinTheme(dynamicColor = false, darkTheme = false) {
-        GradientBackground {
-            Text("¡Hola, quiuboles!")
-        }
-    }
-}
-
-@Preview(showBackground = true)
-@Composable
-fun ButtonPrimaryPreview() {
-    TravelinTheme(dynamicColor = false, darkTheme = false) {
-        ButtonPrimary(
-            text = "Primary Button",
-            onClick = {},
-        )
-    }
-}
-
-@Preview(showBackground = true, backgroundColor = 0xFF000000)
-@Composable
-fun ButtonSecondaryPreview() {
-    TravelinTheme(dynamicColor = false, darkTheme = false) {
-        ButtonSecondary(
-            text = "Secondary Button",
-            onClick = {},
-        )
-    }
-}
-
-@Preview(showBackground = true, backgroundColor = 0xFFFFFFFF)
-@Composable
-fun ButtonTertiaryPreview() {
-    TravelinTheme(dynamicColor = false, darkTheme = false) {
-        ButtonTertiary(
-            text = "Tertiary Button",
-            onClick = {},
-        )
-    }
-}
-
-@Preview(showBackground = true)
-@Composable
-fun ButtonOutlinePreview() {
-    TravelinTheme(dynamicColor = false, darkTheme = false) {
-        ButtonOutline(
-            text = "Outline Button",
-            onClick = {},
-        )
-    }
-}
-
-@Preview(showBackground = true)
-@Composable
-fun BadgeOutlinePreview() {
-    TravelinTheme(dynamicColor = false, darkTheme = false) {
-        BadgeOutline("2 day 1 night")
-    }
-}
-
-@Preview(showBackground = true)
-@Composable
-fun BadgePriceUnitPreview() {
-    TravelinTheme(dynamicColor = false, darkTheme = false) {
-        BadgePriceUnit("$200", "2 person")
-    }
-}
-
-@Preview(showBackground = true)
-@Composable
-fun BadgeInfoPreview() {
-    TravelinTheme(dynamicColor = false, darkTheme = false) {
-        BadgeInfo(title = "2 day 1 night", subtitle = "Duration", icon = Icons.Filled.Place)
-    }
 }
