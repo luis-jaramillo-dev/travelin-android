@@ -1,6 +1,7 @@
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
+    alias(libs.plugins.kotlin.serialization)
 
     // Ksp
     alias(libs.plugins.devtools.ksp)
@@ -10,6 +11,9 @@ plugins {
 
     // Compose
     alias(libs.plugins.compose.compiler)
+
+    // Firebase
+    alias(libs.plugins.google.services)
 }
 
 android {
@@ -50,9 +54,19 @@ android {
     kotlinOptions {
         jvmTarget = "11"
     }
+    buildFeatures {
+        compose = true
+    }
 }
 
 dependencies {
+
+    // Core System
+    implementation(projects.core.presentation.designsystem)
+    implementation(projects.core.presentation.ui)
+    implementation(projects.auth.presentation)
+    implementation(projects.feature.onboarding.presentation)
+    implementation(projects.navigation)
 
     // Dagger Hilt + Ksp
     implementation(libs.hilt.android)
@@ -62,17 +76,19 @@ dependencies {
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.appcompat)
     implementation(libs.compose.google.fonts)
-
-    // Core System
-    implementation(projects.core.presentation.designsystem)
-    implementation(projects.core.presentation.ui)
+    implementation(libs.androidx.runtime.android)
+    implementation(libs.kotlinx.serialization.json)
+    implementation(libs.androidx.activity.compose)
 
     // UI
     implementation(platform(libs.androidx.compose.bom))
-    implementation(libs.androidx.activity.compose)
     implementation(libs.androidx.compose.ui.tooling.preview)
+    implementation(libs.androidx.compose.material3)
     implementation(libs.androidx.ui.tooling.preview.android)
     implementation(libs.material)
+
+    // Navigation
+    implementation(libs.androidx.navigation.compose)
 
     // Testing
     testImplementation(libs.junit)
