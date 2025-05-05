@@ -17,11 +17,9 @@ import com.projectlab.travelin_android.presentation.screens.login.LoginViewModel
 
 @Composable
 fun LoginForm(
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    viewModel: LoginViewModel
 ) {
-    //hay que pasar bien el vm, lo importe asi para que no hayan errores
-    var viewModel = LoginViewModel()
-
     Column(
         modifier = Modifier.padding(horizontal = 30.dp)
     ) {
@@ -32,7 +30,7 @@ fun LoginForm(
             value = viewModel.email,
             isError = viewModel.emailError.value != null,
             errorMessage = viewModel.emailError.value
-            )
+        )
         Spacer(modifier = Modifier.height(4.dp))
 
         OutlinedTextFieldPassword(

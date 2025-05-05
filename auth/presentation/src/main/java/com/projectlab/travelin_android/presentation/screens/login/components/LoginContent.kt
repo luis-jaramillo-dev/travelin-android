@@ -10,11 +10,13 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import com.projectlab.travelin_android.presentation.screens.login.LoginViewModel
 
 @Composable
 fun LoginContent(
     modifier: Modifier = Modifier,
-    paddingValues: PaddingValues
+    paddingValues: PaddingValues,
+    viewModel: LoginViewModel
 ) {
     Column(
         modifier = Modifier
@@ -25,6 +27,6 @@ fun LoginContent(
         Spacer(modifier = Modifier.height(70.dp))
         LoginHeader()
         Spacer(modifier = Modifier.height(20.dp))
-        LoginForm()
+        LoginForm(viewModel = viewModel)
     }
 }

@@ -19,6 +19,7 @@ import dagger.hilt.android.AndroidEntryPoint
 import com.projectlab.feature.onboarding.presentation.ui.OnboardingScreen
 import com.projectlab.navigation.NavigationCommand
 import com.projectlab.navigation.NavigationManager
+import com.projectlab.travelin_android.presentation.navigation.AuthNavigation
 import com.projectlab.travelin_android.ui.Screens
 
 @AndroidEntryPoint
@@ -28,35 +29,39 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         setContent {
-            Scaffold { padding ->
-                TravelinTheme(dynamicColor = false) {
-                    val navController = rememberNavController()
-                    val navManager = NavigationManager(navController)
-
-                    NavHost(
-                        navController = navController,
-                        startDestination = Screens.Onboarding,
-                    ) {
-                        composable<Screens.Onboarding> {
-                            OnboardingScreen {
-                                navManager.navigate(
-                                    NavigationCommand.NavigateToRoute(Screens.Example)
-                                )
-                            }
-                        }
-
-                        composable<Screens.Example> {
-                            Column(
-                                modifier = Modifier
-                                    .padding(padding)
-                                    .padding(horizontal = 16.dp)
-                            ) {
-                                ExampleUI()
-                            }
-                        }
-                    }
-                }
-            }
+            val navController = rememberNavController()
+            AuthNavigation(
+                navController = navController
+            )
+//            Scaffold { padding ->
+//                TravelinTheme(dynamicColor = false) {
+//                    val navController = rememberNavController()
+//                    val navManager = NavigationManager(navController)
+//
+//                    NavHost(
+//                        navController = navController,
+//                        startDestination = Screens.Onboarding,
+//                    ) {
+//                        composable<Screens.Onboarding> {
+//                            OnboardingScreen {
+//                                navManager.navigate(
+//                                    NavigationCommand.NavigateToRoute(Screens.Example)
+//                                )
+//                            }
+//                        }
+//
+//                        composable<Screens.Example> {
+//                            Column(
+//                                modifier = Modifier
+//                                    .padding(padding)
+//                                    .padding(horizontal = 16.dp)
+//                            ) {
+//                                ExampleUI()
+//                            }
+//                        }
+//                    }
+//                }
+//            }
         }
     }
 }
