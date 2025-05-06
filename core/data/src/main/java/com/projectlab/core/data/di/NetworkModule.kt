@@ -16,22 +16,28 @@ import okhttp3.OkHttpClient
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import javax.inject.Singleton
+import dagger.hilt.android.qualifiers.ApplicationContext
+import javax.inject.Named
 
 @Module
 @InstallIn(SingletonComponent::class)
 object NetworkModule {
 
+    private const val BASE_URL = "https://test.api.amadeus.com/"
+
     @Provides
     @Singleton
-    fun provideSharedPreferences(context: Context): SharedPreferences {
-        return context.getSharedPreferences("app_prefs", Context.MODE_PRIVATE)
+    fun provideSharedPreferences(
+        @ApplicationContext context: Context
+    ): SharedPreferences {
+        return context.getSharedPreferences("amadeus_prefs", Context.MODE_PRIVATE)
     }
 
     @Provides
     @Singleton
     fun provideAmadeusApiService(): AmadeusApiService {
         return Retrofit.Builder()
-            .baseUrl("https://api.amadeus.com/")
+            .baseUrl(BASE_URL)
             .addConverterFactory(GsonConverterFactory.create())
             .build()
             .create(AmadeusApiService::class.java)
@@ -39,26 +45,16 @@ object NetworkModule {
 
     @Provides
     @Singleton
-    fun provideActivitiesApiService(): ActivitiesApiService {
-        return Retrofit.Builder()
-            .baseUrl("https://test.api.amadeus.com")
-            .addConverterFactory(GsonConverterFactory.create())
-            .build()
-            .create(ActivitiesApiService::class.java)
-    }
-
-    @Provides
-    @Singleton
     fun provideTokenProvider(
         sharedPreferences: SharedPreferences,
         amadeusApiService: AmadeusApiService
-    ): TokenProvider {
+    ): TokenProviderImpl {
         return TokenProviderImpl(sharedPreferences, amadeusApiService)
     }
 
     @Provides
     @Singleton
-    fun provideAuthInterceptor(tokenProvider: TokenProvider): Interceptor {
+    fun provideAuthInterceptor(tokenProvider: TokenProviderImpl): Interceptor {
         return AuthInterceptor(tokenProvider)
     }
 
@@ -68,5 +64,20 @@ object NetworkModule {
         return OkHttpClient.Builder()
             .addInterceptor(authInterceptor)
             .build()
+    }
+
+    @Provides
+    @Singleton
+    fun provideActivitiesApiService(tokenProvider: TokenProviderImpl): ActivitiesApiService {
+        val client = OkHttpClient.Builder()
+            .addInterceptor(AuthInterceptor(tokenProvider))
+            .build()
+
+        return Retrofit.Builder()
+            .baseUrl(BASE_URL)
+            .addConverterFactory(GsonConverterFactory.create())
+            .client(client)
+            .build()
+            .create(ActivitiesApiService::class.java)
     }
 }

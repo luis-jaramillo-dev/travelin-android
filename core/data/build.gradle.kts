@@ -20,6 +20,16 @@ android {
         consumerProguardFiles("consumer-rules.pro")
     }
 
+    defaultConfig {
+        buildConfigField("String", "API_KEY", "\"${project.findProperty("API_KEY") ?: ""}\"")
+        buildConfigField("String", "API_SECRET", "\"${project.findProperty("API_SECRET") ?: ""}\"")
+        buildConfigField("String", "BASE_URL", "\"${project.findProperty("BASE_URL") ?: ""}\"")
+    }
+
+    buildFeatures {
+        buildConfig = true
+    }
+
     buildTypes {
         release {
             isMinifyEnabled = false
@@ -49,6 +59,7 @@ dependencies {
 
     // Dagger Hilt + Ksp
     implementation(libs.hilt.android)
+    implementation(libs.androidx.media3.common.ktx)
     ksp(libs.hilt.android.compiler)
 
     // Network

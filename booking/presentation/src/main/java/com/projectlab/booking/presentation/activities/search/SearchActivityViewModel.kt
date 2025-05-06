@@ -9,6 +9,7 @@ import com.projectlab.core.data.usecase.GetActivitiesUseCase
 import com.projectlab.core.presentation.ui.utils.LocationUtils
 import com.projectlab.core.data.mapper.toDomain
 import com.projectlab.core.data.mapper.toDomainList
+import com.projectlab.core.data.repository.ActivitiesApiService
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
@@ -16,6 +17,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class SearchActivityViewModel @Inject constructor(
+    private val activitiesApiService: ActivitiesApiService,
     private val getActivitiesUseCase: GetActivitiesUseCase,
     private val locationUtils: LocationUtils
 ) : ViewModel() {
@@ -43,10 +45,10 @@ class SearchActivityViewModel @Inject constructor(
         viewModelScope.launch {
             try {
                 val locationData = locationUtils.getCoordinatesFromLocation(query.value)
-                Log.d("SearchActivityViewModel", "Coordinates for city: $query.value = $locationData")
+                Log.d("SearchActivityViewModel", "Coordinates for city: ${query.value} = $locationData")
                 if (locationData != null) {
                     val activitiesResponse = getActivitiesUseCase(locationData.latitude, locationData.longitude)
-                    Log.d("SearchActivityViewModel", "Activities received: ${activitiesResponse.data}")
+                    Log.d("SearchActivityViewModel", "Activities count: ${activitiesResponse.data.size}")
                     _activities.value = activitiesResponse.data
                 } else {
                     _error.value = "Could not find coordinates for the specified city"
