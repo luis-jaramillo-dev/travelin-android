@@ -8,11 +8,11 @@ data class Flight(
     val flightNumber: String = "",
     val flightClass: String = "",
     val departureAirport: Map<String, Any> = mapOf(
-        "airportCodeRef" to DocumentReference(),
+        "airportCodeRef" to "",
         "time" to Timestamp.now()
     ),
     val arrivalAirport: Map<String, Any> = mapOf(
-        "airportCodeRef" to DocumentReference(),
+        "airportCodeRef" to "",
         "time" to Timestamp.now()
     ),
     val passengerNumber: List<Map<String, Any>> = emptyList(),
