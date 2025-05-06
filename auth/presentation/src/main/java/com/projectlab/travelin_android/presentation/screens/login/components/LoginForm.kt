@@ -45,7 +45,7 @@ fun LoginForm(
         Spacer(modifier = Modifier.height(4.dp))
         ButtonSimple(
             text = "Login",
-            onClick = { },
+            onClick = { viewModel.login() },
             modifier = Modifier.fillMaxWidth(),
             enabled = viewModel.isFormValid.value
         )

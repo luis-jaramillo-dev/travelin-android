@@ -11,15 +11,16 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
-import androidx.navigation.NavHostController
+import androidx.hilt.navigation.compose.hiltViewModel
 import com.projectlab.core.domain.model.Response
 import com.projectlab.travelin_android.presentation.screens.login.components.LoginBottomBar
 import com.projectlab.travelin_android.presentation.screens.login.components.LoginContent
 
 @Composable
 fun LoginScreen(
-    viewModel: LoginViewModel,
-    navController: NavHostController
+    viewModel: LoginViewModel = hiltViewModel(),
+    onRegisterClick: () -> Unit,
+    onProfileClick: () -> Unit
 ) {
     Scaffold(
         content = {
@@ -28,7 +29,7 @@ fun LoginScreen(
                 viewModel = viewModel,
             )
         },
-        bottomBar = { LoginBottomBar(navController = navController) }
+        bottomBar = { LoginBottomBar(onRegisterClick = onRegisterClick) }
     )
 
     val loginFlow = viewModel.loginFlow.collectAsState()
@@ -51,6 +52,7 @@ fun LoginScreen(
 
             is Response.Success -> {
                 LaunchedEffect(Unit) {
+                    onProfileClick()
                 }
                 Toast.makeText(
                     LocalContext.current, "User logged ",

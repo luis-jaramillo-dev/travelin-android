@@ -18,13 +18,13 @@ import androidx.navigation.NavHostController
 @Composable
 fun LoginBottomBar(
     modifier: Modifier = Modifier,
-    navController: NavHostController
+    onRegisterClick: () -> Unit
 ) {
     Row(
         modifier = Modifier
             .fillMaxWidth()
             .padding(bottom = 20.dp)
-            .clickable { },
+            .clickable { onRegisterClick() },
         horizontalArrangement = Arrangement.Center,
     ) {
         Text(

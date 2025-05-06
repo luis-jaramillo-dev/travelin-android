@@ -16,13 +16,13 @@ import androidx.compose.ui.unit.dp
 
 @Composable
 fun RegisterBottomBar(
-
+    onLoginClick: () -> Unit,
 ) {
     Row(
         modifier = Modifier
             .fillMaxWidth()
             .padding(bottom = 20.dp)
-            .clickable {  },
+            .clickable { onLoginClick() },
         horizontalArrangement = Arrangement.Center,
     ) {
         Text(
@@ -41,4 +41,3 @@ fun RegisterBottomBar(
         )
     }
 }
-

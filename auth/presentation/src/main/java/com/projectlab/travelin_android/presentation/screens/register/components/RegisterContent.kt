@@ -12,10 +12,13 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import com.projectlab.travelin_android.presentation.components.ButtonSimple
+import com.projectlab.travelin_android.presentation.screens.register.RegisterViewModel
 
 @Composable
 fun RegisterContent(
-    paddingValues: PaddingValues
+    paddingValues: PaddingValues,
+    viewModel: RegisterViewModel
 ) {
 
     Column {
@@ -30,15 +33,13 @@ fun RegisterContent(
             Spacer(modifier = Modifier.height(15.dp))
             RegisterHeader()
             Spacer(modifier = Modifier.height(20.dp))
-            RegisterForm()
+            RegisterForm(viewModel = viewModel)
             Spacer(modifier = Modifier.height(8.dp))
-
-            // esta comentado por el viewmodel, se debe descomentar al implementar el viewmodel
-            /*ButtonSimple(
+            ButtonSimple(
                 text = "Create Account",
-                onClick = { },
+                onClick = { viewModel.register() },
                 enabled = viewModel.isFormValid.value
-            )*/
+            )
         }
     }
 }

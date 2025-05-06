@@ -47,6 +47,7 @@ dependencies {
     implementation(projects.auth.domain)
     implementation(projects.auth.data)
     implementation(projects.core.domain)
+    implementation(projects.core.presentation.designsystem)
 
     // Dagger Hilt + Ksp
     implementation(libs.hilt.android)

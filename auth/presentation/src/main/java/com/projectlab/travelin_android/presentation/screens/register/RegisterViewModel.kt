@@ -4,11 +4,25 @@ import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
+import com.google.firebase.auth.FirebaseUser
+import com.projectlab.auth.domain.use_cases.AuthUseCases
+import com.projectlab.core.domain.model.Response
+import com.projectlab.core.domain.model.User
+import com.projectlab.core.domain.use_cases.users.UsersUseCases
 import com.projectlab.travelin_android.presentation.validation.AuthValidator
+import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.launch
+import javax.inject.Inject
 
-class RegisterViewModel (
-
+@HiltViewModel
+class RegisterViewModel @Inject constructor(
+    private val usersUseCases: UsersUseCases,
+    private val authUseCases: AuthUseCases
 ) : ViewModel() {
+
     val firstName: MutableState<String> = mutableStateOf("")
     val lastName: MutableState<String> = mutableStateOf("")
     val countryCode: MutableState<String> = mutableStateOf("+56")
@@ -49,5 +63,37 @@ class RegisterViewModel (
                 firstName.value.isNotBlank() &&
                 lastName.value.isNotBlank() &&
                 phoneNumber.value.isNotBlank()
+    }
+
+    private val _registerFlow = MutableStateFlow<Response<FirebaseUser>?>(value = null)
+    val registerFlow: StateFlow<Response<FirebaseUser>?> = _registerFlow
+
+    init {
+        val currentUser = authUseCases.getCurrentUser()
+
+        if (currentUser != null) {
+            _registerFlow.value = Response.Success(currentUser)
+        }
+    }
+
+    fun register() = viewModelScope.launch {
+        _registerFlow.value = Response.Loading
+        val result = authUseCases.register(email.value, password.value)
+        _registerFlow.value = result
+    }
+
+    fun createUser() = viewModelScope.launch {
+        val currentUser = authUseCases.getCurrentUser()
+
+        val newUser = User(
+            id = currentUser!!.uid,
+            email = email.value,
+            age = age.value,
+            firstName = firstName.value,
+            lastName = lastName.value,
+            countryCode = countryCode.value,
+            phoneNumber = phoneNumber.value
+        )
+        usersUseCases.createUser(newUser)
     }
 }

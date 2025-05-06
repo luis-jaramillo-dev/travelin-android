@@ -27,11 +27,29 @@ import com.projectlab.travelin_android.presentation.screens.register.RegisterVie
 
 @Composable
 fun RegisterForm(
+    viewModel: RegisterViewModel
 ) {
-    //hay que pasar bien el vm, lo importe asi para que no hayan errores
-    var viewModel = RegisterViewModel()
+
     val phoneCountryCodes = listOf(
-        "+1", "+44", "+33", "+49", "+81", "+82", "+91", "+55", "+61", "+86", "+7", "+52", "+56", "+57", "+58", "+54", "+90", "+34")
+        "+1",
+        "+44",
+        "+33",
+        "+49",
+        "+81",
+        "+82",
+        "+91",
+        "+55",
+        "+61",
+        "+86",
+        "+7",
+        "+52",
+        "+56",
+        "+57",
+        "+58",
+        "+54",
+        "+90",
+        "+34"
+    )
 
     Column {
         OutlinedTextFieldSimple(
@@ -125,7 +143,12 @@ fun RegisterForm(
             Text(
                 text = buildAnnotatedString {
                     append("")
-                    pushStyle(SpanStyle(color = MaterialTheme.colorScheme.onSurface, textDecoration = TextDecoration.Underline))
+                    pushStyle(
+                        SpanStyle(
+                            color = MaterialTheme.colorScheme.onSurface,
+                            textDecoration = TextDecoration.Underline
+                        )
+                    )
                     append("I accept term and condition")
                     pop()
                 },
