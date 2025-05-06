@@ -10,13 +10,12 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.foundation.text.BasicSecureTextField
 import androidx.compose.foundation.text.BasicTextField
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.text.input.TextFieldLineLimits
 import androidx.compose.foundation.text.input.TextFieldState
-import androidx.compose.foundation.text.input.TextObfuscationMode
 import androidx.compose.material3.DropdownMenu
 import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.IconButton
@@ -47,7 +46,11 @@ fun SecureTextFieldPreview(
     val state = remember { TextFieldState() }
     val state2 = remember { TextFieldState() }
     val state3 = remember { TextFieldState() }
+    val state4 = remember { TextFieldState() }
+    val state5 = remember { TextFieldState() }
+    val state6 = remember { TextFieldState() }
     val index = remember { mutableIntStateOf(0) }
+    val index2 = remember { mutableIntStateOf(0) }
     val contryCodes = CountryCodes.countryCodes
     Column(
         modifier = modifier.fillMaxSize()
@@ -82,121 +85,24 @@ fun SecureTextFieldPreview(
             selectedItem = index
         )
         Text(index.value.toString())
-    }
-
-
-
-}
-
-@Composable
-fun SecureTextField(
-    modifier: Modifier = Modifier,
-    border: Int = 1,
-    alpha: Float = 0.1f,
-    borderColor : Color = MaterialTheme.colorScheme.tertiary.copy(alpha = alpha),
-    state: TextFieldState,
-    marginTop: Int = 0,
-    marginBottom: Int = 0,
-    marginStart: Int = 0,
-    marginEnd: Int = 0,
-    textColor: Color = MaterialTheme.colorScheme.tertiary,
-    iconColor: Color = MaterialTheme.colorScheme.tertiary
-    ){
-    var showPassword by remember { mutableStateOf(false) }
-    BasicSecureTextField(
-        state = state,
-        textObfuscationMode =
-            if (showPassword) {
-                TextObfuscationMode.Visible
-            } else {
-                TextObfuscationMode.RevealLastTyped
-            },
-        textStyle = MaterialTheme.typography.titleLarge.copy(color = textColor),
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(start = marginStart.dp, end = marginEnd.dp, top = marginTop.dp, bottom = marginBottom.dp)
-            .border(border.dp, borderColor, RoundedCornerShape(15.dp), )
-            .height(51.dp)
-            .padding(6.dp),
-        decorator = { innerTextField ->
-            Box(modifier = Modifier.fillMaxWidth()) {
-                Box(
-                    modifier = Modifier
-                        .align(Alignment.CenterStart)
-                        .padding(start = 16.dp, end = 48.dp)
-                ) {
-                    innerTextField()
-                }
-                IconButton(
-                    onClick = { showPassword = !showPassword },
-                    modifier = Modifier
-                        .align(Alignment.CenterEnd)
-                )  {
-                    if (!showPassword) {
-                        IconEye(modifier = modifier, tint = iconColor)
-                    } else {
-                        IconVisibilityOff(modifier = modifier, tint = iconColor)
-                    }
-                }
-            }
-        }
-    )
-}
-
-@Composable
-fun TravelinSecureTextField(
-    modifier: Modifier = Modifier,
-    title: String? = null,
-    state: TextFieldState,
-    error: String? = null,
-    border: Int = 1,
-    alpha: Float = 0.1f,
-    borderColor : Color = MaterialTheme.colorScheme.tertiary.copy(alpha = alpha),
-    marginTop: Int = 0,
-    marginBottom: Int = 0,
-    marginStart: Int = 0,
-    marginEnd: Int = 0,
-    height: Int = 84,
-    textColor: Color = MaterialTheme.colorScheme.tertiary,
-    iconColor: Color = MaterialTheme.colorScheme.tertiary
-){
-    Column(
-        modifier = modifier.fillMaxWidth()
-            .padding(top = marginTop.dp, bottom = marginBottom.dp, start = marginStart.dp, end = marginEnd.dp)
-            .height(height.dp)
-    ){
-        if (title != null){
-            Text(
-                text = title,
-                fontSize = MaterialTheme.typography.titleSmall.fontSize,
-                fontWeight = MaterialTheme.typography.titleSmall.fontWeight,
-                color = textColor,
-                modifier = modifier.padding(bottom = 2.dp)
-            )
-        }
-        SecureTextField(
-            modifier= modifier,
-            border = border,
-            alpha = alpha,
-            borderColor = (
-                    if (error == null) {
-                        borderColor
-                    } else {
-                        MaterialTheme.colorScheme.error
-                    }),
-            state= state,
-            textColor = textColor,
-            iconColor= iconColor
+        TravelinTextFieldColumn(
+            modifier = Modifier,
+            state = state4
         )
-        if (error != null){
-            Text(
-                text = error,
-                fontSize = MaterialTheme.typography.bodySmall.fontSize,
-                fontWeight = MaterialTheme.typography.bodySmall.fontWeight,
-                color = MaterialTheme.colorScheme.error,
-                modifier = modifier.padding(top = 0.dp)
-            )
-        }
+        TravelinTextFieldColumn(
+            modifier = Modifier,
+            state = state5,
+            title = "Email",
+            error = "Correo no valido"
+        )
+        TravelinTextFieldColumn(
+            modifier = Modifier,
+            state = state6,
+            title = "Fono",
+            items = contryCodes,
+            selectedItem = index2,
+            keyboardType = KeyboardType.Number
+        )
     }
 }
 
@@ -283,6 +189,8 @@ fun TravelinTextFieldColumn(
     modifier: Modifier = Modifier,
     title: String? = null,
     state: TextFieldState,
+    items : List<String>? = null,
+    selectedItem: MutableIntState  = mutableIntStateOf(0),
     error: String? = null,
     border: Int = 1,
     alpha: Float = 0.1f,
@@ -300,7 +208,10 @@ fun TravelinTextFieldColumn(
     iconColor: Color = MaterialTheme.colorScheme.tertiary
 ) {
     Column(
-
+        modifier = modifier.fillMaxWidth()
+            .padding(top = marginTop.dp, bottom = marginBottom.dp, start = marginStart.dp, end = marginEnd.dp)
+            .height(height.dp),
+        verticalArrangement = Arrangement.Center
     ){
         if (title != null){
             Text(
@@ -311,21 +222,35 @@ fun TravelinTextFieldColumn(
                 modifier = modifier.padding(bottom = 2.dp)
             )
         }
-        TravelinTextField(
-            modifier= modifier,
-            border = border,
-            alpha = alpha,
-            borderColor = (
-                    if (error == null) {
-                        borderColor
-                    } else {
-                        MaterialTheme.colorScheme.error
-                    }),
-            state= state,
-            keyboardType = keyboardType,
-            textColor = textColor,
-            iconColor= iconColor
-        )
+        Row(
+            modifier = modifier.fillMaxWidth()
+        ){
+            if (items != null){
+                TravelinDropdownMenu(
+                    modifier = modifier
+                        .width(85.dp)
+                        .padding(end = 5.dp),
+                    items = items,
+                    selectedItem = selectedItem
+                )
+            }
+            TravelinTextField(
+                modifier= modifier,
+                border = border,
+                alpha = alpha,
+                borderColor = (
+                        if (error == null) {
+                            borderColor
+                        } else {
+                            MaterialTheme.colorScheme.error
+                        }),
+                state= state,
+                keyboardType = keyboardType,
+                textColor = textColor,
+                iconColor= iconColor
+            )
+        }
+
         if (error != null){
             Text(
                 text = error,
@@ -352,6 +277,7 @@ fun TravelinDropdownMenu(
     marginStart: Int = 0,
     marginEnd: Int = 0,
     height: Int = 51,
+    contentColor: Color = MaterialTheme.colorScheme.tertiary
 ){
     var expanded by remember { mutableStateOf(false) }
 
@@ -366,7 +292,7 @@ fun TravelinDropdownMenu(
         Row(
             modifier = modifier
                 .fillMaxSize()
-                .clickable(onClick = { expanded = !expanded })
+                .clickable(onClick = { expanded = true })
                 .padding(6.dp),
             verticalAlignment = Alignment.CenterVertically,
             horizontalArrangement = Arrangement.SpaceBetween
@@ -375,10 +301,11 @@ fun TravelinDropdownMenu(
                 text = items.get(selectedItem.value),
                 fontSize = MaterialTheme.typography.titleMedium.fontSize
             )
-            IconExpand(modifier = modifier)
+            IconExpand(modifier = modifier, tint = contentColor, alpha = 1f)
         }
         DropdownMenu(
             expanded = expanded,
+
             onDismissRequest = { expanded = false }
         ) {
             items.forEachIndexed { index, item ->
@@ -386,7 +313,7 @@ fun TravelinDropdownMenu(
                     text = { Text(item) },
                     onClick = {
                         selectedItem.value = index
-                        expanded = !expanded
+                        expanded = false
                     }
                 )
             }
