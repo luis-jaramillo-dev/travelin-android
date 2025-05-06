@@ -1,8 +1,12 @@
 plugins {
-
-// alias(libs.plugins.travelinandroid.android.library)
     alias(libs.plugins.android.library)
     alias(libs.plugins.kotlin.android)
+
+    // Ksp
+    alias(libs.plugins.devtools.ksp)
+
+    // Dagger Hilt
+    alias(libs.plugins.dagger.hilt.android)
 
     //google services
     //alias(libs.plugins.google.services)
@@ -12,11 +16,14 @@ plugins {
 android {
     namespace = "com.projectlab.auth.data"
     compileSdk = 35
+
     defaultConfig {
         minSdk = 24
+
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         consumerProguardFiles("consumer-rules.pro")
     }
+
     buildTypes {
         release {
             isMinifyEnabled = false
@@ -37,9 +44,15 @@ android {
 
 dependencies {
 
-    implementation(libs.androidx.core.ktx)
-    implementation(libs.androidx.appcompat)
-    implementation(libs.material)
+    // Core System
+    implementation(projects.core.domain)
+    implementation(projects.auth.domain)
+
+    // Dagger Hilt + Ksp
+    implementation(libs.hilt.android)
+    ksp(libs.hilt.android.compiler)
+
+    // Testing
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
