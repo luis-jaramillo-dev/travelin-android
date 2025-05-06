@@ -45,22 +45,22 @@ android {
 
 dependencies {
 
+    // Core System
+    implementation(projects.core.presentation.designsystem)
+
     // Core
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.appcompat)
+    implementation(libs.androidx.runtime.android)
+    implementation(libs.androidx.activity.compose)
+    implementation(libs.play.services.maps)
 
     // UI
     implementation(platform(libs.androidx.compose.bom))
-    implementation(libs.androidx.runtime.android)
     implementation(libs.androidx.compose.ui)
-    implementation(libs.androidx.activity.compose)
     implementation(libs.androidx.material3.android)
     implementation(libs.ui.tooling.preview.android)
     implementation(libs.play.services.location)
-
-    // Core System
-    implementation(projects.core.presentation.designsystem)
-    implementation(libs.play.services.maps)
 
     // Testing
     testImplementation(libs.junit)
