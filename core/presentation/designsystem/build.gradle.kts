@@ -42,6 +42,14 @@ android {
     kotlinOptions {
         jvmTarget = "11"
     }
+
+    buildFeatures {
+        compose = true
+    }
+
+    composeOptions {
+        kotlinCompilerExtensionVersion = "1.5.14"
+    }
 }
 
 dependencies {
@@ -53,9 +61,10 @@ dependencies {
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.appcompat)
 
-    // UI
-    implementation(platform(libs.androidx.compose.bom))
+    //UI
+    implementation(libs.material)
     implementation(libs.compose.google.fonts)
+    implementation(platform(libs.androidx.compose.bom))
     implementation(libs.androidx.compose.ui)
     implementation(libs.androidx.compose.material.icons)
     implementation(libs.androidx.ui.tooling.preview.android)
@@ -63,7 +72,8 @@ dependencies {
     implementation(libs.coil.compose)
     api(libs.androidx.compose.material3)
 
-    // Testing
+    implementation(projects.core.data)
+    implementation(libs.ui.tooling.preview.android)
     debugImplementation(libs.androidx.compose.ui.tooling)
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)

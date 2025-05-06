@@ -314,5 +314,6 @@ fun IconButtonHeartPreview(modifier: Modifier = Modifier){
 
         ButtonHotel(modifier = modifier, onClick = {})
         ButtonOversea(modifier = modifier, onClick = {})
+        Rate(rate = 4)
     }
 }

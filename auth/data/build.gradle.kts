@@ -7,11 +7,19 @@ plugins {
 
     // Dagger Hilt
     alias(libs.plugins.dagger.hilt.android)
+
+    //google services
+    //alias(libs.plugins.google.services)
+
 }
 
 android {
     namespace = "com.projectlab.auth.data"
     compileSdk = 35
+
+    kotlinOptions {
+        jvmTarget = "11"
+    }
 
     defaultConfig {
         minSdk = 24

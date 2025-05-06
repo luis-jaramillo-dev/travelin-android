@@ -16,8 +16,12 @@ android {
     namespace = "com.projectlab.auth.presentation"
     compileSdk = 35
 
+    kotlinOptions {
+        jvmTarget = "11"
+    }
+
     defaultConfig {
-        minSdk = 24
+        minSdk = 25
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         consumerProguardFiles("consumer-rules.pro")
@@ -68,5 +72,4 @@ dependencies {
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
-
 }
