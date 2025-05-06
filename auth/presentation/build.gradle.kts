@@ -1,9 +1,17 @@
 plugins {
-    alias(libs.plugins.travelinandroid.android.library.compose)
+    //alias(libs.plugins.travelinandroid.android.library.compose)
+
+    alias(libs.plugins.android.library)
+    alias(libs.plugins.kotlin.android)
 }
 
 android {
     namespace = "com.projectlab.auth.presentation"
+    compileSdk = 35
+
+    kotlinOptions {
+        jvmTarget = "11"
+    }
 }
 
 dependencies {

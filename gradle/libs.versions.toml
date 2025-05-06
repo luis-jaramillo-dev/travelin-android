@@ -31,6 +31,7 @@ androidTools = "31.9.0"
 ksp = "2.1.10-1.0.31"
 room = "2.6.1"
 uiToolingPreviewAndroid = "1.7.8"
+uiToolingPreviewAndroidVersion = "1.8.0"
 
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
@@ -65,6 +66,7 @@ compose-gradlePlugin = { module = "org.jetbrains.kotlin:kotlin-gradle-plugin", v
 kotlin-gradlePlugin = { group = "org.jetbrains.kotlin", name = "kotlin-gradle-plugin", version.ref = "kotlin" }
 ksp-gradlePlugin = { group = "com.google.devtools.ksp", name = "com.google.devtools.ksp.gradle.plugin", version.ref = "ksp" }
 room-gradlePlugin = { group = "androidx.room", name = "room-gradle-plugin", version.ref = "room" }
+ui-tooling-preview-android = { group = "androidx.compose.ui", name = "ui-tooling-preview-android", version.ref = "uiToolingPreviewAndroidVersion" }
 ## Firebase has some gradle plugin that we can use on build logic
 
 [plugins]

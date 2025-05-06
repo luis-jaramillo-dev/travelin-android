@@ -1,14 +1,18 @@
 plugins {
 //    alias(libs.plugins.travelinandroid.android.application)
-    alias(libs.plugins.travelinandroid.android.application.compose)
+    //alias(libs.plugins.travelinandroid.android.application.compose)
+
+    alias(libs.plugins.android.library)
+    alias(libs.plugins.kotlin.android)
 }
 
 android {
     namespace = "com.projectlab.travelin_android"
+    compileSdk = 35
 
     defaultConfig {
-        versionCode = 1
-        versionName = "1.0"
+        //versionCode = 1
+        //versionName = "1.0"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
