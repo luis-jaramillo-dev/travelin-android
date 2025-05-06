@@ -46,6 +46,9 @@ android {
 
 dependencies {
 
+    // Core System
+    implementation(projects.core.data)
+
     // Core
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.appcompat)
@@ -59,9 +62,6 @@ dependencies {
     implementation(libs.androidx.compose.ui.tooling.preview)
     implementation(libs.coil.compose)
     api(libs.androidx.compose.material3)
-
-    // Core System
-    implementation(projects.core.data)
 
     // Testing
     debugImplementation(libs.androidx.compose.ui.tooling)

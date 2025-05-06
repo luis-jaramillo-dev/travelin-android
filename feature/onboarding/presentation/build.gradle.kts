@@ -55,28 +55,32 @@ kotlin {
 }
 
 dependencies {
+
+    // Core System
+    implementation(projects.core.presentation.designsystem)
+
+    // Core
     implementation(libs.androidx.runtime.android)
     implementation(libs.androidx.activity.compose)
+
+    // Navigation
     implementation(libs.androidx.navigation.compose)
-    implementation(libs.material)
+
+    // UI
+    implementation(platform(libs.androidx.compose.bom))
     implementation(libs.androidx.compose.material3)
     implementation(libs.androidx.compose.ui)
     implementation(libs.androidx.compose.ui.graphics)
     implementation(libs.androidx.compose.ui.tooling)
     implementation(libs.androidx.compose.ui.tooling.preview)
-    //implementation(libs.androidx.navigation.compose)
-    implementation(platform(libs.androidx.compose.bom))
 
-    // Project dependencies
-    implementation(projects.core.presentation.designsystem)
-
-    // Test dependencies
+    // Testing
     testImplementation(platform(libs.androidx.compose.bom))
-    testImplementation(kotlin("test")) // TODO: Fix format. Add to libs
     androidTestImplementation(platform(libs.androidx.compose.bom))
+    testImplementation(kotlin("test")) // TODO: Fix format. Add to libs
     androidTestImplementation(libs.androidx.compose.ui.test.junit4)
 
-    // Debug dependencies
+    // Debug Dependencies
     debugImplementation(libs.androidx.compose.ui.tooling)
     debugImplementation(libs.androidx.compose.ui.test.manifest)
 
