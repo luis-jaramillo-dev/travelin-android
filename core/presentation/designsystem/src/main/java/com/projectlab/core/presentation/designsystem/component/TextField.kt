@@ -34,77 +34,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.tooling.preview.Preview
-import com.projectlab.core.data.mock.CountryCodes
 
-
-@Preview(showBackground = true)
-@Composable
-fun SecureTextFieldPreview(
-    modifier: Modifier = Modifier
-){
-    val state = remember { TextFieldState() }
-    val state2 = remember { TextFieldState() }
-    val state3 = remember { TextFieldState() }
-    val state4 = remember { TextFieldState() }
-    val state5 = remember { TextFieldState() }
-    val state6 = remember { TextFieldState() }
-    val index = remember { mutableIntStateOf(0) }
-    val index2 = remember { mutableIntStateOf(0) }
-    val contryCodes = CountryCodes.countryCodes
-    Column(
-        modifier = modifier.fillMaxSize()
-    ){
-
-        SecureTextField(modifier = modifier,
-            state = state)
-
-        Text (state.text.toString())
-        TravelinSecureTextField(title = "ID",
-            modifier = modifier,
-            state = state2,
-            error = "ups"
-            )
-        TravelinTextField(
-            modifier = modifier,
-            state = state3
-        )
-        TravelinTextField(
-            modifier = modifier,
-            state = state3,
-            iconStart = {IconSearch(modifier = modifier)}
-        )
-        TravelinTextField(
-            modifier = modifier,
-            state = state3,
-            iconEnd = {IconSearch(modifier = modifier)}
-        )
-        TravelinDropdownMenu(
-            modifier = Modifier,
-            items = contryCodes,
-            selectedItem = index
-        )
-        Text(index.value.toString())
-        TravelinTextFieldColumn(
-            modifier = Modifier,
-            state = state4
-        )
-        TravelinTextFieldColumn(
-            modifier = Modifier,
-            state = state5,
-            title = "Email",
-            error = "Correo no valido"
-        )
-        TravelinTextFieldColumn(
-            modifier = Modifier,
-            state = state6,
-            title = "Fono",
-            items = contryCodes,
-            selectedItem = index2,
-            keyboardType = KeyboardType.Number
-        )
-    }
-}
 
 @Composable
 fun TravelinTextField(

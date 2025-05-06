@@ -85,7 +85,7 @@ fun ButtonHotel(
         colorContent = colorContent,
         disabledContainerColor = disabledContainerColor,
         disabledContentColor = disabledContentColor,
-        icon = {IconHotel(modifier, tint = iconColor)},
+        icon = { IconHotel(modifier, tint = iconColor) },
         text = text,
         width = width
     )
@@ -112,7 +112,7 @@ fun ButtonOversea(
         colorContent = colorContent,
         disabledContainerColor = disabledContainerColor,
         disabledContentColor = disabledContentColor,
-        icon =  {IconAirplane(modifier, tint = iconColor)} ,
+        icon =  { IconAirplane(modifier, tint = iconColor) } ,
         text = text,
         width = width
     )

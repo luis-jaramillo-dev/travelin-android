@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="next">Siguente</string>
+    <string name="onboarding_body">Encuentra miles de destinos turísticos listos para que los visites</string>
+    <string name="onboarding1_title">Prepárate para el próximo viaje</string>
+    <string name="onboarding2_title">Visita atracciones turísticas</string>
+    <string name="onboarding3_title">Vamos a explorar el mundo</string>
+</resources>

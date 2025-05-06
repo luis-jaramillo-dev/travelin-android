@@ -20,12 +20,15 @@ import com.projectlab.core.presentation.designsystem.R
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 
-
 // Typography will be set up globally
 
 @Composable
-fun SearchPlaces (modifier: Modifier = Modifier, locationIcon: Painter, searchString: String, location: String){
-
+fun SearchPlaces(
+    modifier: Modifier = Modifier,
+    locationIcon: Painter,
+    searchString: String,
+    location: String
+) {
     val currentText = stringResource(R.string.search_global_current, location)
 
     Row(modifier = modifier) {
@@ -35,26 +38,23 @@ fun SearchPlaces (modifier: Modifier = Modifier, locationIcon: Painter, searchSt
             SearchPlaceText(modifier, searchString)
             CurrentLocationText(modifier, currentText)
         }
-
     }
-
 }
-
 
 // The placeholder icon will be replaced by the official icon from the design system once it's ready to use
 @Composable
-fun LocationIcon(modifier: Modifier = Modifier, icon: Painter){
+fun LocationIcon(modifier: Modifier = Modifier, icon: Painter) {
 
-    Box (modifier = modifier){
+    Box(modifier = modifier) {
         Image(
             painter = icon,
-            contentDescription ="Location icon"
+            contentDescription = "Location icon"
         )
     }
 }
 
 @Composable
-fun SearchPlaceText(modifier: Modifier = Modifier, text: String){
+fun SearchPlaceText(modifier: Modifier = Modifier, text: String) {
     Text(
         fontSize = 14.sp,
         fontWeight = FontWeight.W600,
@@ -62,19 +62,21 @@ fun SearchPlaceText(modifier: Modifier = Modifier, text: String){
     )
 }
 
-
 @Composable
-fun CurrentLocationText(modifier: Modifier = Modifier, text: String){
+fun CurrentLocationText(modifier: Modifier = Modifier, text: String) {
     Text(
         fontSize = 10.sp,
         fontWeight = FontWeight.W400,
-        text = text)
+        text = text
+    )
 }
 
 @Preview(showBackground = true)
 @Composable
-fun SearchPlacesPreview(){
-    SearchPlaces(locationIcon = painterResource(R.drawable.placeholder_map_marker_alt), searchString = stringResource(R.string.search_global_nearby), location = "Mars")
+fun SearchPlacesPreview() {
+    SearchPlaces(
+        locationIcon = painterResource(R.drawable.placeholder_map_marker_alt),
+        searchString = stringResource(R.string.search_global_nearby),
+        location = "Mars"
+    )
 }
-
-
