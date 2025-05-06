@@ -1,6 +1,6 @@
-package com.projectlab.core.domain.model_data
+package com.projectlab.core.database.entity
 
-data class User(
+data class UserEntity(
     val firstName: String = "",
     val lastName: String = "",
     val countryCode: Int = 0,

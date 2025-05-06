@@ -1,9 +1,9 @@
-package com.projectlab.core.domain.model_data
+package com.projectlab.core.database.entity
 
 import com.google.firebase.firestore.DocumentReference
 import com.google.firebase.firestore.GeoPoint
 
-data class Airport(
+data class AirportEntity(
     val airportCode : String = "",
     val name : String = "",
     val coordinates : GeoPoint = GeoPoint(0.0, 0.0),

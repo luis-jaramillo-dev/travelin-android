@@ -1,9 +1,9 @@
-package com.projectlab.core.domain.model_data
+package com.projectlab.core.database.entity
 
 import com.google.firebase.Timestamp
 import com.google.firebase.firestore.DocumentReference
 
-data class Hotel(
+data class HotelEntity(
     val hotelName : String = "",
     val hotelRoomNumber : Int = 0,
     val hotelPhone : Int = 0,

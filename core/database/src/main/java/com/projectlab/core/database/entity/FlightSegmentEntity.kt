@@ -1,9 +1,9 @@
-package com.projectlab.core.domain.model_data
+package com.projectlab.core.database.entity
 
 import com.google.firebase.firestore.DocumentReference
 import com.google.firebase.Timestamp
 
-data class FlightSegment (
+data class FlightSegmentEntity (
     val detartureAirportCodeRef : DocumentReference? = null,
     val arrivalAirportCodeRef : DocumentReference? = null,
     val departureTime : Timestamp = Timestamp.now(),

@@ -1,9 +1,9 @@
-package com.projectlab.core.domain.model_data
+package com.projectlab.core.database.entity
 
 import com.google.firebase.Timestamp
 import com.google.firebase.firestore.DocumentReference
 
-data class Activity(
+data class ActivityEntity(
     val name : String = "",
     val locationRef : DocumentReference? = null,
     val activityDate : Timestamp = Timestamp.now(),

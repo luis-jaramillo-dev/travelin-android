@@ -1,9 +1,8 @@
-package com.projectlab.core.domain.model_data
+package com.projectlab.core.database.entity
 
-import android.graphics.Region
 import com.google.firebase.firestore.GeoPoint
 
-data class Location(
+data class LocationEntity(
     val name : String = "",
     val country : String = "",
     val countryCode : String = "",

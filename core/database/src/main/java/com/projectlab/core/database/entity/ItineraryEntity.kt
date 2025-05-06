@@ -1,9 +1,9 @@
-package com.projectlab.core.domain.model_data
+package com.projectlab.core.database.entity
 import com.google.firebase.firestore.DocumentReference
 import com.google.firebase.Timestamp
 
 
-data class Itinerary(
+data class ItineraryEntity(
     val title: String = "",
     val startDate : Timestamp = Timestamp.now(),
     val endDate : Timestamp = Timestamp.now(),
