@@ -14,8 +14,8 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.contentDescription
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.unit.dp
-import com.projectlab.core.presentation.designsystem.ButtonPrimary
-import com.projectlab.core.presentation.designsystem.ButtonSecondary
+// import com.projectlab.core.presentation.designsystem.ButtonPrimary
+// import com.projectlab.core.presentation.designsystem.ButtonSecondary
 import com.projectlab.core.presentation.designsystem.theme.TravelinTheme
 import com.projectlab.core.presentation.designsystem.theme.spacing
 import com.projectlab.core.presentation.ui.R
@@ -37,21 +37,22 @@ fun CenterLocationPrompt(
                 style = MaterialTheme.typography.titleLarge
             )
             Row(modifier = Modifier.padding(top = MaterialTheme.spacing.medium)) {
-                ButtonPrimary(
-                    onClick = onGetLocation,
-                    text = stringResource(R.string.get_location),
-                    fullWidth = false,
-                    modifier = Modifier.semantics {
-                        contentDescription = "Give Location Permission"
-                    })
-                Spacer(modifier = Modifier.padding(MaterialTheme.spacing.medium))
-                ButtonSecondary(
-                    onClick = onReject,
-                    text = stringResource(R.string.no_thanks),
-                    fullWidth = false,
-                    modifier = Modifier.semantics {
-                        contentDescription = "Reject Location Permission"
-                    })
+                // TODO: Uncomment these buttons (and import) when button is ready
+//                ButtonPrimary(
+//                    onClick = onGetLocation,
+//                    text = stringResource(R.string.get_location),
+//                    fullWidth = false,
+//                    modifier = Modifier.semantics {
+//                        contentDescription = "Give Location Permission"
+//                    })
+//                Spacer(modifier = Modifier.padding(MaterialTheme.spacing.medium))
+//                ButtonSecondary(
+//                    onClick = onReject,
+//                    text = stringResource(R.string.no_thanks),
+//                    fullWidth = false,
+//                    modifier = Modifier.semantics {
+//                        contentDescription = "Reject Location Permission"
+//                    })
             }
         }
     }
