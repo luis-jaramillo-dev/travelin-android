@@ -1,7 +1,9 @@
 package repository
 
+import android.util.Log
 import api.FlightApiService
 import com.google.firebase.firestore.FirebaseFirestore
+import com.google.gson.Gson
 import jakarta.inject.Inject
 import mapper.toDomain
 import model.Flight
@@ -17,6 +19,7 @@ class FlightRepositoryImpl @Inject constructor(
     ): List<Flight>{
         val response = api.getFlightOffers(origin,destination,date, adults = 1,max =5)
         val flights = response.data.map{it.toDomain()}
+        Log.d("response", Gson().toJson(response))
 
         //Guardar en FireStore
         flights.forEach{
