@@ -4,6 +4,12 @@ plugins {
 
     // Compose
     alias(libs.plugins.compose.compiler)
+
+    // Dagger Hilt
+    alias(libs.plugins.dagger.hilt.android)
+
+    // KSP
+    alias(libs.plugins.devtools.ksp)
 }
 
 android {
@@ -47,20 +53,27 @@ dependencies {
 
     // Core System
     implementation(projects.core.presentation.designsystem)
+    implementation(projects.core.domain)
 
     // Core
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.appcompat)
-    implementation(libs.androidx.runtime.android)
-    implementation(libs.androidx.activity.compose)
     implementation(libs.play.services.maps)
 
     // UI
     implementation(platform(libs.androidx.compose.bom))
+    implementation(libs.androidx.runtime.android)
     implementation(libs.androidx.compose.ui)
+    implementation(libs.androidx.activity.compose)
     implementation(libs.androidx.material3.android)
     implementation(libs.ui.tooling.preview.android)
     implementation(libs.play.services.location)
+    implementation(libs.coil.compose)
+    api(libs.androidx.compose.material3)
+
+    // Dagger Hilt + Ksp
+    implementation(libs.hilt.android)
+    ksp(libs.hilt.android.compiler)
 
     // Testing
     testImplementation(libs.junit)
