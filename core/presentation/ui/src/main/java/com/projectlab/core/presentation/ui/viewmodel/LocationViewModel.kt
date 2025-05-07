@@ -29,16 +29,6 @@ class LocationViewModel @Inject constructor(
         }
     }
 
-    fun requestLocationUpdates() {
-        if (locationUtils.hasLocationPermission(locationUtils.context)) {
-            locationUtils.requestLocationUpdates(this)
-        }
-    }
-
-    fun updateAddress(address: String) {
-        _address.value = address
-    }
-
     fun getCurrentLocation() {
         viewModelScope.launch {
             if (locationUtils.hasLocationPermission(locationUtils.context)) {
