@@ -1,7 +1,12 @@
 plugins {
     alias(libs.plugins.android.library)
     alias(libs.plugins.kotlin.android)
-    //alias(libs.plugins.google.services)
+
+    // Dagger Hilt
+    alias(libs.plugins.dagger.hilt.android)
+
+    // Ksp
+    alias(libs.plugins.devtools.ksp)
 }
 
 android {
@@ -10,8 +15,9 @@ android {
 
     defaultConfig {
         minSdk = 24
-        targetSdk = 35
+
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
+        consumerProguardFiles("consumer-rules.pro")
     }
 
     buildTypes {
@@ -23,20 +29,22 @@ android {
             )
         }
     }
-
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_11
         targetCompatibility = JavaVersion.VERSION_11
     }
-
     kotlinOptions {
         jvmTarget = "11"
     }
 }
 
 dependencies {
-    //implementation(platform(libs.firebase))
-    //implementation(libs.firebase.firestore)
+
+    // Dagger Hilt + Ksp
+    implementation(libs.hilt.android)
+    ksp(libs.hilt.android.compiler)
+
+    // Core
+    implementation(libs.androidx.core.ktx)
 
 }
-

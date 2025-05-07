@@ -30,6 +30,11 @@ android-gradlePlugin = { group = "com.android.tools.build", name = "gradle", ver
 android-tools-common = { group = "com.android.tools", name = "common", version.ref = "androidTools" }
 androidx-activity-compose = { module = "androidx.activity:activity-compose", version.ref = "activityCompose" }
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
+coil-compose = { module = "io.coil-kt:coil-compose", version.ref = "coilCompose" }
+firebase-firestore = { module = "com.google.firebase:firebase-firestore" }
+hilt-android = { module = "com.google.dagger:hilt-android", version.ref = "daggerHilt" }
+hilt-android-compiler = { module = "com.google.dagger:hilt-android-compiler", version.ref = "daggerHilt" }
+junit = { group = "junit", name = "junit", version.ref = "junit" }
 androidx-junit = { group = "androidx.test.ext", name = "junit", version.ref = "junitVersion" }
 androidx-espresso-core = { group = "androidx.test.espresso", name = "espresso-core", version.ref = "espressoCore" }
 androidx-appcompat = { group = "androidx.appcompat", name = "appcompat", version.ref = "appcompat" }
@@ -43,12 +48,9 @@ androidx-compose-ui-test-junit4 = { group = "androidx.compose.ui", name = "ui-te
 androidx-compose-bom = { group = "androidx.compose", name = "compose-bom", version.ref = "composeBom" }
 androidx-compose-material3 = { group = "androidx.compose.material3", name = "material3" }
 androidx-compose-material-icons = { group = "androidx.compose.material", name = "material-icons-extended" }
+firebase = { group = "com.google.firebase", name = "firebase-bom", version.ref = "firebase" }
 androidx-runtime-android = { group = "androidx.compose.runtime", name = "runtime-android", version.ref = "runtimeAndroid" }
 androidx-navigation-compose = { group = "androidx.navigation", name = "navigation-compose", version.ref = "navigationCompose" }
-coil-compose = { module = "io.coil-kt:coil-compose", version.ref = "coilCompose" }
-hilt-android = { module = "com.google.dagger:hilt-android", version.ref = "daggerHilt" }
-hilt-android-compiler = { module = "com.google.dagger:hilt-android-compiler", version.ref = "daggerHilt" }
-junit = { group = "junit", name = "junit", version.ref = "junit" }
 material = { group = "com.google.android.material", name = "material", version.ref = "material" }
 compose-google-fonts = { group = "androidx.compose.ui", name = "ui-text-google-fonts", version.ref = "composeGoogleFonts" }
 kotlinx-serialization-json = { group = "org.jetbrains.kotlinx", name = "kotlinx-serialization-json", version = "1.8.1" }

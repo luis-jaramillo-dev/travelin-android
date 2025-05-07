@@ -1,6 +1,13 @@
 plugins {
     alias(libs.plugins.android.library)
     alias(libs.plugins.kotlin.android)
+
+    // Ksp
+    alias(libs.plugins.devtools.ksp)
+
+    // Dagger Hilt
+    alias(libs.plugins.dagger.hilt.android)
+
     alias(libs.plugins.google.services)
 }
 
@@ -35,6 +42,14 @@ android {
 
 dependencies {
 
+    // Firebase -> Firestore
+    implementation (platform(libs.firebase))
+    implementation (libs.firebase.firestore)
+
+    // Dagger Hilt + Ksp
+    implementation(libs.hilt.android)
+    ksp(libs.hilt.android.compiler)
+
     // Core
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.appcompat)
@@ -43,6 +58,9 @@ dependencies {
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
+
+    // Core System
+    implementation(projects.core.domain)
 
     // Google services: Firebase products
     implementation(platform(libs.firebase))
