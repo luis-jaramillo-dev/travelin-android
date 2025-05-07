@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-
     <string name="search_global_nearby">Search place nearby</string>
     <string name="search_global_current">Current location - %1$s</string>
     <string name="tour_list_card_reviews">%1$d reviews</string>
@@ -8,4 +7,7 @@
     <string name="tour_list_card_duration">2 day 1 night</string>
     <string name="gallery_see_all">See all +%1$s photos</string>
     <string name="tour_list_card_price_2">person</string>
+    <string name="calendar_button_accept">Accept</string>
+    <string name="calendar_button_cancel">Back</string>
+    <string name="calendar_title">Choose your booking</string>
 </resources>
