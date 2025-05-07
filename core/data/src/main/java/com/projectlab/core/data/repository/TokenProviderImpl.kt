@@ -58,10 +58,19 @@ class TokenProviderImpl @Inject constructor(
     }
 
     private suspend fun fetchNewAccessToken(): AccessTokenResponse {
-        return amadeusApiService.getAccessToken(
-            clientId = Config.apiKey,
-            clientSecret = Config.apiSecret
-        )
+        Log.d("TokenProvider", "Fetching new access token from API")
+        Log.d("TokenProvider", "API_KEY=${Config.apiKey}, API_SECRET=${Config.apiSecret}")
+        return try {
+            val response = amadeusApiService.getAccessToken(
+                clientId = Config.apiKey,
+                clientSecret = Config.apiSecret
+            )
+            Log.d("TokenProvider", "Fetched token: ${response.accessToken}")
+            response
+        } catch (e: Exception) {
+            Log.e("TokenProvider", "Failed to fetch token: ${e.localizedMessage}", e)
+            throw e
+        }
     }
 
     private fun saveAccessToken(response: AccessTokenResponse) {

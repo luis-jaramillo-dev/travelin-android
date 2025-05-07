@@ -1,3 +1,5 @@
+import java.util.Properties
+
 plugins {
     alias(libs.plugins.android.library)
     alias(libs.plugins.kotlin.android)
@@ -8,6 +10,16 @@ plugins {
     // KSP
     alias(libs.plugins.devtools.ksp)
 }
+val localProperties = Properties().apply {
+    val localFile = rootProject.file("local.properties")
+    if (localFile.exists()) {
+        load(localFile.inputStream())
+    }
+}
+
+val apiKey = localProperties.getProperty("API_KEY") ?: ""
+val apiSecret = localProperties.getProperty("API_SECRET") ?: ""
+val baseUrl = localProperties.getProperty("BASE_URL") ?: ""
 
 android {
     namespace = "com.projectlab.core.data"
@@ -18,12 +30,10 @@ android {
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         consumerProguardFiles("consumer-rules.pro")
-    }
 
-    defaultConfig {
-        buildConfigField("String", "API_KEY", "\"${project.findProperty("API_KEY") ?: ""}\"")
-        buildConfigField("String", "API_SECRET", "\"${project.findProperty("API_SECRET") ?: ""}\"")
-        buildConfigField("String", "BASE_URL", "\"${project.findProperty("BASE_URL") ?: ""}\"")
+        buildConfigField("String", "API_KEY", "\"$apiKey\"")
+        buildConfigField("String", "API_SECRET", "\"$apiSecret\"")
+        buildConfigField("String", "BASE_URL", "\"$baseUrl\"")
     }
 
     buildFeatures {
@@ -56,10 +66,10 @@ dependencies {
     // Core
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.appcompat)
+    implementation(libs.androidx.room.runtime)
 
     // Dagger Hilt + Ksp
     implementation(libs.hilt.android)
-    implementation(libs.androidx.media3.common.ktx)
     ksp(libs.hilt.android.compiler)
 
     // Network

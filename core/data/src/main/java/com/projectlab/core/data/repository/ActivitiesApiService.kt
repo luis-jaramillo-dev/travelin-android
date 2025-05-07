@@ -9,9 +9,8 @@ interface ActivitiesApiService {
 
     @GET("v1/shopping/activities")
     suspend fun getActivitiesByLocation(
-        @Header("Authorization") authorization: String,
         @Query("latitude") latitude: Double,
         @Query("longitude") longitude: Double,
-        @Query("radius") radius: Int = 20
+        @Query("radius") radius: Int = 5
     ): ActivitiesSearchResponse
 }

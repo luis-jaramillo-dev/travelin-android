@@ -11,6 +11,6 @@ class GetActivitiesUseCase @Inject constructor(
 ) {
     suspend operator fun invoke(latitude: Double, longitude: Double): ActivitiesSearchResponse {
         val token = tokenProvider.getAccessToken()
-        return api.getActivitiesByLocation("Bearer $token", latitude, longitude)
+        return api.getActivitiesByLocation(latitude, longitude)
     }
 }

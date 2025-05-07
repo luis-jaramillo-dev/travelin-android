@@ -159,7 +159,7 @@ fun SearchActivityResultsComponent(
 
             if (!showAll && rest.isNotEmpty()) {
                 Button(
-                    onClick = { viewModel.showAllResults },
+                    onClick = { viewModel.showAllResults() },
                     modifier = Modifier.padding(vertical = 8.dp)
                 ) {
                     Text("Show +${rest.size} more available")

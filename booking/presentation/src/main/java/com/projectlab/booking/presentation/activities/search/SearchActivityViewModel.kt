@@ -42,6 +42,7 @@ class SearchActivityViewModel @Inject constructor(
     }
 
     fun onSearchSubmitted() {
+        Log.d("SearchActivityViewModel", "Search submitted: ${query.value}")
         viewModelScope.launch {
             try {
                 val locationData = locationUtils.getCoordinatesFromLocation(query.value)
@@ -54,6 +55,7 @@ class SearchActivityViewModel @Inject constructor(
                     _error.value = "Could not find coordinates for the specified city"
                 }
             } catch (e: Exception) {
+                Log.e("SearchActivityViewModel", "Error during search: ${e.message}", e)
                 _error.value = e.localizedMessage ?: "Unknown error"
             }
         }

@@ -1,5 +1,6 @@
 package com.projectlab.core.presentation.designsystem.component
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -8,11 +9,13 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.buildAnnotatedString
@@ -25,9 +28,14 @@ import com.projectlab.core.presentation.designsystem.R
 
 @Composable
 fun TourListCard(modifier: Modifier = Modifier, activity: ActivityDto) {
+    val imageUrl = if (activity.pictures.isNotEmpty()) activity.pictures[0] else null
     val city = "Krong Siem Reap"
     Row {
-        ImageCardWithFavorite(modifier = Modifier, image = activity.pictures[0])
+        if (imageUrl != null) {
+            ImageCardWithFavorite(modifier = Modifier, image = imageUrl)
+        } else {
+            ImageCardWithFavorite(modifier = Modifier, image = painterResource(R.drawable.tourimageplaceholder).toString())
+        }
         Spacer(modifier = Modifier.width(15.dp))
         Column(modifier = Modifier.height(134.dp), verticalArrangement = Arrangement.SpaceAround) {
             TourName(modifier = Modifier, activity.name)
