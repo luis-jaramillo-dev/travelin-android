@@ -18,4 +18,7 @@
     <string name="did_you_change_location">Did you change location?</string>
     <string name="update">Update</string>
     <string name="getting_location">Getting location…</string>
+    <string name="calendar_button_accept">Accept</string>
+    <string name="calendar_button_cancel">Back</string>
+    <string name="calendar_title">Choose your booking</string>
 </resources>
