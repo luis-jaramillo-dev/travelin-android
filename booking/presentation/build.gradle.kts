@@ -1,6 +1,12 @@
 plugins {
     alias(libs.plugins.android.library)
     alias(libs.plugins.kotlin.android)
+    // Ksp
+    alias(libs.plugins.devtools.ksp)
+    // Dagger Hilt
+    alias(libs.plugins.dagger.hilt.android)
+    // Compose
+    alias(libs.plugins.compose.compiler)
 }
 
 android {
@@ -37,6 +43,20 @@ dependencies {
     // Core
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.appcompat)
+    implementation(libs.material)
+    implementation(libs.androidx.compose.material3)
+
+    //hilt
+    implementation(libs.hilt.android)
+    implementation(libs.hilt.android.compiler)
+    implementation(libs.androidx.foundation.android)
+    implementation(project(":booking:domain"))
+    ksp(libs.hilt.android.compiler)
+
+    implementation(libs.hilt.navigation.compose)
+    implementation(libs.lifecycle.viewmodel.compose)
+
+    implementation(libs.runtime)
 
     // Testing
     testImplementation(libs.junit)

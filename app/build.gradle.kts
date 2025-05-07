@@ -1,3 +1,15 @@
+import com.android.build.gradle.internal.cxx.configure.gradleLocalProperties
+import java.util.Properties
+
+val localProperties = Properties()
+val localPropertiesFile = rootDir.resolve("local.properties")
+if (localPropertiesFile.exists()) {
+    localProperties.load(localPropertiesFile.inputStream())
+}
+val apiKey = localProperties["API_KEY"]
+val baseUrl = localProperties["BASE_URL"]
+val apiSecret = localProperties["API_SECRET"]
+
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
@@ -10,6 +22,8 @@ plugins {
 
     // Compose
     alias(libs.plugins.compose.compiler)
+
+    alias(libs.plugins.google.services)
 }
 
 android {
@@ -18,12 +32,15 @@ android {
 
     defaultConfig {
         applicationId = "com.projectlab.travelin_android"
-        minSdk = 24
+        minSdk = 25
         targetSdk = 35
         versionCode = 1
         versionName = "1.0"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
+        buildConfigField("String", "API_SECRET", "\"${apiSecret}\"")
+        buildConfigField("String", "API_KEY", "\"$apiKey\"")
+        buildConfigField("String", "BASE_URL", "\"$baseUrl\"")
     }
 
     buildTypes {
@@ -37,6 +54,7 @@ android {
     }
     buildFeatures {
         compose = true
+        buildConfig = true
     }
 
     composeOptions {
@@ -49,6 +67,11 @@ android {
     }
     kotlinOptions {
         jvmTarget = "11"
+    }
+    packaging {
+        resources {
+            excludes += "META-INF/gradle/incremental.annotation.processors"
+        }
     }
 }
 
@@ -66,6 +89,16 @@ dependencies {
     // Core System
     implementation(projects.core.presentation.designsystem)
     implementation(projects.core.presentation.ui)
+
+    //Fire store
+    implementation(platform(libs.firebase))
+    implementation(libs.firebase.firestore.ktx)
+    implementation(libs.hilt.navigation.compose)
+    implementation(libs.lifecycle.viewmodel.compose)
+
+    implementation(project(":booking:presentation"))
+    implementation(project(":booking:di"))
+    implementation(project(":core:data"))
 
     // UI
     implementation(platform(libs.androidx.compose.bom))

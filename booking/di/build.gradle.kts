@@ -1,4 +1,5 @@
 
+
 plugins {
     alias(libs.plugins.android.library)
     alias(libs.plugins.kotlin.android)
@@ -11,9 +12,8 @@ plugins {
     //fire base
     alias(libs.plugins.google.services)
 }
-
 android {
-    namespace = "com.projectlab.booking.data"
+    namespace = "com.projectlab.booking.di"
     compileSdk = 35
 
     defaultConfig {
@@ -21,6 +21,7 @@ android {
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         consumerProguardFiles("consumer-rules.pro")
+
     }
 
     buildTypes {
@@ -32,9 +33,6 @@ android {
             )
         }
     }
-    buildFeatures {
-        buildConfig = true
-    }
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_11
         targetCompatibility = JavaVersion.VERSION_11
@@ -45,17 +43,14 @@ android {
 }
 
 dependencies {
-
-    // Core
-    implementation(libs.androidx.core.ktx)
-    implementation(libs.androidx.appcompat)
     //hilt
     implementation(libs.hilt.android)
     implementation(libs.hilt.android.compiler)
-    implementation(project(":booking:domain"))
     ksp(libs.hilt.android.compiler)
-
-
+    implementation(project(":booking:domain"))
+    implementation(project(":booking:data"))
+    implementation(project(":booking:presentation"))
+    implementation(project(":core:data"))
     //Retrofit
     implementation(libs.retrofit2)
     implementation(libs.converter.gson)
@@ -64,10 +59,5 @@ dependencies {
     implementation(libs.firebase.firestore.ktx)
     implementation(libs.hilt.navigation.compose)
     implementation(libs.lifecycle.viewmodel.compose)
-
-    // Testing
-    testImplementation(libs.junit)
-    androidTestImplementation(libs.androidx.junit)
-    androidTestImplementation(libs.androidx.espresso.core)
-
 }
+

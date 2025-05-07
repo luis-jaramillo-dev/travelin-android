@@ -23,6 +23,7 @@ import com.projectlab.core.presentation.designsystem.ButtonTertiary
 import com.projectlab.core.presentation.designsystem.GradientBackground
 import com.projectlab.core.presentation.designsystem.theme.TravelinTheme
 import dagger.hilt.android.AndroidEntryPoint
+import flight.FlightScreen
 
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {
@@ -35,7 +36,8 @@ class MainActivity : ComponentActivity() {
                         Column(Modifier
                             .padding(padding)
                             .padding(horizontal = 16.dp)) {
-                            ExampleUI()
+                            //ExampleUI()
+                            FlightScreen()
                         }
                     }
                 )
