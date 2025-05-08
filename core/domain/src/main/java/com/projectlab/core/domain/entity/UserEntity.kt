@@ -1,4 +1,4 @@
-package com.projectlab.core.database.entity
+package com.projectlab.core.domain.entity
 
 data class UserEntity(
     val firstName: String = "",

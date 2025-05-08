@@ -60,4 +60,7 @@ dependencies {
     // Core System
     implementation(projects.core.domain)
     implementation(projects.core.database)
+
+    //modules
+    // implementation(project(":core:database"))
 }
