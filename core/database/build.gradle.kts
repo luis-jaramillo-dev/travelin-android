@@ -62,6 +62,7 @@ dependencies {
 
     // Core System
     implementation(projects.core.domain)
+    implementation(projects.core.data)
 
     // modules
     implementation(project(":core:domain"))
