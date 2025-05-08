@@ -20,11 +20,6 @@ class AndroidApplicationConventionPlugin : Plugin <Project> {
                 configureKotlinAndroid(this)
                 defaultConfig.targetSdk = libs.version("projectTargetSdk").toInt()
 
-                /**
-                 * Used for api key config on project
-                 *
-                 * must add API_KEY = "your key" on local.properties
-                 */
                 configureBuildTypes(this, ExtensionType.APPLICATION)
             }
         }
