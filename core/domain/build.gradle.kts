@@ -10,4 +10,3 @@ dependencies {
     implementation(libs.hilt.core)
     ksp(libs.hilt.android.compiler)
 }
-
