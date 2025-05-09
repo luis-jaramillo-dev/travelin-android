@@ -19,18 +19,15 @@ internal fun Project.configureAndroidCompose(
             compose = true
         }
 
-        composeOptions {
-            // need a way to fetch version from [libs.versions.toml]
-            kotlinCompilerExtensionVersion = libs.version("composeCompiler")
-        }
-
         dependencies {
-            val bom = libs.getLibrary("androidx-compose-bom")
+            val bom = libs.findLibrary("androidx-compose-bom").get()
 
             "implementation"(platform(bom))
+            "implementation"(libs.findLibrary("androidx-ui").get())
+            "implementation"(libs.findLibrary("androidx-ui-graphics").get())
+            "implementation"(libs.findLibrary("androidx-ui-tooling").get())
+            "debugImplementation"(libs.findLibrary("androidx-ui-tooling-preview").get())
             "androidTestImplementation"(platform(bom))
-            "debugImplementation"(libs.getLibrary("androidx-compose-ui-tooling"))
-            "implementation"(libs.getLibrary("androidx-compose-ui-tooling-preview"))
         }
     }
 }
