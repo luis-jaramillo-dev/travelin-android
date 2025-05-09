@@ -15,6 +15,6 @@ plugins {
     alias(libs.plugins.compose.compiler) apply false
 
     // Firebase
-    alias (libs.plugins.google.services) apply true
+    alias (libs.plugins.google.services) apply false
 
 }
