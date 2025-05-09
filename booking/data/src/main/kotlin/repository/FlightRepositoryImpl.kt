@@ -6,12 +6,21 @@ import com.google.firebase.firestore.FirebaseFirestore
 import com.google.gson.Gson
 import jakarta.inject.Inject
 import mapper.toDomain
+import model.CityLocation
 import model.Flight
 
 class FlightRepositoryImpl @Inject constructor(
     private val api: FlightApiService,
     private val firestore: FirebaseFirestore
 ): FlightRepository {
+    override suspend fun searchCityLocations(keyword: String): List<CityLocation> {
+        return api.getLocations(keyword).data.map {
+            CityLocation(
+                city = it.name,
+                iataCode = it.iataCode
+            )
+        }
+    }
     override suspend fun getFlights(
         origin: String,
         destination: String,

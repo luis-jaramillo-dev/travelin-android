@@ -1,6 +1,7 @@
 package api
 
 import dto.FlightOffersResponseDto
+import dto.LocationResponse
 import retrofit2.http.GET
 import retrofit2.http.Query
 
@@ -13,4 +14,10 @@ interface FlightApiService {
         @Query("adults") adults: Int,
         @Query("max") max: Int
     ): FlightOffersResponseDto
+
+    @GET("v1/reference-data/locations")
+    suspend fun getLocations(
+        @Query("keyword") keyword: String,
+        @Query("subType") subType: String = "AIRPORT,CITY"
+    ): LocationResponse
 }
