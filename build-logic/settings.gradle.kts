@@ -1,7 +1,6 @@
 rootProject.name = "build-logic"
 
 pluginManagement {
-    includeBuild("build-logic")
     repositories {
         google()
         mavenCentral()
