@@ -13,30 +13,14 @@ internal fun Project.configureBuildTypes(
     commonExtension: CommonExtension<*, *, *, *, *, *>,
     extensionType: ExtensionType
 ) {
-    val apiKey = gradleLocalProperties(
-        rootDir,
-        providers = providers
-    ).getProperty("API_KEY")
-
-    val baseUrl = gradleLocalProperties(
-        rootDir,
-        providers
-    ).getProperty("BASE_URL")
-
-    commonExtension.apply {
-        buildFeatures {
-            buildConfig = true
-        }
-
-        when (extensionType) {
+    with(commonExtension) {
+        when(extensionType) {
             ExtensionType.APPLICATION -> {
                 extensions.configure<ApplicationExtension> {
                     buildTypes {
-                        debug {
-                            configureDebugBuildType(apiKey, baseUrl)
-                        }
+                        debug {  }
                         release {
-                            configureReleaseBuildType(commonExtension, apiKey, baseUrl)
+                            configureReleaseType(commonExtension)
                         }
                     }
                 }
@@ -44,11 +28,9 @@ internal fun Project.configureBuildTypes(
             ExtensionType.LIBRARY -> {
                 extensions.configure<LibraryExtension> {
                     buildTypes {
-                        debug {
-                            configureDebugBuildType(apiKey, baseUrl)
-                        }
+                        debug {  }
                         release {
-                            configureReleaseBuildType(commonExtension, apiKey, baseUrl)
+                            configureReleaseType(commonExtension)
                         }
                     }
                 }
@@ -58,22 +40,11 @@ internal fun Project.configureBuildTypes(
 }
 
 /**
- * Configure base build type options for debug.
- * making available keys and base url on any build type of our app
+ * Configure release type building.
  */
-private fun BuildType.configureDebugBuildType(apiKey: String, baseUrl: String) {
-    buildConfigField("String", "API_KEY", "\"$apiKey\"")
-    buildConfigField("String", "BASE_URL", "\"$baseUrl\"")
-}
-
-private fun BuildType.configureReleaseBuildType(
+private fun BuildType.configureReleaseType(
     commonExtension: CommonExtension<*, *, *, *, *, *>,
-    apiKey: String,
-    baseUrl: String
 ) {
-    buildConfigField("String", "API_KEY", "\"$apiKey\"")
-    buildConfigField("String", "BASE_URL", "\"$baseUrl\"")
-
     isMinifyEnabled = true
     proguardFiles(
         commonExtension.getDefaultProguardFile("proguard-android-optimize.txt"),

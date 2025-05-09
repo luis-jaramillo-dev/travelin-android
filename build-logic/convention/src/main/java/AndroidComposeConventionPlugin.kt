@@ -13,6 +13,7 @@ class AndroidComposeConventionPlugin : Plugin <Project> {
         with(target) {
             // ApplicationConventionModule applied on any compose module
             pluginManager.apply("travelinandroid.android.application")
+            pluginManager.apply("org.jetbrains.kotlin.plugin.compose")
 
             val extension = extensions.getByType<ApplicationExtension>()
 
