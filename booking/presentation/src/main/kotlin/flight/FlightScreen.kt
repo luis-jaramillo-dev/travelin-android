@@ -15,6 +15,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import android.util.Log
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.height
 import androidx.compose.runtime.LaunchedEffect
 
 @Composable
@@ -22,37 +24,23 @@ fun FlightScreen(viewModel: FlightViewModel = hiltViewModel()) {
     val flights = viewModel.flights
     val isLoading = viewModel.isLoading
 
-    LaunchedEffect(flights) {
-        flights.forEach { flight ->
-            Log.i("FlightData", flight.toString())
-        }
-    }
-
-    Column(modifier = Modifier.fillMaxSize().padding(16.dp)) {
-
+    Column(
+        modifier = Modifier
+            .fillMaxSize()
+            .padding(16.dp)
+    ) {
         Button(onClick = {
-            viewModel.loadFlights("SCL", "MIA", "2025-05-15")
+            viewModel.loadFlights("SCL", "MAD", "2025-05-20")
         }) {
-            Text("Load Flights")
+            Text("Cargar Vuelos")
         }
+
+        Spacer(modifier = Modifier.height(16.dp))
 
         if (isLoading) {
             CircularProgressIndicator()
         } else {
-            LazyColumn {
-                items(flights) { flight ->
-                    Card(modifier = Modifier.padding(8.dp).fillMaxWidth()) {
-                        Column(modifier = Modifier.padding(16.dp)) {
-                            Text("From: ${flight.origin} To: ${flight.destination}")
-                            Text("Departure: ${flight.departureTime}")
-                            Text("Price: ${flight.price} USD")
-                            /*Log.i("flight origin",flight.origin)
-                            Log.i("flight destination",flight.destination)
-                            print(flight.toString())*/
-                        }
-                    }
-                }
-            }
+            FlightResultsScreen(flights = flights)
         }
     }
 }

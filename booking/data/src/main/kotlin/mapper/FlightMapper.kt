@@ -4,18 +4,31 @@ import android.util.Log
 import com.google.gson.Gson
 import dto.FlightDto
 import model.Flight
+import model.FlightSegment
+import model.Price
 
-fun FlightDto.toDomain():Flight{
-    val firstItinerary = itineraries.first()
-    val firstSegment = itineraries.first().segments.first()
-    val lastSegment = firstItinerary.segments.last()
-    println("FirstSegment: $firstSegment")
-    Log.d("FlightMapper", Gson().toJson(firstSegment))
+fun FlightDto.toDomain(): Flight {
+    // Convertir los segmentos de itinerario
+    val segments = itineraries.first().segments.map { segment ->
+        FlightSegment(
+            airline = segment.carrierCode,
+            flightNumber = segment.number,
+            departureAirport = segment.departure.iataCode,
+            arrivalAirport = segment.arrival.iataCode,
+            departureTime = segment.departure.at,
+            arrivalTime = segment.arrival.at
+        )
+    }
+    // Construcción del objeto Price
+    val domainPrice = Price(
+        amount = price.amount?:"0.0",
+        currency = price.currency?:"USD"
+    )
+    Log.i("price",price.amount?:"fue nulo")
+    // Construir y retornar el objeto Flight
     return Flight(
-        id = id,
-        origin = firstSegment.departure.iataCode,
-        destination = lastSegment.arrival.iataCode,
-        departureTime = firstSegment.departure.at,
-        price = price.total
+        id = this.id,
+        segments = segments,
+        price = domainPrice
     )
 }
