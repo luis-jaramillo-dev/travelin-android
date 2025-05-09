@@ -1,3 +1,4 @@
+
 package flight
 
 import androidx.compose.foundation.layout.Column
@@ -18,7 +19,7 @@ import android.util.Log
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.height
 import androidx.compose.runtime.LaunchedEffect
-
+/*
 @Composable
 fun FlightScreen(viewModel: FlightViewModel = hiltViewModel()) {
     val flights = viewModel.flights
@@ -44,3 +45,4 @@ fun FlightScreen(viewModel: FlightViewModel = hiltViewModel()) {
         }
     }
 }
+*/

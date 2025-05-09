@@ -48,3 +48,8 @@ data class Flight(
             }
         }
 }
+data class FlightSearchParams(
+    val origin: String,
+    val destination: String,
+    val departureDate: String
+)
