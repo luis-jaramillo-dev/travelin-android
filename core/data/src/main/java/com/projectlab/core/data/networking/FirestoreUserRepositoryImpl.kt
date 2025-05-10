@@ -1,7 +1,6 @@
 package com.projectlab.core.data.networking
 
 import com.google.firebase.firestore.FirebaseFirestore
-import com.projectlab.core.domain.entity.UserEntity
 import com.projectlab.core.domain.repository.UserRepository
 import kotlinx.coroutines.tasks.await
 import javax.inject.Inject

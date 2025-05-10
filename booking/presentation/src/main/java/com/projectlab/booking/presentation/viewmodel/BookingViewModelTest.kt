@@ -5,7 +5,6 @@ import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import com.projectlab.core.domain.repository.ItineraryRepository
 import com.projectlab.core.domain.repository.UserRepository
-import com.projectlab.core.domain.entity.UserEntity
 import com.projectlab.core.domain.entity.ItineraryEntity
 import jakarta.inject.Inject
 import kotlinx.coroutines.launch
