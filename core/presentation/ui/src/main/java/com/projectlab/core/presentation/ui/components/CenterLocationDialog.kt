@@ -22,11 +22,11 @@ import androidx.compose.ui.semantics.contentDescription
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
-import com.projectlab.core.presentation.designsystem.ButtonPrimary
-import com.projectlab.core.presentation.designsystem.ButtonSecondary
 import com.projectlab.core.presentation.designsystem.theme.TravelinTheme
 import com.projectlab.core.presentation.designsystem.theme.spacing
 import com.projectlab.core.presentation.designsystem.R
+import com.projectlab.core.presentation.designsystem.component.ButtonComponent
+import com.projectlab.core.presentation.designsystem.component.ButtonVariant
 import com.projectlab.core.presentation.ui.viewmodel.LocationViewModel
 
 @Composable
@@ -70,7 +70,7 @@ fun CenterLocationDialog(
                             modifier = Modifier.padding(top = MaterialTheme.spacing.medium),
                             horizontalArrangement = Arrangement.Center
                         ) {
-                            ButtonPrimary(
+                            ButtonComponent(
                                 onClick = {
                                     buttonsVisible.value = false
                                     onGetLocation()
@@ -80,18 +80,20 @@ fun CenterLocationDialog(
                                 else
                                     stringResource(R.string.update_location),
                                 fullWidth = false,
+                                variant = ButtonVariant.Primary,
                                 modifier = Modifier.semantics {
                                     contentDescription = "Give Location Permission"
                                 }
                             )
                             Spacer(modifier = Modifier.width(MaterialTheme.spacing.medium))
-                            ButtonSecondary(
+                            ButtonComponent(
                                 onClick = {
                                     buttonsVisible.value = false
                                     onReject()
                                 },
                                 text = stringResource(R.string.no_thanks),
                                 fullWidth = false,
+                                variant = ButtonVariant.Secondary,
                                 modifier = Modifier.semantics {
                                     contentDescription = "Reject Location Permission"
                                 }
