@@ -65,6 +65,7 @@ dependencies {
     implementation(projects.core.presentation.designsystem)
     implementation(projects.core.presentation.ui)
     implementation(projects.auth.presentation)
+    implementation(projects.auth.data)
     implementation(projects.feature.onboarding.presentation)
     implementation(projects.navigation)
 
