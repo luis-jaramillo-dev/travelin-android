@@ -17,12 +17,26 @@ import androidx.compose.ui.unit.dp
 import com.projectlab.core.presentation.designsystem.component.ButtonComponent
 import com.projectlab.core.presentation.designsystem.component.ButtonVariant
 import com.projectlab.core.presentation.designsystem.theme.TravelinTheme
-import com.projectlab.core.presentation.ui.R
+import com.projectlab.core.presentation.designsystem.R
+import com.projectlab.core.presentation.ui.model.LocationData
 
 @Composable
 fun BottomLocationBar(
+    location: LocationData?,
     onGetLocation: () -> Unit,
 ) {
+    val labelText = if (location == null) {
+        stringResource(id = R.string.results_near_you)
+    } else {
+        stringResource(id = R.string.did_you_change_location)
+    }
+
+    val buttonText = if (location == null) {
+        stringResource(id = R.string.get_location)
+    } else {
+        stringResource(id = R.string.update)
+    }
+
     TravelinTheme(dynamicColor = false, darkTheme = false) {
         Row(
             modifier = Modifier
@@ -33,12 +47,12 @@ fun BottomLocationBar(
             verticalAlignment = Alignment.CenterVertically,
         ) {
             Text(
-                stringResource(id = R.string.results_near_you),
+                labelText,
                 style = MaterialTheme.typography.titleMedium
             )
             ButtonComponent(
                 onClick = onGetLocation,
-                text = stringResource(id = R.string.get_location),
+                text = buttonText,
                 fullWidth = false,
                 variant = ButtonVariant.Primary,
                 modifier = Modifier.semantics { contentDescription = "Give Location Permission" }
