@@ -1,26 +1,66 @@
 package com.projectlab.booking.presentation.ui
 
-import androidx.compose.foundation.layout.Box
+import android.os.Build
+import androidx.annotation.RequiresApi
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.material.Button
-import androidx.compose.material.Text
-import androidx.compose.runtime.Composable
+import androidx.compose.material3.Button
+import androidx.compose.material3.CircularProgressIndicator
+import androidx.compose.material3.Text
+import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.projectlab.booking.presentation.viewmodel.BookingViewModelTest
 
+@RequiresApi(Build.VERSION_CODES.O)
 @Composable
-fun BookingApp(
-    viewModel: BookingViewModelTest = hiltViewModel()  //Get ViewModel with Hilt
+fun BookingScreen (
+    viewModel: BookingViewModelTest = hiltViewModel()
 ) {
-    // A Box to center content
-    Box(
+
+    val seedState by viewModel.seedResult.collectAsState()
+    var isLoading by remember { mutableStateOf(false) }
+
+    Column (
         modifier = Modifier.fillMaxSize(),
-        contentAlignment = Alignment.Center
+        verticalArrangement = Arrangement.Center,
+        horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        Button(onClick = { viewModel.setupTestData() }) {  // call to function
-            Text(text = "Seedar Datos")                    // botton text
+        when {
+            isLoading -> {
+                CircularProgressIndicator()
+            }
+            seedState == null -> {
+                Button(onClick = {
+                    isLoading = true
+                    viewModel.setupTestData()
+                }) {
+                    Text("Generate Test Data")
+                }
+            }
+            seedState!!.isSuccess -> {
+                Text("Data generated successfully! ✅")
+            }
+            else -> {
+                Text("Error: ${seedState!!.exceptionOrNull()?.message}")
+            }
         }
     }
+
+    // When seedResult change, we stop shows loading
+    LaunchedEffect(seedState) {
+        if (seedState != null) {
+            isLoading = false
+        }
+    }
+}
+
+@RequiresApi(Build.VERSION_CODES.O)
+@Preview (showBackground = true)
+@Composable
+fun BookingScreenPreview() {
+    BookingScreen()
 }
