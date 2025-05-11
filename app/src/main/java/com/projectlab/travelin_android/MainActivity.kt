@@ -50,10 +50,10 @@ class MainActivity : ComponentActivity() {
                             NavigationRoot(
                                 navController = navController
                             )
+                            //ExampleUI()
+                          /* FlightScreenContainer(
+                           )*/
                         }
-                            /*//ExampleUI()
-                            FlightScreenContainer(
-                            )*/
 
                         })
                     }
