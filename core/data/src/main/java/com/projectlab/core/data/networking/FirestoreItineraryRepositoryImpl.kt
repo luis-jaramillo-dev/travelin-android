@@ -1,33 +1,35 @@
 package com.projectlab.core.data.networking
 
-import com.google.firebase.firestore.DocumentReference
+import android.os.Build
+import androidx.annotation.RequiresApi
 import com.google.firebase.firestore.FirebaseFirestore
+import com.projectlab.core.domain.model.EntityId
 import com.projectlab.core.domain.entity.ItineraryEntity
 import com.projectlab.core.domain.repository.ItineraryRepository
+import com.projectlab.core.data.model.dto.ItineraryDTO
 import kotlinx.coroutines.tasks.await
 import javax.inject.Inject
 
 class FirestoreItineraryRepositoryImpl @Inject constructor (
     private val firestore: FirebaseFirestore
 ) : ItineraryRepository {
-
-    private val itinerariesCol = firestore.collection("itineraries")
-
-    override suspend fun createItinerary(itinerary: ItineraryEntity) = runCatching {
-        val itinerariesCol = firestore
-            .collection("Users")
-            .document(itinerary.userRef!!.id)
-            .collection("Itineraries")
-        val docRef = itinerariesCol.document()
-        docRef.set(itinerary).await()
-        docRef.id
+    @RequiresApi(Build.VERSION_CODES.O)
+    override suspend fun createItinerary(itinerary: ItineraryEntity): Result<EntityId> = runCatching {
+        // user reference:
+        val userDocRef = firestore.collection("users").document(itinerary.userRef?.value ?: throw IllegalArgumentException("userRef is null"))
+        //val userDocRef = firestore.collection("users").document(itinerary.userRef.value)
+        // create dto:
+        val dto = ItineraryDTO.fromDomain(itinerary, userDocRef)
+        // add to firestore:
+        val itCol = userDocRef.collection("itineraries")
+        val docRef = itCol.document()
+        // return id:
+        EntityId(docRef.id)
     }
 
-    override suspend fun getItineraries(userRef: DocumentReference) = runCatching {
-        val snapshot = userRef
-            .collection("Itineraries")
-            .get()
-            .await()
-        snapshot.toObjects(ItineraryEntity::class.java)
+    override suspend fun getItinerariesById(id: String): ItineraryEntity? {
+        TODO("Not yet implemented")
     }
+
+
 }
