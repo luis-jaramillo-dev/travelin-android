@@ -85,8 +85,8 @@ object BookingModule {
         return retrofit.create(BookingApi::class.java)
     }*/
 
-    @Provides
-    fun provideFirestore(): FirebaseFirestore = FirebaseFirestore.getInstance()
+   /* @Provides
+    fun provideFirestore(): FirebaseFirestore = FirebaseFirestore.getInstance()*/
 
     @Provides
     fun provideRepository(

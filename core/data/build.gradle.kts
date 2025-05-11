@@ -39,16 +39,24 @@ android {
 
 dependencies {
 
-    // Core
-    implementation(libs.androidx.core.ktx)
-    implementation(libs.androidx.appcompat)
     // Dagger Hilt + Ksp
     implementation(libs.hilt.android)
     ksp(libs.hilt.android.compiler)
 
+    // Firebase -> Firestore
+    implementation(platform(libs.firebase))
+    implementation(libs.firebase.firestore)
+
+    // Core
+    implementation(libs.androidx.core.ktx)
+    implementation(libs.androidx.appcompat)
 
     // Testing
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
+
+    // Core System
+    implementation(projects.core.domain)
+    implementation(projects.core.database)
 }

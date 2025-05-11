@@ -14,8 +14,7 @@ plugins {
     // Compose
     alias(libs.plugins.compose.compiler) apply false
 
-    //fire base
-    // Compose
-    alias(libs.plugins.google.services) apply false
+    // Firebase
+    alias (libs.plugins.google.services) apply true
 
 }
