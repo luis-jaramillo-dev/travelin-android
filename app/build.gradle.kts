@@ -68,6 +68,7 @@ dependencies {
     implementation(projects.auth.data)
     implementation(projects.feature.onboarding.presentation)
     implementation(projects.navigation)
+    implementation(projects.booking.presentation)
 
     // Dagger Hilt + Ksp
     implementation(libs.hilt.android)

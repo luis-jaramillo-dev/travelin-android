@@ -62,9 +62,10 @@ dependencies {
 
     // Core System
     implementation(projects.core.domain)
-    implementation(projects.core.data)
+    // TODO : review this module dependency:
+    // implementation(projects.core.data)
 
     // modules
-    implementation(project(":core:domain"))
+    // implementation(project(":core:domain"))
     // implementation(projects.core.domain)
 }

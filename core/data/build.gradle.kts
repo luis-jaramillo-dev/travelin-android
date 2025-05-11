@@ -69,6 +69,6 @@ dependencies {
     implementation(libs.firebase.firestore)
 
     //modules
-    implementation(project(":core:domain"))
+    // implementation(project(":core:domain"))
     // implementation(project(":core:database"))
 }
