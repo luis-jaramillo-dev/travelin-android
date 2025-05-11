@@ -7,6 +7,9 @@ plugins {
 
     // Ksp
     alias(libs.plugins.devtools.ksp)
+
+    // Google Services
+    alias(libs.plugins.google.services)
 }
 
 android {
@@ -61,6 +64,11 @@ dependencies {
     implementation(projects.core.domain)
     implementation(projects.core.database)
 
+    // Firebase and Firestore:
+    implementation(platform(libs.firebase))
+    implementation(libs.firebase.firestore)
+
     //modules
+    implementation(project(":core:domain"))
     // implementation(project(":core:database"))
 }

@@ -1,13 +1,14 @@
 package com.projectlab.core.domain.entity
 
-import com.google.firebase.Timestamp
-import com.google.firebase.firestore.DocumentReference
+import com.projectlab.core.domain.model.EntityId
+import java.time.Instant
 
 data class ActivityEntity(
+    val id : EntityId? = null,
     val name : String = "",
-    val locationRef : DocumentReference? = null,
-    val activityDate : Timestamp = Timestamp.now(),
+    val locationRef : EntityId,
+    val activityDate : Instant,
     val details : String = "",
     val activityPrice : Double = 0.0,
-    val itineraryRef : DocumentReference? = null
+    val itineraryRef : EntityId
 )

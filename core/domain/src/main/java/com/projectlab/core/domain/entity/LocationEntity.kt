@@ -1,12 +1,14 @@
 package com.projectlab.core.domain.entity
 
-import com.google.firebase.firestore.GeoPoint
+import com.projectlab.core.domain.model.EntityId
+
 
 data class LocationEntity(
+    val id : EntityId? = null,
     val name : String = "",
     val country : String = "",
     val countryCode : String = "",
-    val coordinates : GeoPoint = GeoPoint(0.0, 0.0),
+    val coordinates : String = "",
     val timeZone : String = "",
     val region: String = ""
 )

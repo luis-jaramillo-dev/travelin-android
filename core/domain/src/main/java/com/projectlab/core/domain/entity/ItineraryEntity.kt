@@ -1,12 +1,13 @@
 package com.projectlab.core.domain.entity
-import com.google.firebase.firestore.DocumentReference
-import com.google.firebase.Timestamp
+import com.projectlab.core.domain.model.EntityId
+import java.time.Instant
 
 
 data class ItineraryEntity(
+    val id : EntityId? = null,
     val title: String = "",
-    val startDate : Timestamp = Timestamp.now(),
-    val endDate : Timestamp = Timestamp.now(),
+    val startDate : Instant,
+    val endDate : Instant,
     val totalItineraryPrice: Double = 0.0,
-    val userRef : DocumentReference? = null
+    val userRef : EntityId? = null,
 )

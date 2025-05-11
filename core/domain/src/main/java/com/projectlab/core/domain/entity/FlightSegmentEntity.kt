@@ -1,18 +1,20 @@
 package com.projectlab.core.domain.entity
 
-import com.google.firebase.firestore.DocumentReference
-import com.google.firebase.Timestamp
+import com.projectlab.core.domain.model.EntityId
+import java.time.Instant
+
 
 data class FlightSegmentEntity (
-    val detartureAirportCodeRef : DocumentReference? = null,
-    val arrivalAirportCodeRef : DocumentReference? = null,
-    val departureTime : Timestamp = Timestamp.now(),
-    val arrivalTime : Timestamp = Timestamp.now(),
+    val id : EntityId? = null,
+    val detartureAirportCodeRef : EntityId,
+    val arrivalAirportCodeRef : EntityId,
+    val departureTime : Instant,
+    val arrivalTime : Instant,
     val requiresPlaneChange : Boolean = false,
     val connectionInfo : Map<String, Any> = mapOf(
         "nextAirline" to "",
         "nextFlightNumber" to "",
         "connectionGate" to ""
     ),
-    val flightRef : DocumentReference? = null
+    val flightRef : EntityId
 )
