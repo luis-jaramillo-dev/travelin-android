@@ -9,6 +9,7 @@ import com.google.firebase.auth.FirebaseUser
 import com.projectlab.auth.domain.use_cases.AuthUseCases
 import com.projectlab.core.domain.model.Response
 import com.projectlab.core.domain.entity.UserEntity
+import com.projectlab.core.domain.model.EntityId
 import com.projectlab.core.domain.use_cases.users.UsersUseCases
 import com.projectlab.travelin_android.presentation.validation.AuthValidator
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -86,7 +87,8 @@ class RegisterViewModel @Inject constructor(
         val currentUser = authUseCases.getCurrentUser()
 
         val newUserEntity = UserEntity(
-            id = currentUser!!.uid,
+            // id = currentUser!!.uid,
+            id = EntityId(currentUser!!.uid),
             email = email.value,
             age = age.value,
             firstName = firstName.value,
