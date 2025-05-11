@@ -1,6 +1,8 @@
 plugins {
     alias(libs.plugins.android.library)
     alias(libs.plugins.kotlin.android)
+    alias(libs.plugins.travelinandroid.android.library)
+
     // Ksp
     alias(libs.plugins.devtools.ksp)
 

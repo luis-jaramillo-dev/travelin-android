@@ -1,4 +1,3 @@
-
 plugins {
     alias(libs.plugins.android.library)
     alias(libs.plugins.kotlin.android)
@@ -10,6 +9,7 @@ plugins {
     alias(libs.plugins.compose.compiler)
     //fire base
     alias(libs.plugins.google.services)
+    alias(libs.plugins.travelinandroid.android.library)
 }
 
 android {
@@ -49,6 +49,8 @@ dependencies {
     // Core
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.appcompat)
+    implementation(projects.core.domain)
+    implementation(projects.core.data)
     //hilt
     implementation(libs.hilt.android)
     implementation(libs.hilt.android.compiler)
@@ -69,5 +71,6 @@ dependencies {
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
+
 
 }
