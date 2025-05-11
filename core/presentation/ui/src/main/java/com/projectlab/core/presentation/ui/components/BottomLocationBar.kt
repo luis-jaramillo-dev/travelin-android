@@ -14,7 +14,8 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.contentDescription
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.unit.dp
-import com.projectlab.core.presentation.designsystem.ButtonPrimary
+import com.projectlab.core.presentation.designsystem.component.ButtonComponent
+import com.projectlab.core.presentation.designsystem.component.ButtonVariant
 import com.projectlab.core.presentation.designsystem.theme.TravelinTheme
 import com.projectlab.core.presentation.designsystem.R
 import com.projectlab.core.presentation.ui.model.LocationData
@@ -49,13 +50,12 @@ fun BottomLocationBar(
                 labelText,
                 style = MaterialTheme.typography.titleMedium
             )
-            ButtonPrimary(
+            ButtonComponent(
                 onClick = onGetLocation,
                 text = buttonText,
                 fullWidth = false,
-                modifier = Modifier.semantics {
-                    contentDescription = "Give Location Permission"
-                }
+                variant = ButtonVariant.Primary,
+                modifier = Modifier.semantics { contentDescription = "Give Location Permission" }
             )
         }
     }

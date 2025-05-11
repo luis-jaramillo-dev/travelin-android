@@ -36,7 +36,6 @@ class AndroidLibraryConventionPlugin: Plugin<Project> {
             dependencies {
                 "testImplementation"(kotlin("test"))
             }
-
         }
     }
 }

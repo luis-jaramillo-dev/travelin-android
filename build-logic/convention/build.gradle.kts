@@ -52,5 +52,16 @@ gradlePlugin {
             id = libs.plugins.travelinandroid.android.library.compose.get().pluginId
             implementationClass = "AndroidLibraryComposeConventionPlugin"
         }
+
+        register("jvmLibrary") {
+            id = libs.plugins.travelinandroid.jvm.library.get().pluginId
+
+            implementationClass = "JvmLibraryConventionPlugin"
+        }
+
+        register("hilt") {
+            id = libs.plugins.travelinandroid.android.hilt.get().pluginId
+            implementationClass = "HiltConventionPlugin"
+        }
     }
 }

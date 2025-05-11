@@ -20,4 +20,7 @@
     <string name="getting_location">Obteniendo ubicación…</string>
     <string name="search_city_placeholder">Buscar ciudad</string>
     <string name="searching_results_for">Buscando resultados para</string>
+    <string name="calendar_button_accept">Aceptar</string>
+    <string name="calendar_button_cancel">Atrás</string>
+    <string name="calendar_title">Elige tu fecha de reserva</string>
 </resources>

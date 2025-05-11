@@ -62,6 +62,7 @@ dependencies {
 
     // Core System
     implementation(projects.core.domain)
+    implementation(projects.core.database)
 
     // Core
     implementation(libs.androidx.core.ktx)
@@ -71,6 +72,10 @@ dependencies {
     // Dagger Hilt + Ksp
     implementation(libs.hilt.android)
     ksp(libs.hilt.android.compiler)
+
+    // Firebase -> Firestore
+    implementation(platform(libs.firebase))
+    implementation(libs.firebase.firestore)
 
     // Network
     implementation(libs.retrofit)

@@ -43,7 +43,6 @@ android {
         compose = true
     }
 
-
     composeOptions {
         kotlinCompilerExtensionVersion = "1.5.14"
     }
@@ -66,6 +65,9 @@ dependencies {
     implementation(projects.core.presentation.designsystem)
     implementation(projects.core.presentation.ui)
     implementation(projects.auth.presentation)
+    implementation(projects.auth.data)
+    implementation(projects.feature.onboarding.presentation)
+    implementation(projects.navigation)
     implementation(projects.booking.presentation)
 
     // Dagger Hilt + Ksp
@@ -76,30 +78,19 @@ dependencies {
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.appcompat)
     implementation(libs.compose.google.fonts)
-
     implementation(libs.androidx.runtime.android)
     implementation(libs.kotlinx.serialization.json)
-
-    // Core System
-    implementation(projects.core.presentation.designsystem)
-    implementation(projects.core.presentation.ui)
+    implementation(libs.androidx.activity.compose)
 
     // UI
     implementation(platform(libs.androidx.compose.bom))
-    implementation(libs.androidx.navigation.compose)
-    implementation(libs.androidx.activity.compose)
     implementation(libs.androidx.compose.ui.tooling.preview)
     implementation(libs.androidx.compose.material3)
     implementation(libs.androidx.ui.tooling.preview.android)
     implementation(libs.material)
 
-    // navigation
-    implementation(projects.navigation)
-    //implementation(project(":navigation"))
-
-    // onboarding
-    implementation(projects.feature.onboarding.presentation) // TODO check why this is giving issues
-    implementation(project(":feature:onboarding:presentation")) // TODO this must not be used in this way
+    // Navigation
+    implementation(libs.androidx.navigation.compose)
 
     // Testing
     testImplementation(libs.junit)

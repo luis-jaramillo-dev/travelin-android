@@ -45,8 +45,8 @@ dependencies {
 
     // Core System
     implementation(projects.auth.domain)
-    implementation(projects.auth.data)
     implementation(projects.core.domain)
+    implementation(projects.core.presentation.designsystem)
 
     // Dagger Hilt + Ksp
     implementation(libs.hilt.android)
@@ -58,11 +58,12 @@ dependencies {
     // Core
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.appcompat)
+    implementation(libs.androidx.activity.compose)
 
     // UI
     implementation(platform(libs.androidx.compose.bom))
-    implementation(libs.androidx.activity.compose)
-    implementation(libs.androidx.compose.material3)
+    api(libs.androidx.compose.material3)
+    implementation(libs.androidx.compose.material.icons)
 
     // Testing
     testImplementation(libs.junit)
