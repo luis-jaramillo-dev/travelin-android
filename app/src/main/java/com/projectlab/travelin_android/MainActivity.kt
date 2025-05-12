@@ -22,12 +22,9 @@ class MainActivity : ComponentActivity() {
         setContent {
             TravelinTheme(dynamicColor = false) {
                 val navController = rememberNavController()
-                BookingScreen()
-
-                // TODO: Uncomment this when the navigation is ready
-//                NavigationRoot(
-//                    navController = navController
-//                )
+                NavigationRoot(
+                    navController = navController
+                )
             }
         }
     }
