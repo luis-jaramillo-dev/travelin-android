@@ -7,6 +7,17 @@
     <string name="tour_list_card_duration">2 day 1 night</string>
     <string name="gallery_see_all">See all +%1$s photos</string>
     <string name="tour_list_card_price_2">person</string>
+    <string name="results_near_you">Results near you</string>
+    <string name="get_location">Get Location</string>
+    <string name="no_thanks">No, thanks</string>
+    <string name="location_not_available">Location not available</string>
+    <string name="location_permission_required">Location permission required</string>
+    <string name="permission_denied_enable">Permission denied. Enable it in settings.</string>
+    <string name="location">Location</string>
+    <string name="update_location">Update Location</string>
+    <string name="did_you_change_location">Did you change location?</string>
+    <string name="update">Update</string>
+    <string name="getting_location">Getting location…</string>
     <string name="calendar_button_accept">Accept</string>
     <string name="calendar_button_cancel">Back</string>
     <string name="calendar_title">Choose your booking</string>

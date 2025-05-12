@@ -1,9 +1,0 @@
-<?xml version="1.0" encoding="utf-8"?>
-<resources>
-    <string name="results_near_you">Resultados cerca de ti</string>
-    <string name="get_location">Obtener ubicación</string>
-    <string name="no_thanks">No, gracias</string>
-    <string name="location_not_available">Ubicación no disponible</string>
-    <string name="location_permission_required">Permisos de ubicación requeridos</string>
-    <string name="permission_denied_enable">Permiso denegado. Modificar en las configuraciones.</string>
-</resources>
