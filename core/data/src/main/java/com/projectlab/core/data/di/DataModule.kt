@@ -36,14 +36,16 @@ abstract class DataModule {
 
     companion object {
 
+        @Provides @Singleton
+        fun provideFirebaseFirestore(): FirebaseFirestore = Firebase.firestore
+
+        @Provides
+        fun provideUsersRef(db: FirebaseFirestore): CollectionReference = db.collection(REFERENCE_USERS)
+
+        @Provides
+        fun provideUsersRepository(impl: UsersRepositoryImpl): UsersRepository = impl
+
+
     }
-    @Provides @Singleton
-    fun provideFirebaseFirestore(): FirebaseFirestore = Firebase.firestore
-
-    @Provides
-    fun provideUsersRef(db: FirebaseFirestore): CollectionReference = db.collection(REFERENCE_USERS)
-
-    @Provides
-    fun provideUsersRepository(impl: UsersRepositoryImpl): UsersRepository = impl
 
 }
