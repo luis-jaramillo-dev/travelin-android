@@ -7,6 +7,7 @@ import com.google.firebase.firestore.DocumentReference
 import com.projectlab.core.domain.model.EntityId
 import com.projectlab.core.domain.entity.ItineraryEntity
 import java.time.Instant
+import java.util.Date
 
 data class ItineraryDTO (
 
@@ -21,8 +22,8 @@ data class ItineraryDTO (
         fun fromDomain(domain : ItineraryEntity, userDocRef : DocumentReference): ItineraryDTO =
             ItineraryDTO(
                 title = domain.title,
-                startDate = Timestamp(domain.startDate.toEpochMilli() /1000, 0),
-                endDate = Timestamp(domain.endDate.toEpochMilli() /1000, 0),
+                startDate = Timestamp(Date.from(domain.startDate)),
+                endDate = Timestamp(Date.from(domain.endDate)),
                 totalItineraryPrice = domain.totalItineraryPrice,
                 userRef = userDocRef
             )
@@ -33,8 +34,8 @@ data class ItineraryDTO (
         ItineraryEntity(
             id = EntityId(docId),
             title = title,
-            startDate = Instant.ofEpochSecond(startDate.seconds * 1_000),
-            endDate = Instant.ofEpochSecond(endDate.seconds * 1_000),
+            startDate = Instant.ofEpochMilli(startDate.toDate().time),
+            endDate = Instant.ofEpochMilli(endDate.toDate().time),
             totalItineraryPrice = totalItineraryPrice,
             userRef = EntityId(userRef!!.id) // Assuming userRef is not null
         )

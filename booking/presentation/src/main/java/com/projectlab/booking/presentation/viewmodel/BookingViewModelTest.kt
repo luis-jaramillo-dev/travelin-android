@@ -17,6 +17,7 @@ import com.projectlab.core.domain.model.EntityId
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import java.time.Instant
+import java.util.Date
 
 @HiltViewModel
 class BookingViewModelTest @Inject constructor(
@@ -32,16 +33,17 @@ class BookingViewModelTest @Inject constructor(
     // hardcoding and persist data for Firestore testing purposes (through data layer)
     @RequiresApi(Build.VERSION_CODES.O)
     fun setupTestData() = viewModelScope.launch {
+        // 1) We create a user and get the domain ID
         // Hardcode user data
         val user = UserEntity(
-            firstName = "Carlos",
-            lastName = "Palacios",
+            firstName = "Lorenzo",
+            lastName = "Damone",
             countryCode = "56",
-            phoneNumber = "999999999",
-            email = "carlitospalacios@gmail.com"
+            phoneNumber = "202020",
+            email = "lorenzodamone@gmail.com"
         )
 
-        // 1) We create a user and get the domain ID
+
         val UserIdRes = userRepo.createUser(user)
         if (UserIdRes.isFailure) {
             _seedResult.value = Result.failure(UserIdRes.exceptionOrNull()!!)
@@ -55,8 +57,8 @@ class BookingViewModelTest @Inject constructor(
             id = null,
             title = "Barcelona Trip",
             // TODO : Check Timestamp.now()
-            //startDate = Timestamp.now(),
-            //endDate = Timestamp.now(),
+            //startDate = Timestamp(Date.from(Instant.now())),
+            //endDate = Timestamp(Date.from(Instant.now())),
             startDate = Instant.now(),
             endDate = Instant.now(),
             totalItineraryPrice = 1000.0,
