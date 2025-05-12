@@ -1,6 +1,7 @@
 package com.projectlab.core.presentation.designsystem.component
 
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -25,11 +26,12 @@ fun SearchPlaces(
     modifier: Modifier = Modifier,
     locationIcon: @Composable (Modifier) -> Unit,
     searchString: String,
-    location: String
+    location: String,
+    onClick: () -> Unit
 ) {
     val currentText = stringResource(R.string.search_global_current, location)
 
-    Row(modifier = modifier) {
+    Row(modifier = modifier.clickable(onClick = onClick)) {
         locationIcon(modifier)
         Spacer(modifier = Modifier.width(20.dp))
         Column(verticalArrangement = Arrangement.SpaceAround) {
@@ -54,15 +56,5 @@ fun CurrentLocationText(modifier: Modifier = Modifier, text: String) {
         fontSize = 10.sp,
         fontWeight = FontWeight.W400,
         text = text
-    )
-}
-
-@Preview(showBackground = true)
-@Composable
-fun SearchPlacesPreview() {
-    SearchPlaces(
-        locationIcon = { modifier -> IconLocation(modifier) },
-        searchString = stringResource(R.string.search_global_nearby),
-        location = "Mars"
     )
 }

@@ -2,7 +2,6 @@
 <resources>
     <string name="search_global_nearby">Buscar lugares cercanos</string>
     <string name="search_global_current">Ubicación actual - %1$s</string>
-    <string name="tour_list_card_reviews">%1$d reseñas</string>
     <string name="tour_list_card_price_1">desde $%1$s/</string>
     <string name="tour_list_card_duration">2 días 1 noche</string>
     <string name="gallery_see_all">Ver todas las +%1$s fotos</string>
@@ -19,8 +18,13 @@
     <string name="update">Actualizar</string>
     <string name="getting_location">Obteniendo ubicación…</string>
     <string name="search_city_placeholder">Buscar ciudad</string>
-    <string name="searching_results_for">Buscando resultados para</string>
+    <string name="searching_results">Resultados de la búsqueda:</string>
     <string name="calendar_button_accept">Aceptar</string>
     <string name="calendar_button_cancel">Atrás</string>
     <string name="calendar_title">Elige tu fecha de reserva</string>
+    <string name="tour_list_card_price_not_available">Precio no disponible</string>
+    <string name="tour_list_card_no_reviews">Sin reseñas</string>
+    <string name="show_more_available">Mostrar +%1$d resultados</string>
+    <string name="unknown_location">Ubicación desconocida</string>
+    <string name="tour_list_card_city_not_available">Ciudad no disponible</string>
 </resources>

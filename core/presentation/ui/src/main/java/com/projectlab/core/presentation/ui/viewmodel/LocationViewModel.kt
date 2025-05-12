@@ -1,10 +1,12 @@
 package com.projectlab.core.presentation.ui.viewmodel
 
+import android.content.Context
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.State
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.projectlab.core.presentation.ui.model.LocationData
+import com.projectlab.core.domain.model.Location
+import com.projectlab.core.presentation.designsystem.R
 import com.projectlab.core.presentation.ui.utils.LocationUtils
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
@@ -15,13 +17,13 @@ class LocationViewModel @Inject constructor(
     private val locationUtils: LocationUtils
 ) : ViewModel() {
 
-    private val _location = mutableStateOf<LocationData?>(null)
-    val location: State<LocationData?> = _location
+    private val _location = mutableStateOf<Location?>(null)
+    val location: State<Location?> = _location
 
     private val _address = mutableStateOf<String>("Unknown location")
     val address: State<String> = _address
 
-    fun updateLocation(newLocation: LocationData) {
+    fun updateLocation(newLocation: Location) {
         _location.value = newLocation
 
         viewModelScope.launch {
@@ -29,14 +31,9 @@ class LocationViewModel @Inject constructor(
         }
     }
 
-    fun requestLocationUpdates() {
-        if (locationUtils.hasLocationPermission(locationUtils.context)) {
-            locationUtils.requestLocationUpdates(this)
-        }
-    }
-
-    fun updateAddress(address: String) {
-        _address.value = address
+    fun setUnknownLocation(context: Context) {
+        _location.value = null
+        _address.value = context.getString(R.string.unknown_location)
     }
 
     fun getCurrentLocation() {

@@ -61,6 +61,7 @@ dependencies {
     implementation(libs.play.services.maps)
     implementation(libs.androidx.runtime.android)
     implementation(libs.androidx.activity.compose)
+    implementation(libs.kotlinx.coroutines.play.services)
 
     // UI
     implementation(platform(libs.androidx.compose.bom))

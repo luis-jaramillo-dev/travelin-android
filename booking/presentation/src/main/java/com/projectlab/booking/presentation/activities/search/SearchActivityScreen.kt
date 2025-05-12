@@ -1,26 +1,32 @@
 package com.projectlab.booking.presentation.activities.search
 
+import android.Manifest
 import android.util.Log
+import androidx.activity.compose.rememberLauncherForActivityResult
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
-import androidx.compose.material3.Button
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateMapOf
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.platform.LocalContext
@@ -35,7 +41,9 @@ import com.projectlab.core.presentation.designsystem.component.IconLocation
 import com.projectlab.core.presentation.designsystem.component.TourListCard
 import com.projectlab.core.presentation.ui.viewmodel.LocationViewModel
 import androidx.hilt.navigation.compose.hiltViewModel
-import com.projectlab.core.presentation.ui.components.LocationPermissionComponent
+import com.projectlab.core.domain.model.Location
+import com.projectlab.core.presentation.designsystem.component.ButtonComponent
+import com.projectlab.core.presentation.designsystem.component.ButtonVariant
 import com.projectlab.core.presentation.ui.di.LocationUtilsEntryPoint
 import com.projectlab.core.presentation.ui.utils.LocationUtils
 import dagger.hilt.android.EntryPointAccessors
@@ -49,8 +57,29 @@ fun SearchActivityScreen(
     searchActivityViewModel: SearchActivityViewModel = hiltViewModel(),
     locationUtils: LocationUtils
 ) {
+    val context = LocalContext.current
     val address by locationViewModel.address
     val searchQuery by searchActivityViewModel.query.collectAsState()
+    val searchResults by searchActivityViewModel.activities.collectAsState()
+    val currentLocation = locationViewModel.location.value
+
+    val permissionLauncher = rememberLauncherForActivityResult(
+        ActivityResultContracts.RequestPermission()
+    ) { isGranted ->
+        if (isGranted) {
+            locationViewModel.getCurrentLocation()
+        } else {
+            locationViewModel.setUnknownLocation(context)
+        }
+    }
+
+    LaunchedEffect(Unit) {
+        if (!locationUtils.hasLocationPermission(context)) {
+            permissionLauncher.launch(Manifest.permission.ACCESS_FINE_LOCATION)
+        } else {
+            locationViewModel.getCurrentLocation()
+        }
+    }
 
     val onEnter = {
         Log.d("SearchActivityViewModel", "Enter pressed")
@@ -59,12 +88,26 @@ fun SearchActivityScreen(
         }
     }
 
-    Column(modifier = modifier.padding(20.dp)) {
+    val onSearchNearbyClick: () -> Unit = {
+        if (!locationUtils.hasLocationPermission(context)) {
+            permissionLauncher.launch(Manifest.permission.ACCESS_FINE_LOCATION)
+        } else {
+            locationViewModel.getCurrentLocation()
+            currentLocation?.let {
+                searchActivityViewModel.searchByCurrentLocation(it)
+            }
+        }
+    }
+
+    Column(
+        modifier = modifier
+            .statusBarsPadding()
+            .padding(20.dp)
+    ) {
         Row(verticalAlignment = Alignment.CenterVertically) {
             IconBack(modifier = Modifier, size = 40)
             SearchBarComponent(
                 searchQuery = searchQuery,
-                onQueryChanged = {},
                 onEnter = onEnter,
                 onUseCurrentLocationClicked = {
                     locationViewModel.getCurrentLocation()
@@ -74,28 +117,25 @@ fun SearchActivityScreen(
             )
         }
         Spacer(modifier = Modifier.height(20.dp))
-        SearchPlaces(
-            modifier = modifier.padding(6.dp),
-            locationIcon = { modifier -> IconLocation(modifier) },
-            searchString = stringResource(R.string.search_global_nearby),
-            location = address
-        )
+        if (searchResults.isEmpty()) {
+            SearchPlaces(
+                modifier = modifier.padding(6.dp),
+                locationIcon = { modifier -> IconLocation(modifier) },
+                searchString = stringResource(R.string.search_global_nearby),
+                location = address,
+                onClick = onSearchNearbyClick
+            )
+        }
         Spacer(modifier = Modifier.height(40.dp))
         SearchActivityResultsComponent(
             viewModel = searchActivityViewModel
         )
-        LocationPermissionComponent(
-            locationUtils = locationUtils,
-            viewModel = locationViewModel,
-        )
-
     }
 }
 
 @Composable
 fun SearchBarComponent(
     searchQuery: String,
-    onQueryChanged: (String) -> Unit,
     onEnter: () -> Unit,
     onUseCurrentLocationClicked: () -> Unit,
     modifier: Modifier = Modifier,
@@ -122,56 +162,69 @@ fun SearchBarComponent(
             ),
             singleLine = true
         )
-
-        if (address != null) {
-            val nonNullAddress = address!!
-            Spacer(modifier = Modifier.height(8.dp))
-            Text(
-                text = stringResource(R.string.searching_results_for, nonNullAddress),
-                style = MaterialTheme.typography.bodySmall,
-                modifier = Modifier
-                    .padding(start = 4.dp)
-            )
-        }
     }
 }
 
 @Composable
 fun SearchActivityResultsComponent(
     viewModel: SearchActivityViewModel
-){
+) {
     val activities by viewModel.activities.collectAsState()
     val showAll by viewModel.showAllResults.collectAsState()
 
-    Log.d("SearchActivityResultsComponent", "Activities: $activities")
+    val context = LocalContext.current
+    val locationUtils = remember { LocationUtils(context) }
 
-    Log.d("SearchActivityResults", "Activities count: ${activities.size}")
+    val cityMap = remember { mutableStateMapOf<String, String?>() }
+
+    LaunchedEffect(activities) {
+        activities.forEach { activity ->
+            if (!cityMap.containsKey(activity.id)) {
+                val location = Location(
+                    latitude = activity.geoCode.latitude,
+                    longitude = activity.geoCode.longitude
+                )
+                val city = locationUtils.reverseGeocodeLocation(location)
+                cityMap[activity.id] = city
+            }
+        }
+    }
 
     if (activities.isNotEmpty()) {
-        val firstThree = activities.take(3)
-        val rest = activities.drop(3)
+        val itemsToShow = if (showAll) activities else activities.take(3)
+        val restSize = activities.size - 3
 
-        Column {
-            firstThree.forEach { activity ->
-                TourListCard(activity = activity)
+        Text(
+            text = stringResource(R.string.searching_results),
+            style = MaterialTheme.typography.titleMedium,
+            modifier = Modifier.padding(start = 4.dp)
+        )
+
+        Spacer(modifier = Modifier.height(10.dp))
+
+        LazyColumn {
+            items(itemsToShow) { activity ->
+                val city = cityMap[activity.id]
+
+                TourListCard(
+                    activity = activity,
+                    modifier = Modifier.fillMaxWidth(),
+                    city = city
+                )
+
                 Spacer(modifier = Modifier.height(16.dp))
             }
 
-            if (!showAll && rest.isNotEmpty()) {
-                Button(
-                    onClick = { viewModel.showAllResults() },
-                    modifier = Modifier.padding(vertical = 8.dp)
-                ) {
-                    Text("Show +${rest.size} more available")
-                }
-            }
-
-            if (showAll && rest.isNotEmpty()) {
-                LazyColumn {
-                    items(rest) { activity ->
-                        TourListCard(activity = activity)
-                        Spacer(modifier = Modifier.height(16.dp))
-                    }
+            if (!showAll && restSize > 0) {
+                item {
+                    ButtonComponent(
+                        modifier = Modifier
+                            .padding(vertical = 8.dp)
+                            .fillMaxWidth(),
+                        text = stringResource(R.string.show_more_available, restSize),
+                        onClick = { viewModel.showAllResults() },
+                        variant = ButtonVariant.Outline,
+                    )
                 }
             }
         }

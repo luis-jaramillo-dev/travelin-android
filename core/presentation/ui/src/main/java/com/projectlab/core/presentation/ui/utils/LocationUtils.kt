@@ -1,12 +1,12 @@
 package com.projectlab.core.presentation.ui.utils
 
-
 import android.Manifest
 import android.annotation.SuppressLint
 import android.content.Context
 import android.content.pm.PackageManager
 import android.location.Geocoder
 import android.os.Looper
+import android.util.Log
 import androidx.core.content.ContextCompat
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationCallback
@@ -14,7 +14,7 @@ import com.google.android.gms.location.LocationRequest
 import com.google.android.gms.location.LocationResult
 import com.google.android.gms.location.LocationServices
 import com.google.android.gms.location.Priority
-import com.projectlab.core.presentation.ui.model.LocationData
+import com.projectlab.core.domain.model.Location
 import com.projectlab.core.presentation.ui.viewmodel.LocationViewModel
 import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.Dispatchers
@@ -22,6 +22,7 @@ import kotlinx.coroutines.withContext
 import java.io.IOException
 import java.util.Locale
 import javax.inject.Inject
+import kotlinx.coroutines.tasks.await
 
 class LocationUtils @Inject constructor (@ApplicationContext val context: Context) {
 
@@ -33,7 +34,7 @@ class LocationUtils @Inject constructor (@ApplicationContext val context: Contex
             override fun onLocationResult(locationResult: LocationResult) {
                 super.onLocationResult(locationResult)
                 locationResult.lastLocation?.let {
-                    val location = LocationData(latitude = it.latitude, longitude = it.longitude)
+                    val location = Location(latitude = it.latitude, longitude = it.longitude)
                     viewModel.updateLocation(location)
                 }
             }
@@ -58,7 +59,7 @@ class LocationUtils @Inject constructor (@ApplicationContext val context: Contex
                 ) == PackageManager.PERMISSION_GRANTED
     }
 
-    suspend fun reverseGeocodeLocation(location: LocationData): String = withContext(Dispatchers.IO) {
+    suspend fun reverseGeocodeLocation(location: Location): String = withContext(Dispatchers.IO) {
         try {
             val geocoder = Geocoder(context, Locale.getDefault())
             val addresses = geocoder.getFromLocation(location.latitude, location.longitude, 1)
@@ -77,7 +78,7 @@ class LocationUtils @Inject constructor (@ApplicationContext val context: Contex
         }
     }
 
-    suspend fun getCoordinatesFromLocation(locationName: String): LocationData? = withContext(Dispatchers.IO) {
+    suspend fun getCoordinatesFromLocation(locationName: String): Location? = withContext(Dispatchers.IO) {
         try {
             val geocoder = Geocoder(context, Locale.getDefault())
             val addressList = geocoder.getFromLocationName(locationName, 1)
@@ -89,7 +90,7 @@ class LocationUtils @Inject constructor (@ApplicationContext val context: Contex
                 val city = address.locality ?: address.subAdminArea ?: ""
                 val country = address.countryName ?: ""
 
-                LocationData(
+                Location(
                     latitude = latitude,
                     longitude = longitude,
                     city = city,
@@ -106,16 +107,18 @@ class LocationUtils @Inject constructor (@ApplicationContext val context: Contex
     }
 
     @SuppressLint("MissingPermission")
-    fun getCurrentLocation(): LocationData? {
-        var locationData: LocationData? = null
-        _fusedLocationClient.lastLocation.addOnSuccessListener { location ->
-            location?.let {
-                locationData = LocationData(
+    suspend fun getCurrentLocation(): Location? {
+        return try {
+            val androidLocation = _fusedLocationClient.lastLocation.await()
+            androidLocation?.let {
+                Location(
                     latitude = it.latitude,
                     longitude = it.longitude
                 )
             }
+        } catch (e: Exception) {
+            Log.e("LocationUtils", "Error getting location: ${e.message}")
+            null
         }
-        return locationData
     }
 }

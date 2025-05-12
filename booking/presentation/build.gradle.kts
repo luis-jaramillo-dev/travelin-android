@@ -53,7 +53,6 @@ dependencies {
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.appcompat)
     implementation(libs.androidx.runtime.android)
-    implementation(libs.androidx.ui.android)
 
     // Dagger Hilt + Ksp
     implementation(libs.hilt.android)

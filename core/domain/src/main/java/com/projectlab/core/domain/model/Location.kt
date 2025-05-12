@@ -1,6 +1,6 @@
-package com.projectlab.core.presentation.ui.model
+package com.projectlab.core.domain.model
 
-data class LocationData(
+data class Location(
     val latitude: Double,
     val longitude: Double,
     val city: String? = null,

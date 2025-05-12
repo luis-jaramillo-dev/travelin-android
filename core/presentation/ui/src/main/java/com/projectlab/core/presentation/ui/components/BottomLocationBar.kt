@@ -18,11 +18,11 @@ import com.projectlab.core.presentation.designsystem.component.ButtonComponent
 import com.projectlab.core.presentation.designsystem.component.ButtonVariant
 import com.projectlab.core.presentation.designsystem.theme.TravelinTheme
 import com.projectlab.core.presentation.designsystem.R
-import com.projectlab.core.presentation.ui.model.LocationData
+import com.projectlab.core.domain.model.Location
 
 @Composable
 fun BottomLocationBar(
-    location: LocationData?,
+    location: Location?,
     onGetLocation: () -> Unit,
 ) {
     val labelText = if (location == null) {

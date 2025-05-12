@@ -10,7 +10,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
-import com.projectlab.core.presentation.ui.model.LocationPermissionState
+import com.projectlab.core.domain.util.LocationPermissionState
 import com.projectlab.core.presentation.ui.utils.LocationUtils
 import com.projectlab.core.presentation.ui.viewmodel.LocationViewModel
 

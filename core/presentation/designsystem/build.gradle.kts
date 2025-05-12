@@ -48,14 +48,11 @@ dependencies {
 
     // Core System
     implementation(projects.core.data)
+    implementation(projects.core.domain)
 
     // Core
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.appcompat)
-
-    // Core System
-    implementation(projects.core.data)
-    implementation(projects.core.domain)
 
     // UI
     implementation(platform(libs.androidx.compose.bom))
@@ -66,6 +63,7 @@ dependencies {
     implementation(libs.androidx.compose.ui.tooling.preview)
     implementation(libs.coil.compose)
     api(libs.androidx.compose.material3)
+    implementation(libs.androidx.navigation.runtime.android)
 
     // Testing
     debugImplementation(libs.androidx.compose.ui.tooling)

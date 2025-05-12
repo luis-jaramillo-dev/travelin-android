@@ -4,11 +4,9 @@ import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.projectlab.core.data.model.ActivityDto
-import com.projectlab.core.presentation.ui.model.LocationData
+import com.projectlab.core.domain.model.Location
 import com.projectlab.core.data.usecase.GetActivitiesUseCase
 import com.projectlab.core.presentation.ui.utils.LocationUtils
-import com.projectlab.core.data.mapper.toDomain
-import com.projectlab.core.data.mapper.toDomainList
 import com.projectlab.core.data.repository.ActivitiesApiService
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.*
@@ -61,20 +59,15 @@ class SearchActivityViewModel @Inject constructor(
         }
     }
 
-    fun searchByLocation(location: LocationData) {
+    fun searchByCurrentLocation(location: Location) {
         viewModelScope.launch {
+            _isLoading.value = true
             try {
-                _isLoading.value = true
-                _error.value = null
-                _showAllResults.value = false
-
-                val activitiesResult = getActivitiesUseCase(
-                    latitude = location.latitude,
-                    longitude = location.longitude
-                )
-
-                _activities.value = activitiesResult.data
-                address.value = "${location.city}, ${location.country}"
+                val addressString = locationUtils.reverseGeocodeLocation(location)
+                address.value = addressString
+                query.value = addressString
+                val activitiesResponse = getActivitiesUseCase(location.latitude, location.longitude)
+                _activities.value = activitiesResponse.data
             } catch (e: Exception) {
                 _error.value = e.localizedMessage ?: "Unknown error"
             } finally {
@@ -85,9 +78,5 @@ class SearchActivityViewModel @Inject constructor(
 
     fun showAllResults() {
         _showAllResults.value = true
-    }
-
-    fun clearError() {
-        _error.value = null
     }
 }
