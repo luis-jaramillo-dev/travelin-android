@@ -5,9 +5,11 @@ import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 import com.projectlab.core.data.Constants.REFERENCE_USERS
+import com.projectlab.core.data.networking.FirestoreFlightRepositoryImpl
 import com.projectlab.core.data.networking.FirestoreItineraryRepositoryImpl
 import com.projectlab.core.data.networking.FirestoreUserRepositoryImpl
 import com.projectlab.core.data.networking.UsersRepositoryImpl
+import com.projectlab.core.domain.repository.FlightRepository
 import com.projectlab.core.domain.repository.ItineraryRepository
 import com.projectlab.core.domain.repository.UserRepository
 import com.projectlab.core.domain.repository.UsersRepository
@@ -31,6 +33,11 @@ abstract class DataModule {
     abstract fun bindItineraryRepository(
         impl: FirestoreItineraryRepositoryImpl
     ): ItineraryRepository
+
+    @Binds
+    abstract fun bindFlightRepository(
+        impl: FirestoreFlightRepositoryImpl
+    ) : FlightRepository
 
     // TODO: implement: bind ItineraryRepository, FlightRepository, etc.
 

@@ -17,7 +17,13 @@ data class FlightEntity(
         "airportCodeRef" to "",
         "time" to ""
     ),
-    val passengerNumber: List<Map<String, Any>> = emptyList(),
+    val passengerNumber: Map<String, Any> = mapOf(
+        "adultsNumber" to 0,
+        "kidsNumber" to 0,
+        "babiesWithSitNumber" to 0,
+        "babiesInArmsNumber" to 0
+    ),
     val price: Double = 0.0,
-    val itineraryRef: EntityId
+    val itineraryRef: EntityId? = null,
+    val userRef: EntityId? = null
 )

@@ -27,6 +27,13 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
+        <!-- MockActivityTest is used for testing purposes only.
+        TODO: delete this in order to get production scenario -->
+        <activity
+            android:name=".MockActivityTest"
+            android:exported="true" />
+
     </application>
 
 </manifest>
