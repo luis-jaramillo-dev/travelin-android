@@ -1,4 +1,4 @@
-package auth
+package com.projectlab.travelin_android.auth
 
 data class TokenResponse(
     val access_token: String,

@@ -1,4 +1,4 @@
-package model
+package com.projectlab.travelin_android.model
 
 /*import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter

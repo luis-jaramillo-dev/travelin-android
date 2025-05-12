@@ -27,11 +27,11 @@ import androidx.activity.enableEdgeToEdge
 import androidx.navigation.compose.rememberNavController
 import com.projectlab.core.presentation.designsystem.theme.TravelinTheme
 import dagger.hilt.android.AndroidEntryPoint
-import flight.DatePickerTestScreen
+//import com.projectlab.travelin_android.flight.DatePickerTestScreen
 //import flight.FlightScreen
-import flight.FlightScreen2
-import flight.FlightScreenContainer
-import flight.TestDatePickerScreen
+import com.projectlab.travelin_android.flight.FlightScreen2
+import com.projectlab.travelin_android.flight.FlightScreenContainer
+//import com.projectlab.travelin_android.flight.TestDatePickerScreen
 import com.projectlab.travelin_android.navigation.NavigationRoot
 
 @AndroidEntryPoint
@@ -46,13 +46,13 @@ class MainActivity : ComponentActivity() {
                         Column(Modifier
                             .padding(padding)
                             .padding(horizontal = 16.dp)) {
-                            val navController = rememberNavController()
+                            /*val navController = rememberNavController()
                             NavigationRoot(
                                 navController = navController
-                            )
+                            )*/
                             //ExampleUI()
-                          /* FlightScreenContainer(
-                           )*/
+                           FlightScreenContainer(
+                           )
                         }
 
                         })

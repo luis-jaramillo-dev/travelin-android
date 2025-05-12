@@ -1,4 +1,4 @@
-package auth
+package com.projectlab.travelin_android.auth
 
 import kotlinx.coroutines.runBlocking
 import okhttp3.Interceptor

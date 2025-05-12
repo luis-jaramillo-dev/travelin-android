@@ -1,6 +1,6 @@
-package repository
-import model.CityLocation
-import model.Flight
+package com.projectlab.travelin_android.repository
+import com.projectlab.travelin_android.model.CityLocation
+import com.projectlab.travelin_android.model.Flight
 interface FlightRepository{
 
     suspend fun searchCityLocations(keyword: String): List<CityLocation>

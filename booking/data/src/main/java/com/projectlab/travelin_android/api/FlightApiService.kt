@@ -1,7 +1,7 @@
-package api
+package com.projectlab.travelin_android.api
 
-import dto.FlightOffersResponseDto
-import dto.LocationResponse
+import com.projectlab.travelin_android.dto.FlightOffersResponseDto
+import com.projectlab.travelin_android.dto.LocationResponse
 import retrofit2.http.GET
 import retrofit2.http.Query
 

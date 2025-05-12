@@ -1,10 +1,10 @@
 package com.projectlab.travelin_android.booking.di
 
 import android.content.Context
-import api.FlightApiService
-import auth.AuthApi
-import auth.AuthInterceptor
-import auth.TokenProvider
+import com.projectlab.travelin_android.api.FlightApiService
+import com.projectlab.travelin_android.auth.AuthApi
+import com.projectlab.travelin_android.auth.AuthInterceptor
+import com.projectlab.travelin_android.auth.TokenProvider
 import com.google.firebase.firestore.FirebaseFirestore
 import dagger.Module
 import dagger.Provides
@@ -16,11 +16,10 @@ import di.ApiKey
 import di.BaseUrl
 import javax.inject.Singleton
 import okhttp3.OkHttpClient
-import repository.FlightRepository
-import repository.FlightRepositoryImpl
+import com.projectlab.travelin_android.repository.FlightRepository
+import com.projectlab.travelin_android.repository.FlightRepositoryImpl
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
-import android.util.Log
 
 
 @Module

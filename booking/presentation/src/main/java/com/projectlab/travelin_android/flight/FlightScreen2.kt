@@ -1,4 +1,4 @@
-package flight
+package com.projectlab.travelin_android.flight
 
 import android.app.DatePickerDialog
 import android.util.Log
@@ -26,12 +26,12 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
-import model.FlightSearchParams
+import com.projectlab.travelin_android.model.FlightSearchParams
 import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.platform.LocalContext
 import androidx.hilt.navigation.compose.hiltViewModel
-import model.CityLocation
-import model.Flight
+import com.projectlab.travelin_android.model.CityLocation
+import com.projectlab.travelin_android.model.Flight
 import java.util.Calendar
 
 @Composable
@@ -71,22 +71,7 @@ fun FlightScreen2(
             }
         )
         Spacer(modifier = Modifier.height(16.dp))
-        /*OutlinedTextField(
-            value = origin,
-            onValueChange = {
-                origin = it
-                viewModel.searchCityOrigin(it)},
-            label = { Text("Origen (IATA)") },
-            singleLine = true
-        )*/
 
-        /*OutlinedTextField(
-            value = destination,
-            onValueChange = { destination = it
-                viewModel.searchCityDestination(it)},
-            label = { Text("Destino (IATA)") },
-            singleLine = true
-        )*/
         CityInputField(
             label = "Destino (Ciudad o IATA)",
             value = destination,
@@ -170,64 +155,7 @@ fun FlightScreenContainer(
     )
 }
 
-/*@Composable
-fun OriginInputField(
-    origin: String,
-    onOriginChange: (String) -> Unit,
-    originSuggestions: List<CityLocation>,
-    onSuggestionClick: (String) -> Unit
-) {
-    Column {
-        OutlinedTextField(
-            value = origin,
-            onValueChange = onOriginChange,
-            label = { Text("Origen (Ciudad o IATA)") },
-            singleLine = true,
-            modifier = Modifier.fillMaxWidth()
-        )
-        AnimatedVisibility(visible = originSuggestions.isNotEmpty()) {
-            Column {
 
-        // Sugerencias (máximo 5 para evitar saturar la UI)
-        originSuggestions.take(5).forEach { suggestion ->
-            TextButton(
-                onClick = { onSuggestionClick(suggestion.iataCode) },
-                modifier = Modifier.fillMaxWidth()
-            ) {
-                Text("${suggestion.city} - ${suggestion.iataCode}")
-            }}}
-        }
-    }
-}*/
-/*@Composable
-fun DestinationInputField(
-    destination: String,
-    onDestinationChange: (String) -> Unit,
-    destinationSuggestions: List<CityLocation>,
-    onSuggestionClick: (String) -> Unit
-) {
-    Column {
-        OutlinedTextField(
-            value = destination,
-            onValueChange = onDestinationChange,
-            label = { Text("Destino (Ciudad o IATA)") },
-            singleLine = true,
-            modifier = Modifier.fillMaxWidth()
-        )
-        AnimatedVisibility(visible = destinationSuggestions.isNotEmpty()) {
-            Column {
-
-        // Lista de sugerencias debajo del campo
-        destinationSuggestions.take(5).forEach { suggestion ->
-            TextButton(
-                onClick = { onSuggestionClick(suggestion.iataCode) },
-                modifier = Modifier.fillMaxWidth()
-            ) {
-                Text("${suggestion.city} - ${suggestion.iataCode}")
-            }}}
-        }
-    }
-}*/
 @Composable
 fun CityInputField(
     label: String,
@@ -258,7 +186,7 @@ fun CityInputField(
         }
     }
 }
-@Composable
+/*@Composable
 fun DatePickerField(
     selectedDate: String,
     onDateSelected: (String) -> Unit
@@ -292,8 +220,8 @@ fun DatePickerField(
 
                 datePickerDialog.show() }
     )
-}
-@Composable
+}*/
+/*@Composable
 fun TestDatePickerScreen() {
     var date by remember { mutableStateOf("") }
 
@@ -305,7 +233,8 @@ fun TestDatePickerScreen() {
             onDateSelected = { date = it }
         )
     }
-}
+}*/
+/*
 @Composable
 fun DatePickerTestScreen() {
     var selectedDate by remember { mutableStateOf("") }
@@ -321,4 +250,4 @@ fun DatePickerTestScreen() {
             onDateSelected = { selectedDate = it }
         )
     }
-}
+}*/

@@ -51,6 +51,7 @@ dependencies {
     implementation(libs.hilt.android.compiler)
     implementation(libs.androidx.foundation.android)
     implementation(project(":booking:domain"))
+    implementation(libs.androidx.compose.ui.ui.tooling.preview.android)
     ksp(libs.hilt.android.compiler)
 
     implementation(libs.hilt.navigation.compose)

@@ -1,4 +1,4 @@
-package auth
+package com.projectlab.travelin_android.auth
 
 import android.content.Context
 import dagger.hilt.android.qualifiers.ApplicationContext

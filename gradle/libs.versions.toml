@@ -34,6 +34,7 @@ lifeycle = "2.8.7"
 foundationAndroid = "1.8.0"
 runtime = "1.8.0"
 threetenbp = "1.5.1"
+uiToolingPreviewAndroidVersion = "1.8.1"
 
 [libraries]
 androidx-activity-compose = { module = "androidx.activity:activity-compose", version.ref = "activityCompose" }
@@ -87,6 +88,7 @@ androidx-foundation-android = { group = "androidx.compose.foundation", name = "f
 runtime = {group = "androidx.compose.runtime", name = "runtime", version.ref = "runtime"}
 #to use characteristic of api 26 in 25 and bellow
 threetenbp = {group = "org.threeten", name = "threetenbp", version.ref = "threetenbp"}
+androidx-compose-ui-ui-tooling-preview-android = { group = "androidx.compose.ui", name = "ui-tooling-preview-android", version.ref = "uiToolingPreviewAndroidVersion" }
 
 
 

@@ -1,13 +1,13 @@
-package repository
+package com.projectlab.travelin_android.repository
 
 import android.util.Log
-import api.FlightApiService
+import com.projectlab.travelin_android.api.FlightApiService
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.gson.Gson
 import jakarta.inject.Inject
-import mapper.toDomain
-import model.CityLocation
-import model.Flight
+import com.projectlab.travelin_android.mapper.toDomain
+import com.projectlab.travelin_android.model.CityLocation
+import com.projectlab.travelin_android.model.Flight
 
 class FlightRepositoryImpl @Inject constructor(
     private val api: FlightApiService,

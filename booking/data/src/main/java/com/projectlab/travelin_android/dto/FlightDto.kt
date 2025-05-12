@@ -1,4 +1,4 @@
-package dto
+package com.projectlab.travelin_android.dto
 
 
 data class FlightOffersResponseDto(

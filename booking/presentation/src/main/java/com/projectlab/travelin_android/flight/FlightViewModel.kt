@@ -1,4 +1,4 @@
-package flight
+package com.projectlab.travelin_android.flight
 
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateListOf
@@ -11,11 +11,11 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
-import model.CityLocation
+import com.projectlab.travelin_android.model.CityLocation
 import javax.inject.Inject
-import model.Flight
-import usecase.GetFlightsUseCase
-import usecase.SearchCityLocationsUseCase
+import com.projectlab.travelin_android.model.Flight
+import com.projectlab.travelin_android.usecase.GetFlightsUseCase
+import com.projectlab.travelin_android.usecase.SearchCityLocationsUseCase
 
 
 @HiltViewModel

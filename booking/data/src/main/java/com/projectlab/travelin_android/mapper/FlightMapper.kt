@@ -1,11 +1,11 @@
-package mapper
+package com.projectlab.travelin_android.mapper
 
 import android.util.Log
 import com.google.gson.Gson
-import dto.FlightDto
-import model.Flight
-import model.FlightSegment
-import model.Price
+import com.projectlab.travelin_android.dto.FlightDto
+import com.projectlab.travelin_android.model.Flight
+import com.projectlab.travelin_android.model.FlightSegment
+import com.projectlab.travelin_android.model.Price
 
 fun FlightDto.toDomain(): Flight {
     // Convertir los segmentos de itinerario

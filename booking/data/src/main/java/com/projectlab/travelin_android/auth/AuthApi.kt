@@ -1,4 +1,4 @@
-package auth
+package com.projectlab.travelin_android.auth
 
 import retrofit2.http.Field
 import retrofit2.http.FormUrlEncoded

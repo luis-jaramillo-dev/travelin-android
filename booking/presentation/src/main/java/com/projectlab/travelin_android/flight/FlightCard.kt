@@ -1,4 +1,4 @@
-package flight
+package com.projectlab.travelin_android.flight
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -19,7 +19,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
-import model.Flight
+import com.projectlab.travelin_android.model.Flight
 
 @Composable
 fun FlightCard(flight: Flight, modifier: Modifier = Modifier) {
@@ -68,7 +68,7 @@ fun FlightCard(flight: Flight, modifier: Modifier = Modifier) {
 }
 
 @Composable
-fun FlightList(flights: List<Flight>,modifier: Modifier=Modifier) {
+fun FlightList(flights: List<Flight>, modifier: Modifier=Modifier) {
     LazyColumn(
         contentPadding = PaddingValues(8.dp),
         verticalArrangement = Arrangement.spacedBy(8.dp)

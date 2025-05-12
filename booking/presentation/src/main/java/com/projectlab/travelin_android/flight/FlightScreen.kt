@@ -1,5 +1,5 @@
 
-package flight
+package com.projectlab.travelin_android.flight
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
