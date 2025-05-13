@@ -24,6 +24,6 @@ data class FlightEntity(
         "babiesInArmsNumber" to 0
     ),
     val price: Double = 0.0,
-    val itineraryRef: EntityId? = null,
-    val userRef: EntityId? = null
+    val userRef: EntityId? = null,
+    val itineraryRef: EntityId? = null
 )

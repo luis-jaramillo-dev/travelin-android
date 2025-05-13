@@ -33,14 +33,15 @@ class FlightDTO @RequiresApi(Build.VERSION_CODES.O) constructor(
         "babiesInArmsNumber" to 0
     ),
     val price: Double = 0.0,
-    val userRef: DocumentReference? = null,
-    val itineraryRef: DocumentReference? = null
+    //val userRef: DocumentReference? = null,
+    //val itineraryRef: DocumentReference? = null
 ){
     companion object {
         @RequiresApi(Build.VERSION_CODES.O)
         fun fromDomain(domain: FlightEntity,
                        userDocRef: DocumentReference,
-                       itineraryDocRef: DocumentReference
+                       itineraryDocRef: DocumentReference,
+                       airportDocRef: DocumentReference
         ): FlightDTO =
             FlightDTO(
                 airline = domain.airline,
@@ -50,13 +51,17 @@ class FlightDTO @RequiresApi(Build.VERSION_CODES.O) constructor(
                 arrivalAirport = domain.arrivalAirport,
                 passengerNumber = domain.passengerNumber,
                 price = domain.price,
-                userRef = userDocRef,
-                itineraryRef = itineraryDocRef
+                //userRef = userDocRef,
+                //itineraryRef = itineraryDocRef
             )
     }
 
     @RequiresApi(Build.VERSION_CODES.O)
-    fun toDomain(docId: String): FlightEntity =
+    fun toDomain(
+        docId: String,
+        userRef: EntityId,
+        itineraryRef: EntityId
+    ): FlightEntity =
         FlightEntity(
             id = EntityId(docId),
             airline = airline,
@@ -66,7 +71,7 @@ class FlightDTO @RequiresApi(Build.VERSION_CODES.O) constructor(
             arrivalAirport = arrivalAirport,
             passengerNumber = passengerNumber,
             price = price,
-            userRef = EntityId(userRef!!.id), // Assuming userRef is not null
-            itineraryRef = EntityId(itineraryRef!!.id) // Assuming itineraryRef is not null
+            userRef = userRef,
+            itineraryRef = itineraryRef
         )
 }

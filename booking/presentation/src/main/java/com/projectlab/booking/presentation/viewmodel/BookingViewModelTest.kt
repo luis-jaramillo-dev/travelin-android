@@ -42,11 +42,11 @@ class BookingViewModelTest @Inject constructor(
         // 1) We create a user and get the domain ID
         // Hardcode user data
         val user = UserEntity(
-            firstName           = "FRANCISCO",
-            lastName            = "I PP",
-            countryCode         = "07",
-            phoneNumber         = "12121212",
-            email               = "thepopeFRA@gmail.com"
+            firstName           = "Juan Perez",
+            lastName            = "Cereceda",
+            countryCode         = "20",
+            phoneNumber         = "147258123",
+            email               = "jpcereceda@gmail.com"
         )
 
         // We create the user in Firestore through the repository
@@ -62,13 +62,10 @@ class BookingViewModelTest @Inject constructor(
         // 2) We create a Itinerary:
         val itinerary = ItineraryEntity(
             id                  = null,
-            title               = "Trip to Rome",
-            // TODO : Check Timestamp.now()
-            //startDate = Timestamp(Date.from(Instant.now())),
-            //endDate = Timestamp(Date.from(Instant.now())),
+            title               = "Trip to Cancun",
             startDate           = Instant.now(),
-            endDate             = Instant.now(),
-            totalItineraryPrice = 6000.0,
+            endDate             = Instant.now().plusSeconds(2592000),
+            totalItineraryPrice = 8000.0,
             userRef             = userId
         )
 
@@ -85,15 +82,15 @@ class BookingViewModelTest @Inject constructor(
         // 3) We create a flight:
         val flight = FlightEntity(
             id                  = null,
-            airline             = "Latam",
-            flightNumber        = "170",
-            flightClass         = "Premium",
+            airline             = "Latam Airlines",
+            flightNumber        = "200",
+            flightClass         = "Economy",
             departureAirport    = mapOf(
                 "airportCodeRef" to "CHI",
                 "time" to Timestamp(Date(System.currentTimeMillis()))
             ),
             arrivalAirport      = mapOf(
-                "airportCodeRef" to "VAT",
+                "airportCodeRef" to "CAN",
                 "time" to Timestamp(Date(System.currentTimeMillis()))
             ),
             passengerNumber     = mapOf(
@@ -102,7 +99,7 @@ class BookingViewModelTest @Inject constructor(
                 "babiesWithSitNumber" to 5,
                 "babiesInArmsNumber" to 1
             ),
-            price               = 5000.0,
+            price               = 3000.0,
             userRef             = userId,
             itineraryRef        = itineraryId
         )
@@ -117,16 +114,16 @@ class BookingViewModelTest @Inject constructor(
         // We create a Hotel:
         val hotel = HotelEntity(
             id                  = null,
-            hotelName           = "Hotel de la Fe",
-            hotelRoomNumber     = 1033,
-            hotelPhone          = 15888,
+            hotelName           = "Hotel Bienvenida",
+            hotelRoomNumber     = 202,
+            hotelPhone          = 11111111,
             locationRef         = EntityId("location123"), // TODO: Add id form firestore
-            guestName           = "francisco",
-            guestPhone          = 12121212,
-            idNumber            = 895,
+            guestName           = "Cereceda",
+            guestPhone          = 22222222,
+            idNumber            = 210,
             checkInDate         = Instant.now(),
             checkOutDate        = Instant.now().plusSeconds(86400),
-            hotelPrice          = 800.0,
+            hotelPrice          = 1100.0,
             userRef             = userId,
             itineraryRef        = itineraryId
         )

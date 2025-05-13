@@ -24,8 +24,12 @@ class FirestoreFlightRepositoryImpl @Inject constructor (
         val itineraryDocRef = userDocRef
             .collection("itineraries")
             .document(flight.itineraryRef?.value ?: throw IllegalArgumentException("itineraryRef is null"))
+        // airport reference:
+        val airportDocRef = firestore
+            .collection("airports")
+            .document(flight.departureAirport["airportCodeRef"]?.toString() ?: throw IllegalArgumentException("airportCodeRef is null"))
         // create dto:
-        val dto = FlightDTO.fromDomain(flight, userDocRef, itineraryDocRef)
+        val dto = FlightDTO.fromDomain(flight, userDocRef, itineraryDocRef, airportDocRef)
         // add to firestore:
         val flightCol = itineraryDocRef.collection("flights")
         val docRef = flightCol.document()
