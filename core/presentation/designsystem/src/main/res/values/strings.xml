@@ -27,4 +27,13 @@
     <string name="show_more_available">Show +%1$d more available</string>
     <string name="unknown_location">Unknown location</string>
     <string name="tour_list_card_city_not_available">City not available</string>
+    <string name="error_no_internet">No internet connection.</string>
+    <string name="error_unauthorized">Access denied. Please log in again.</string>
+    <string name="error_timeout">The request timed out.</string>
+    <string name="error_too_many_requests">Too many requests. Please try again later.</string>
+    <string name="error_conflict">A conflict occurred.</string>
+    <string name="error_payload_too_large">Request too large.</string>
+    <string name="error_server">Server error. Try again later.</string>
+    <string name="error_serialization">Data parsing error.</string>
+    <string name="error_unknown">An unknown error occurred.</string>
 </resources>

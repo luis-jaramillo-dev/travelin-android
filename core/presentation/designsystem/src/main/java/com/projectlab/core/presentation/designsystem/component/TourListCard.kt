@@ -9,6 +9,7 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -25,11 +26,12 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.projectlab.core.data.model.ActivityDto
 import com.projectlab.core.presentation.designsystem.R
+import com.projectlab.core.presentation.designsystem.theme.spacing
 
 @Composable
 fun TourListCard(modifier: Modifier = Modifier, activity: ActivityDto, city: String?) {
     val imageUrl = if (activity.pictures.isNotEmpty()) activity.pictures[0] else null
-    val priceText = if (activity.price?.amount != null && activity.price.currencyCode != null) {
+    val priceText = if (activity.price.amount != "" && activity.price.currencyCode != "") {
         "${activity.price.amount} ${activity.price.currencyCode}"
     } else {
         null
@@ -45,7 +47,7 @@ fun TourListCard(modifier: Modifier = Modifier, activity: ActivityDto, city: Str
             )
         }
 
-        Spacer(modifier = Modifier.width(15.dp))
+        Spacer(modifier = Modifier.width(MaterialTheme.spacing.medium))
 
         Column(
             modifier = Modifier.height(150.dp),
@@ -98,7 +100,7 @@ fun TourCity(city: String?) {
 
 @Composable
 fun PriceText(price: String?) {
-    if (price == null || price == "Price not available") {
+    if (price == null || price == "") {
         Text(
             text = stringResource(R.string.tour_list_card_price_not_available),
             fontSize = 12.sp,

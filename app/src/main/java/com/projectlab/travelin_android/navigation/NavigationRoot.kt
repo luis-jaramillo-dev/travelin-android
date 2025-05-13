@@ -6,7 +6,6 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.navigation
-import com.projectlab.booking.presentation.activities.search.SearchActivityScreen
 import com.projectlab.booking.presentation.activities.search.SearchActivityScreenWithHilt
 import com.projectlab.booking.presentation.navigation.SearchScreens
 import com.projectlab.feature.onboarding.presentation.ui.OnboardingScreen
@@ -72,7 +71,6 @@ private fun NavGraphBuilder.authGraph(navController: NavHostController) {
 private fun NavGraphBuilder.searchGraph(navController: NavHostController){
     composable(route = SearchScreens.Activities.route) {
         SearchActivityScreenWithHilt {
-
         }
     }
 }

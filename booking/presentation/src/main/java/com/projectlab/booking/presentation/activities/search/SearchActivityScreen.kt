@@ -26,8 +26,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateMapOf
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
@@ -44,6 +42,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import com.projectlab.core.domain.model.Location
 import com.projectlab.core.presentation.designsystem.component.ButtonComponent
 import com.projectlab.core.presentation.designsystem.component.ButtonVariant
+import com.projectlab.core.presentation.designsystem.theme.spacing
 import com.projectlab.core.presentation.ui.di.LocationUtilsEntryPoint
 import com.projectlab.core.presentation.ui.utils.LocationUtils
 import dagger.hilt.android.EntryPointAccessors
@@ -52,7 +51,6 @@ import dagger.hilt.android.EntryPointAccessors
 @Composable
 fun SearchActivityScreen(
     modifier: Modifier = Modifier,
-    onSearchClicked: () -> Unit,
     locationViewModel: LocationViewModel = hiltViewModel(),
     searchActivityViewModel: SearchActivityViewModel = hiltViewModel(),
     locationUtils: LocationUtils
@@ -102,7 +100,7 @@ fun SearchActivityScreen(
     Column(
         modifier = modifier
             .statusBarsPadding()
-            .padding(20.dp)
+            .padding(MaterialTheme.spacing.SectionSpacing)
     ) {
         Row(verticalAlignment = Alignment.CenterVertically) {
             IconBack(modifier = Modifier, size = 40)
@@ -116,7 +114,7 @@ fun SearchActivityScreen(
                 viewModel = searchActivityViewModel
             )
         }
-        Spacer(modifier = Modifier.height(20.dp))
+        Spacer(modifier = Modifier.height(MaterialTheme.spacing.SectionSpacing))
         if (searchResults.isEmpty()) {
             SearchPlaces(
                 modifier = modifier.padding(6.dp),
@@ -144,7 +142,7 @@ fun SearchBarComponent(
     val query by viewModel.query.collectAsState()
     val address by viewModel.address.collectAsState()
 
-    Column(modifier = modifier.padding(horizontal = 16.dp)) {
+    Column(modifier = modifier.padding(horizontal = MaterialTheme.spacing.medium)) {
         OutlinedTextField(
             value = query,
             onValueChange = {
@@ -197,7 +195,7 @@ fun SearchActivityResultsComponent(
         Text(
             text = stringResource(R.string.searching_results),
             style = MaterialTheme.typography.titleMedium,
-            modifier = Modifier.padding(start = 4.dp)
+            modifier = Modifier.padding(start = MaterialTheme.spacing.extraSmall)
         )
 
         Spacer(modifier = Modifier.height(10.dp))
@@ -219,7 +217,7 @@ fun SearchActivityResultsComponent(
                 item {
                     ButtonComponent(
                         modifier = Modifier
-                            .padding(vertical = 8.dp)
+                            .padding(vertical = MaterialTheme.spacing.small)
                             .fillMaxWidth(),
                         text = stringResource(R.string.show_more_available, restSize),
                         onClick = { viewModel.showAllResults() },
@@ -232,7 +230,7 @@ fun SearchActivityResultsComponent(
 }
 
 @Composable
-fun SearchActivityScreenWithHilt(onSearchClicked: () -> Unit) {
+fun SearchActivityScreenWithHilt(function: () -> Unit) {
     val context = LocalContext.current
     val locationViewModel: LocationViewModel = hiltViewModel()
 
@@ -243,7 +241,6 @@ fun SearchActivityScreenWithHilt(onSearchClicked: () -> Unit) {
     }
 
     SearchActivityScreen(
-        onSearchClicked = onSearchClicked,
         locationViewModel = locationViewModel,
         locationUtils = locationUtils
     )

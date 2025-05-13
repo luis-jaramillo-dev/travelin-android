@@ -3,11 +3,14 @@ package com.projectlab.booking.presentation.activities.search
 import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.projectlab.core.data.mapper.toDtoList
 import com.projectlab.core.data.model.ActivityDto
 import com.projectlab.core.domain.model.Location
+import com.projectlab.core.domain.util.Result
 import com.projectlab.core.data.usecase.GetActivitiesUseCase
 import com.projectlab.core.presentation.ui.utils.LocationUtils
 import com.projectlab.core.data.repository.ActivitiesApiService
+import com.projectlab.core.presentation.ui.utils.ErrorMapper
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
@@ -17,11 +20,12 @@ import javax.inject.Inject
 class SearchActivityViewModel @Inject constructor(
     private val activitiesApiService: ActivitiesApiService,
     private val getActivitiesUseCase: GetActivitiesUseCase,
-    private val locationUtils: LocationUtils
+    private val locationUtils: LocationUtils,
+    private val errorMapper: ErrorMapper
 ) : ViewModel() {
 
     private val _activities = MutableStateFlow<List<ActivityDto>>(emptyList())
-    val activities: StateFlow<List<ActivityDto >> = _activities.asStateFlow()
+    val activities: StateFlow<List<ActivityDto>> = _activities.asStateFlow()
 
     private val _showAllResults = MutableStateFlow(false)
     val showAllResults: StateFlow<Boolean> = _showAllResults.asStateFlow()
@@ -42,19 +46,28 @@ class SearchActivityViewModel @Inject constructor(
     fun onSearchSubmitted() {
         Log.d("SearchActivityViewModel", "Search submitted: ${query.value}")
         viewModelScope.launch {
+            _isLoading.value = true
             try {
                 val locationData = locationUtils.getCoordinatesFromLocation(query.value)
-                Log.d("SearchActivityViewModel", "Coordinates for city: ${query.value} = $locationData")
                 if (locationData != null) {
-                    val activitiesResponse = getActivitiesUseCase(locationData.latitude, locationData.longitude)
-                    Log.d("SearchActivityViewModel", "Activities count: ${activitiesResponse.data.size}")
-                    _activities.value = activitiesResponse.data
+                    when (val result = getActivitiesUseCase(locationData.latitude, locationData.longitude)) {
+                        is Result.Success -> {
+                            Log.d("SearchActivityViewModel", "Fetched ${result.data.size} activities")
+                            _activities.value = result.data.toDtoList()
+                        }
+                        is Result.Error -> {
+                            Log.e("SearchActivityViewModel", "Error: ${result.error}")
+                            _error.value = errorMapper.map(result.error)
+                        }
+
+                    }
                 } else {
                     _error.value = "Could not find coordinates for the specified city"
                 }
             } catch (e: Exception) {
-                Log.e("SearchActivityViewModel", "Error during search: ${e.message}", e)
                 _error.value = e.localizedMessage ?: "Unknown error"
+            } finally {
+                _isLoading.value = false
             }
         }
     }
@@ -66,8 +79,11 @@ class SearchActivityViewModel @Inject constructor(
                 val addressString = locationUtils.reverseGeocodeLocation(location)
                 address.value = addressString
                 query.value = addressString
-                val activitiesResponse = getActivitiesUseCase(location.latitude, location.longitude)
-                _activities.value = activitiesResponse.data
+
+                when (val result = getActivitiesUseCase(location.latitude, location.longitude)) {
+                    is Result.Success -> _activities.value = result.data.toDtoList()
+                    is Result.Error -> _error.value = errorMapper.map(result.error)
+                }
             } catch (e: Exception) {
                 _error.value = e.localizedMessage ?: "Unknown error"
             } finally {

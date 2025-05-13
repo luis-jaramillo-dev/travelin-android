@@ -18,7 +18,6 @@ import retrofit2.converter.gson.GsonConverterFactory
 import javax.inject.Singleton
 import dagger.hilt.android.qualifiers.ApplicationContext
 import okhttp3.logging.HttpLoggingInterceptor
-import javax.inject.Named
 
 @Module
 @InstallIn(SingletonComponent::class)
@@ -55,33 +54,30 @@ object NetworkModule {
 
     @Provides
     @Singleton
-    fun provideAuthInterceptor(tokenProvider: TokenProviderImpl): Interceptor {
+    fun provideAuthInterceptor(tokenProvider: TokenProvider): Interceptor {
         return AuthInterceptor(tokenProvider)
     }
 
     @Provides
     @Singleton
-    fun provideOkHttpClient(): OkHttpClient {
+    fun provideOkHttpClient(authInterceptor: Interceptor): OkHttpClient {
         val logging = HttpLoggingInterceptor().apply {
             level = HttpLoggingInterceptor.Level.BODY
         }
 
         return OkHttpClient.Builder()
+            .addInterceptor(authInterceptor)
             .addInterceptor(logging)
             .build()
     }
 
     @Provides
     @Singleton
-    fun provideActivitiesApiService(tokenProvider: TokenProviderImpl): ActivitiesApiService {
-        val client = OkHttpClient.Builder()
-            .addInterceptor(AuthInterceptor(tokenProvider))
-            .build()
-
+    fun provideActivitiesApiService(okHttpClient: OkHttpClient): ActivitiesApiService {
         return Retrofit.Builder()
             .baseUrl(BASE_URL)
             .addConverterFactory(GsonConverterFactory.create())
-            .client(client)
+            .client(okHttpClient)
             .build()
             .create(ActivitiesApiService::class.java)
     }

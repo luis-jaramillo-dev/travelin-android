@@ -27,4 +27,13 @@
     <string name="show_more_available">Mostrar +%1$d resultados</string>
     <string name="unknown_location">Ubicación desconocida</string>
     <string name="tour_list_card_city_not_available">Ciudad no disponible</string>
+    <string name="error_no_internet">Sin conexión a internet.</string>
+    <string name="error_unauthorized">Acceso denegado. Por favor inicia sesión.</string>
+    <string name="error_timeout">La solicitud ha expirado.</string>
+    <string name="error_too_many_requests">Demasiadas solicitudes. Intenta más tarde.</string>
+    <string name="error_conflict">Ocurrió un conflicto.</string>
+    <string name="error_payload_too_large">La solicitud es demasiado grande.</string>
+    <string name="error_server">Error del servidor. Intenta más tarde.</string>
+    <string name="error_serialization">Error al procesar los datos.</string>
+    <string name="error_unknown">Ocurrió un error desconocido.</string>
 </resources>

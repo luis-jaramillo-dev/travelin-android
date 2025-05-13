@@ -45,15 +45,21 @@ class TokenProviderImpl @Inject constructor(
     override fun getCachedToken(): String? {
         val now = System.currentTimeMillis() / 1000
         return if (cachedToken != null && now < cachedExpiration) {
+            Log.d("TokenProvider", "Using cached token: $cachedToken")
             cachedToken
         } else {
             val token = sharedPreferences.getString(tokenKey, null)
             val expiration = sharedPreferences.getLong(expirationKey, 0)
+            Log.d("TokenProvider", "Fetched token from SharedPreferences: $token, expiration=$expiration")
             if (token != null && now < expiration) {
                 cachedToken = token
                 cachedExpiration = expiration
+                Log.d("TokenProvider", "Token is valid, using it: $cachedToken")
                 token
-            } else null
+            } else{
+                Log.d("TokenProvider", "Token is expired or null")
+                null
+            }
         }
     }
 
