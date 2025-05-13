@@ -58,17 +58,19 @@ dependencies {
     // Core
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.appcompat)
+
+    // Maps
     implementation(libs.play.services.maps)
-    implementation(libs.androidx.runtime.android)
-    implementation(libs.androidx.activity.compose)
+    implementation(libs.play.services.location)
     implementation(libs.kotlinx.coroutines.play.services)
 
     // UI
     implementation(platform(libs.androidx.compose.bom))
+    implementation(libs.androidx.runtime.android)
     implementation(libs.androidx.compose.ui)
+    implementation(libs.androidx.activity.compose)
     implementation(libs.androidx.material3.android)
     implementation(libs.ui.tooling.preview.android)
-    implementation(libs.play.services.location)
     implementation(libs.coil.compose)
     api(libs.androidx.compose.material3)
 
