@@ -1,7 +1,7 @@
 package com.projectlab.booking.data.activities.remote
 
 import com.projectlab.core.data.remote.ActivitiesSearchResponse
-import com.projectlab.core.data.repository.ActivitiesApiService
+import com.projectlab.core.data.remote.ActivitiesApiService
 import javax.inject.Inject
 
 

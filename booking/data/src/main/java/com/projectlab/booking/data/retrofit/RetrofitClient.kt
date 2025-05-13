@@ -1,7 +1,7 @@
 package com.projectlab.booking.data.retrofit
 
 import com.projectlab.core.domain.repository.TokenProvider
-import com.projectlab.core.data.repository.ActivitiesApiService
+import com.projectlab.core.data.remote.ActivitiesApiService
 import kotlinx.coroutines.runBlocking
 import okhttp3.OkHttpClient
 import retrofit2.Retrofit

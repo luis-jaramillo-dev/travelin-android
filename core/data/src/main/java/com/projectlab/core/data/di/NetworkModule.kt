@@ -4,7 +4,7 @@ import android.content.Context
 import android.content.SharedPreferences
 import com.projectlab.core.data.network.AuthInterceptor
 import com.projectlab.core.data.remote.AmadeusApiService
-import com.projectlab.core.data.repository.ActivitiesApiService
+import com.projectlab.core.data.remote.ActivitiesApiService
 import com.projectlab.core.data.repository.TokenProviderImpl
 import com.projectlab.core.domain.repository.TokenProvider
 import dagger.Module

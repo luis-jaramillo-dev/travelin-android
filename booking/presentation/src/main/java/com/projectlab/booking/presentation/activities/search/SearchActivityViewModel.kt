@@ -9,7 +9,7 @@ import com.projectlab.core.domain.model.Location
 import com.projectlab.core.domain.util.Result
 import com.projectlab.core.data.usecase.GetActivitiesUseCase
 import com.projectlab.core.presentation.ui.utils.LocationUtils
-import com.projectlab.core.data.repository.ActivitiesApiService
+import com.projectlab.core.data.remote.ActivitiesApiService
 import com.projectlab.core.presentation.ui.utils.ErrorMapper
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.*

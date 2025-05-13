@@ -2,7 +2,7 @@ package com.projectlab.core.data.di
 
 import com.projectlab.core.data.repository.ActivitiesRepositoryImpl
 import com.projectlab.core.domain.repository.ActivitiesRepository
-import com.projectlab.core.data.repository.ActivitiesApiService
+import com.projectlab.core.data.remote.ActivitiesApiService
 import com.projectlab.core.domain.repository.TokenProvider
 import dagger.Module
 import dagger.Provides

@@ -2,7 +2,7 @@ package com.projectlab.core.data.usecase
 
 import android.util.Log
 import com.projectlab.core.data.mapper.toDomain
-import com.projectlab.core.data.repository.ActivitiesApiService
+import com.projectlab.core.data.remote.ActivitiesApiService
 import com.projectlab.core.domain.model.Activity
 import com.projectlab.core.domain.repository.TokenProvider
 import com.projectlab.core.domain.util.DataError

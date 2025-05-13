@@ -1,10 +1,6 @@
-package com.projectlab.core.data.repository
+package com.projectlab.core.data.remote
 
-import com.projectlab.core.data.remote.ActivitiesSearchResponse
-import com.projectlab.core.domain.util.DataError
-import com.projectlab.core.domain.util.Result
 import retrofit2.http.GET
-import retrofit2.http.Header
 import retrofit2.http.Query
 
 interface ActivitiesApiService {
