@@ -77,6 +77,7 @@ androidx-ui-tooling = { group = "androidx.compose.ui", name = "ui-tooling", vers
 androidx-room-runtime = { module = "androidx.room:room-runtime", version.ref = "roomCompiler" }
 kotlinx-coroutines-core = { group = "org.jetbrains.kotlinx", name = "kotlinx-coroutines-core", version.ref = "coroutinesCore" }
 kotlinx-coroutines-play-services = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-play-services", version.ref = "kotlinx-coroutines" }
+hilt-compiler = { group = "com.google.dagger", name = "hilt-compiler", version.ref = "daggerHilt" }
 
 # Convention PLugins Dependencies
 android-gradlePlugin = { group = "com.android.tools.build", name = "gradle", version.ref = "androidGradlePlugin" }
@@ -103,7 +104,15 @@ google-services = { id = "com.google.gms.google-services", version.ref = "google
 travelinandroid-android-application = { id = "travelin.android.application" }
 travelinandroid-android-application-compose = { id = "travelin.android.application.compose" }
 travelinandroid-android-library = { id = "travelin.android.library" }
-travelinandroid-android-library-compose = { id = "travelin.android.library.copose" }
-travelinandroid-android-hilt = { id = "travelin.android-hilt" }
+travelinandroid-android-library-compose = { id = "travelin.android.library.compose" }
+travelinandroid-android-hilt = { id = "travelin.android.hilt" }
 travelinandroid-featyre-ui = { id = "travelin.feature.ui" }
 travelinandroid-jvm-library = { id = "travelin.jvm.library" }
+
+[bundles]
+retrofit = [
+    "retrofit",
+    "converter-gson",
+    "okhttp-logging",
+    "gson"
+]

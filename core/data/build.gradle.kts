@@ -2,12 +2,7 @@ import java.util.Properties
 
 plugins {
     alias(libs.plugins.travelinandroid.android.library)
-
-    // Dagger Hilt
-    alias(libs.plugins.dagger.hilt.android)
-
-    // Ksp
-    alias(libs.plugins.devtools.ksp)
+    alias(libs.plugins.travelinandroid.android.hilt)
 }
 val localProperties = Properties().apply {
     val localFile = rootProject.file("local.properties")
@@ -27,6 +22,11 @@ android {
         buildConfigField("String", "API_SECRET", "\"$apiSecret\"")
         buildConfigField("String", "BASE_URL", "\"$baseUrl\"")
     }
+
+    buildFeatures {
+        buildConfig = true
+    }
+
 }
 
 dependencies {
@@ -38,17 +38,10 @@ dependencies {
     // Core
     implementation(libs.androidx.room.runtime)
 
-    // Dagger Hilt + Ksp
-    implementation(libs.hilt.android)
-    ksp(libs.hilt.android.compiler)
-
     // Firebase -> Firestore
     implementation(platform(libs.firebase))
     implementation(libs.firebase.firestore)
 
     // Network
-    implementation(libs.retrofit)
-    implementation(libs.converter.gson)
-    implementation(libs.okhttp.logging)
-    implementation(libs.gson)
+    implementation(libs.bundles.retrofit)
 }
