@@ -12,10 +12,12 @@ import jakarta.inject.Inject
 import kotlinx.coroutines.launch
 import com.google.firebase.Timestamp
 import com.google.firebase.firestore.FirebaseFirestore
+import com.projectlab.core.domain.entity.ActivityEntity
 import com.projectlab.core.domain.entity.FlightEntity
 import com.projectlab.core.domain.entity.HotelEntity
 import com.projectlab.core.domain.entity.UserEntity
 import com.projectlab.core.domain.model.EntityId
+import com.projectlab.core.domain.repository.ActivityRepository
 import com.projectlab.core.domain.repository.FlightRepository
 import com.projectlab.core.domain.repository.HotelRepository
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -28,7 +30,8 @@ class BookingViewModelTest @Inject constructor(
     private val userRepo : UserRepository,
     private val itineraryRepo : ItineraryRepository,
     private val flightRepo : FlightRepository,
-    private val hotelRepo : HotelRepository
+    private val hotelRepo : HotelRepository,
+    private val activityRepo : ActivityRepository
     // TODO : add other repositories as needed: flight, hotel, etc.
 ) : ViewModel(){
 
@@ -42,11 +45,11 @@ class BookingViewModelTest @Inject constructor(
         // 1) We create a user and get the domain ID
         // Hardcode user data
         val user = UserEntity(
-            firstName           = "Juan Perez",
-            lastName            = "Cereceda",
-            countryCode         = "20",
-            phoneNumber         = "147258123",
-            email               = "jpcereceda@gmail.com"
+            firstName           = "PABLO PABLO",
+            lastName            = "CARRASCO",
+            countryCode         = "11",
+            phoneNumber         = "123456",
+            email               = "CARRASCOPP@gmail.com"
         )
 
         // We create the user in Firestore through the repository
@@ -62,10 +65,10 @@ class BookingViewModelTest @Inject constructor(
         // 2) We create a Itinerary:
         val itinerary = ItineraryEntity(
             id                  = null,
-            title               = "Trip to Cancun",
+            title               = "Trip to Buenos Aires",
             startDate           = Instant.now(),
             endDate             = Instant.now().plusSeconds(2592000),
-            totalItineraryPrice = 8000.0,
+            totalItineraryPrice = 9000.0,
             userRef             = userId
         )
 
@@ -83,23 +86,23 @@ class BookingViewModelTest @Inject constructor(
         val flight = FlightEntity(
             id                  = null,
             airline             = "Latam Airlines",
-            flightNumber        = "200",
-            flightClass         = "Economy",
+            flightNumber        = "500",
+            flightClass         = "Semi-Premium",
             departureAirport    = mapOf(
                 "airportCodeRef" to "CHI",
                 "time" to Timestamp(Date(System.currentTimeMillis()))
             ),
             arrivalAirport      = mapOf(
-                "airportCodeRef" to "CAN",
+                "airportCodeRef" to "BAI",
                 "time" to Timestamp(Date(System.currentTimeMillis()))
             ),
             passengerNumber     = mapOf(
-                "adultsNumber" to 1,
-                "kidsNumber" to 3,
-                "babiesWithSitNumber" to 5,
+                "adultsNumber" to 6,
+                "kidsNumber" to 1,
+                "babiesWithSitNumber" to 2,
                 "babiesInArmsNumber" to 1
             ),
-            price               = 3000.0,
+            price               = 5000.0,
             userRef             = userId,
             itineraryRef        = itineraryId
         )
@@ -111,19 +114,19 @@ class BookingViewModelTest @Inject constructor(
             return@launch
         }
 
-        // We create a Hotel:
+        // 4) We create a Hotel:
         val hotel = HotelEntity(
             id                  = null,
-            hotelName           = "Hotel Bienvenida",
-            hotelRoomNumber     = 202,
-            hotelPhone          = 11111111,
-            locationRef         = EntityId("location123"), // TODO: Add id form firestore
+            hotelName           = "Hotel de Buenos Aires",
+            hotelRoomNumber     = 30,
+            hotelPhone          = 2222,
+            locationRef         = EntityId("location456"), // TODO: Add id form firestore
             guestName           = "Cereceda",
-            guestPhone          = 22222222,
+            guestPhone          = 111111111,
             idNumber            = 210,
             checkInDate         = Instant.now(),
             checkOutDate        = Instant.now().plusSeconds(86400),
-            hotelPrice          = 1100.0,
+            hotelPrice          = 1500.0,
             userRef             = userId,
             itineraryRef        = itineraryId
         )
@@ -134,6 +137,26 @@ class BookingViewModelTest @Inject constructor(
             _seedResult.value = Result.failure(hotelRes.exceptionOrNull()!!)
             return@launch
         }
+
+        // 5) We create an Activity:
+        val activity = ActivityEntity(
+            id                  = null,
+            name                = "Visit to Casa Rosada",
+            locationRef         = EntityId("location789"), // TODO: Add id form firestore
+            activityDate        = Instant.now(),
+            details             = "Meeting with the president of Argentina",
+            activityPrice       = 20.0,
+            userRef             = userId,
+            itineraryRef        = itineraryId
+        )
+
+        // We create the activity in Firestore through the repository
+        val activityRes = activityRepo.createActivity(activity)
+        if (activityRes.isFailure) {
+            _seedResult.value = Result.failure(activityRes.exceptionOrNull()!!)
+            return@launch
+        }
+
         // TODO: add other test data if it is needed
 
         _seedResult.value = Result.success(Unit) // indicate success, if all went well
