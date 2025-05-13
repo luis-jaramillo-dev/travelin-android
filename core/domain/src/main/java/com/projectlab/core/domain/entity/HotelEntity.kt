@@ -9,12 +9,13 @@ data class HotelEntity(
     val hotelName : String = "",
     val hotelRoomNumber : Int = 0,
     val hotelPhone : Int = 0,
-    val locationRef : Instant,
+    val locationRef : EntityId? = null,
     val guestName : String = "",
     val guestPhone : Int = 0,
     val idNumber : Int = 0,
     val checkInDate : Instant,
     val checkOutDate : Instant,
     val hotelPrice : Double = 0.0,
-    // val itineraryRef : EntityId? = null
+    val userRef : EntityId? = null,
+    val itineraryRef : EntityId? = null
 )
