@@ -9,7 +9,7 @@ import com.projectlab.core.domain.model.EntityId
 import java.time.Instant
 import java.util.Date
 
-data class ActivityDTO (
+data class FirestoreActivityDTO (
     val name: String = "",
     val locationRef: DocumentReference? = null,
     val activityDate: Timestamp = Timestamp.now(),
@@ -23,7 +23,7 @@ data class ActivityDTO (
             userDoc: DocumentReference,
             itineraryDoc: DocumentReference,
             locationDoc: DocumentReference
-        ): ActivityDTO = ActivityDTO(
+        ): FirestoreActivityDTO = FirestoreActivityDTO(
             name          = domain.name,
             locationRef   = locationDoc,
             activityDate  = Timestamp(Date.from(domain.activityDate)),

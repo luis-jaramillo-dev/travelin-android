@@ -7,14 +7,13 @@ import com.google.firebase.firestore.DocumentReference
 import com.google.firebase.firestore.FirebaseFirestore
 import com.projectlab.core.domain.model.EntityId
 import com.projectlab.core.domain.entity.FlightEntity
-import java.time.Instant
 import java.util.Date
 
 // Assuming you have a DocumentReference for the airport collection
 val documentAirportId = "your_airport_document_id" // Replace with actual document ID
 val docRefAirport = FirebaseFirestore.getInstance().collection("airport").document(documentAirportId)
 // TODO: Convert FlightDTO in data class
-class FlightDTO @RequiresApi(Build.VERSION_CODES.O) constructor(
+data class FirestoreFlightDTO @RequiresApi(Build.VERSION_CODES.O) constructor(
     val airline: String = "",
     val flightNumber: String = "",
     val flightClass: String = "",
@@ -42,8 +41,8 @@ class FlightDTO @RequiresApi(Build.VERSION_CODES.O) constructor(
                        userDocRef: DocumentReference,
                        itineraryDocRef: DocumentReference,
                        airportDocRef: DocumentReference
-        ): FlightDTO =
-            FlightDTO(
+        ): FirestoreFlightDTO =
+            FirestoreFlightDTO(
                 airline = domain.airline,
                 flightNumber = domain.flightNumber,
                 flightClass = domain.flightClass,

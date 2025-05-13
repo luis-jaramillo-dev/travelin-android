@@ -1,7 +1,6 @@
 package com.projectlab.core.data.model.dto
-import com.projectlab.core.domain.model.EntityId
 
-data class UserDTO (
+data class FirestoreUserDTO (
     val firstName: String = "",
     val lastName: String = "",
     val countryCode: String = "",
@@ -10,8 +9,8 @@ data class UserDTO (
 ) {
 
     companion object {
-        fun fromDomain(user: com.projectlab.core.domain.entity.UserEntity): UserDTO =
-            UserDTO (
+        fun fromDomain(user: com.projectlab.core.domain.entity.UserEntity): FirestoreUserDTO =
+            FirestoreUserDTO (
                 firstName = user.firstName,
                 lastName = user.lastName,
                 countryCode = user.countryCode,

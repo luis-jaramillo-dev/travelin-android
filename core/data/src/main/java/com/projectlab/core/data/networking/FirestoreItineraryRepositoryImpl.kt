@@ -6,7 +6,7 @@ import com.google.firebase.firestore.FirebaseFirestore
 import com.projectlab.core.domain.model.EntityId
 import com.projectlab.core.domain.entity.ItineraryEntity
 import com.projectlab.core.domain.repository.ItineraryRepository
-import com.projectlab.core.data.model.dto.ItineraryDTO
+import com.projectlab.core.data.model.dto.FirestoreItineraryDTO
 import kotlinx.coroutines.tasks.await
 import javax.inject.Inject
 
@@ -20,7 +20,7 @@ class FirestoreItineraryRepositoryImpl @Inject constructor (
             .collection("users")
             .document(itinerary.userRef?.value ?: throw IllegalArgumentException("userRef is null"))
         // create dto:
-        val dto = ItineraryDTO.fromDomain(itinerary, userDocRef)
+        val dto = FirestoreItineraryDTO.fromDomain(itinerary, userDocRef)
         // add to firestore:
         val itCol = userDocRef.collection("itineraries")
         val docRef = itCol.document()

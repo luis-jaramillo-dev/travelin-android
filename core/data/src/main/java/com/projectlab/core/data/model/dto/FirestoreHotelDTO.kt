@@ -9,7 +9,7 @@ import com.projectlab.core.domain.model.EntityId
 import java.time.Instant
 import java.util.Date
 
-data class HotelDTO (
+data class FirestoreHotelDTO (
     val hotelName: String = "",
     val hotelRoomNumber: Int = 0,
     val hotelPhone: Int = 0,
@@ -29,8 +29,8 @@ data class HotelDTO (
             userDocRef: DocumentReference,
             itineraryDocRef: DocumentReference,
             locationDocRef: DocumentReference
-        ): HotelDTO =
-            HotelDTO(
+        ): FirestoreHotelDTO =
+            FirestoreHotelDTO(
             hotelName = domain.hotelName,
             hotelRoomNumber = domain.hotelRoomNumber,
             hotelPhone = domain.hotelPhone,

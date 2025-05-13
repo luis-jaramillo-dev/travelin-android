@@ -9,8 +9,7 @@ import com.google.firebase.firestore.FirebaseFirestore
 import com.projectlab.core.domain.model.EntityId
 import com.projectlab.core.domain.entity.UserEntity
 import com.projectlab.core.domain.repository.UserRepository
-import com.projectlab.core.data.model.dto.UserDTO
-import kotlinx.coroutines.tasks.await
+import com.projectlab.core.data.model.dto.FirestoreUserDTO
 
 class FirestoreUserRepositoryImpl @Inject constructor(
     private val firestore: FirebaseFirestore
@@ -20,7 +19,7 @@ class FirestoreUserRepositoryImpl @Inject constructor(
 
     override suspend fun createUser(user: UserEntity): Result<EntityId> = runCatching {
         // create dto:
-        val dto = UserDTO.fromDomain(user)
+        val dto = FirestoreUserDTO.fromDomain(user)
         // add to firestore:
         val docRef = userCol.document()
         docRef.set(dto).await()

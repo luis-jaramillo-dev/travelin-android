@@ -3,7 +3,7 @@ package com.projectlab.core.data.networking
 import android.os.Build
 import androidx.annotation.RequiresApi
 import com.google.firebase.firestore.FirebaseFirestore
-import com.projectlab.core.data.model.dto.ActivityDTO
+import com.projectlab.core.data.model.dto.FirestoreActivityDTO
 import com.projectlab.core.domain.entity.ActivityEntity
 import com.projectlab.core.domain.model.EntityId
 import com.projectlab.core.domain.repository.ActivityRepository
@@ -28,7 +28,7 @@ class FirestoreActivityRepositoryImpl @Inject constructor(
             .collection("locations")
             .document(activity.locationRef?.value ?: throw IllegalArgumentException("locationRef is null"))
         // create DTO:
-        val dto = ActivityDTO.fromDomain(activity, userDoc, itinDoc, locationDoc)
+        val dto = FirestoreActivityDTO.fromDomain(activity, userDoc, itinDoc, locationDoc)
         // add to firestore:
         val activityCol = itinDoc.collection("activities")
         val docRef = activityCol.document()

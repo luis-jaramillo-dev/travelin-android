@@ -5,7 +5,7 @@ import androidx.annotation.RequiresApi
 import kotlinx.coroutines.tasks.await
 import javax.inject.Inject
 import com.google.firebase.firestore.FirebaseFirestore
-import com.projectlab.core.data.model.dto.FlightDTO
+import com.projectlab.core.data.model.dto.FirestoreFlightDTO
 import com.projectlab.core.domain.model.EntityId
 import com.projectlab.core.domain.entity.FlightEntity
 import com.projectlab.core.domain.repository.FlightRepository
@@ -29,7 +29,7 @@ class FirestoreFlightRepositoryImpl @Inject constructor (
             .collection("airports")
             .document(flight.departureAirport["airportCodeRef"]?.toString() ?: throw IllegalArgumentException("airportCodeRef is null"))
         // create dto:
-        val dto = FlightDTO.fromDomain(flight, userDocRef, itineraryDocRef, airportDocRef)
+        val dto = FirestoreFlightDTO.fromDomain(flight, userDocRef, itineraryDocRef, airportDocRef)
         // add to firestore:
         val flightCol = itineraryDocRef.collection("flights")
         val docRef = flightCol.document()

@@ -9,7 +9,7 @@ import com.projectlab.core.domain.entity.ItineraryEntity
 import java.time.Instant
 import java.util.Date
 
-data class ItineraryDTO (
+data class FirestoreItineraryDTO (
 
     val title: String = "",
     val startDate: Timestamp = Timestamp.now(),
@@ -19,8 +19,8 @@ data class ItineraryDTO (
 ){
     companion object {
         @RequiresApi(Build.VERSION_CODES.O)
-        fun fromDomain(domain : ItineraryEntity, userDocRef : DocumentReference): ItineraryDTO =
-            ItineraryDTO(
+        fun fromDomain(domain : ItineraryEntity, userDocRef : DocumentReference): FirestoreItineraryDTO =
+            FirestoreItineraryDTO(
                 title = domain.title,
                 startDate = Timestamp(Date.from(domain.startDate)),
                 endDate = Timestamp(Date.from(domain.endDate)),

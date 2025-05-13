@@ -45,7 +45,7 @@ class BookingViewModelTest @Inject constructor(
         // 1) We create a user and get the domain ID
         // Hardcode user data
         val user = UserEntity(
-            firstName           = "PABLO PABLO",
+            firstName           = "JARVAN IV",
             lastName            = "CARRASCO",
             countryCode         = "11",
             phoneNumber         = "123456",

@@ -3,8 +3,7 @@ package com.projectlab.core.data.networking
 import android.os.Build
 import androidx.annotation.RequiresApi
 import com.google.firebase.firestore.FirebaseFirestore
-import com.google.firebase.firestore.DocumentReference
-import com.projectlab.core.data.model.dto.HotelDTO
+import com.projectlab.core.data.model.dto.FirestoreHotelDTO
 import com.projectlab.core.domain.entity.HotelEntity
 import com.projectlab.core.domain.model.EntityId
 import com.projectlab.core.domain.repository.HotelRepository
@@ -30,7 +29,7 @@ class FirestoreHotelRepositoryImpl @Inject constructor (
             .collection("locations")
             .document(hotel.locationRef?.value ?: throw IllegalArgumentException("locationRef is null"))
         // create dto:
-        val dto = HotelDTO.fromDomain(hotel, userDoc, itinDoc, locationDoc)
+        val dto = FirestoreHotelDTO.fromDomain(hotel, userDoc, itinDoc, locationDoc)
         // add to firestore:
         val hotelCol = itinDoc.collection("hotels")
         val docRef  = hotelCol.document()
