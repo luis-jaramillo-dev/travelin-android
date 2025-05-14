@@ -18,12 +18,12 @@ class FirestoreItineraryRepositoryImpl @Inject constructor (
     override suspend fun createItinerary(itinerary: ItineraryEntity): Result<EntityId> = runCatching {
         // user reference:
         val userDocRef = firestore
-            .collection("users")
+            .collection("Users")
             .document(itinerary.userRef?.value ?: throw IllegalArgumentException("userRef is null"))
         // create dto:
         val dto = FirestoreItineraryDTO.fromDomain(itinerary, userDocRef)
         // add to firestore:
-        val itCol = userDocRef.collection("itineraries")
+        val itCol = userDocRef.collection("Itineraries")
         val docRef = itCol.document()
         docRef.set(dto).await()
         // return id:

@@ -19,20 +19,20 @@ class FirestoreHotelRepositoryImpl @Inject constructor (
     override suspend fun createHotel(hotel: HotelEntity): Result<EntityId> = runCatching {
         // user reference:
         val userDoc = firestore
-            .collection("users")
+            .collection("Users")
             .document(hotel.userRef?.value ?: throw IllegalArgumentException("userRef is null"))
         // itinerary reference:
         val itinDoc = userDoc
-            .collection("itineraries")
+            .collection("Itineraries")
             .document(hotel.itineraryRef?.value ?: throw IllegalArgumentException("itineraryRef is null"))
         // Location reference:
         val locationDoc = firestore
-            .collection("locations")
+            .collection("Locations")
             .document(hotel.locationRef?.value ?: throw IllegalArgumentException("locationRef is null"))
         // create dto:
         val dto = FirestoreHotelDTO.fromDomain(hotel, userDoc, itinDoc, locationDoc)
         // add to firestore:
-        val hotelCol = itinDoc.collection("hotels")
+        val hotelCol = itinDoc.collection("Hotels")
         val docRef  = hotelCol.document()
         docRef.set(dto).await()
         // return id:

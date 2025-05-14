@@ -48,7 +48,7 @@ class BookingViewModelTest @Inject constructor(
         // 1) We create a user and get the domain ID
         // Hardcode user data
         val user = UserEntity(
-            firstName           = "URSULA X",
+            firstName           = "VICTORIA I",
             lastName            = "GIMENEZ",
             countryCode         = "000",
             phoneNumber         = "1111",
@@ -68,7 +68,7 @@ class BookingViewModelTest @Inject constructor(
         // 2) We create a Itinerary:
         val itinerary = ItineraryEntity(
             id                  = null,
-            title               = "Trip to Brasil",
+            title               = "Trip to RIO DE JANEIRO",
             startDate           = Instant.now(),
             endDate             = Instant.now().plusSeconds(2592000),
             totalItineraryPrice = 9000.0,

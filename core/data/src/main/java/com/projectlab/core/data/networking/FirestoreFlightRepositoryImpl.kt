@@ -19,20 +19,32 @@ class FirestoreFlightRepositoryImpl @Inject constructor (
     override suspend fun createFlight(flight: FlightEntity): Result<EntityId> = runCatching {
         // user reference:
         val userDocRef = firestore
-            .collection("users")
+            .collection("Users")
             .document(flight.userRef?.value ?: throw IllegalArgumentException("userRef is null"))
         // itinerary reference:
         val itineraryDocRef = userDocRef
-            .collection("itineraries")
+            .collection("Itineraries")
             .document(flight.itineraryRef?.value ?: throw IllegalArgumentException("itineraryRef is null"))
-        // airport reference:
-        val airportDocRef = firestore
-            .collection("airports")
-            .document(flight.departureAirport["airportCodeRef"]?.toString() ?: throw IllegalArgumentException("airportCodeRef is null"))
+        // departure airport reference:
+        val airportDepartureDocRef = firestore
+            .collection("Airports")
+            .document(flight.departureAirport["airportCodeRef"]?.toString() ?:
+            throw IllegalArgumentException("airportDepartureCodeRef is null"))
+        // departure airport reference:
+        val airportArrivalDocRef = firestore
+            .collection("Airports")
+            .document(flight.departureAirport["airportCodeRef"]?.toString() ?:
+            throw IllegalArgumentException("airportArrivalCodeRef is null"))
         // create dto:
-        val dto = FirestoreFlightDTO.fromDomain(flight, userDocRef, itineraryDocRef, airportDocRef)
+        val dto = FirestoreFlightDTO.fromDomain(
+            flight,
+            userDocRef,
+            itineraryDocRef,
+            airportDepartureDocRef,
+            airportArrivalDocRef
+        )
         // add to firestore:
-        val flightCol = itineraryDocRef.collection("flights")
+        val flightCol = itineraryDocRef.collection("Flights")
         val docRef = flightCol.document()
         docRef.set(dto).await()
         // return id:

@@ -16,7 +16,7 @@ class FirestoreUserRepositoryImpl @Inject constructor(
     private val firestore: FirebaseFirestore
 ) : UserRepository {
 
-    private val userCol = firestore.collection("users")
+    private val userCol = firestore.collection("Users")
 
     override suspend fun createUser(user: UserEntity): Result<EntityId> = runCatching {
         // create dto:

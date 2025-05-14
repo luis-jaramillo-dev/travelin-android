@@ -19,34 +19,40 @@ class FirestoreFlightSegmentRepositoryImpl @Inject constructor (
     ): Result<EntityId> = runCatching {
         // user reference:
         val userDocRef = firestore
-            .collection("users")
+            .collection("Users")
             .document(flightSegment.userRef?.value ?:
             throw IllegalArgumentException("userRef is null"))
         // itinerary reference:
         val itineraryDocRef = userDocRef
-            .collection("itineraries")
+            .collection("Itineraries")
             .document(flightSegment.itineraryRef?.value ?:
             throw IllegalArgumentException("itineraryRef is null"))
         // flight reference:
         val flightDocRef = itineraryDocRef
-            .collection("flights")
+            .collection("Flights")
             .document(flightSegment.flightRef?.value ?:
             throw IllegalArgumentException("flightRef is null"))
-        // airport reference:
-        val airportDocRef = firestore
-            .collection("airports")
+        // departure airport reference:
+        val airportDepartureDocRef = firestore
+            .collection("Airports")
             .document(flightSegment.departureAirportCodeRef?.toString() ?:
-            throw IllegalArgumentException("airportCodeRef is null"))
+            throw IllegalArgumentException("airportDepartureCodeRef is null"))
+        // arrival airport reference:
+        val airportArrivalDocRef = firestore
+            .collection("Airports")
+            .document(flightSegment.departureAirportCodeRef?.toString() ?:
+            throw IllegalArgumentException("airportArrivalCodeRef is null"))
         // create dto:
         val dto = FirestoreFlightSegmentDTO.fromDomain(
             flightSegment,
             userDocRef,
             itineraryDocRef,
             flightDocRef,
-            airportDocRef
+            airportDepartureDocRef,
+            airportArrivalDocRef
         )
         // add to firestore:
-        val flightSegmentCol = flightDocRef.collection("flightSegments")
+        val flightSegmentCol = flightDocRef.collection("FlightSegments")
         val docRef = flightSegmentCol.document()
         docRef.set(dto).await()
         // return id:

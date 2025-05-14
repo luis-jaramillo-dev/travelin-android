@@ -18,20 +18,20 @@ class FirestoreActivityRepositoryImpl @Inject constructor(
     override suspend fun createActivity(activity: ActivityEntity): Result<EntityId> = runCatching {
         // user reference:
         val userDoc = firestore
-            .collection("users")
+            .collection("Users")
             .document(activity.userRef?.value ?: throw IllegalArgumentException("userRef is null"))
         // itineraryReference:
         val itinDoc = userDoc
-            .collection("itineraries")
+            .collection("Itineraries")
             .document(activity.itineraryRef?.value ?: throw IllegalArgumentException("itineraryRef is null"))
         // Location reference:
         val locationDoc = firestore
-            .collection("locations")
+            .collection("Locations")
             .document(activity.locationRef?.value ?: throw IllegalArgumentException("locationRef is null"))
         // create DTO:
         val dto = FirestoreActivityDTO.fromDomain(activity, userDoc, itinDoc, locationDoc)
         // add to firestore:
-        val activityCol = itinDoc.collection("activities")
+        val activityCol = itinDoc.collection("Activities")
         val docRef = activityCol.document()
         docRef.set(dto).await()
         // return id:

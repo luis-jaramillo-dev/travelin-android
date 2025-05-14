@@ -28,11 +28,12 @@ data class FirestoreFlightSegmentDTO (
             userDocRef: DocumentReference,
             itineraryDocRef: DocumentReference,
             flightDocRef: DocumentReference,
-            airportsDocRef: DocumentReference
+            airportDepartureDocRef: DocumentReference,
+            airportArrivalDocRef: DocumentReference
         ): FirestoreFlightSegmentDTO =
             FirestoreFlightSegmentDTO(
-                departureAirportCodeRef = airportsDocRef,
-                arrivalAirportCodeRef = airportsDocRef,
+                departureAirportCodeRef = airportDepartureDocRef,
+                arrivalAirportCodeRef = airportArrivalDocRef,
                 departureTime = Timestamp(Date.from(domain.departureTime)),
                 arrivalTime = Timestamp(Date.from(domain.arrivalTime)),
                 requiresPlaneChange = domain.requiresPlaneChange,

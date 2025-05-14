@@ -40,7 +40,8 @@ data class FirestoreFlightDTO @RequiresApi(Build.VERSION_CODES.O) constructor(
         fun fromDomain(domain: FlightEntity,
                        userDocRef: DocumentReference,
                        itineraryDocRef: DocumentReference,
-                       airportDocRef: DocumentReference
+                       airportDepartureDocRef: DocumentReference,
+                       airportArrivalDocRef : DocumentReference
         ): FirestoreFlightDTO =
             FirestoreFlightDTO(
                 airline = domain.airline,
