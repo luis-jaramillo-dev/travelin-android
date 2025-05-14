@@ -39,6 +39,7 @@ import com.projectlab.core.presentation.designsystem.component.IconLocation
 import com.projectlab.core.presentation.designsystem.component.TourListCard
 import com.projectlab.core.presentation.ui.viewmodel.LocationViewModel
 import androidx.hilt.navigation.compose.hiltViewModel
+import com.projectlab.booking.presentation.activities.detail.ActivityDetailViewModel
 import com.projectlab.core.domain.model.Location
 import com.projectlab.core.presentation.designsystem.component.ButtonComponent
 import com.projectlab.core.presentation.designsystem.component.ButtonVariant
@@ -53,6 +54,7 @@ fun SearchActivityScreen(
     modifier: Modifier = Modifier,
     locationViewModel: LocationViewModel = hiltViewModel(),
     searchActivityViewModel: SearchActivityViewModel = hiltViewModel(),
+    activityDetailViewModel: ActivityDetailViewModel = hiltViewModel(),
     locationUtils: LocationUtils
 ) {
     val context = LocalContext.current
@@ -126,7 +128,8 @@ fun SearchActivityScreen(
         }
         Spacer(modifier = Modifier.height(40.dp))
         SearchActivityResultsComponent(
-            viewModel = searchActivityViewModel
+            viewModel = searchActivityViewModel,
+            activityViewModel = activityDetailViewModel
         )
     }
 }
@@ -165,7 +168,8 @@ fun SearchBarComponent(
 
 @Composable
 fun SearchActivityResultsComponent(
-    viewModel: SearchActivityViewModel
+    viewModel: SearchActivityViewModel,
+    activityViewModel: ActivityDetailViewModel
 ) {
     val activities by viewModel.activities.collectAsState()
     val showAll by viewModel.showAllResults.collectAsState()
@@ -207,7 +211,10 @@ fun SearchActivityResultsComponent(
                 TourListCard(
                     activity = activity,
                     modifier = Modifier.fillMaxWidth(),
-                    city = city
+                    city = city,
+                    onPress = {
+                        activityViewModel.onViewDetail(activity.id)
+                    }
                 )
 
                 Spacer(modifier = Modifier.height(16.dp))

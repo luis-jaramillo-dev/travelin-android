@@ -19,14 +19,14 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil.compose.AsyncImage
+import com.projectlab.core.data.model.ActivityDto
 import com.projectlab.core.presentation.designsystem.R
 
 @Composable
-fun TourCardHeader(modifier: Modifier = Modifier, activity: com.projectlab.core.domain.model.Activity) {
+fun TourCardHeader(modifier: Modifier = Modifier, activity: ActivityDto) {
     Box(
         modifier = Modifier
             .height(428.dp)
