@@ -32,7 +32,9 @@ data class FirestoreItineraryDTO (
     @RequiresApi(Build.VERSION_CODES.O)
     fun toDomain(docId : String): ItineraryEntity =
         ItineraryEntity(
-            id = EntityId(docId),
+            // TODO: check if we need to use EntityId here (and in others DTOs) instead of String
+            // id = EntityId(docId),
+            id = docId,
             title = title,
             startDate = Instant.ofEpochMilli(startDate.toDate().time),
             endDate = Instant.ofEpochMilli(endDate.toDate().time),

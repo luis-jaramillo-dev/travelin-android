@@ -87,8 +87,8 @@ class RegisterViewModel @Inject constructor(
         val currentUser = authUseCases.getCurrentUser()
 
         val newUserEntity = UserEntity(
-            // id = currentUser!!.uid,
-            id = EntityId(currentUser!!.uid),
+            // id = EntityId(currentUser!!.uid), TODO: check if we use EntityId or not
+            id = currentUser!!.uid,
             email = email.value,
             age = age.value,
             firstName = firstName.value,

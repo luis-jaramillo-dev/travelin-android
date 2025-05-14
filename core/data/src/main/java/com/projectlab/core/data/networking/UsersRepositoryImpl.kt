@@ -16,7 +16,9 @@ class UsersRepositoryImpl @Inject constructor(private val usersRef: CollectionRe
 
     override suspend fun create(userEntity: UserEntity): Response<Boolean> {
         return try {
-            usersRef.document(userEntity.id?.value ?: "").set(userEntity).await()
+            // TODO: check if we use the EntityId or not
+            // usersRef.document(userEntity.id?.value ?: "").set(userEntity).await()
+            usersRef.document(userEntity.id).set(userEntity).await()
             Response.Success(true)
         } catch (e: Exception) {
             e.printStackTrace()
@@ -27,7 +29,8 @@ class UsersRepositoryImpl @Inject constructor(private val usersRef: CollectionRe
     override fun getUserById(id: String): Flow<UserEntity> = callbackFlow {
         val snapshotListener = usersRef.document(id).addSnapshotListener { snapshot, e ->
             val userEntity = snapshot?.toObject(UserEntity::class.java) ?: UserEntity(
-                id = EntityId(""),
+                //id = EntityId(""), TODO: check if we use the EntityId or not
+                id = "",
                 email = "",
                 age = "",
                 firstName = "",

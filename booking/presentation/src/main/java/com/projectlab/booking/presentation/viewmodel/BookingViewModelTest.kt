@@ -48,11 +48,12 @@ class BookingViewModelTest @Inject constructor(
         // 1) We create a user and get the domain ID
         // Hardcode user data
         val user = UserEntity(
-            firstName           = "CARLOS III",
-            lastName            = "INGLATERRA",
+            firstName           = "CARLOMAGNO III DE FRANCIA",
+            lastName            = "FRANCIA",
             countryCode         = "000",
             phoneNumber         = "1111",
-            email               = "kingcharles@gmail.com"
+            email               = "kingcharles@gmail.com",
+            age                 = "50"
         )
 
         // We create the user in Firestore through the repository
@@ -67,7 +68,7 @@ class BookingViewModelTest @Inject constructor(
 
         // 2) We create a Itinerary:
         val itinerary = ItineraryEntity(
-            id                  = null,
+            //id                  = null,
             title               = "Trip to RIO DE JANEIRO",
             startDate           = Instant.now(),
             endDate             = Instant.now().plusSeconds(2592000),
@@ -87,7 +88,6 @@ class BookingViewModelTest @Inject constructor(
 
         // 3) We create a flight:
         val flight = FlightEntity(
-            id                  = null,
             airline             = "Brasil Airlines",
             flightNumber        = "800",
             flightClass         = "Premium",
@@ -122,7 +122,6 @@ class BookingViewModelTest @Inject constructor(
 
         // 4) We create a FlightSegment:
         val flightSegment = FlightSegmentEntity(
-            id                  = null,
             departureAirportCodeRef = EntityId("CHI"), // TODO: Add id form firestore
             arrivalAirportCodeRef   = EntityId("ECU"), // TODO: Add id form firestore
             departureTime          = Instant.now(),
@@ -147,8 +146,7 @@ class BookingViewModelTest @Inject constructor(
 
         // 5) We create a Hotel:
         val hotel = HotelEntity(
-            id                  = null,
-            hotelName           = "Hotel de Rio",
+            hotelName           = "Hotel de Brasilia",
             hotelRoomNumber     = 30,
             hotelPhone          = 2222,
             locationRef         = EntityId("location456"), // TODO: Add id form firestore
@@ -171,7 +169,6 @@ class BookingViewModelTest @Inject constructor(
 
         // 6) We create an Activity:
         val activity = ActivityEntity(
-            id                  = null,
             name                = "Visit to the beach of Rio",
             locationRef         = EntityId("location789"), // TODO: Add id form firestore
             activityDate        = Instant.now(),

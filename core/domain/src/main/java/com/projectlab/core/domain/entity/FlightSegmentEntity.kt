@@ -5,7 +5,7 @@ import java.time.Instant
 
 
 data class FlightSegmentEntity (
-    val id : EntityId? = null,
+    val id : String = "",
     val departureAirportCodeRef : EntityId? = null,
     val arrivalAirportCodeRef : EntityId? = null,
     val departureTime : Instant,

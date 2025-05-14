@@ -4,7 +4,9 @@ import java.time.Instant
 
 
 data class ItineraryEntity(
-    val id : EntityId? = null,
+    // TODO: check if we need to use EntityId (and in others entities) instead of String
+    //val id : EntityId? = null,
+    val id : String = "",
     val title: String = "",
     val startDate : Instant,
     val endDate : Instant,

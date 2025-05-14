@@ -50,7 +50,7 @@ data class FirestoreHotelDTO (
         userRef: EntityId,
         itineraryRef: EntityId
     ): HotelEntity = HotelEntity(
-        id = EntityId(docId),
+        id = docId,
         hotelName = hotelName,
         hotelRoomNumber = hotelRoomNumber,
         hotelPhone = hotelPhone,

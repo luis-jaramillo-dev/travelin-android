@@ -5,7 +5,7 @@ import java.time.Instant
 
 
 data class HotelEntity(
-    val id : EntityId? = null,
+    val id : String = "",
     val hotelName : String = "",
     val hotelRoomNumber : Int = 0,
     val hotelPhone : Int = 0,

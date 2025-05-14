@@ -22,7 +22,8 @@ class ProfileViewModel @Inject constructor(
 
     var userEntityData by mutableStateOf(
         UserEntity(
-            id = EntityId(""),
+            // id = EntityId(""), // TODO: check if we use EntityId or not
+            id = "",
             email = "",
             age = "",
             firstName = "",

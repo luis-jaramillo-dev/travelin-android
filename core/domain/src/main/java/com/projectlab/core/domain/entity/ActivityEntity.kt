@@ -4,7 +4,7 @@ import com.projectlab.core.domain.model.EntityId
 import java.time.Instant
 
 data class ActivityEntity(
-    val id : EntityId? = null,
+    val id : String = "",
     val name : String = "",
     val locationRef : EntityId? = null,
     val activityDate : Instant,

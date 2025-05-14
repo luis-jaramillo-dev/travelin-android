@@ -60,7 +60,7 @@ data class FirestoreFlightDTO @RequiresApi(Build.VERSION_CODES.O) constructor(
         itineraryRef: EntityId
     ): FlightEntity =
         FlightEntity(
-            id = EntityId(docId),
+            id = docId,
             airline = airline,
             flightNumber = flightNumber,
             flightClass = flightClass,

@@ -48,7 +48,7 @@ data class FirestoreFlightSegmentDTO (
         itineraryRef: EntityId,
         flightRef: EntityId
     ): FlightSegmentEntity = FlightSegmentEntity(
-        id = EntityId(docId),
+        id = docId,
         departureAirportCodeRef = departureAirportCodeRef?.let { EntityId(it.id) },
         arrivalAirportCodeRef = arrivalAirportCodeRef?.let { EntityId(it.id) },
         departureTime = Instant.ofEpochMilli(departureTime.toDate().time),

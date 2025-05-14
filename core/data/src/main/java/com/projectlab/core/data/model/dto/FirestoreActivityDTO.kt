@@ -38,7 +38,7 @@ data class FirestoreActivityDTO (
         userRef: EntityId,
         itineraryRef: EntityId
     ): ActivityEntity = ActivityEntity(
-        id            = EntityId(docId),
+        id            = docId,
         name          = name,
         locationRef   = locationRef?.let { EntityId(it.id) },
         activityDate  = Instant.ofEpochMilli(activityDate.toDate().time),

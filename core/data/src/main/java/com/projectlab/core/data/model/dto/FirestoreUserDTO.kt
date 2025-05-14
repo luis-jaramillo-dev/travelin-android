@@ -5,7 +5,8 @@ data class FirestoreUserDTO (
     val lastName: String = "",
     val countryCode: String = "",
     val phoneNumber: String = "",
-    val email: String = ""
+    val email: String = "",
+    val age: String = ""
 ) {
 
     companion object {
@@ -15,17 +16,19 @@ data class FirestoreUserDTO (
                 lastName = user.lastName,
                 countryCode = user.countryCode,
                 phoneNumber = user.phoneNumber,
-                email = user.email
+                email = user.email,
+                age = user.age
             )
     }
     fun toDomain(id : String): com.projectlab.core.domain.entity.UserEntity =
         com.projectlab.core.domain.entity.UserEntity(
-            id = com.projectlab.core.domain.model.EntityId(id),
+            id = id,
             firstName = firstName,
             lastName = lastName,
             countryCode = countryCode,
             phoneNumber = phoneNumber,
-            email = email
+            email = email,
+            age = age
         )
 }
 
