@@ -9,6 +9,7 @@ import com.projectlab.core.data.model.dto.FirestoreFlightDTO
 import com.projectlab.core.domain.model.EntityId
 import com.projectlab.core.domain.entity.FlightEntity
 import com.projectlab.core.domain.repository.FlightRepository
+import kotlinx.coroutines.flow.Flow
 
 class FirestoreFlightRepositoryImpl @Inject constructor (
     private val firestore: FirebaseFirestore
@@ -39,7 +40,7 @@ class FirestoreFlightRepositoryImpl @Inject constructor (
 
     }
 
-    override suspend fun getFlightsById(id: String): FlightEntity? {
+    override suspend fun getFlightsById(id: String): Flow<FlightEntity?> {
         TODO("Not yet implemented")
     }
 

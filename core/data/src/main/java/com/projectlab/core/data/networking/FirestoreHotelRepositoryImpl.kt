@@ -7,6 +7,7 @@ import com.projectlab.core.data.model.dto.FirestoreHotelDTO
 import com.projectlab.core.domain.entity.HotelEntity
 import com.projectlab.core.domain.model.EntityId
 import com.projectlab.core.domain.repository.HotelRepository
+import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.tasks.await
 import javax.inject.Inject
 
@@ -38,7 +39,7 @@ class FirestoreHotelRepositoryImpl @Inject constructor (
         EntityId(docRef.id)
     }
 
-    override suspend fun getHotelsById(id: String): HotelEntity? {
+    override suspend fun getHotelsById(id: String): Flow<HotelEntity?> {
         TODO("Not yet implemented")
     }
 

@@ -7,6 +7,7 @@ import com.projectlab.core.domain.model.EntityId
 import com.projectlab.core.domain.entity.ItineraryEntity
 import com.projectlab.core.domain.repository.ItineraryRepository
 import com.projectlab.core.data.model.dto.FirestoreItineraryDTO
+import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.tasks.await
 import javax.inject.Inject
 
@@ -29,7 +30,7 @@ class FirestoreItineraryRepositoryImpl @Inject constructor (
         EntityId(docRef.id)
     }
 
-    override suspend fun getItinerariesById(id: String): ItineraryEntity? {
+    override suspend fun getItinerariesById(id: String): Flow<ItineraryEntity?> {
         TODO("Not yet implemented")
     }
 

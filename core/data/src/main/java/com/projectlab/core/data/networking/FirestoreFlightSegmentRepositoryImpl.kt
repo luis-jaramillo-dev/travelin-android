@@ -8,6 +8,7 @@ import com.projectlab.core.domain.entity.FlightSegmentEntity
 import com.projectlab.core.domain.model.EntityId
 import com.projectlab.core.domain.repository.FlightSegmentRepository
 import jakarta.inject.Inject
+import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.tasks.await
 
 class FirestoreFlightSegmentRepositoryImpl @Inject constructor (
@@ -52,7 +53,7 @@ class FirestoreFlightSegmentRepositoryImpl @Inject constructor (
         EntityId(docRef.id)
     }
 
-    override suspend fun getFlightSegmentById(id: String): FlightSegmentEntity? {
+    override suspend fun getFlightSegmentById(id: String): Flow<FlightSegmentEntity?> {
         TODO("Not yet implemented")
     }
 }

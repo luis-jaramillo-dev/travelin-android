@@ -7,6 +7,7 @@ import com.projectlab.core.data.model.dto.FirestoreActivityDTO
 import com.projectlab.core.domain.entity.ActivityEntity
 import com.projectlab.core.domain.model.EntityId
 import com.projectlab.core.domain.repository.ActivityRepository
+import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.tasks.await
 import javax.inject.Inject
 
@@ -37,7 +38,7 @@ class FirestoreActivityRepositoryImpl @Inject constructor(
         EntityId(docRef.id)
     }
 
-    override suspend fun getActivityById(id: String): ActivityEntity? {
+    override suspend fun getActivityById(id: String): Flow<ActivityEntity?> {
         TODO("Not yet implemented")
     }
 

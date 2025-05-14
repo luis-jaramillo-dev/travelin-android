@@ -10,6 +10,7 @@ import com.projectlab.core.domain.model.EntityId
 import com.projectlab.core.domain.entity.UserEntity
 import com.projectlab.core.domain.repository.UserRepository
 import com.projectlab.core.data.model.dto.FirestoreUserDTO
+import kotlinx.coroutines.flow.Flow
 
 class FirestoreUserRepositoryImpl @Inject constructor(
     private val firestore: FirebaseFirestore
@@ -27,7 +28,7 @@ class FirestoreUserRepositoryImpl @Inject constructor(
         EntityId(docRef.id)
     }
 
-    override suspend fun getUserById(id: String): UserEntity? {
+    override suspend fun getUserById(id: String): Flow<UserEntity?> {
         TODO("Not yet implemented")
     }
 }
