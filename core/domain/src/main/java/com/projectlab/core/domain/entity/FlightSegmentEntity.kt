@@ -6,8 +6,8 @@ import java.time.Instant
 
 data class FlightSegmentEntity (
     val id : EntityId? = null,
-    val detartureAirportCodeRef : EntityId,
-    val arrivalAirportCodeRef : EntityId,
+    val departureAirportCodeRef : EntityId? = null,
+    val arrivalAirportCodeRef : EntityId? = null,
     val departureTime : Instant,
     val arrivalTime : Instant,
     val requiresPlaneChange : Boolean = false,
@@ -16,5 +16,7 @@ data class FlightSegmentEntity (
         "nextFlightNumber" to "",
         "connectionGate" to ""
     ),
-    val flightRef : EntityId
+    val userRef : EntityId? = null,
+    val itineraryRef : EntityId? = null,
+    val flightRef : EntityId? = null
 )
