@@ -48,8 +48,23 @@ data class Flight(
             }
         }
 }
-data class FlightSearchParams(
-    val origin: String,
-    val destination: String,
-    val departureDate: String
+enum class TravelClass {
+    ECONOMY,
+    PREMIUM_ECONOMY,
+    BUSINESS,
+    FIRST
+}
+
+data class FlightQueryParams(
+    val originLocationCode: String,              // obligatorio
+    val destinationLocationCode: String,         // obligatorio
+    val departureDate: String,                   // obligatorio, "YYYY-MM-DD"
+    val returnDate: String? = null,              // opcional, "YYYY-MM-DD"
+    val adults: Int = 1,                         // obligatorio con default
+    val children: Int = 0,                       // opcional
+    val infants: Int = 0,                        // opcional
+    val travelClass: TravelClass? = null,        // opcional
+    val nonStop: Boolean = false,                // opcional
+    val maxPrice: Int? = null,                   // opcional
+    val max: Int = 250
 )

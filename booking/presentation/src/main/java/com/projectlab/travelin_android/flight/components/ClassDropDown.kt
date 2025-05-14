@@ -13,13 +13,15 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import com.projectlab.travelin_android.flight.FlightViewModel
+import kotlin.reflect.KFunction1
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun ClassDropdown(
-    options: List<String>,
+    options: List<FlightViewModel.UiTravelClass>,
     selected: String,
-    onSelect: (String) -> Unit,
+    onSelect: (FlightViewModel.UiTravelClass) -> Unit,
     modifier: Modifier = Modifier
 ) {
     var expanded by remember { mutableStateOf(false) }
@@ -35,7 +37,7 @@ fun ClassDropdown(
         ExposedDropdownMenu(expanded, { expanded = false }) {
             options.forEach { option ->
                 DropdownMenuItem(
-                    text = { Text(option) },
+                    text = { Text(option.toString()) },
                     onClick = {
                         onSelect(option)
                         expanded = false

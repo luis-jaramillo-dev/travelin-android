@@ -8,6 +8,7 @@ import jakarta.inject.Inject
 import com.projectlab.travelin_android.mapper.toDomain
 import com.projectlab.travelin_android.model.CityLocation
 import com.projectlab.travelin_android.model.Flight
+import com.projectlab.travelin_android.model.FlightQueryParams
 
 class FlightRepositoryImpl @Inject constructor(
     private val api: FlightApiService,
@@ -22,11 +23,21 @@ class FlightRepositoryImpl @Inject constructor(
         }
     }
     override suspend fun getFlights(
-        origin: String,
-        destination: String,
-        date: String
+        params:FlightQueryParams
     ): List<Flight>{
-        val response = api.getFlightOffers(origin,destination,date, adults = 1,max =5)
+        val response = api.getFlightOffers(
+            origin = params.originLocationCode,
+            destination = params.destinationLocationCode,
+            departureDate = params.departureDate,
+            returnDate = params.returnDate,
+            adults = params.adults,
+            children = params.children,
+            infants = params.infants,
+            travelClass = params.travelClass?.name,
+            nonStop = params.nonStop,
+            maxPrice = params.maxPrice,
+            max = params.max
+        )
         val flights = response.data.map{it.toDomain()}
         Log.d("response", Gson().toJson(response))
 

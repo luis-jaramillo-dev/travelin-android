@@ -10,9 +10,15 @@ interface FlightApiService {
     suspend fun getFlightOffers(
         @Query("originLocationCode") origin: String,
         @Query("destinationLocationCode") destination: String,
-        @Query("departureDate") date: String,
-        @Query("adults") adults: Int,
-        @Query("max") max: Int
+        @Query("departureDate") departureDate: String,
+        @Query("returnDate") returnDate: String? = null,
+        @Query("adults") adults: Int = 1,
+        @Query("children") children: Int = 0,
+        @Query("infants") infants: Int = 0,
+        @Query("travelClass") travelClass: String? = null,
+        @Query("nonStop") nonStop: Boolean = false,
+        @Query("maxPrice") maxPrice: Int? = null,
+        @Query("max") max: Int = 250
     ): FlightOffersResponseDto
 
     @GET("v1/reference-data/locations")

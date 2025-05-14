@@ -45,6 +45,8 @@ dependencies {
     implementation(libs.androidx.appcompat)
     implementation(libs.material)
     implementation(libs.androidx.compose.material3)
+    implementation(libs.androidx.compose.material.icons.core)
+    implementation(libs.androidx.compose.material.icons)
 
     //hilt
     implementation(libs.hilt.android)
@@ -52,6 +54,7 @@ dependencies {
     implementation(libs.androidx.foundation.android)
     implementation(project(":booking:domain"))
     implementation(libs.androidx.compose.ui.ui.tooling.preview.android)
+    debugImplementation(libs.androidx.ui.tooling)
     ksp(libs.hilt.android.compiler)
 
     implementation(libs.hilt.navigation.compose)

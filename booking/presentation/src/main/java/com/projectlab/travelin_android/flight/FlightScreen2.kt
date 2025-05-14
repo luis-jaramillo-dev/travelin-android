@@ -1,15 +1,10 @@
 package com.projectlab.travelin_android.flight
 
-import android.app.DatePickerDialog
-import android.util.Log
 import androidx.compose.animation.AnimatedVisibility
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Button
 import androidx.compose.material3.CircularProgressIndicator
@@ -19,25 +14,136 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import androidx.lifecycle.viewmodel.compose.viewModel
-import com.projectlab.travelin_android.model.FlightSearchParams
 import androidx.compose.runtime.collectAsState
-import androidx.compose.ui.platform.LocalContext
 import androidx.hilt.navigation.compose.hiltViewModel
+import com.projectlab.travelin_android.flight.components.FlightListItem
+import com.projectlab.travelin_android.flight.screens.DatePickerField
 import com.projectlab.travelin_android.model.CityLocation
 import com.projectlab.travelin_android.model.Flight
-import java.util.Calendar
 
 @Composable
 fun FlightScreen2(
+    origin: String,
+    onOriginChange: (String) -> Unit,
+    originSuggestions: List<CityLocation>,
+    onOriginSuggestionClick: (CityLocation) -> Unit,
+
+    destination: String,
+    onDestinationChange: (String) -> Unit,
+    destinationSuggestions: List<CityLocation>,
+    onDestinationSuggestionClick: (CityLocation) -> Unit,
+
+    departureDate: String,
+    onDepartureDateChange: (String) -> Unit,
+
+    isLoading: Boolean,
+    errorMessage: String?,
+
+    onSearchFlights: () -> Unit,
+    flights: List<Flight>
+) {
+    Column(
+        modifier = Modifier
+            .fillMaxSize()
+            .padding(16.dp),
+        verticalArrangement = Arrangement.spacedBy(12.dp)
+    ) {
+        Text("Buscar Vuelos", style = MaterialTheme.typography.titleLarge)
+
+        // Origen
+        CityInputField(
+            label = "Origen (Ciudad o IATA)",
+            value = origin,
+            onValueChange = onOriginChange,
+            suggestions = originSuggestions,
+            onSuggestionClick = onOriginSuggestionClick
+        )
+
+        // Destino
+        CityInputField(
+            label = "Destino (Ciudad o IATA)",
+            value = destination,
+            onValueChange = onDestinationChange,
+            suggestions = destinationSuggestions,
+            onSuggestionClick = onDestinationSuggestionClick
+        )
+
+        // Fecha de salida
+        DatePickerField(
+            label = "Fecha de salida",
+            date = departureDate,
+            onDateSelected = onDepartureDateChange
+        )
+
+        // Botón de búsqueda
+        Button(
+            onClick = onSearchFlights,
+            modifier = Modifier.align(Alignment.End)
+        ) {
+            Text("Buscar vuelos")
+        }
+
+        // Indicador de carga
+        if (isLoading) {
+            CircularProgressIndicator()
+        }
+
+        // Mensaje de error
+        errorMessage?.let { msg ->
+            Text(
+                text = msg,
+                color = MaterialTheme.colorScheme.error,
+                style = MaterialTheme.typography.bodyMedium
+            )
+        }
+
+        // Lista de resultados
+        flights.forEach { flight ->
+            FlightListItem(flight)
+        }
+    }
+}
+
+@Composable
+fun FlightScreenContainer(
+    flightViewModel: FlightViewModel = hiltViewModel()
+) {
+    // Obtenemos todo el estado en un solo collectAsState
+    val ui by flightViewModel.uiState.collectAsState()
+
+    FlightScreen2(
+        origin                  = ui.origin,
+        onOriginChange          = flightViewModel::onOriginChange,
+        originSuggestions       = ui.originSuggestions,
+        onOriginSuggestionClick = flightViewModel::onOriginChosen,
+
+        destination                  = ui.destination,
+        onDestinationChange          = flightViewModel::onDestinationChange,
+        destinationSuggestions       = ui.destinationSuggestions,
+        onDestinationSuggestionClick = flightViewModel::onDestinationChosen,
+
+        departureDate       = ui.departureDate,
+        onDepartureDateChange = flightViewModel::onDepartureDateSelected,
+
+        isLoading    = ui.isLoading,
+        errorMessage = ui.errorMessage,
+
+        onSearchFlights = {
+            flightViewModel.searchFlights()
+        },
+        flights = ui.flights
+    )
+}
+
+
+//<<<<<<<<<<<<<<<<<<<<<<<<<<<flightScreen previo>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+/*@Composable
+fun FlightScreen2(
     flightViewModel: FlightViewModel,
-    onSearchFlights: (FlightSearchParams) -> Unit,
+    onSearchFlights: (FlightQueryParams) -> Unit,
     flights: List<Flight>,
     isLoading: Boolean,
     errorMessage: String?
@@ -62,11 +168,11 @@ fun FlightScreen2(
             value = origin,
             onValueChange = {
                     origin = it
-                flightViewModel.searchCityOrigin(it)
+                flightViewModel.searchCityLocations(it,true)
             },
             suggestions = originSuggestions,
             onSuggestionClick = { selected ->
-                origin = selected
+                origin = selected.toString()
                 flightViewModel.clearOriginSuggestions()
             }
         )
@@ -77,11 +183,11 @@ fun FlightScreen2(
             value = destination,
             onValueChange = {
                 destination = it
-                flightViewModel.searchCityDestination(it)
+                flightViewModel.searchCityLocations(it,false)
             },
             suggestions = destinationSuggestions,
             onSuggestionClick = { selected ->
-                destination = selected // asigna el código IATA seleccionado
+                destination = selected.toString() // asigna el código IATA seleccionado
                 flightViewModel.clearDestinationSuggestions()
             }
         )
@@ -101,7 +207,7 @@ fun FlightScreen2(
             onClick = {
                 if (origin.isNotBlank() && destination.isNotBlank() && flightDate.isNotBlank()) {
                     onSearchFlights(
-                        FlightSearchParams(
+                        FlightQueryParams(
                             origin = origin,
                             destination = destination,
                             departureDate = flightDate
@@ -155,14 +261,14 @@ fun FlightScreenContainer(
     )
 }
 
-
+*/
 @Composable
 fun CityInputField(
     label: String,
     value: String,
     onValueChange: (String) -> Unit,
     suggestions: List<CityLocation>,
-    onSuggestionClick: (String) -> Unit
+    onSuggestionClick: (CityLocation) -> Unit
 ) {
     Column {
         OutlinedTextField(
@@ -176,7 +282,7 @@ fun CityInputField(
             Column {
                 suggestions.take(5).forEach { suggestion ->
                     TextButton(
-                        onClick = { onSuggestionClick(suggestion.iataCode) },
+                        onClick = { onSuggestionClick(suggestion) },
                         modifier = Modifier.fillMaxWidth()
                     ) {
                         Text("${suggestion.city} - ${suggestion.iataCode}")
@@ -186,6 +292,7 @@ fun CityInputField(
         }
     }
 }
+
 /*@Composable
 fun DatePickerField(
     selectedDate: String,
