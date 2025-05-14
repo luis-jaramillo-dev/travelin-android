@@ -1,4 +1,4 @@
-package com.projectlab.core.presentation.ui.model
+package com.projectlab.core.domain.util
 
 enum class LocationPermissionState {
     NOT_REQUESTED,

@@ -60,6 +60,20 @@ kotlin {
 
 dependencies {
 
+    // Core System
+    implementation(projects.core.presentation.designsystem)
+    implementation(projects.core.presentation.ui)
+    implementation(projects.core.domain)
+    implementation(projects.core.data)
+
+    // Core
+    implementation(libs.androidx.core.ktx)
+    implementation(libs.androidx.appcompat)
+    implementation(libs.androidx.lifecycle.viewmodel.ktx)
+    implementation(libs.androidx.runtime.android)
+    implementation(libs.androidx.activity.compose)
+    implementation(libs.androidx.runtime.android)
+
     // Dagger Hilt + Ksp
     implementation(libs.hilt.android)
     ksp(libs.hilt.android.compiler)
@@ -81,22 +95,14 @@ dependencies {
     implementation(libs.androidx.navigation.compose)
     implementation(libs.androidx.compose.material.icons)
 
-    // Core
-    implementation(libs.androidx.core.ktx)
-    implementation(libs.androidx.appcompat)
-    implementation(libs.androidx.lifecycle.viewmodel.ktx)
-    implementation(libs.androidx.runtime.android)
-    implementation(libs.androidx.activity.compose)
-
-    // Core System:
-    implementation(projects.core.presentation.designsystem)
+    // UI
+    implementation(platform(libs.androidx.compose.bom))
+    implementation(libs.androidx.ui.tooling.preview.android)
+    implementation(libs.coil.compose)
 
     // Testing
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
-
-    // modules
-    implementation(project(":core:domain"))
-
+    debugImplementation(libs.androidx.ui.tooling)
 }
