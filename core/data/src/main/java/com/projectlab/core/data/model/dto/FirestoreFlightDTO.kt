@@ -10,19 +10,18 @@ import com.projectlab.core.domain.entity.FlightEntity
 import java.util.Date
 
 // Assuming you have a DocumentReference for the airport collection
-val documentAirportId = "your_airport_document_id" // Replace with actual document ID
-val docRefAirport = FirebaseFirestore.getInstance().collection("airport").document(documentAirportId)
-// TODO: Convert FlightDTO in data class
+//val documentAirportId = "your_airport_document_id" // Replace with actual document ID
+//val docRefAirport = FirebaseFirestore.getInstance().collection("airport").document(documentAirportId)
 data class FirestoreFlightDTO @RequiresApi(Build.VERSION_CODES.O) constructor(
     val airline: String = "",
     val flightNumber: String = "",
     val flightClass: String = "",
     val departureAirport: Map<String, Any> = mapOf(
-        "airportCodeRef" to docRefAirport,
+        "airportCodeRef" to "",
         "time" to Timestamp(Date(System.currentTimeMillis()))
     ),
     val arrivalAirport: Map<String, Any> = mapOf(
-        "airportCodeRef" to docRefAirport,
+        "airportCodeRef" to "",
         "time" to Timestamp(Date(System.currentTimeMillis()))
     ),
     val passengerNumber: Map<String, Any> = mapOf(
@@ -32,8 +31,6 @@ data class FirestoreFlightDTO @RequiresApi(Build.VERSION_CODES.O) constructor(
         "babiesInArmsNumber" to 0
     ),
     val price: Double = 0.0,
-    //val userRef: DocumentReference? = null,
-    //val itineraryRef: DocumentReference? = null
 ){
     companion object {
         @RequiresApi(Build.VERSION_CODES.O)

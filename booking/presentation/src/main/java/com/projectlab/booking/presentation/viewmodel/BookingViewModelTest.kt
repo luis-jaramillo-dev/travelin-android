@@ -48,11 +48,11 @@ class BookingViewModelTest @Inject constructor(
         // 1) We create a user and get the domain ID
         // Hardcode user data
         val user = UserEntity(
-            firstName           = "VICTORIA I",
-            lastName            = "GIMENEZ",
+            firstName           = "CARLOS III",
+            lastName            = "INGLATERRA",
             countryCode         = "000",
             phoneNumber         = "1111",
-            email               = "ursula@gmail.com"
+            email               = "kingcharles@gmail.com"
         )
 
         // We create the user in Firestore through the repository
@@ -92,7 +92,7 @@ class BookingViewModelTest @Inject constructor(
             flightNumber        = "800",
             flightClass         = "Premium",
             departureAirport    = mapOf(
-                "airportCodeRef" to "CHI", // TODO: Add id form firestore
+                "airportCodeRef" to "LON", // TODO: Add id form firestore
                 "time" to Timestamp(Date(System.currentTimeMillis()))
             ),
             arrivalAirport      = mapOf(
