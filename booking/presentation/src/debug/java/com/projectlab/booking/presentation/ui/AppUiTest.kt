@@ -13,7 +13,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.hilt.navigation.compose.hiltViewModel
-import com.projectlab.booking.presentation.viewmodel.BookingViewModelTest
+import com.projectlab.booking.presentation.ui.BookingViewModelTest
 
 @RequiresApi(Build.VERSION_CODES.O)
 @Composable
