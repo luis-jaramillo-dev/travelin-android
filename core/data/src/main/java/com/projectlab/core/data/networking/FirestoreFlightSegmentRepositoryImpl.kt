@@ -25,27 +25,27 @@ class FirestoreFlightSegmentRepositoryImpl @Inject constructor (
     override suspend fun createFlightSegment(flightSegment: FlightSegmentEntity
     ): Result<EntityId> = runCatching {
         // user reference:
-        val userDocRef = firestore
+        var userDocRef = firestore
             .collection("Users")
             .document(flightSegment.userRef?.value ?:
             throw IllegalArgumentException("userRef is null"))
         // itinerary reference:
-        val itineraryDocRef = userDocRef
+        var itineraryDocRef = userDocRef
             .collection("Itineraries")
             .document(flightSegment.itineraryRef?.value ?:
             throw IllegalArgumentException("itineraryRef is null"))
         // flight reference:
-        val flightDocRef = itineraryDocRef
+        var flightDocRef = itineraryDocRef
             .collection("Flights")
             .document(flightSegment.flightRef?.value ?:
             throw IllegalArgumentException("flightRef is null"))
         // departure airport reference:
-        val airportDepartureDocRef = firestore
+        var airportDepartureDocRef = firestore
             .collection("Airports")
             .document(flightSegment.departureAirportCodeRef?.toString() ?:
             throw IllegalArgumentException("airportDepartureCodeRef is null"))
         // arrival airport reference:
-        val airportArrivalDocRef = firestore
+        var airportArrivalDocRef = firestore
             .collection("Airports")
             .document(flightSegment.departureAirportCodeRef?.toString() ?:
             throw IllegalArgumentException("airportArrivalCodeRef is null"))

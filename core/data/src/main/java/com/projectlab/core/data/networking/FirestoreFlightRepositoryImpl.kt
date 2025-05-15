@@ -25,20 +25,20 @@ class FirestoreFlightRepositoryImpl @Inject constructor (
     @RequiresApi(Build.VERSION_CODES.O)
     override suspend fun createFlight(flight: FlightEntity): Result<EntityId> = runCatching {
         // user reference:
-        val userDocRef = firestore
+        var userDocRef = firestore
             .collection("Users")
             .document(flight.userRef?.value ?: throw IllegalArgumentException("userRef is null"))
         // itinerary reference:
-        val itineraryDocRef = userDocRef
+        var itineraryDocRef = userDocRef
             .collection("Itineraries")
             .document(flight.itineraryRef?.value ?: throw IllegalArgumentException("itineraryRef is null"))
         // departure airport reference:
-        val airportDepartureDocRef = firestore
+        var airportDepartureDocRef = firestore
             .collection("Airports")
             .document(flight.departureAirport["airportCodeRef"]?.toString() ?:
             throw IllegalArgumentException("airportDepartureCodeRef is null"))
         // departure airport reference:
-        val airportArrivalDocRef = firestore
+        var airportArrivalDocRef = firestore
             .collection("Airports")
             .document(flight.departureAirport["airportCodeRef"]?.toString() ?:
             throw IllegalArgumentException("airportArrivalCodeRef is null"))
