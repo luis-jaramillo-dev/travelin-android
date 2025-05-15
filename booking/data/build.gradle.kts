@@ -1,15 +1,15 @@
 plugins {
-    alias(libs.plugins.android.library)
-    alias(libs.plugins.kotlin.android)
-    // Ksp
-    alias(libs.plugins.devtools.ksp)
+    alias(libs.plugins.travelinandroid.android.library)
+
     // Dagger Hilt
     alias(libs.plugins.dagger.hilt.android)
+
+    // KSP
+    alias(libs.plugins.devtools.ksp)
     // Compose
     alias(libs.plugins.compose.compiler)
     //fire base
     alias(libs.plugins.google.services)
-    alias(libs.plugins.travelinandroid.android.library)
 }
 
 android {
@@ -53,14 +53,13 @@ dependencies {
     implementation(projects.core.data)
     //hilt
     implementation(libs.hilt.android)
-    implementation(libs.hilt.android.compiler)
     implementation(project(":booking:domain"))
     ksp(libs.hilt.android.compiler)
-
-
-    //Retrofit
+    // Network
+    implementation(libs.retrofit)
     implementation(libs.retrofit2)
     implementation(libs.converter.gson)
+    implementation(libs.okhttp.logging)
     //Fire store
     implementation(platform(libs.firebase))
     implementation(libs.firebase.firestore.ktx)
@@ -71,6 +70,4 @@ dependencies {
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
-
-
 }

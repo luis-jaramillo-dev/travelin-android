@@ -34,7 +34,7 @@ android {
 
     defaultConfig {
         applicationId = "com.projectlab.travelin_android"
-        minSdk = 25
+        minSdk = 24
         targetSdk = 35
         versionCode = 1
         versionName = "1.0"
@@ -89,10 +89,20 @@ dependencies {
     implementation(projects.auth.data)
     implementation(projects.feature.onboarding.presentation)
     implementation(projects.navigation)
+    implementation(projects.booking.presentation)
 
     // Dagger Hilt + Ksp
     implementation(libs.hilt.android)
     ksp(libs.hilt.android.compiler)
+    implementation(libs.hilt.navigation)
+
+
+    // Google
+    implementation(platform(libs.firebase))
+    implementation(libs.firebase.auth)
+    implementation(libs.firebase.firestore)
+    implementation(libs.play.services.location)
+    implementation(libs.play.services.maps)
 
     // Core
     implementation(libs.androidx.core.ktx)

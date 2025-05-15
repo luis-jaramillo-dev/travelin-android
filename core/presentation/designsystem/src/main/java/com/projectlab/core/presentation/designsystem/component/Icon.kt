@@ -16,9 +16,13 @@ import androidx.compose.material.icons.outlined.Search
 import androidx.compose.material.icons.automirrored.rounded.ArrowBack
 import androidx.compose.material.icons.automirrored.rounded.KeyboardArrowLeft
 import androidx.compose.material.icons.automirrored.rounded.KeyboardArrowRight
+import androidx.compose.material.icons.filled.AddCircle
+import androidx.compose.material.icons.filled.ArrowDropDown
+import androidx.compose.material.icons.filled.DoNotDisturbOn
 import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.draw.rotate
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.projectlab.core.presentation.designsystem.R
 
@@ -42,15 +46,18 @@ object TravelinIcon {
     val Time = R.drawable.schedule_fill_24px
     val Bus = R.drawable.directions_bus_24px
     val Airplane = R.drawable.travel_24px
-
+    val VisibilityOff = R.drawable.visibility_off_24px
+    val More = Icons.Filled.AddCircle
+    val Less = Icons.Filled.DoNotDisturbOn
+    val Expand = Icons.Filled.ArrowDropDown
 }
 
 //Search destination
 @Composable
-fun IconHotel(modifier: Modifier, size: Int = 24, tint: Color = Color(35,183,246), alpha: Float = 1f){
+fun IconHotel(modifier: Modifier, size: Int = 24, tint: Color = Color(35,183,246), alpha: Float = 1f, contentDescription: String? = null){
         Icon(
             painterResource(TravelinIcon.Hotel),
-            contentDescription = null,
+            contentDescription = contentDescription,
             tint = tint,
             modifier = modifier.size(size.dp)
                 .alpha(alpha)
@@ -58,10 +65,10 @@ fun IconHotel(modifier: Modifier, size: Int = 24, tint: Color = Color(35,183,246
 }
 
 @Composable
-fun IconAirplane(modifier: Modifier, size: Int = 24, tint: Color = Color(35,183,246), alpha: Float = 1f){
+fun IconAirplane(modifier: Modifier, size: Int = 24, tint: Color = Color(35,183,246), alpha: Float = 1f, contentDescription: String? = null){
     Icon(
         painterResource(TravelinIcon.Airplane),
-        contentDescription = null,
+        contentDescription = contentDescription,
         tint = tint,
         modifier = modifier.size(size.dp)
             .rotate(45f)
@@ -70,10 +77,10 @@ fun IconAirplane(modifier: Modifier, size: Int = 24, tint: Color = Color(35,183,
 }
 
 @Composable
-fun IconLocation(modifier: Modifier, size: Int = 24, tint: Color = Color.Black, alpha: Float = 1f){
+fun IconLocation(modifier: Modifier, size: Int = 24, tint: Color = Color.Black, alpha: Float = 1f, contentDescription: String? = null){
     Icon(
         imageVector = TravelinIcon.Location,
-        contentDescription = null,
+        contentDescription = contentDescription,
         tint = tint,
         modifier = modifier.size(size.dp)
             .alpha(alpha)
@@ -82,10 +89,10 @@ fun IconLocation(modifier: Modifier, size: Int = 24, tint: Color = Color.Black, 
 
 //Favorites in red color = Color(255,0,0)
 @Composable
-fun IconHeartBorder(modifier: Modifier, size: Int = 24, tint: Color = Color.Black, alpha: Float = 1f){
+fun IconHeartBorder(modifier: Modifier, size: Int = 24, tint: Color = Color.Black, alpha: Float = 1f, contentDescription: String? = null){
     Icon(
         imageVector = TravelinIcon.HeartBorder,
-        contentDescription = null,
+        contentDescription = contentDescription,
         tint = tint,
         modifier = modifier.size(size.dp)
             .alpha(alpha)
@@ -95,10 +102,10 @@ fun IconHeartBorder(modifier: Modifier, size: Int = 24, tint: Color = Color.Blac
 //Footer
 //Color selected  Color(35,183,246)
 @Composable
-fun IconHouseSelected(modifier: Modifier, size: Int = 24, tint: Color =  Color(35,183,246), alpha: Float = 1f){
+fun IconHouseSelected(modifier: Modifier, size: Int = 24, tint: Color =  Color(35,183,246), alpha: Float = 1f, contentDescription: String? = null){
     Icon(
         painterResource(TravelinIcon.House),
-        contentDescription = null,
+        contentDescription = contentDescription,
         tint = tint,
         modifier = modifier.size(size.dp)
             .alpha(alpha)
@@ -106,10 +113,10 @@ fun IconHouseSelected(modifier: Modifier, size: Int = 24, tint: Color =  Color(3
 }
 
 @Composable
-fun IconHouse(modifier: Modifier, size: Int = 24, tint: Color = Color.Black, alpha: Float = 0.2f){
+fun IconHouse(modifier: Modifier, size: Int = 24, tint: Color = Color.Black, alpha: Float = 0.2f, contentDescription: String? = null){
     Icon(
         painterResource(TravelinIcon.House),
-        contentDescription = null,
+        contentDescription = contentDescription,
         tint = tint,
         modifier = modifier.size(size.dp)
             .alpha(alpha)
@@ -117,10 +124,10 @@ fun IconHouse(modifier: Modifier, size: Int = 24, tint: Color = Color.Black, alp
 }
 
 @Composable
-fun IconHeartSelected(modifier: Modifier, size: Int = 24, tint: Color =  Color(35,183,246), alpha: Float = 1f){
+fun IconHeartSelected(modifier: Modifier, size: Int = 24, tint: Color =  Color(35,183,246), alpha: Float = 1f, contentDescription: String? = null){
     Icon(
         imageVector = TravelinIcon.Heart,
-        contentDescription = null,
+        contentDescription = contentDescription,
         tint = tint,
         modifier = modifier.size(size.dp)
             .alpha(alpha)
@@ -128,10 +135,10 @@ fun IconHeartSelected(modifier: Modifier, size: Int = 24, tint: Color =  Color(3
 }
 
 @Composable
-fun IconHeart(modifier: Modifier, size: Int = 24, tint: Color = Color.Black, alpha: Float = 0.2f){
+fun IconHeart(modifier: Modifier, size: Int = 24, tint: Color = Color.Black, alpha: Float = 0.2f, contentDescription: String? = null){
     Icon(
         imageVector = TravelinIcon.Heart,
-        contentDescription = null,
+        contentDescription = contentDescription,
         tint = tint,
         modifier = modifier.size(size.dp)
             .alpha(alpha)
@@ -139,10 +146,10 @@ fun IconHeart(modifier: Modifier, size: Int = 24, tint: Color = Color.Black, alp
 }
 
 @Composable
-fun IconProfileSelected(modifier: Modifier, size: Int = 24, tint: Color =  Color(35,183,246), alpha: Float = 1f){
+fun IconProfileSelected(modifier: Modifier, size: Int = 24, tint: Color =  Color(35,183,246), alpha: Float = 1f, contentDescription: String? = null){
     Icon(
         imageVector = TravelinIcon.Account,
-        contentDescription = null,
+        contentDescription = contentDescription,
         tint = tint,
         modifier = modifier.size(size.dp)
             .alpha(alpha)
@@ -150,10 +157,10 @@ fun IconProfileSelected(modifier: Modifier, size: Int = 24, tint: Color =  Color
 }
 
 @Composable
-fun IconProfile(modifier: Modifier, size: Int = 24, tint: Color = Color.Black, alpha: Float = 0.2f){
+fun IconProfile(modifier: Modifier, size: Int = 24, tint: Color = Color.Black, alpha: Float = 0.2f, contentDescription: String? = null){
     Icon(
         imageVector = TravelinIcon.Account,
-        contentDescription = null,
+        contentDescription = contentDescription,
         tint = tint,
         modifier = modifier.size(size.dp)
             .alpha(alpha)
@@ -161,10 +168,10 @@ fun IconProfile(modifier: Modifier, size: Int = 24, tint: Color = Color.Black, a
 }
 //Icons of inputs
 @Composable
-fun IconEye(modifier: Modifier, size: Int = 24, tint: Color = Color.Black, alpha: Float = 1f){
+fun IconEye(modifier: Modifier, size: Int = 24, tint: Color = Color.Black, alpha: Float = 1f, contentDescription: String? = null){
     Icon(
         painterResource(TravelinIcon.Eye),
-        contentDescription = null,
+        contentDescription = contentDescription,
         tint = tint,
         modifier = modifier.size(size.dp)
             .alpha(alpha)
@@ -172,10 +179,21 @@ fun IconEye(modifier: Modifier, size: Int = 24, tint: Color = Color.Black, alpha
 }
 
 @Composable
-fun IconSearch(modifier: Modifier, size: Int = 24, tint: Color = Color.Black, alpha: Float = 0.5f){
+fun IconVisibilityOff(modifier: Modifier, size: Int = 24, tint: Color = Color.Black, alpha: Float = 1f, contentDescription: String? = null){
+    Icon(
+        painterResource(TravelinIcon.VisibilityOff),
+        contentDescription = contentDescription,
+        tint = tint,
+        modifier = modifier.size(size.dp)
+            .alpha(alpha)
+    )
+}
+
+@Composable
+fun IconSearch(modifier: Modifier, size: Int = 24, tint: Color = Color.Black, alpha: Float = 0.5f, contentDescription: String? = null){
     Icon(
         imageVector = TravelinIcon.Search,
-        contentDescription = null,
+        contentDescription = contentDescription,
         tint = tint,
         modifier = modifier.size(size.dp)
             .alpha(alpha)
@@ -183,10 +201,10 @@ fun IconSearch(modifier: Modifier, size: Int = 24, tint: Color = Color.Black, al
 }
 
 @Composable
-fun IconMoon(modifier: Modifier, size: Int = 24, tint: Color = Color.Black, alpha: Float = 1f){
+fun IconMoon(modifier: Modifier, size: Int = 24, tint: Color = Color.Black, alpha: Float = 1f, contentDescription: String? = null){
     Icon(
         painterResource(TravelinIcon.Moon),
-        contentDescription = null,
+        contentDescription = contentDescription,
         tint = tint,
         modifier = modifier.size(size.dp)
             .alpha(alpha)
@@ -194,10 +212,10 @@ fun IconMoon(modifier: Modifier, size: Int = 24, tint: Color = Color.Black, alph
 }
 
 @Composable
-fun IconRectangleSelect(modifier: Modifier, size: Int = 24, tint: Color = Color(255,255,255), alpha: Float = 1f){
+fun IconMore(modifier: Modifier=Modifier, size: Int = 24, tint: Color = Color.Black, alpha: Float = 0.5f, contentDescription: String? = null){
     Icon(
-        painterResource(TravelinIcon.Remove),
-        contentDescription = null,
+        imageVector = TravelinIcon.More,
+        contentDescription = contentDescription,
         tint = tint,
         modifier = modifier.size(size.dp)
             .alpha(alpha)
@@ -205,10 +223,43 @@ fun IconRectangleSelect(modifier: Modifier, size: Int = 24, tint: Color = Color(
 }
 
 @Composable
-fun IconRectangle(modifier: Modifier, size: Int = 24, tint: Color = Color(255,255,255), alpha : Float = 0.2f){
+fun IconLess(modifier: Modifier=Modifier, size: Int = 24, tint: Color = Color.Black, alpha: Float = 0.5f, contentDescription: String? = null){
+    Icon(
+        imageVector = TravelinIcon.Less,
+        contentDescription = contentDescription,
+        tint = tint,
+        modifier = modifier.size(size.dp)
+            .alpha(alpha)
+    )
+}
+
+@Composable
+fun IconExpand(modifier: Modifier=Modifier, size: Int = 24, tint: Color = Color.Black, alpha: Float = 0.5f, contentDescription: String? = null){
+    Icon(
+        imageVector = TravelinIcon.Expand,
+        contentDescription = contentDescription,
+        tint = tint,
+        modifier = modifier.size(size.dp)
+            .alpha(alpha)
+    )
+}
+
+@Composable
+fun IconRectangleSelect(modifier: Modifier, size: Int = 24, tint: Color = Color(255,255,255), alpha: Float = 1f, contentDescription: String? = null){
     Icon(
         painterResource(TravelinIcon.Remove),
-        contentDescription = null,
+        contentDescription = contentDescription,
+        tint = tint,
+        modifier = modifier.size(size.dp)
+            .alpha(alpha)
+    )
+}
+
+@Composable
+fun IconRectangle(modifier: Modifier, size: Int = 24, tint: Color = Color(255,255,255), alpha : Float = 0.2f, contentDescription: String? = null){
+    Icon(
+        painterResource(TravelinIcon.Remove),
+        contentDescription = contentDescription,
         tint = tint,
         modifier = modifier.size(size.dp)
             .alpha(alpha)
@@ -216,10 +267,10 @@ fun IconRectangle(modifier: Modifier, size: Int = 24, tint: Color = Color(255,25
 }
 //Icons of Detail
 @Composable
-fun IconQr(modifier: Modifier, size: Int = 24, tint: Color = Color.Black, alpha: Float = 1f){
+fun IconQr(modifier: Modifier, size: Int = 24, tint: Color = Color.Black, alpha: Float = 1f, contentDescription: String? = null){
     Icon(
         painterResource(TravelinIcon.Qr),
-        contentDescription = null,
+        contentDescription = contentDescription,
         tint = tint,
         modifier = modifier.size(size.dp)
             .alpha(alpha)
@@ -227,10 +278,10 @@ fun IconQr(modifier: Modifier, size: Int = 24, tint: Color = Color.Black, alpha:
 }
 
 @Composable
-fun IconTime(modifier: Modifier, size: Int = 24, tint: Color = Color.Black, alpha: Float = 1f){
+fun IconTime(modifier: Modifier, size: Int = 24, tint: Color = Color.Black, alpha: Float = 1f, contentDescription: String? = null){
     Icon(
         painterResource(TravelinIcon.Time),
-        contentDescription = null,
+        contentDescription = contentDescription,
         tint = tint,
         modifier = modifier.size(size.dp)
             .alpha(alpha)
@@ -238,10 +289,10 @@ fun IconTime(modifier: Modifier, size: Int = 24, tint: Color = Color.Black, alph
 }
 
 @Composable
-fun IconBus(modifier: Modifier, size: Int = 24, tint: Color = Color.Black, alpha: Float = 1f){
+fun IconBus(modifier: Modifier, size: Int = 24, tint: Color = Color.Black, alpha: Float = 1f, contentDescription: String? = null){
     Icon(
         painterResource(TravelinIcon.Bus),
-        contentDescription = null,
+        contentDescription = contentDescription,
         tint = tint,
         modifier = modifier.size(size.dp)
             .alpha(alpha)
@@ -249,10 +300,10 @@ fun IconBus(modifier: Modifier, size: Int = 24, tint: Color = Color.Black, alpha
 }
 
 @Composable
-fun IconStar(modifier: Modifier, size: Int = 24, tint : Color =  Color(255,178,63), alpha: Float = 1f){
+fun IconStar(modifier: Modifier, size: Int = 24, tint : Color =  Color(255,178,63), alpha: Float = 1f, contentDescription: String? = null){
     Icon(
         imageVector = TravelinIcon.Star,
-        contentDescription = null,
+        contentDescription = contentDescription,
         tint = tint,
         modifier = modifier.size(size.dp)
             .alpha(alpha)
@@ -260,10 +311,10 @@ fun IconStar(modifier: Modifier, size: Int = 24, tint : Color =  Color(255,178,6
 }
 
 @Composable
-fun IconStarEmpty(modifier: Modifier, size: Int = 24, tint: Color = Color.Black, alpha : Float = 0.2f){
+fun IconStarEmpty(modifier: Modifier, size: Int = 24, tint: Color = Color.Black, alpha : Float = 0.2f, contentDescription: String? = null){
     Icon(
         imageVector = TravelinIcon.Star,
-        contentDescription = null,
+        contentDescription = contentDescription,
         tint = tint,
         modifier = modifier.size(size.dp)
             .alpha(alpha)
@@ -272,10 +323,10 @@ fun IconStarEmpty(modifier: Modifier, size: Int = 24, tint: Color = Color.Black,
 
 //Icons back and share
 @Composable
-fun IconBackArrow(modifier: Modifier, size: Int = 24, tint: Color = Color.Black, alpha: Float = 1f){
+fun IconBackArrow(modifier: Modifier, size: Int = 24, tint: Color = Color.Black, alpha: Float = 1f, contentDescription: String? = null){
     Icon(
         imageVector = TravelinIcon.ArrowBack,
-        contentDescription = null,
+        contentDescription = contentDescription,
         tint = tint,
         modifier = modifier.size(size.dp)
             .alpha(alpha)
@@ -283,10 +334,10 @@ fun IconBackArrow(modifier: Modifier, size: Int = 24, tint: Color = Color.Black,
 }
 
 @Composable
-fun IconBack(modifier: Modifier, size: Int = 24, tint: Color = Color.Black, alpha: Float = 1f){
+fun IconBack(modifier: Modifier, size: Int = 24, tint: Color = Color.Black, alpha: Float = 1f, contentDescription: String? = null){
     Icon(
         imageVector = TravelinIcon.Back,
-        contentDescription = null,
+        contentDescription = contentDescription,
         tint = tint,
         modifier = modifier.size(size.dp)
             .alpha(alpha)
@@ -294,10 +345,10 @@ fun IconBack(modifier: Modifier, size: Int = 24, tint: Color = Color.Black, alph
 }
 
 @Composable
-fun IconForward(modifier: Modifier, size: Int = 24, tint: Color = Color.Black, alpha: Float = 1f){
+fun IconForward(modifier: Modifier, size: Int = 24, tint: Color = Color.Black, alpha: Float = 1f, contentDescription: String? = null){
     Icon(
         imageVector = TravelinIcon.Forward,
-        contentDescription = null,
+        contentDescription = contentDescription,
         tint = tint,
         modifier = modifier.size(size.dp)
             .alpha(alpha)
@@ -305,10 +356,10 @@ fun IconForward(modifier: Modifier, size: Int = 24, tint: Color = Color.Black, a
 }
 
 @Composable
-fun IconShare(modifier: Modifier, size: Int = 24, tint: Color = Color.Black, alpha: Float = 1f){
+fun IconShare(modifier: Modifier, size: Int = 24, tint: Color = Color.Black, alpha: Float = 1f, contentDescription: String? = null){
     Icon(
         imageVector = TravelinIcon.Share,
-        contentDescription = null,
+        contentDescription = contentDescription,
         tint = tint,
         modifier = modifier.size(size.dp)
             .alpha(alpha)

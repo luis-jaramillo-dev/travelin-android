@@ -1,16 +1,22 @@
 package com.projectlab.travelin_android.navigation
 
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.remember
+import androidx.compose.ui.platform.LocalContext
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.navigation
+import com.projectlab.booking.presentation.activities.search.SearchActivityScreen
+import androidx.hilt.navigation.compose.hiltViewModel
+import com.projectlab.core.presentation.ui.di.LocationUtilsEntryPoint
 import com.projectlab.feature.onboarding.presentation.ui.OnboardingScreen
 import com.projectlab.travelin_android.presentation.screens.login.LoginScreen
 import com.projectlab.travelin_android.presentation.screens.profile.ProfileScreen
 import com.projectlab.travelin_android.presentation.screens.register.RegisterScreen
 import com.projectlab.travelin_android.presentation.screens.successful.SuccessfulScreen
+import dagger.hilt.android.EntryPointAccessors
 
 @Composable
 fun NavigationRoot(
@@ -21,6 +27,7 @@ fun NavigationRoot(
         startDestination = AuthScreens.Root.route
     ) {
         authGraph(navController)
+        searchGraph(navController)
     }
 }
 
@@ -52,7 +59,8 @@ private fun NavGraphBuilder.authGraph(navController: NavHostController) {
 
         composable(route = AuthScreens.Profile.route) {
             ProfileScreen(
-                onLogoutClick = { navController.navigate(AuthScreens.Login.route) }
+                onLogoutClick = { navController.navigate(AuthScreens.Login.route) },
+                onHomeClick = { navController.navigate(SearchScreens.Activities.route) }
             )
         }
 
@@ -61,5 +69,23 @@ private fun NavGraphBuilder.authGraph(navController: NavHostController) {
                 onProfileClick = { navController.navigate(AuthScreens.Profile.route) },
             )
         }
+    }
+}
+
+private fun NavGraphBuilder.searchGraph(navController: NavHostController){
+    composable(route = SearchScreens.Activities.route) {
+
+        val context = LocalContext.current
+        val locationUtils = remember {
+            EntryPointAccessors
+                .fromApplication(context.applicationContext, LocationUtilsEntryPoint::class.java)
+                .locationUtils()
+        }
+
+        SearchActivityScreen(
+            locationViewModel = hiltViewModel(),
+            searchActivityViewModel = hiltViewModel(),
+            locationUtils = locationUtils
+        )
     }
 }
