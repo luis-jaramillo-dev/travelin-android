@@ -96,7 +96,6 @@ class LocationUtils @Inject constructor (@ApplicationContext val context: Contex
                     val longitude = address.longitude
                     val city = address.locality ?: address.subAdminArea ?: ""
                     val country = address.countryName ?: ""
-
                     Location(
                         latitude = latitude,
                         longitude = longitude,
