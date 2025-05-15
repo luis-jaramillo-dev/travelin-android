@@ -16,6 +16,7 @@ import com.projectlab.travelin_android.model.CityLocation
 import javax.inject.Inject
 import com.projectlab.travelin_android.model.Flight
 import com.projectlab.travelin_android.model.FlightQueryParams
+import com.projectlab.travelin_android.model.Price
 import com.projectlab.travelin_android.model.TravelClass
 import com.projectlab.travelin_android.usecase.GetFlightsUseCase
 import com.projectlab.travelin_android.usecase.SearchCityLocationsUseCase
@@ -111,13 +112,16 @@ class FlightViewModel @Inject constructor(
         val travelClass: UiTravelClass = UiTravelClass.ALL,
         val origin: String = "",
         val destination: String = "",
+        val dateRange: Pair<String, String>? = null,
         val departureDate: String = "",
         val returnDate: String = "",
         val adults: Int = 1,
         val children: Int = 0,
         val infants: Int = 0,
+        val totalPassengers: Int = adults + children + infants,
         val nonStop: Boolean = false,
         val maxPrice: String = "",
+        val estimatedPrice: Price? = null,
         val originSuggestions: List<CityLocation> = emptyList(),
         val destinationSuggestions: List<CityLocation> = emptyList(),
         val flights: List<Flight> = emptyList(),
