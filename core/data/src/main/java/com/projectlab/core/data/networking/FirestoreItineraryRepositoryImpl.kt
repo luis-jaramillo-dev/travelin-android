@@ -26,7 +26,7 @@ class FirestoreItineraryRepositoryImpl @Inject constructor (
         // user reference:
         val userDocRef = firestore
             .collection("Users")
-            .document(itinerary.userRef?.value ?: throw IllegalArgumentException("HERE!! userRef is null"))
+            .document(itinerary.userRef?.value ?: throw IllegalArgumentException("userRef is null"))
         // create dto:
         val dto = FirestoreItineraryDTO.fromDomain(itinerary)
         // add to firestore:

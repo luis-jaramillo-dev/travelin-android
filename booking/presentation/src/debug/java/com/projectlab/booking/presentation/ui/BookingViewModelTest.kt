@@ -47,23 +47,23 @@ class BookingViewModelTest @Inject constructor(
         // 1) We create a user and get the domain ID
         // Hardcode user data
         val user = UserEntity(
-            firstName = "KING LEONIDAS",
-            lastName = "FROM ESPARTA",
+            firstName = "MASTER WINDU",
+            lastName = "JEDI",
             countryCode = "000",
             phoneNumber = "1111",
-            email = "LEOKING@gmail.com",
-            age = "50"
+            email = "MWJ@gmail.com",
+            age = "51"
         )
 
         // We create the user in Firestore through the repository
-        val UserIdRes = userRepo.createUser(user)
-        if (UserIdRes.isFailure) {
-            _seedResult.value = Result.failure(UserIdRes.exceptionOrNull()!!)
+        val userIdRes = userRepo.createUser(user)
+        if (userIdRes.isFailure) {
+            _seedResult.value = Result.failure(userIdRes.exceptionOrNull()!!)
             return@launch
         }
 
         // We get the user ID from the result
-        val userId: EntityId = UserIdRes.getOrThrow()
+        val userId: EntityId = userIdRes.getOrThrow()
 
         // 2) We create a Itinerary:
         val itinerary = ItineraryEntity(

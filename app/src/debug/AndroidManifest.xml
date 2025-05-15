@@ -18,21 +18,18 @@
         android:theme="@style/Theme.Travelinandroid"
         tools:targetApi="31">
 
+        <!-- MockActivityTest is used for testing purposes only.
+        TODO: maybe we should delete this in order to get production scenario -->
         <activity
-            android:name=".MainActivity"
+            android:name=".ui.MockActivityTest"
             android:exported="true">
 
             <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-                <category android:name="android.intent.category.LAUNCHER" />
+                <action android:name="android.intent.action.MAIN"/>
+                <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
-        </activity>
 
-        <!-- MockActivityTest is used for testing purposes only.
-        TODO: delete this in order to get production scenario -->
-        <activity
-            android:name=".ui.MockActivityTest"
-            android:exported="true" />
+        </activity>
 
     </application>
 
