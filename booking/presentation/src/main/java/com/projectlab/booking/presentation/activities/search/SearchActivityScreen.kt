@@ -13,10 +13,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
-import androidx.compose.foundation.text.KeyboardActions
-import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -29,39 +26,30 @@ import androidx.compose.runtime.mutableStateMapOf
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.semantics.contentDescription
-import androidx.compose.ui.semantics.semantics
-import androidx.compose.ui.text.input.ImeAction
 import com.projectlab.core.presentation.designsystem.R
 import com.projectlab.core.presentation.designsystem.component.IconBack
 import com.projectlab.core.presentation.designsystem.component.SearchPlaces
 import com.projectlab.core.presentation.designsystem.component.IconLocation
 import com.projectlab.core.presentation.designsystem.component.TourListCard
 import com.projectlab.core.presentation.ui.viewmodel.LocationViewModel
-import androidx.hilt.navigation.compose.hiltViewModel
-import com.projectlab.booking.presentation.activities.detail.ActivityDetailViewModel
 import com.projectlab.core.domain.model.Location
 import com.projectlab.core.presentation.designsystem.component.ButtonComponent
 import com.projectlab.core.presentation.designsystem.component.ButtonVariant
+import com.projectlab.core.presentation.designsystem.component.SearchBarComponent
 import com.projectlab.core.presentation.designsystem.theme.spacing
-import com.projectlab.core.presentation.ui.di.LocationUtilsEntryPoint
 import com.projectlab.core.presentation.ui.utils.LocationUtils
-import dagger.hilt.android.EntryPointAccessors
-
 
 @Composable
 fun SearchActivityScreen(
     modifier: Modifier = Modifier,
-    locationViewModel: LocationViewModel = hiltViewModel(),
-    searchActivityViewModel: SearchActivityViewModel = hiltViewModel(),
-    activityDetailViewModel: ActivityDetailViewModel = hiltViewModel(),
+    locationViewModel: LocationViewModel,
+    searchActivityViewModel: SearchActivityViewModel,
     locationUtils: LocationUtils
 ) {
     val context = LocalContext.current
     val address by locationViewModel.address
-    val searchQuery by searchActivityViewModel.query.collectAsState()
-    val searchResults by searchActivityViewModel.activities.collectAsState()
     val currentLocation = locationViewModel.location.value
+    val uiState by searchActivityViewModel.uiState.collectAsState()
 
     val permissionLauncher = rememberLauncherForActivityResult(
         ActivityResultContracts.RequestPermission()
@@ -83,7 +71,7 @@ fun SearchActivityScreen(
 
     val onEnter = {
         Log.d("SearchActivityViewModel", "Enter pressed")
-        if (searchQuery.isNotBlank()) {
+        if (uiState.query.isNotBlank()) {
             searchActivityViewModel.onSearchSubmitted()
         }
     }
@@ -107,17 +95,14 @@ fun SearchActivityScreen(
         Row(verticalAlignment = Alignment.CenterVertically) {
             IconBack(modifier = Modifier, size = 40)
             SearchBarComponent(
-                searchQuery = searchQuery,
+                query = uiState.query,
                 onEnter = onEnter,
-                onUseCurrentLocationClicked = {
-                    locationViewModel.getCurrentLocation()
-                },
                 modifier = Modifier,
-                viewModel = searchActivityViewModel
+                onQueryChange = { searchActivityViewModel.onQueryChanged(it) }
             )
         }
         Spacer(modifier = Modifier.height(MaterialTheme.spacing.SectionSpacing))
-        if (searchResults.isEmpty()) {
+        if (uiState.activities.isEmpty()) {
             SearchPlaces(
                 modifier = modifier.padding(6.dp),
                 locationIcon = { modifier -> IconLocation(modifier) },
@@ -128,51 +113,21 @@ fun SearchActivityScreen(
         }
         Spacer(modifier = Modifier.height(40.dp))
         SearchActivityResultsComponent(
-            viewModel = searchActivityViewModel,
-            activityViewModel = activityDetailViewModel
+            uiState = uiState,
+            onShowAllResults = { searchActivityViewModel.showAllResults() }
         )
     }
 }
 
-@Composable
-fun SearchBarComponent(
-    searchQuery: String,
-    onEnter: () -> Unit,
-    onUseCurrentLocationClicked: () -> Unit,
-    modifier: Modifier = Modifier,
-    viewModel: SearchActivityViewModel,
-) {
-    val query by viewModel.query.collectAsState()
-    val address by viewModel.address.collectAsState()
 
-    Column(modifier = modifier.padding(horizontal = MaterialTheme.spacing.medium)) {
-        OutlinedTextField(
-            value = query,
-            onValueChange = {
-                viewModel.onQueryChanged(it)
-            },
-            modifier = Modifier
-                .fillMaxWidth()
-                .semantics { contentDescription = "Search City Input" },
-            placeholder = { Text(text = stringResource(R.string.search_city_placeholder)) },
-            keyboardOptions = KeyboardOptions.Default.copy(
-                imeAction = ImeAction.Done
-            ),
-            keyboardActions = KeyboardActions(
-                onDone = { onEnter() }
-            ),
-            singleLine = true
-        )
-    }
-}
 
 @Composable
 fun SearchActivityResultsComponent(
-    viewModel: SearchActivityViewModel,
-    activityViewModel: ActivityDetailViewModel
+    uiState: SearchActivityUiState,
+    onShowAllResults: () -> Unit
 ) {
-    val activities by viewModel.activities.collectAsState()
-    val showAll by viewModel.showAllResults.collectAsState()
+    val activities = uiState.activities
+    val showAll = uiState.showAllResults
 
     val context = LocalContext.current
     val locationUtils = remember { LocationUtils(context) }
@@ -212,9 +167,7 @@ fun SearchActivityResultsComponent(
                     activity = activity,
                     modifier = Modifier.fillMaxWidth(),
                     city = city,
-                    onPress = {
-                        activityViewModel.onViewDetail(activity.id)
-                    }
+                    onPress = TODO()
                 )
 
                 Spacer(modifier = Modifier.height(16.dp))
@@ -227,28 +180,11 @@ fun SearchActivityResultsComponent(
                             .padding(vertical = MaterialTheme.spacing.small)
                             .fillMaxWidth(),
                         text = stringResource(R.string.show_more_available, restSize),
-                        onClick = { viewModel.showAllResults() },
+                        onClick = onShowAllResults,
                         variant = ButtonVariant.Outline,
                     )
                 }
             }
         }
     }
-}
-
-@Composable
-fun SearchActivityScreenWithHilt(function: () -> Unit) {
-    val context = LocalContext.current
-    val locationViewModel: LocationViewModel = hiltViewModel()
-
-    val locationUtils = remember {
-        EntryPointAccessors
-            .fromApplication(context.applicationContext, LocationUtilsEntryPoint::class.java)
-            .locationUtils()
-    }
-
-    SearchActivityScreen(
-        locationViewModel = locationViewModel,
-        locationUtils = locationUtils
-    )
 }

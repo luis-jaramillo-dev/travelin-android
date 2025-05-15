@@ -8,13 +8,13 @@ import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
 import javax.inject.Singleton
 
-@Module
-@InstallIn(SingletonComponent::class)
-abstract class TokenProviderModule {
+    @Module
+    @InstallIn(SingletonComponent::class)
+    abstract class TokenProviderModule {
 
-    @Binds
-    @Singleton
-    abstract fun bindTokenProvider(
-        tokenProviderImpl: TokenProviderImpl
-    ): TokenProvider
-}
+        @Binds
+        @Singleton
+        abstract fun bindTokenProvider(
+            tokenProviderImpl: TokenProviderImpl
+        ): TokenProvider
+    }
