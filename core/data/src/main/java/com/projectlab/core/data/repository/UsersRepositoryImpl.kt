@@ -1,9 +1,8 @@
-package com.projectlab.core.data.networking
+package com.projectlab.core.data.repository
 
 import com.google.firebase.firestore.CollectionReference
 import com.projectlab.core.domain.model.Response
 import com.projectlab.core.domain.entity.UserEntity
-import com.projectlab.core.domain.model.EntityId
 import com.projectlab.core.domain.repository.UsersRepository
 import kotlinx.coroutines.channels.awaitClose
 import kotlinx.coroutines.flow.Flow

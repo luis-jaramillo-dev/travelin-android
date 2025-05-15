@@ -1,4 +1,4 @@
-package com.projectlab.core.data.networking
+package com.projectlab.core.data.repository
 
 
 
