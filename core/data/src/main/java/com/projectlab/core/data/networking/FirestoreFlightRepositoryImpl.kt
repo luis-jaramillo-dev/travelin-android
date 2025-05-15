@@ -11,6 +11,13 @@ import com.projectlab.core.domain.entity.FlightEntity
 import com.projectlab.core.domain.repository.FlightRepository
 import kotlinx.coroutines.flow.Flow
 
+/**
+ * FirestoreFlightRepositoryImpl is a concrete implementation of the FlightRepository interface.
+ * It uses Firebase Firestore to perform CRUD operations on flight data.
+ *
+ * @param firestore The FirebaseFirestore instance used to interact with Firestore.
+ */
+
 class FirestoreFlightRepositoryImpl @Inject constructor (
     private val firestore: FirebaseFirestore
 ) : FlightRepository {

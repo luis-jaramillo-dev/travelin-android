@@ -9,6 +9,18 @@ import com.projectlab.core.domain.model.EntityId
 import java.time.Instant
 import java.util.Date
 
+/**
+ * Data Transfer Object (DTO) for Firestore Activity.
+ *
+ * @property name The name of the activity.
+ * @property locationRef A reference to the location document in Firestore.
+ * @property activityDate The date of the activity.
+ * @property details The details of the activity.
+ * @property activityPrice The price of the activity.
+ *
+ * @author ricardoceadev
+ */
+
 data class FirestoreActivityDTO (
     val name: String = "",
     val locationRef: DocumentReference? = null,

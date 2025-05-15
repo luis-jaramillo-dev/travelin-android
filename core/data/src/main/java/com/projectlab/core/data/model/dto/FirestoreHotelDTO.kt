@@ -9,6 +9,23 @@ import com.projectlab.core.domain.model.EntityId
 import java.time.Instant
 import java.util.Date
 
+/**
+ * Data Transfer Object (DTO) for Firestore Hotel.
+ *
+ * @property hotelName The name of the hotel.
+ * @property hotelRoomNumber The room number of the hotel.
+ * @property hotelPhone The phone number of the hotel.
+ * @property locationRef A reference to the location document in Firestore.
+ * @property guestName The name of the guest.
+ * @property guestPhone The phone number of the guest.
+ * @property idNumber The ID number of the guest.
+ * @property checkInDate The check-in date for the hotel stay.
+ * @property checkOutDate The check-out date for the hotel stay.
+ * @property hotelPrice The price of the hotel stay.
+ *
+ * @author ricardoceadev
+ */
+
 data class FirestoreHotelDTO (
     val hotelName: String = "",
     val hotelRoomNumber: Int = 0,

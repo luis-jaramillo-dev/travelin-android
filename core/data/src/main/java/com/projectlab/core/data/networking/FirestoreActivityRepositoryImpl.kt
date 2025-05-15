@@ -11,6 +11,13 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.tasks.await
 import javax.inject.Inject
 
+/**
+ * FirestoreActivityRepositoryImpl is a concrete implementation of the ActivityRepository interface.
+ * It uses Firebase Firestore to perform CRUD operations on activity data.
+ *
+ * @param firestore The FirebaseFirestore instance used to interact with Firestore.
+ */
+
 class FirestoreActivityRepositoryImpl @Inject constructor(
     private val firestore: FirebaseFirestore
 ) : ActivityRepository {

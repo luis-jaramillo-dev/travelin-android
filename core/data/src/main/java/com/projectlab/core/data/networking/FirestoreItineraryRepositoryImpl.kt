@@ -11,6 +11,13 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.tasks.await
 import javax.inject.Inject
 
+/**
+ * FirestoreItineraryRepositoryImpl is a concrete implementation of the ItineraryRepository interface.
+ * It uses Firebase Firestore to perform CRUD operations on itinerary data.
+ *
+ * @param firestore The FirebaseFirestore instance used to interact with Firestore.
+ */
+
 class FirestoreItineraryRepositoryImpl @Inject constructor (
     private val firestore: FirebaseFirestore
 ) : ItineraryRepository {
@@ -19,9 +26,9 @@ class FirestoreItineraryRepositoryImpl @Inject constructor (
         // user reference:
         val userDocRef = firestore
             .collection("Users")
-            .document(itinerary.userRef?.value ?: throw IllegalArgumentException("userRef is null"))
+            .document(itinerary.userRef?.value ?: throw IllegalArgumentException("HERE!! userRef is null"))
         // create dto:
-        val dto = FirestoreItineraryDTO.fromDomain(itinerary, userDocRef)
+        val dto = FirestoreItineraryDTO.fromDomain(itinerary)
         // add to firestore:
         val itCol = userDocRef.collection("Itineraries")
         val docRef = itCol.document()

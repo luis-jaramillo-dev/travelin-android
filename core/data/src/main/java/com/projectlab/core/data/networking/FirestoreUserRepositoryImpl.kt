@@ -12,6 +12,13 @@ import com.projectlab.core.domain.repository.UserRepository
 import com.projectlab.core.data.model.dto.FirestoreUserDTO
 import kotlinx.coroutines.flow.Flow
 
+/**
+ * FirestoreUserRepositoryImpl is a concrete implementation of the UserRepository interface.
+ * It uses Firebase Firestore to perform CRUD operations on user data.
+ *
+ * @param firestore The FirebaseFirestore instance used to interact with Firestore.
+ */
+
 class FirestoreUserRepositoryImpl @Inject constructor(
     private val firestore: FirebaseFirestore
 ) : UserRepository {

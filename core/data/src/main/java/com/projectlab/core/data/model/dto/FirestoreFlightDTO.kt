@@ -9,6 +9,21 @@ import com.projectlab.core.domain.model.EntityId
 import com.projectlab.core.domain.entity.FlightEntity
 import java.util.Date
 
+/**
+ * Data Transfer Object (DTO) for Firestore Flight.
+ *
+ * @property airline The airline of the flight.
+ * @property flightNumber The flight number.
+ * @property flightClass The class of the flight.
+ * @property departureAirport A map containing the airport code reference and time of departure.
+ * @property arrivalAirport A map containing the airport code reference and time of arrival.
+ * @property passengerNumber A map containing the number of adults, kids, babies with sit,
+ * and babies in arms.
+ * @property price The price of the flight.
+ *
+ * @author ricardoceadev
+ */
+
 // Assuming you have a DocumentReference for the airport collection
 //val documentAirportId = "your_airport_document_id" // Replace with actual document ID
 //val docRefAirport = FirebaseFirestore.getInstance().collection("airport").document(documentAirportId)
@@ -48,8 +63,6 @@ data class FirestoreFlightDTO @RequiresApi(Build.VERSION_CODES.O) constructor(
                 arrivalAirport = domain.arrivalAirport,
                 passengerNumber = domain.passengerNumber,
                 price = domain.price,
-                //userRef = userDocRef,
-                //itineraryRef = itineraryDocRef
             )
     }
 

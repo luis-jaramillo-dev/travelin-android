@@ -48,11 +48,11 @@ class BookingViewModelTest @Inject constructor(
         // 1) We create a user and get the domain ID
         // Hardcode user data
         val user = UserEntity(
-            firstName           = "CARLOMAGNO III DE FRANCIA",
-            lastName            = "FRANCIA",
+            firstName           = "CARLOMAGNO V FROM GERMANY",
+            lastName            = "Italy",
             countryCode         = "000",
             phoneNumber         = "1111",
-            email               = "kingcharles@gmail.com",
+            email               = "CARLOMAGNOIV@gmail.com",
             age                 = "50"
         )
 
@@ -69,7 +69,7 @@ class BookingViewModelTest @Inject constructor(
         // 2) We create a Itinerary:
         val itinerary = ItineraryEntity(
             //id                  = null,
-            title               = "Trip to RIO DE JANEIRO",
+            title               = "Trip to RIO DE BOGOTA",
             startDate           = Instant.now(),
             endDate             = Instant.now().plusSeconds(2592000),
             totalItineraryPrice = 9000.0,
@@ -88,7 +88,7 @@ class BookingViewModelTest @Inject constructor(
 
         // 3) We create a flight:
         val flight = FlightEntity(
-            airline             = "Brasil Airlines",
+            airline             = "BOGOTA Airlines",
             flightNumber        = "800",
             flightClass         = "Premium",
             departureAirport    = mapOf(

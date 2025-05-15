@@ -26,6 +26,15 @@ import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
 import javax.inject.Singleton
 
+/**
+ *
+ * This module provides the dependencies for the data layer of the application.
+ * It binds the implementations of various repositories to their respective interfaces.
+ * Uses Dagger Hilt for dependency injection.
+ *
+ * @author ricardoceadev
+ */
+
 @InstallIn(SingletonComponent::class)
 @Module
 abstract class DataModule {

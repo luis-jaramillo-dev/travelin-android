@@ -11,6 +11,13 @@ import jakarta.inject.Inject
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.tasks.await
 
+/**
+ * FirestoreFlightSegmentRepositoryImpl is a concrete implementation of the FlightSegmentRepository interface.
+ * It uses Firebase Firestore to perform CRUD operations on flight segment data.
+ *
+ * @param firestore The FirebaseFirestore instance used to interact with Firestore.
+ */
+
 class FirestoreFlightSegmentRepositoryImpl @Inject constructor (
     private val firestore: FirebaseFirestore
 ) : FlightSegmentRepository {
