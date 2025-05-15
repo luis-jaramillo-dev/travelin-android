@@ -17,10 +17,12 @@ import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.Remove
 import androidx.compose.material3.Button
 import androidx.compose.material3.Checkbox
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
+import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
@@ -31,12 +33,18 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
+import com.projectlab.booking.presentation.flight.IFlightViewModel
 import com.projectlab.travelin_android.flight.CityInputField
 import com.projectlab.travelin_android.flight.FlightViewModel
 //import com.projectlab.travelin_android.flight.UiTravelClass
 import com.projectlab.travelin_android.flight.components.ClassDropdown
+import com.projectlab.travelin_android.flight.components.atomos.BackButton
+import com.projectlab.travelin_android.flight.components.atomos.ScreenTitle
+import com.projectlab.travelin_android.flight.components.moleculas.FlightQueryBottomBar
+import com.projectlab.travelin_android.flight.components.moleculas.FlightQueryForm
 import java.util.Calendar
 
+/*
 @Composable
 fun FlightQueryScreen(
     viewModel: FlightViewModel,
@@ -120,5 +128,60 @@ fun PassengerRow(label: String, count: Int, onCountChange: (Int) -> Unit) {
         IconButton(onClick = { if (count > 0) onCountChange(count - 1) }) { Icon(Icons.Filled.Remove, contentDescription = "-") }
         Text("$count", Modifier.padding(horizontal = 8.dp))
         IconButton(onClick = { onCountChange(count + 1) }) { Icon(Icons.Filled.Add, contentDescription = "+") }
+    }
+}*/
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+fun FlightQueryScreen(
+    viewModel: IFlightViewModel,
+    onBack: ()->Unit,
+    onNext: ()->Unit
+) {
+    // 1. Obtener el estado del ViewModel
+    val uiState by viewModel.uiState.collectAsState()
+
+    // 2. Scaffold con TopBar y BottomBar
+    Scaffold(
+        topBar = {
+            BackButton(onBack = onBack, modifier = Modifier.padding(start = 8.dp))
+        },
+        bottomBar = {
+            FlightQueryBottomBar(
+                totalAmount = uiState.estimatedPrice?.amount?.toString() ?: "—",
+                unit = "/person",
+                onNext = { viewModel.searchFlights(onNext) }
+            )
+        }
+    ) { paddingValues ->
+        // 3. Contenido principal con scroll
+        Column(
+            modifier = Modifier
+                .padding(paddingValues)
+                .verticalScroll(rememberScrollState())
+                .padding(horizontal = 24.dp, vertical = 16.dp),
+            verticalArrangement = Arrangement.spacedBy(16.dp)
+        ) {
+            ScreenTitle(
+                title = "Detail Booking",
+                subtitle = "Get the best out of derleng by creating an account"
+            )
+
+            FlightQueryForm(
+                travelClass = uiState.travelClass.toString(),
+                onClassSelect = viewModel::onClassSelected,
+                origin = uiState.origin,
+                onOriginChange = viewModel::onOriginChange,
+                destination = uiState.destination,
+                onDestinationChange = viewModel::onDestinationChosen,
+                dateRange = uiState.dateRange,
+                onDateRangeSelect = viewModel::onDateRangeSelected,
+                passengerCount = uiState.totalPassengers,
+                onPassengerCountChange = viewModel::onPassengerCounts,
+                nonStopOnly = uiState.nonStop,
+                onNonStopToggle = viewModel::onNonStopToggled,
+                maxPrice = uiState.maxPrice,
+                onMaxPriceChange = viewModel::onMaxPriceChange
+            )
+        }
     }
 }
