@@ -28,12 +28,6 @@
             </intent-filter>
         </activity>
 
-        <!-- MockActivityTest is used for testing purposes only.
-        TODO: delete this in order to get production scenario -->
-        <activity
-            android:name=".ui.MockActivityTest"
-            android:exported="true" />
-
     </application>
 
 </manifest>
