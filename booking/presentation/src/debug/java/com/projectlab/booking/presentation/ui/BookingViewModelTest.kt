@@ -26,6 +26,14 @@ import kotlinx.coroutines.launch
 import java.time.Instant
 import java.util.Date
 
+/**
+ * ViewModel for testing purposes, to create test data in Firestore.
+ * This is not used in the app, but it is useful for testing purposes.
+ * We should used in the debug build variant only.
+ *
+ *  @author ricardoceadev
+ */
+
 @HiltViewModel
 class BookingViewModelTest @Inject constructor(
     private val userRepo : UserRepository,
@@ -47,12 +55,12 @@ class BookingViewModelTest @Inject constructor(
         // 1) We create a user and get the domain ID
         // Hardcode user data
         val user = UserEntity(
-            firstName = "MASTER WINDU",
-            lastName = "JEDI",
+            firstName = "MASTER OBI-WAN",
+            lastName = "KENOBI",
             countryCode = "000",
             phoneNumber = "1111",
-            email = "MWJ@gmail.com",
-            age = "51"
+            email = "obiwan@gmail.com",
+            age = "53"
         )
 
         // We create the user in Firestore through the repository
@@ -68,7 +76,7 @@ class BookingViewModelTest @Inject constructor(
         // 2) We create a Itinerary:
         val itinerary = ItineraryEntity(
             //id                  = null,
-            title = "Trip to RIO DE BOGOTA",
+            title = "Trip to a far away galaxy",
             startDate = Instant.now(),
             endDate = Instant.now().plusSeconds(2592000),
             totalItineraryPrice = 9000.0,
@@ -145,11 +153,11 @@ class BookingViewModelTest @Inject constructor(
 
         // 5) We create a Hotel:
         val hotel = HotelEntity(
-            hotelName = "Hotel de Brasilia",
+            hotelName = "Hotel of the Jedi",
             hotelRoomNumber = 30,
             hotelPhone = 2222,
             locationRef = EntityId("location456"), // TODO: Add id form firestore
-            guestName = "ursula",
+            guestName = "obi",
             guestPhone = 22222222,
             idNumber = 210,
             checkInDate = Instant.now(),
@@ -168,10 +176,10 @@ class BookingViewModelTest @Inject constructor(
 
         // 6) We create an Activity:
         val activity = ActivityEntity(
-            name = "Visit to the beach of Rio",
+            name = "Visit to jedi temple",
             locationRef = EntityId("location789"), // TODO: Add id form firestore
             activityDate = Instant.now(),
-            details = "Plays in the beach",
+            details = "Amazing visit to the jedi temple",
             activityPrice = 40.0,
             userRef = userId,
             itineraryRef = itineraryId

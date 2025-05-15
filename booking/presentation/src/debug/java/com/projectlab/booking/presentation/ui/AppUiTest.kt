@@ -15,6 +15,15 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.projectlab.booking.presentation.ui.BookingViewModelTest
 
+/**
+ * BookingScreen is a Composable function that displays the booking screen.
+ * It shows a button to generate test data and a loading indicator while the data is being generated.
+ * It's used for testing purposes in the debug build variant.
+ *
+ * @param viewModel The BookingViewModelTest instance used to manage the state of the screen.
+ * @author ricardoceadev
+ */
+
 @RequiresApi(Build.VERSION_CODES.O)
 @Composable
 fun BookingScreen (

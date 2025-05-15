@@ -10,6 +10,14 @@ import com.projectlab.booking.presentation.ui.BookingScreen
 import com.projectlab.core.presentation.designsystem.theme.TravelinTheme
 import dagger.hilt.android.AndroidEntryPoint
 
+/**
+ * MockActivityTest is a test activity used to generate test data in Firestore.
+ * We should used in the debug build variant.
+ * It uses the BookingScreen composable to display a button to generate test data.
+ *
+ * @author ricardoceadev
+ */
+
 @AndroidEntryPoint
 class MockActivityTest : ComponentActivity() {
 
