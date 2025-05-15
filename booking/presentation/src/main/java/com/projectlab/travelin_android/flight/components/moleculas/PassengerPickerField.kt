@@ -18,7 +18,8 @@ import com.projectlab.travelin_android.flight.components.atomos.PrimaryButton
 @Composable
 fun PassengerPickerField(
     passengerCount: Int,
-    onPassengerCountChange: (Int) -> Unit
+    onPassengerCountChange: (Int) -> Unit,
+    modifier: Modifier
 ) {
     val sheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true)
     var showSheet by remember { mutableStateOf(false) }

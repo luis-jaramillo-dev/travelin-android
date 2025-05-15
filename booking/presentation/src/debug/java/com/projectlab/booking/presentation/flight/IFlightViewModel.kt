@@ -14,6 +14,7 @@ interface IFlightViewModel {
     fun onDestinationChosen(location: CityLocation)
     fun onDepartureDateSelected(date: String)
     fun onReturnDateSelected(date: String?)
+    fun onDateRangeSelected(range: Pair<String, String>)
     fun onPassengerCounts(adults: Int, children: Int, infants: Int)
     fun onNonStopToggled()
     fun onMaxPriceChange(price: String)

@@ -97,7 +97,7 @@ class FlightViewModel @Inject constructor(
 }*/
 
 
-@HiltViewModel
+/*@HiltViewModel
 class FlightViewModel @Inject constructor(
     private val searchCityLocationsUseCase: SearchCityLocationsUseCase,
     private val getFlightsUseCase: GetFlightsUseCase
@@ -237,12 +237,173 @@ class FlightViewModel @Inject constructor(
         _uiState.update { it.copy(destinationSuggestions = emptyList()) }
     }
 
-    /** Carga más resultados si existen */
+    *//** Carga más resultados si existen *//*
     override fun loadMore() {
         // Por ahora, recolecta todos los vuelos ya cargados o realiza una nueva llamada
         // Aquí podrías implementar paginación real con flightRepository
         val current = _uiState.value
-        _uiState.update { it.copy(/* podrías ajustar flags de pagination */) }
+        _uiState.update { it.copy(*//* podrías ajustar flags de pagination *//*) }
+    }
+}*/
+@HiltViewModel
+class FlightViewModel @Inject constructor(
+    private val searchCityLocationsUseCase: SearchCityLocationsUseCase,
+    private val getFlightsUseCase: GetFlightsUseCase
+) : ViewModel(), IFlightViewModel {
+
+    enum class UiTravelClass(val display: String) {
+        ALL("All"), ECONOMY("Economy"),
+        PREMIUM_ECONOMY("Premium Economy"), BUSINESS("Business"), FIRST("First")
+    }
+
+    data class UiState(
+        val travelClass: UiTravelClass = UiTravelClass.ALL,
+        val origin: String = "",
+        val destination: String = "",
+        val departureDate: String = "",
+        val returnDate: String = "",
+        val dateRange: Pair<String, String>? = null,         // Nuevo
+        val adults: Int = 1,
+        val children: Int = 0,
+        val infants: Int = 0,
+        val totalPassengers: Int = adults + children + infants, // Nuevo
+        val nonStop: Boolean = false,
+        val maxPrice: String = "",
+        val estimatedPrice: Price? = null,                   // Nuevo
+        val originSuggestions: List<CityLocation> = emptyList(),
+        val destinationSuggestions: List<CityLocation> = emptyList(),
+        val flights: List<Flight> = emptyList(),
+        val isLoading: Boolean = false,
+        val errorMessage: String? = null
+    )
+
+    private val _uiState = MutableStateFlow(UiState())
+    override val uiState: StateFlow<UiState> = _uiState.asStateFlow()
+
+    override fun onClassSelected(c: UiTravelClass) {
+        _uiState.update { it.copy(travelClass = c) }
+    }
+
+    override fun onOriginChange(input: String) {
+        _uiState.update { it.copy(origin = input) }
+        searchCityLocations(input, isOrigin = true)
+    }
+
+    override fun onOriginChosen(loc: CityLocation) {
+        _uiState.update { it.copy(origin = loc.iataCode, originSuggestions = emptyList()) }
+    }
+
+    override fun onDestinationChange(input: String) {
+        _uiState.update { it.copy(destination = input) }
+        searchCityLocations(input, isOrigin = false)
+    }
+
+    override fun onDestinationChosen(loc: CityLocation) {
+        _uiState.update { it.copy(destination = loc.iataCode, destinationSuggestions = emptyList()) }
+    }
+    override fun onDateRangeSelected(range: Pair<String, String>) {
+        _uiState.update { state ->
+            state.copy(
+                departureDate = range.first,
+                returnDate    = range.second,
+                dateRange     = range
+            )
+        }
+    }
+
+    override fun onDepartureDateSelected(date: String) {
+        _uiState.update { state ->
+            state.copy(
+                departureDate = date,
+                dateRange = date to (state.returnDate.ifBlank { date })
+            )
+        }
+    }
+
+    override fun onReturnDateSelected(date: String?) {
+        _uiState.update { state ->
+            val ret = date.orEmpty()
+            state.copy(
+                returnDate = ret,
+                dateRange = state.departureDate.takeIf { it.isNotBlank() }?.let { dep ->
+                    dep to ret
+                }
+            )
+        }
+    }
+
+    override fun onPassengerCounts(adults: Int, children: Int, infants: Int) {
+        _uiState.update {
+            val a = adults.coerceAtLeast(1)
+            val c = children.coerceAtLeast(0)
+            val i = infants.coerceAtLeast(0)
+            it.copy(
+                adults = a,
+                children = c,
+                infants = i,
+                totalPassengers = a + c + i
+            )
+        }
+    }
+
+    override fun onNonStopToggled() {
+        _uiState.update { it.copy(nonStop = !it.nonStop) }
+    }
+
+    override fun onMaxPriceChange(price: String) {
+        _uiState.update { it.copy(maxPrice = price) }
+    }
+
+    override fun searchFlights(onNext: () -> Unit) {
+        val s = _uiState.value
+        if (s.origin.isBlank() || s.destination.isBlank() || s.departureDate.isBlank()) return
+
+        viewModelScope.launch {
+            _uiState.update { it.copy(isLoading = true, errorMessage = null) }
+            try {
+                val results = getFlightsUseCase(
+                    FlightQueryParams(
+                        originLocationCode = s.origin,
+                        destinationLocationCode = s.destination,
+                        departureDate = s.departureDate,
+                        returnDate = s.returnDate.ifBlank { null },
+                        adults = s.adults,
+                        children = s.children,
+                        infants = s.infants,
+                        travelClass = if (s.travelClass == UiTravelClass.ALL) null
+                        else TravelClass.valueOf(s.travelClass.name),
+                        nonStop = s.nonStop,
+                        maxPrice = s.maxPrice.toIntOrNull()
+                    )
+                )
+                _uiState.update {
+                    it.copy(
+                        flights = results,
+                        estimatedPrice = results.firstOrNull()?.price
+                    )
+                }
+                onNext()
+            } catch (e: Exception) {
+                _uiState.update { it.copy(errorMessage = e.localizedMessage) }
+            } finally {
+                _uiState.update { it.copy(isLoading = false) }
+            }
+        }
+    }
+
+    private fun searchCityLocations(query: String, isOrigin: Boolean) {
+        viewModelScope.launch {
+            runCatching { searchCityLocationsUseCase(query) }
+                .onSuccess { locs ->
+                    if (isOrigin) _uiState.update { it.copy(originSuggestions = locs) }
+                    else _uiState.update { it.copy(destinationSuggestions = locs) }
+                }
+        }
+    }
+
+    override fun loadMore() {
+        // Implementa paginación si la necesitas
     }
 }
+
 
