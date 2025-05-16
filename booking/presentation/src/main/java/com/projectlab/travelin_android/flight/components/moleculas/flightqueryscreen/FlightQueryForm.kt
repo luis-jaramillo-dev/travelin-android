@@ -1,20 +1,17 @@
-package com.projectlab.travelin_android.flight.components.moleculas
+package com.projectlab.travelin_android.flight.components.moleculas.flightqueryscreen
 
 import androidx.compose.runtime.Composable
 import androidx.compose.foundation.layout.Column
 import androidx.compose.ui.unit.dp
-import com.projectlab.travelin_android.flight.components.atomos.LabelledDropdown
-import com.projectlab.travelin_android.flight.components.atomos.LabelledTextField
-import com.projectlab.travelin_android.flight.components.atomos.DateRangePickerField
-import com.projectlab.travelin_android.flight.components.atomos.PassengerPickerBottomSheet
-import com.projectlab.travelin_android.flight.components.atomos.ToggleSwitch
+import com.projectlab.travelin_android.flight.components.atomos.flightqueryscreen.LabelledDropdown
+import com.projectlab.travelin_android.flight.components.atomos.flightqueryscreen.LabelledTextField
+import com.projectlab.travelin_android.flight.components.atomos.flightqueryscreen.DateRangePickerField
+import com.projectlab.travelin_android.flight.components.atomos.flightqueryscreen.ToggleSwitch
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.ui.Modifier
-import com.projectlab.travelin_android.flight.components.atomos.CityInputField
+import com.projectlab.travelin_android.flight.components.atomos.flightqueryscreen.CityInputField
 import com.projectlab.travelin_android.model.CityLocation
-import com.projectlab.core.presentation.designsystem.theme.CustomShapes
-import com.projectlab.core.presentation.designsystem.theme.TravelinTheme
 
 
 /*

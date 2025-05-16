@@ -1,4 +1,4 @@
-package com.projectlab.travelin_android.flight.components.moleculas
+package com.projectlab.travelin_android.flight.components.moleculas.flightqueryscreen
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Row
@@ -9,8 +9,8 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import com.projectlab.travelin_android.flight.components.atomos.PriceDisplay
-import com.projectlab.travelin_android.flight.components.atomos.PrimaryButton
+import com.projectlab.travelin_android.flight.components.atomos.flightqueryscreen.PriceDisplay
+import com.projectlab.travelin_android.flight.components.atomos.flightqueryscreen.PrimaryButton
 
 @Composable
 fun FlightQueryBottomBar(

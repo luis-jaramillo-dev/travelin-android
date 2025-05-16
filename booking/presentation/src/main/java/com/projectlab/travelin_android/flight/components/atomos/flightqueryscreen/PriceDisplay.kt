@@ -1,4 +1,4 @@
-package com.projectlab.travelin_android.flight.components.atomos
+package com.projectlab.travelin_android.flight.components.atomos.flightqueryscreen
 
 import androidx.compose.foundation.layout.Row
 import androidx.compose.material3.MaterialTheme

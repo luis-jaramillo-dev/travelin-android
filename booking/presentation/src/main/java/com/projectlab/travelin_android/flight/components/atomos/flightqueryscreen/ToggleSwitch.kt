@@ -1,4 +1,4 @@
-package com.projectlab.travelin_android.flight.components.atomos
+package com.projectlab.travelin_android.flight.components.atomos.flightqueryscreen
 
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.fillMaxWidth

@@ -1,4 +1,4 @@
-package com.projectlab.travelin_android.flight.components.moleculas
+package com.projectlab.travelin_android.flight.components.moleculas.flightqueryscreen
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -11,8 +11,8 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
-import com.projectlab.travelin_android.flight.components.atomos.PassengerPickerBottomSheet
-import com.projectlab.travelin_android.flight.components.atomos.PrimaryButton
+import com.projectlab.travelin_android.flight.components.atomos.flightqueryscreen.PassengerPickerBottomSheet
+import com.projectlab.travelin_android.flight.components.atomos.flightqueryscreen.PrimaryButton
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
