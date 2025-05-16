@@ -10,6 +10,7 @@ import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
+import androidx.compose.material3.OutlinedTextFieldDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -17,12 +18,13 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import com.projectlab.core.presentation.designsystem.theme.customShapes
 
 @Composable
 fun LabelledDropdown(
     label: String,
     selected: String,
-    placeholder: String = "",
+    placeholder: String,
     options: List<String>,
     onSelect: (String) -> Unit,
     modifier: Modifier = Modifier
@@ -30,7 +32,7 @@ fun LabelledDropdown(
     Column(modifier) {
         Text(
             text = label,
-            style = MaterialTheme.typography.labelSmall // Poppins 10sp
+            style = MaterialTheme.typography.labelSmall
         )
         var expanded by remember { mutableStateOf(false) }
         OutlinedTextField(
@@ -49,9 +51,17 @@ fun LabelledDropdown(
             placeholder = {
                 Text(
                     text = placeholder,
-                    style = MaterialTheme.typography.bodyMedium // Poppins 12sp
+                    style = MaterialTheme.typography.bodyMedium
                 )
-            }
+            },
+            shape = MaterialTheme.customShapes.large,
+            colors = OutlinedTextFieldDefaults.colors(
+                unfocusedBorderColor = MaterialTheme.colorScheme.outline,
+                focusedBorderColor   = MaterialTheme.colorScheme.outline,
+                cursorColor          = MaterialTheme.colorScheme.primary,
+                focusedLabelColor    = MaterialTheme.colorScheme.onSurface,
+                unfocusedLabelColor  = MaterialTheme.colorScheme.onSurfaceVariant
+            )
         )
         DropdownMenu(
             expanded = expanded,

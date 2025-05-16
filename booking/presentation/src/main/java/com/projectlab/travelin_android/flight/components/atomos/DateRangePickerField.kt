@@ -8,15 +8,17 @@ import androidx.compose.material.icons.filled.DateRange
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
+import androidx.compose.material3.OutlinedTextFieldDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import com.projectlab.core.presentation.designsystem.theme.customShapes
 
 @Composable
 fun DateRangePickerField(
     label: String,
     dateRange: Pair<String, String>?,     // e.g. ("11 Apr.", "15 Apr.")
-    placeholder: String = "",
+    placeholder: String,
     onDateRangeSelected: (Pair<String, String>) -> Unit,
     modifier: Modifier = Modifier
 ) {
@@ -50,7 +52,15 @@ fun DateRangePickerField(
                     text = placeholder,
                     style = MaterialTheme.typography.bodyMedium // Poppins 12sp
                 )
-            }
+            },
+            shape = MaterialTheme.customShapes.large,
+            colors = OutlinedTextFieldDefaults.colors(
+                unfocusedBorderColor = MaterialTheme.colorScheme.outline,
+                focusedBorderColor   = MaterialTheme.colorScheme.outline,
+                cursorColor          = MaterialTheme.colorScheme.primary,
+                focusedLabelColor    = MaterialTheme.colorScheme.onSurface,
+                unfocusedLabelColor  = MaterialTheme.colorScheme.onSurfaceVariant
+            )
         )
     }
 }

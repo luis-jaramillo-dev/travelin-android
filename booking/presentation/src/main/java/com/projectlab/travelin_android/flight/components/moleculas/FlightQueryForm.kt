@@ -13,6 +13,8 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.ui.Modifier
 import com.projectlab.travelin_android.flight.components.atomos.CityInputField
 import com.projectlab.travelin_android.model.CityLocation
+import com.projectlab.core.presentation.designsystem.theme.CustomShapes
+import com.projectlab.core.presentation.designsystem.theme.TravelinTheme
 
 
 /*
@@ -86,6 +88,7 @@ fun FlightQueryForm(
         CityInputField(
             label = "From",
             value = origin,
+            placeholder           = "Select your origin",
             onValueChange = onOriginChange,
             suggestions = originSuggestions,
             onSuggestionClick = onOriginSelect,
@@ -96,6 +99,7 @@ fun FlightQueryForm(
         CityInputField(
             label = "To",
             value = destination,
+            placeholder           = "Select your destination",
             onValueChange = onDestinationChange,
             suggestions = destinationSuggestions,
             onSuggestionClick = onDestinationSelect,

@@ -59,6 +59,7 @@ dependencies {
     implementation(libs.hilt.android.compiler)
     implementation(libs.androidx.foundation.android)
     implementation(project(":booking:domain"))
+    implementation (project(":core:presentation:designsystem"))
     implementation(libs.androidx.compose.ui.ui.tooling.preview.android)
     implementation(libs.hilt.navigation)
     debugImplementation(libs.androidx.ui.tooling)

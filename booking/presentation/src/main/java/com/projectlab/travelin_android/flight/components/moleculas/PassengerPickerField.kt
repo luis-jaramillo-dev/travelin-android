@@ -41,9 +41,9 @@ fun PassengerPickerField(
     }
 
     Column {
-        Text("Pasajeros: $passengerCount")
+        Text("Passengers: $passengerCount")
         PrimaryButton(
-            text = "Elegir pasajeros",
+            text = "Add passengers",
             onClick = { showSheet = true },
             modifier = Modifier
         )

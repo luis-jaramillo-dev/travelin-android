@@ -3,7 +3,6 @@ package com.projectlab.booking.presentation.flight
 import com.projectlab.travelin_android.flight.FlightViewModel
 import com.projectlab.travelin_android.model.CityLocation
 import com.projectlab.travelin_android.model.Price
-import com.projectlab.travelin_android.model.TravelClass
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 
@@ -24,12 +23,12 @@ class FakeFlightViewModel : IFlightViewModel {
             maxPrice      = "500",
             estimatedPrice = Price(amount = "480", currency = "USD"),
             originSuggestions = listOf(
-                CityLocation(city = "Santiago", iataCode = "SCL"),
-                CityLocation(city = "Buenos Aires", iataCode = "EZE")
+                /*CityLocation(city = "Santiago", iataCode = "SCL"),
+                CityLocation(city = "Buenos Aires", iataCode = "EZE")*/
             ),
-            destinationSuggestions = listOf(
+            destinationSuggestions = listOf(/*
                 CityLocation(city = "New York", iataCode = "JFK"),
-                CityLocation(city = "Los Angeles", iataCode = "LAX")
+                CityLocation(city = "Los Angeles", iataCode = "LAX")*/
             ),
             flights = emptyList(),
             isLoading = false,
