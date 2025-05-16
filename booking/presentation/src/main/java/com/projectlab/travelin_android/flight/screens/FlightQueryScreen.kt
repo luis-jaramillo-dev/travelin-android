@@ -167,12 +167,16 @@ fun FlightQueryScreen(
             )
 
             FlightQueryForm(
-                travelClass = uiState.travelClass.toString(),
-                onClassSelect = viewModel::onClassSelected,
+                travelClass   = uiState.travelClass.display,
+                optionsClass  = FlightViewModel.UiTravelClass.entries.map { it.display },
+                onClassSelect = { sel ->
+                    val enumValue = FlightViewModel.UiTravelClass.entries.first { it.display == sel }
+                    viewModel.onClassSelected(enumValue)
+                },
                 origin = uiState.origin,
                 onOriginChange = viewModel::onOriginChange,
                 destination = uiState.destination,
-                onDestinationChange = viewModel::onDestinationChosen,
+                onDestinationChange = viewModel::onDestinationChange,
                 dateRange = uiState.dateRange,
                 onDateRangeSelect = viewModel::onDateRangeSelected,
                 passengerCount = uiState.totalPassengers,
