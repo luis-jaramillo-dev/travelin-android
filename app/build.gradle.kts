@@ -12,7 +12,7 @@ plugins {
     // Compose
     alias(libs.plugins.compose.compiler)
 
-    // Firebase
+    // Google Services
     alias(libs.plugins.google.services)
 }
 
@@ -42,20 +42,12 @@ android {
     buildFeatures {
         compose = true
     }
-
-    composeOptions {
-        kotlinCompilerExtensionVersion = "1.5.14"
-    }
-
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_11
         targetCompatibility = JavaVersion.VERSION_11
     }
     kotlinOptions {
         jvmTarget = "11"
-    }
-    buildFeatures {
-        compose = true
     }
 }
 
@@ -68,10 +60,20 @@ dependencies {
     implementation(projects.auth.data)
     implementation(projects.feature.onboarding.presentation)
     implementation(projects.navigation)
+    implementation(projects.booking.presentation)
 
     // Dagger Hilt + Ksp
     implementation(libs.hilt.android)
     ksp(libs.hilt.android.compiler)
+    implementation(libs.hilt.navigation)
+
+
+    // Google
+    implementation(platform(libs.firebase))
+    implementation(libs.firebase.auth)
+    implementation(libs.firebase.firestore)
+    implementation(libs.play.services.location)
+    implementation(libs.play.services.maps)
 
     // Core
     implementation(libs.androidx.core.ktx)
@@ -80,6 +82,10 @@ dependencies {
     implementation(libs.androidx.runtime.android)
     implementation(libs.kotlinx.serialization.json)
     implementation(libs.androidx.activity.compose)
+
+    // Firebase
+    implementation(platform(libs.firebase))
+    implementation(libs.firebase.firestore)
 
     // UI
     implementation(platform(libs.androidx.compose.bom))

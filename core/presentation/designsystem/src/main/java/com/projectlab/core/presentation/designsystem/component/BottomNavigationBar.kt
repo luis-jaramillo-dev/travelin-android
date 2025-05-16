@@ -22,7 +22,7 @@ import com.projectlab.core.presentation.designsystem.theme.spacing
 @Composable
 fun BottomNavigationBar(
     current: String,
-
+    onHomeClick: () -> Unit,
     ) {
     Surface(
         tonalElevation = MaterialTheme.spacing.TinySpacing,
@@ -53,7 +53,7 @@ fun BottomNavigationBar(
                 icon = Icons.Default.Home,
                 label = "Home",
                 selected = current == "home",
-                onClick = { }
+                onClick = onHomeClick
             )
         }
     }

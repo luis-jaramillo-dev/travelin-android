@@ -17,6 +17,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import com.projectlab.core.presentation.designsystem.R
 import com.projectlab.core.presentation.designsystem.theme.spacing
 
@@ -48,15 +49,28 @@ fun StarRatingBar(
 
         }
         Spacer(modifier = Modifier.width(10.dp))
-        Text(
-            color = textColor,
-            text = stringResource(R.string.tour_list_card_reviews, 100)            )
+
+        if (rating > 0) {
+            Text(
+                color = textColor,
+                text = rating.toString(),
+                fontSize = 12.sp
+            )
+
+        } else {
+            Text(
+                color = textColor,
+                text = stringResource(R.string.tour_list_card_no_reviews),
+                fontSize = 12.sp
+            )
+        }
+
     }
 }
 
-@Preview (showBackground = true)
+@Preview(showBackground = true)
 @Composable
-fun StarRatingBarPreview(){
+fun StarRatingBarPreview() {
     StarRatingBar(
         maxStars = 5,
         rating = 3F,

@@ -10,7 +10,8 @@ import com.projectlab.travelin_android.presentation.screens.profile.components.P
 @Composable
 fun ProfileScreen(
     viewModel: ProfileViewModel = hiltViewModel(),
-    onLogoutClick: () -> Unit
+    onLogoutClick: () -> Unit,
+    onHomeClick: () -> Unit
 
 ) {
     Scaffold(
@@ -22,6 +23,6 @@ fun ProfileScreen(
                 onLogoutClick = onLogoutClick
             )
         },
-        bottomBar = { BottomNavigationBar("profile") }
+        bottomBar = { BottomNavigationBar("profile", onHomeClick) }
     )
 }

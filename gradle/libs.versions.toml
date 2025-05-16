@@ -27,12 +27,20 @@ firebase = "33.13.0"
 navigationCompose = "2.8.9"
 hiltNavigationCompose = "1.2.0"
 coroutinesCore = "1.10.2"
+retrofit = "2.9.0"
+okhttp = "4.10.0"
+gson = "2.10"
+firebaseDatabaseKtx = "21.0.0"
+uiTooling = "1.8.0"
+roomCompiler = "2.7.1"
+navigationRuntimeAndroid = "2.9.0"
+kotlinx-coroutines = "1.7.3"
+lifecycleKtx = "2.6.1"
 
 [libraries]
 androidx-activity-compose = { module = "androidx.activity:activity-compose", version.ref = "activityCompose" }
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
 coil-compose = { module = "io.coil-kt:coil-compose", version.ref = "coilCompose" }
-firebase-firestore = { module = "com.google.firebase:firebase-firestore" }
 hilt-android = { module = "com.google.dagger:hilt-android", version.ref = "daggerHilt" }
 hilt-android-compiler = { module = "com.google.dagger:hilt-android-compiler", version.ref = "daggerHilt" }
 junit = { group = "junit", name = "junit", version.ref = "junit" }
@@ -48,19 +56,31 @@ androidx-compose-ui-test-junit4 = { group = "androidx.compose.ui", name = "ui-te
 androidx-compose-bom = { group = "androidx.compose", name = "compose-bom", version.ref = "composeBom" }
 androidx-compose-material3 = { group = "androidx.compose.material3", name = "material3" }
 androidx-compose-material-icons = { group = "androidx.compose.material", name = "material-icons-extended" }
-firebase = { group = "com.google.firebase", name = "firebase-bom", version.ref = "firebase" }
 androidx-runtime-android = { group = "androidx.compose.runtime", name = "runtime-android", version.ref = "runtimeAndroid" }
 androidx-navigation-compose = { group = "androidx.navigation", name = "navigation-compose", version.ref = "navigationCompose" }
+androidx-lifecycle-viewmodel-ktx = {group = "androidx.lifecycle", name = "lifecycle-viewmodel-ktx", version.ref = "lifecycleKtx" }
+androidx-compose-foundation = { group = "androidx.compose.foundation", name = "foundation", version.ref = "runtimeAndroid" }
 compose-google-fonts = { group = "androidx.compose.ui", name = "ui-text-google-fonts", version.ref = "composeGoogleFonts" }
 kotlinx-serialization-json = { group = "org.jetbrains.kotlinx", name = "kotlinx-serialization-json", version = "1.8.1" }
+firebase = { group = "com.google.firebase", name = "firebase-bom", version.ref = "firebase" }
+firebase-firestore = { group = "com.google.firebase", name = "firebase-firestore" }
 hilt-core = { group = "com.google.dagger", name = "hilt-core", version.ref = "daggerHilt" }
 androidx-material3-android = { group = "androidx.compose.material3", name = "material3-android", version.ref = "material3Android" }
 ui-tooling-preview-android = { group = "androidx.compose.ui", name = "ui-tooling-preview-android", version.ref = "uiToolingPreviewAndroid" }
 firebase-auth = { module = "com.google.firebase:firebase-auth" }
 hilt-navigation = { module = "androidx.hilt:hilt-navigation-compose", version.ref = "hiltNavigationCompose" }
-kotlinx-coroutines-core = { group = "org.jetbrains.kotlinx", name = "kotlinx-coroutines-core", version.ref = "coroutinesCore" }
 play-services-location = { group = "com.google.android.gms", name = "play-services-location", version.ref = "playServicesLocation" }
 play-services-maps = { group = "com.google.android.gms", name = "play-services-maps", version.ref = "playServicesMaps" }
+retrofit = { module = "com.squareup.retrofit2:retrofit", version.ref = "retrofit" }
+converter-gson = { module = "com.squareup.retrofit2:converter-gson", version.ref = "retrofit" }
+okhttp-logging = { module = "com.squareup.okhttp3:logging-interceptor", version.ref = "okhttp" }
+gson = { module = "com.google.code.gson:gson", version.ref = "gson" }
+firebase-database-ktx = { group = "com.google.firebase", name = "firebase-database-ktx", version.ref = "firebaseDatabaseKtx" }
+androidx-ui-tooling = { group = "androidx.compose.ui", name = "ui-tooling", version.ref = "uiTooling" }
+androidx-room-runtime = { module = "androidx.room:room-runtime", version.ref = "roomCompiler" }
+kotlinx-coroutines-core = { group = "org.jetbrains.kotlinx", name = "kotlinx-coroutines-core", version.ref = "coroutinesCore" }
+kotlinx-coroutines-play-services = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-play-services", version.ref = "kotlinx-coroutines" }
+hilt-compiler = { group = "com.google.dagger", name = "hilt-compiler", version.ref = "daggerHilt" }
 
 # Convention PLugins Dependencies
 android-gradlePlugin = { group = "com.android.tools.build", name = "gradle", version.ref = "androidGradlePlugin" }
@@ -70,7 +90,7 @@ kotlin-gradlePlugin =  { group = "org.jetbrains.kotlin", name = "kotlin-gradle-p
 ksp-gradlePlugin = { group = "com.google.devtools.ksp", name = "com.google.devtools.ksp.gradle.plugin", version.ref = "ksp" }
 androidx-appcompat = { group = "androidx.appcompat", name = "appcompat", version.ref = "appcompat" }
 material = { group = "com.google.android.material", name = "material", version.ref = "material" }
-
+androidx-navigation-runtime-android = { group = "androidx.navigation", name = "navigation-runtime-android", version.ref = "navigationRuntimeAndroid" }
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }
@@ -84,11 +104,18 @@ dagger-hilt-android = { id = "com.google.dagger.hilt.android", version.ref = "da
 google-services = { id = "com.google.gms.google-services", version.ref = "googleServices"}
 
 # Convention plugins
-
 travelinandroid-android-application = { id = "travelin.android.application" }
 travelinandroid-android-application-compose = { id = "travelin.android.application.compose" }
 travelinandroid-android-library = { id = "travelin.android.library" }
-travelinandroid-android-library-compose = { id = "travelin.android.library.copose" }
-travelinandroid-android-hilt = { id = "travelin.android-hilt" }
+travelinandroid-android-library-compose = { id = "travelin.android.library.compose" }
+travelinandroid-android-hilt = { id = "travelin.android.hilt" }
 travelinandroid-featyre-ui = { id = "travelin.feature.ui" }
 travelinandroid-jvm-library = { id = "travelin.jvm.library" }
+
+[bundles]
+retrofit = [
+    "retrofit",
+    "converter-gson",
+    "okhttp-logging",
+    "gson"
+]
