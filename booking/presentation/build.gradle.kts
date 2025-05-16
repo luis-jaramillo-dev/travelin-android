@@ -1,12 +1,16 @@
 plugins {
     alias(libs.plugins.android.library)
     alias(libs.plugins.kotlin.android)
-    // Ksp
+
+    // Compose
+    alias(libs.plugins.compose.compiler)
+    // KSP
     alias(libs.plugins.devtools.ksp)
     // Dagger Hilt
     alias(libs.plugins.dagger.hilt.android)
-    // Compose
-    alias(libs.plugins.compose.compiler)
+
+    // Google Services
+    alias(libs.plugins.google.services)
 }
 
 android {
@@ -29,12 +33,31 @@ android {
             )
         }
     }
+
+    buildFeatures {
+        compose = true
+    }
+    composeOptions {
+        kotlinCompilerExtensionVersion = libs.versions.kotlin.get()
+    }
+
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_11
         targetCompatibility = JavaVersion.VERSION_11
     }
     kotlinOptions {
         jvmTarget = "11"
+    }
+}
+
+java {
+    sourceCompatibility = JavaVersion.VERSION_11
+    targetCompatibility = JavaVersion.VERSION_11
+}
+
+kotlin {
+    compilerOptions {
+        jvmTarget = org.jetbrains.kotlin.gradle.dsl.JvmTarget.JVM_11
     }
 }
 
@@ -49,21 +72,41 @@ dependencies {
     // Core
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.appcompat)
+    implementation(libs.androidx.runtime.android)
+    implementation(libs.androidx.lifecycle.viewmodel.ktx)
+    implementation(libs.androidx.runtime.android)
+    implementation(libs.androidx.activity.compose)
+    implementation(libs.androidx.runtime.android)
+
     implementation(libs.material)
     implementation(libs.androidx.compose.material3)
     implementation(libs.androidx.compose.material.icons.core)
     implementation(libs.androidx.compose.material.icons)
-
-    //hilt
+    // Dagger Hilt + Ksp
     implementation(libs.hilt.android)
-    implementation(libs.hilt.android.compiler)
+    ksp(libs.hilt.android.compiler)
     implementation(libs.androidx.foundation.android)
     implementation(project(":booking:domain"))
     implementation (project(":core:presentation:designsystem"))
     implementation(libs.androidx.compose.ui.ui.tooling.preview.android)
     implementation(libs.hilt.navigation)
     debugImplementation(libs.androidx.ui.tooling)
-    ksp(libs.hilt.android.compiler)
+
+    // Google services: Firebase products
+    implementation(platform(libs.firebase))
+    implementation(libs.firebase.firestore)
+    implementation(libs.material)
+
+    // Jetpack Compose
+    implementation(libs.androidx.compose.ui)
+    implementation(libs.androidx.compose.material3)
+    implementation(libs.androidx.compose.ui.tooling)
+    implementation(libs.androidx.compose.foundation)
+    implementation(libs.androidx.compose.ui.graphics)
+    implementation(libs.androidx.compose.ui.tooling)
+    implementation(libs.androidx.compose.ui.tooling.preview)
+    implementation(libs.androidx.navigation.compose)
+    implementation(libs.androidx.compose.material.icons)
 
     implementation(libs.hilt.navigation.compose)
     implementation(libs.lifecycle.viewmodel.compose)

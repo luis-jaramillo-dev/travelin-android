@@ -24,7 +24,7 @@ plugins {
     // Compose
     alias(libs.plugins.compose.compiler)
 
-    // Firebase
+    // Google Services
     alias(libs.plugins.google.services)
 }
 
@@ -117,6 +117,7 @@ dependencies {
     implementation(projects.core.presentation.ui)
 
     //Fire store
+    implementation(libs.firebase.firestore)
     implementation(platform(libs.firebase))
     implementation(libs.firebase.firestore.ktx)
     implementation(libs.hilt.navigation.compose)
