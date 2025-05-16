@@ -32,7 +32,9 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.input.KeyboardType
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.projectlab.booking.presentation.flight.FakeFlightViewModel
 import com.projectlab.booking.presentation.flight.IFlightViewModel
 import com.projectlab.travelin_android.flight.CityInputField
 import com.projectlab.travelin_android.flight.FlightViewModel
@@ -198,3 +200,15 @@ fun FlightQueryScreen(
         }
     }
 }
+@Preview(showBackground = true, name = "FlightQueryScreen Preview")
+@Composable
+fun FlightQueryScreenPreview() {
+     // si tienes un tema propio
+        FlightQueryScreen(
+            viewModel = FakeFlightViewModel(),
+            onBack = {},
+            onNext = {}
+        )
+    }
+
+

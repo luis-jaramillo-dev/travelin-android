@@ -32,6 +32,11 @@ class PreviewFlightViewModel: IFlightViewModel {
     override fun onDepartureDateSelected(d: String) {}
     override fun onReturnDateSelected(date: String?) {
     }
+
+    override fun onDateRangeSelected(range: Pair<String, String>) {
+        TODO("Not yet implemented")
+    }
+
     override fun onPassengerCounts(a: Int, c: Int, i: Int) {}
     override fun onNonStopToggled() {}
     override fun onMaxPriceChange(p: String) {}

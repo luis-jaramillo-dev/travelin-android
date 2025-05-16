@@ -37,8 +37,8 @@ import com.projectlab.travelin_android.flight.FlightViewModel
 //import com.projectlab.travelin_android.flight.UiTravelClass
 import com.projectlab.travelin_android.flight.components.ClassDropdown
 import com.projectlab.travelin_android.flight.components.FlightListItem
-import com.projectlab.travelin_android.flight.screens.DatePickerField
-import com.projectlab.travelin_android.flight.screens.PassengerInputGroup
+//import com.projectlab.travelin_android.flight.screens.DatePickerField
+//import com.projectlab.travelin_android.flight.screens.PassengerInputGroup
 import com.projectlab.travelin_android.model.CityLocation
 import com.projectlab.travelin_android.model.Flight
 import com.projectlab.travelin_android.model.FlightSegment
@@ -60,9 +60,9 @@ fun FlightQueryScreen(
         )
         CityInputField("From", s.origin, viewModel::onOriginChange, s.originSuggestions, viewModel::onOriginChosen)
         CityInputField("To", s.destination, viewModel::onDestinationChange, s.destinationSuggestions, viewModel::onDestinationChosen)
-        DatePickerField("Departure", s.departureDate, viewModel::onDepartureDateSelected)
-        DatePickerField("Return (optional)", s.returnDate, viewModel::onReturnDateSelected)
-        PassengerInputGroup(s.adults, s.children, s.infants, viewModel::onPassengerCounts)
+        //DatePickerField("Departure", s.departureDate, viewModel::onDepartureDateSelected)
+        //DatePickerField("Return (optional)", s.returnDate, viewModel::onReturnDateSelected)
+        //PassengerInputGroup(s.adults, s.children, s.infants, viewModel::onPassengerCounts)
         Row(verticalAlignment = Alignment.CenterVertically) {
             Checkbox(checked = s.nonStop, onCheckedChange = { viewModel.onNonStopToggled() })
             Text("Non-stop only")
@@ -112,6 +112,7 @@ fun Preview_FlightQueryScreen() {
 fun Preview_FlightResultsScreen() {
     FlightResultsScreen(viewModel = PreviewFlightViewModel(), onBack = {})
 }*/
+/*
 @Preview(showBackground = true)
 @Composable
 fun Preview_FlightResultsScreen() {
@@ -140,3 +141,4 @@ fun Preview_FlightResultsScreen() {
 
     FlightResultsScreen(viewModel = previewViewModel, onBack = {})
 }
+*/
