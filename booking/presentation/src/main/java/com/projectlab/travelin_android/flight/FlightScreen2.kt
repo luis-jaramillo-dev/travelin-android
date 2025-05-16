@@ -20,7 +20,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.runtime.collectAsState
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.projectlab.travelin_android.flight.components.FlightListItem
-import com.projectlab.travelin_android.flight.screens.DatePickerField
+//import com.projectlab.travelin_android.flight.screens.DatePickerField
 import com.projectlab.travelin_android.model.CityLocation
 import com.projectlab.travelin_android.model.Flight
 
@@ -71,12 +71,12 @@ fun FlightScreen2(
             onSuggestionClick = onDestinationSuggestionClick
         )
 
-        // Fecha de salida
+       /* // Fecha de salida
         DatePickerField(
             label = "Fecha de salida",
             date = departureDate,
             onDateSelected = onDepartureDateChange
-        )
+        )*/
 
         // Botón de búsqueda
         Button(
