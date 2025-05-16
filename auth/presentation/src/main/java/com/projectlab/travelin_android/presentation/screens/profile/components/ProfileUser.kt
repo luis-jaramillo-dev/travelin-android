@@ -61,14 +61,14 @@ fun ProfileUser(
             )
 
             Text(
-                text = viewModel.userData.email,
+                text = viewModel.userEntityData.email,
                 style = MaterialTheme.typography.titleMedium.copy(
                     fontWeight = FontWeight.Bold,
                     color = MaterialTheme.colorScheme.onBackground
                 )
             )
             Text(
-                text = viewModel.userData.age,
+                text = viewModel.userEntityData.age,
                 style = MaterialTheme.typography.titleMedium.copy(
                     fontWeight = FontWeight.Bold,
                     color = MaterialTheme.colorScheme.onBackground

@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <!-- TODO: maybe we should delete those permissions in order to get production scenario -->
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+
+    <application>
+
+        <!-- MockActivityTest is used for testing purposes only. Uncomment intent-filter
+        and set android:exported="true" to run it
+        TODO: maybe we should delete this in order to get production scenario -->
+        <activity
+            android:name=".ui.MockActivityTest"
+            android:exported="false">
+
+<!--
+                <intent-filter>
+                <action android:name="android.intent.action.MAIN"/>
+                <category android:name="android.intent.category.LAUNCHER"/>
+            </intent-filter>
+-->
+
+
+        </activity>
+
+    </application>
+
+</manifest>
