@@ -167,24 +167,33 @@ fun FlightQueryScreen(
             )
 
             FlightQueryForm(
-                travelClass   = uiState.travelClass.display,
-                optionsClass  = FlightViewModel.UiTravelClass.entries.map { it.display },
-                onClassSelect = { sel ->
-                    val enumValue = FlightViewModel.UiTravelClass.entries.first { it.display == sel }
-                    viewModel.onClassSelected(enumValue)
+                travelClass             = uiState.travelClass.display,
+                optionsClass            = FlightViewModel.UiTravelClass.entries.map { it.display },
+                onClassSelect           = { /* ... */ },
+
+                origin                  = uiState.origin,
+                originSuggestions       = uiState.originSuggestions,
+                onOriginChange          = viewModel::onOriginChange,
+                onOriginSelect          = viewModel::onOriginChosen,
+
+                destination             = uiState.destination,
+                destinationSuggestions  = uiState.destinationSuggestions,
+                onDestinationChange     = viewModel::onDestinationChange,
+                onDestinationSelect     = viewModel::onDestinationChosen,
+
+                dateRange               = uiState.dateRange,
+                onDateRangeSelect       = viewModel::onDateRangeSelected,
+
+                passengerCount          = uiState.totalPassengers,
+                onPassengerCountChange  = { viewModel.onPassengerCounts(it, 0, 0) },
+
+                nonStopOnly             = uiState.nonStop,
+                onNonStopToggle         = { _: Boolean ->
+                    viewModel.onNonStopToggled()
                 },
-                origin = uiState.origin,
-                onOriginChange = viewModel::onOriginChange,
-                destination = uiState.destination,
-                onDestinationChange = viewModel::onDestinationChange,
-                dateRange = uiState.dateRange,
-                onDateRangeSelect = viewModel::onDateRangeSelected,
-                passengerCount = uiState.totalPassengers,
-                onPassengerCountChange = viewModel::onPassengerCounts,
-                nonStopOnly = uiState.nonStop,
-                onNonStopToggle = viewModel::onNonStopToggled,
-                maxPrice = uiState.maxPrice,
-                onMaxPriceChange = viewModel::onMaxPriceChange
+
+                maxPrice                = uiState.maxPrice,
+                onMaxPriceChange        = viewModel::onMaxPriceChange
             )
         }
     }

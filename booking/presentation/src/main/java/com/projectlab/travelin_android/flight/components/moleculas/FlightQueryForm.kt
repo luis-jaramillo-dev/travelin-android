@@ -11,6 +11,8 @@ import com.projectlab.travelin_android.flight.components.atomos.ToggleSwitch
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.ui.Modifier
+import com.projectlab.travelin_android.flight.components.atomos.CityInputField
+import com.projectlab.travelin_android.model.CityLocation
 
 
 /*
@@ -42,10 +44,15 @@ fun FlightQueryForm(
     onClassSelect: (String) -> Unit,
 
     origin: String,
+    originSuggestions: List<CityLocation>,
     onOriginChange: (String) -> Unit,
+    onOriginSelect: (CityLocation) -> Unit,
 
     destination: String,
+    destinationSuggestions: List<CityLocation>,
     onDestinationChange: (String) -> Unit,
+    onDestinationSelect: (CityLocation) -> Unit,
+
 
     dateRange: Pair<String, String>?,
     onDateRangeSelect: (Pair<String, String>) -> Unit,
@@ -75,21 +82,27 @@ fun FlightQueryForm(
             modifier    = Modifier.fillMaxWidth()
         )
 
-        // 2. Origen y destino
-        LabelledTextField(
-            label       = "From",
-            value       = origin,
-            placeholder = "Select your origin",
+        // Campo Origen
+        CityInputField(
+            label = "From",
+            value = origin,
             onValueChange = onOriginChange,
-            modifier    = Modifier.fillMaxWidth()
+            suggestions = originSuggestions,
+            onSuggestionClick = onOriginSelect,
+            modifier = Modifier.fillMaxWidth()
         )
-        LabelledTextField(
-            label       = "To",
-            value       = destination,
-            placeholder = "Select your destination",
+
+        // Campo Destino
+        CityInputField(
+            label = "To",
+            value = destination,
             onValueChange = onDestinationChange,
-            modifier    = Modifier.fillMaxWidth()
+            suggestions = destinationSuggestions,
+            onSuggestionClick = onDestinationSelect,
+            modifier = Modifier.fillMaxWidth()
         )
+
+
 
         // 3. Rango de fechas
         DateRangePickerField(
