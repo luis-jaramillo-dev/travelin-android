@@ -37,6 +37,8 @@ include(":core:data")
 include(":booking:data")
 include(":booking:domain")
 include(":booking:presentation")
+include(":booking:di")
+
 include(":navigation")
 include(":feature:onboarding")
 include(":feature:onboarding:presentation")
