@@ -30,7 +30,7 @@ class FakeFlightViewModel : IFlightViewModel {
                 CityLocation(city = "New York", iataCode = "JFK"),
                 CityLocation(city = "Los Angeles", iataCode = "LAX")*/
             ),
-            flights = emptyList(),
+            flights = flights,
             isLoading = false,
             errorMessage = null
         )

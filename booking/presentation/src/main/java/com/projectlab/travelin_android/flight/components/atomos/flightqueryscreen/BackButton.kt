@@ -9,9 +9,10 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import com.projectlab.booking.presentation.R
 
+
 @Composable
 fun BackButton(onBack: () -> Unit, modifier: Modifier = Modifier) {
-    IconButton(onClick = onBack, modifier = modifier.size(width = 25.dp, height = 46.dp)) {
+    IconButton(onClick = onBack, modifier = modifier.size(width = 13.dp, height = 23.dp)) {
         Icon(painterResource(R.drawable.ic_back), contentDescription = "Back")
     }
 }
