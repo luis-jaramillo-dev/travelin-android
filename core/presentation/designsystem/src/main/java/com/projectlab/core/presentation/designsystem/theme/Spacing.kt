@@ -63,6 +63,10 @@ object Spacing {
     val CornerRadius: Dp = 20.dp
     val SmallCornerRadius: Dp = 12.dp
     val FieldHeight: Dp = 56.dp
+
+    // Gallery container size
+    val galleryImageSize: Dp = 200.dp
+
 }
 
 val LocalSpacing = staticCompositionLocalOf { Spacing }

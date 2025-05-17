@@ -12,6 +12,7 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -23,33 +24,27 @@ class ActivityDetailViewModel @Inject constructor(
 
 ) : ViewModel() {
 
-    private val _activity = MutableStateFlow<ActivityDto?>(null)
-    val activity: StateFlow<ActivityDto?> = _activity.asStateFlow()
-
-    private val _isLoading = MutableStateFlow(false)
-    val isLoading: StateFlow<Boolean> = _isLoading.asStateFlow()
-
-
-    private val _error = MutableStateFlow<String?>(null)
-    val error: StateFlow<String?> = _error.asStateFlow()
+    private val _uiState = MutableStateFlow(ActivityDetailUiState())
+    val uiState: StateFlow<ActivityDetailUiState> = _uiState.asStateFlow()
 
     fun onViewDetail(activityId: String) {
         viewModelScope.launch {
-            _isLoading.value = true
+            _uiState.update { it.copy(isLoading = true) }
             try {
                 when (val result = getActivityUseCase(activityId)) {
                     is Result.Success -> {
-                        _activity.value = result.data.toDto()
+                        _uiState.update { it.copy(activity = result.data.toDto()) }
                     }
 
                     is Result.Error -> {
-                        _error.value = errorMapper.map(result.error)
+                        _uiState.update { it.copy(error = errorMapper.map(result.error)) }
                     }
                 }
             } catch (e: Exception) {
-                _error.value = e.localizedMessage ?: "Unknown error"
+                _uiState.update { it.copy(error = e.localizedMessage ?: "Unknown error") }
+
             } finally {
-                _isLoading.value = false
+                _uiState.update { it.copy(isLoading = false) }
             }
         }
     }

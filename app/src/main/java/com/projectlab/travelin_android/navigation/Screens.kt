@@ -1,6 +1,7 @@
 package com.projectlab.travelin_android.navigation
 
 import androidx.compose.ui.graphics.vector.ImageVector
+import kotlinx.serialization.Serializable
 
 interface Screens {
     val icon: ImageVector?
@@ -50,6 +51,21 @@ sealed interface SearchScreens {
     data object Flights : SearchScreens {
         override val route = "search_flights"
     }
+}
+
+sealed interface DetailScreens {
+    val route: String
+
+    @Serializable
+    data object ActivityDetail : DetailScreens {
+        override val route = "activityDetail/{activityId}"
+        fun createRoute(activityId: String): String = "activityDetail/$activityId"
+    }
+
+    data object HotelDetail : DetailScreens {
+        override val route = "hotelDetail/{hotelId}"
+    }
+
 }
 
 

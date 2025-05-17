@@ -26,6 +26,7 @@ import androidx.compose.runtime.mutableStateMapOf
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
+import androidx.navigation.NavController
 import com.projectlab.core.presentation.designsystem.R
 import com.projectlab.core.presentation.designsystem.component.IconBack
 import com.projectlab.core.presentation.designsystem.component.SearchPlaces
@@ -44,7 +45,9 @@ fun SearchActivityScreen(
     modifier: Modifier = Modifier,
     locationViewModel: LocationViewModel,
     searchActivityViewModel: SearchActivityViewModel,
-    locationUtils: LocationUtils
+    locationUtils: LocationUtils,
+    navController: NavController,
+    onActivityClick: (String) -> Unit
 ) {
     val context = LocalContext.current
     val address by locationViewModel.address
@@ -114,7 +117,8 @@ fun SearchActivityScreen(
         Spacer(modifier = Modifier.height(40.dp))
         SearchActivityResultsComponent(
             uiState = uiState,
-            onShowAllResults = { searchActivityViewModel.showAllResults() }
+            onShowAllResults = { searchActivityViewModel.showAllResults() },
+            navController = navController
         )
     }
 }
@@ -124,7 +128,8 @@ fun SearchActivityScreen(
 @Composable
 fun SearchActivityResultsComponent(
     uiState: SearchActivityUiState,
-    onShowAllResults: () -> Unit
+    onShowAllResults: () -> Unit,
+    navController: NavController
 ) {
     val activities = uiState.activities
     val showAll = uiState.showAllResults
@@ -167,7 +172,9 @@ fun SearchActivityResultsComponent(
                     activity = activity,
                     modifier = Modifier.fillMaxWidth(),
                     city = city,
-                    onPress = TODO()
+                    onPress = {
+                        navController.navigate("activityDetail/${activity.id}")
+                    }
                 )
 
                 Spacer(modifier = Modifier.height(16.dp))

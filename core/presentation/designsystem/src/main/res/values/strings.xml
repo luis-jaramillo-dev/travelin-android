@@ -37,4 +37,9 @@
     <string name="error_server">Server error. Try again later.</string>
     <string name="error_serialization">Data parsing error.</string>
     <string name="error_unknown">An unknown error occurred.</string>
+    <string name="about">About</string>
+    <string name="read_less">Read Less</string>
+    <string name="read_more">Read all</string>
+    <string name="pricePerPerson">$%1$s/person</string>
+    <string name="bookNow">Book Now</string>
 </resources>
