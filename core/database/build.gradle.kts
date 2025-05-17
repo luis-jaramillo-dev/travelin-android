@@ -8,6 +8,8 @@ plugins {
     // Dagger Hilt
     alias(libs.plugins.dagger.hilt.android)
 
+    // Google Services
+    alias(libs.plugins.google.services)
 }
 
 android {
@@ -42,8 +44,8 @@ android {
 dependencies {
 
     // Firebase -> Firestore
-    implementation (platform(libs.firebase))
-    implementation (libs.firebase.firestore)
+    api(platform(libs.firebase))
+    api(libs.firebase.firestore)
 
     // Dagger Hilt + Ksp
     implementation(libs.hilt.android)
@@ -60,4 +62,10 @@ dependencies {
 
     // Core System
     implementation(projects.core.domain)
+    // TODO : review this module dependency:
+    // implementation(projects.core.data)
+
+    // modules
+    // implementation(project(":core:domain"))
+    // implementation(projects.core.domain)
 }

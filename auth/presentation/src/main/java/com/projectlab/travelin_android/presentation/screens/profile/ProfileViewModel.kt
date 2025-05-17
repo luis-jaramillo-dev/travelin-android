@@ -6,7 +6,8 @@ import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.projectlab.auth.domain.use_cases.AuthUseCases
-import com.projectlab.core.domain.model.User
+import com.projectlab.core.domain.entity.UserEntity
+import com.projectlab.core.domain.model.EntityId
 import com.projectlab.core.domain.use_cases.users.UsersUseCases
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
@@ -19,8 +20,9 @@ class ProfileViewModel @Inject constructor(
 ) : ViewModel() {
     val currentUser = authUseCase.getCurrentUser()
 
-    var userData by mutableStateOf(
-        User(
+    var userEntityData by mutableStateOf(
+        UserEntity(
+            // id = EntityId(""), // TODO: check if we use EntityId or not
             id = "",
             email = "",
             age = "",
@@ -38,7 +40,7 @@ class ProfileViewModel @Inject constructor(
 
     private fun getUserById() = viewModelScope.launch {
         usersUseCases.getUserById(currentUser!!.uid).collect() {
-            userData = it
+            userEntityData = it
         }
     }
 
