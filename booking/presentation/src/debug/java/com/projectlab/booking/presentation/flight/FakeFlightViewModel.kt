@@ -10,18 +10,18 @@ class FakeFlightViewModel : IFlightViewModel {
     private val _uiState = MutableStateFlow(
         FlightViewModel.UiState(
             travelClass = FlightViewModel.UiTravelClass.BUSINESS,
-            origin = "SCL",
-            destination = "JFK",
-            departureDate = "2025-04-12",
-            returnDate    = "2025-04-19",
-            dateRange     = "12 Apr" to "19 Apr",
+            origin = "",
+            destination = "",
+            departureDate = "",
+            returnDate    = "",
+            dateRange     = "" to "",
             adults        = 2,
             children      = 1,
             infants       = 0,
             // totalPassengers se calcula automáticamente en UiState
             nonStop       = true,
-            maxPrice      = "500",
-            estimatedPrice = Price(amount = "480", currency = "USD"),
+            maxPrice      = "",
+            estimatedPrice = Price(amount = "", currency = ""),
             originSuggestions = listOf(
                 /*CityLocation(city = "Santiago", iataCode = "SCL"),
                 CityLocation(city = "Buenos Aires", iataCode = "EZE")*/

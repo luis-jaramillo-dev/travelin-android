@@ -85,7 +85,7 @@ fun FlightQueryForm(
         CityInputField(
             label = "From",
             value = origin,
-            placeholder           = "Select your origin",
+            placeholder = "Select your origin",
             onValueChange = onOriginChange,
             suggestions = originSuggestions,
             onSuggestionClick = onOriginSelect,
@@ -96,7 +96,7 @@ fun FlightQueryForm(
         CityInputField(
             label = "To",
             value = destination,
-            placeholder           = "Select your destination",
+            placeholder = "Select your destination",
             onValueChange = onDestinationChange,
             suggestions = destinationSuggestions,
             onSuggestionClick = onDestinationSelect,
@@ -109,7 +109,7 @@ fun FlightQueryForm(
         DateRangePickerField(
             label               = "Dates",
             dateRange           = dateRange,
-            placeholder         = "dd mm. - dd mm.",
+            placeholder         = "11 apr. - 15 apr.",
             onDateRangeSelected = onDateRangeSelect,
             modifier            = Modifier.fillMaxWidth()
         )

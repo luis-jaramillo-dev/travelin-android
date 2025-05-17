@@ -195,7 +195,6 @@ fun FlightQueryScreen(
 @Preview(showBackground = true, name = "FlightQueryScreen Preview")
 @Composable
 fun FlightQueryScreenPreview() {
-     // si tienes un tema propio
     TravelinTheme {
         FlightQueryScreen(
             viewModel = FakeFlightViewModel(),

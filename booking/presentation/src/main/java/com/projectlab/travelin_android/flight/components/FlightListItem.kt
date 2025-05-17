@@ -72,7 +72,7 @@ fun FlightListItem(flight: Flight, modifier: Modifier = Modifier) {
         "AA" -> "American Airlines"
         "DL" -> "Delta Air Lines"
         "UA" -> "United Airlines"
-        // … añade aquí los que necesites
+
         else -> airlineCode.ifEmpty { "Unknown Airline" }
     }
 
@@ -88,7 +88,7 @@ fun FlightListItem(flight: Flight, modifier: Modifier = Modifier) {
                 .fillMaxWidth(),
             verticalAlignment = Alignment.CenterVertically
         ) {
-            // Icono de la aerolínea (asumiendo que tienes un recurso drawable para cada código)
+            // Icono de la aerolínea
             Icon(
                 painter = painterResource(
                     id = when (airlineCode) {

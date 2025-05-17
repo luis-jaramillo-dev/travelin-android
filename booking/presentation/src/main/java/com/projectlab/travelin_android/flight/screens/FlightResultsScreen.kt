@@ -20,29 +20,53 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.projectlab.booking.presentation.flight.FakeFlightViewModel
+import com.projectlab.booking.presentation.flight.IFlightViewModel
+import com.projectlab.core.presentation.designsystem.theme.TravelinTheme
 import com.projectlab.travelin_android.flight.FlightViewModel
 import com.projectlab.travelin_android.flight.components.FlightListItem
+import com.projectlab.travelin_android.flight.components.atomos.flightqueryscreen.BackButton
+import com.projectlab.travelin_android.flight.components.atomos.flightqueryscreen.ScreenTitle
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun FlightResultsScreen(
-    viewModel: FlightViewModel,
-    onBack: () -> Unit
+    viewModel: IFlightViewModel,
+    onBack: () -> Unit,
+    onShow: () -> Unit
 ) {
     val s by viewModel.uiState.collectAsState()
     Scaffold(
         topBar = {
-            TopAppBar(
-                title = { Text("Choose your trip") },
-                navigationIcon = { IconButton(onClick = onBack) { Icon(Icons.AutoMirrored.Filled.ArrowBack, null) } }
-            )
+            BackButton(onBack = onBack, modifier = Modifier.padding(start = 8.dp))
         }
     ) { pad ->
-        Column(Modifier.padding(pad).verticalScroll(rememberScrollState()).padding(16.dp), verticalArrangement = Arrangement.spacedBy(12.dp)) {
-            Text("Trips for \"${s.destination}\"", style = MaterialTheme.typography.bodyMedium)
+        Column(
+            modifier = Modifier
+                .padding(pad)
+                .verticalScroll(rememberScrollState())
+                .padding(horizontal = 24.dp, vertical = 16.dp),
+            verticalArrangement = Arrangement.spacedBy(12.dp)
+        ) {
+            ScreenTitle(
+                title = "Choose your trip",
+                subtitle = "Trips available for ${s.destination}"
+            )
             s.flights.forEach { FlightListItem(it) }
             if (s.flights.size > 3) TextButton(onClick = viewModel::loadMore) { Text("Show +${s.flights.size - 3} more available") }
         }
+    }
+}
+@Preview(showBackground = true, name = "FlightResultsScreen Preview")
+@Composable
+fun FlightResultsScreenPreview() {
+    TravelinTheme {
+        FlightResultsScreen (
+            viewModel = FakeFlightViewModel(),
+            onBack = {},
+            onShow = {}
+        )
     }
 }

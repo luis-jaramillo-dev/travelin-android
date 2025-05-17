@@ -3,6 +3,7 @@ package com.projectlab.travelin_android.flight.components.atomos.flightqueryscre
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.OutlinedTextFieldDefaults
@@ -10,6 +11,7 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.unit.dp
 import com.projectlab.core.presentation.designsystem.theme.customShapes
 import com.projectlab.travelin_android.model.CityLocation
 
@@ -24,10 +26,15 @@ fun CityInputField(
     modifier: Modifier = Modifier
 ) {
     Column(modifier = modifier) {
+        Text(
+            text = label,
+            style = MaterialTheme.typography.labelSmall,
+            color = MaterialTheme.colorScheme.onSurfaceVariant,
+            modifier = Modifier.padding(bottom = 4.dp)
+        )
         OutlinedTextField(
             value = value,
             onValueChange = onValueChange,
-            label = { Text(label) },
             placeholder = { Text(placeholder) },
             singleLine = true,
             modifier = Modifier.fillMaxWidth(),

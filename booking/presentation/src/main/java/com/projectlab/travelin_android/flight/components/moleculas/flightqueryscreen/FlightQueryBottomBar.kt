@@ -8,6 +8,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.text.Placeholder
 import androidx.compose.ui.unit.dp
 import com.projectlab.travelin_android.flight.components.atomos.flightqueryscreen.PriceDisplay
 import com.projectlab.travelin_android.flight.components.atomos.flightqueryscreen.PrimaryButton
@@ -26,7 +27,9 @@ fun FlightQueryBottomBar(
         horizontalArrangement = Arrangement.SpaceBetween,
         verticalAlignment = Alignment.CenterVertically
     ) {
-        PriceDisplay(amount = totalAmount, unit = unit)
+        PriceDisplay(
+            amount = totalAmount,
+            unit = unit)
         PrimaryButton(
             text = "Next",
             onClick = onNext,
