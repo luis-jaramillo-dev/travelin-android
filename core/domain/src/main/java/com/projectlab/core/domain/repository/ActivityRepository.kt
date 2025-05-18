@@ -1,19 +1,9 @@
 package com.projectlab.core.domain.repository
 
-import com.projectlab.core.domain.entity.ActivityEntity
-import com.projectlab.core.domain.model.EntityId
-import kotlinx.coroutines.flow.Flow
-
-/**
- * ActivityRepository interface for activity-related operations.
- *
- * This interface defines the contract for activity-related data operations, including creating an
- * activity and retrieving an activity by its ID.
- *
- * @author ricardoceadev
- */
+import com.projectlab.core.domain.model.Activity
+import com.projectlab.core.domain.util.DataError
+import com.projectlab.core.domain.util.Result
 
 interface ActivityRepository {
-    suspend fun createActivity(activity: ActivityEntity): Result<EntityId>
-    suspend fun getActivityById(id: String): Flow<ActivityEntity?>
+    suspend fun getActivityById(id: String): Result<Activity, DataError.Network>
 }
