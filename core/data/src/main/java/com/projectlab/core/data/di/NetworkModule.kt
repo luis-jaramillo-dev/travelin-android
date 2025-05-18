@@ -19,12 +19,23 @@ import javax.inject.Singleton
 import dagger.hilt.android.qualifiers.ApplicationContext
 import okhttp3.logging.HttpLoggingInterceptor
 
+/**
+ * NetworkModule provides the necessary dependencies (with Dagger Hilt) for network operations.
+ * It includes the Retrofit instance, OkHttpClient, and SharedPreferences.
+ */
+
 @Module
 @InstallIn(SingletonComponent::class)
 object NetworkModule {
 
     private const val BASE_URL = "https://test.api.amadeus.com/"
 
+    /**
+     * Provides a singleton instance of SharedPreferences.
+     *
+     * @param context The application context.
+     * @return A SharedPreferences instance.
+     */
     @Provides
     @Singleton
     fun provideSharedPreferences(
@@ -33,6 +44,11 @@ object NetworkModule {
         return context.getSharedPreferences("amadeus_prefs", Context.MODE_PRIVATE)
     }
 
+    /**
+     * Provides a singleton instance of AmadeusApiService.
+     *
+     * @return An AmadeusApiService instance.
+     */
     @Provides
     @Singleton
     fun provideAmadeusApiService(): AmadeusApiService {
@@ -43,6 +59,13 @@ object NetworkModule {
             .create(AmadeusApiService::class.java)
     }
 
+    /**
+     * Provides a singleton instance of TokenProvider.
+     *
+     * @param sharedPreferences The SharedPreferences instance.
+     * @param amadeusApiService The AmadeusApiService instance.
+     * @return A TokenProvider instance.
+     */
     @Provides
     @Singleton
     fun provideTokenProvider(
@@ -52,12 +75,24 @@ object NetworkModule {
         return TokenProviderImpl(sharedPreferences, amadeusApiService)
     }
 
+    /**
+     * Provides a singleton instance of AuthInterceptor.
+     *
+     * @param tokenProvider The TokenProvider instance.
+     * @return An AuthInterceptor instance.
+     */
     @Provides
     @Singleton
     fun provideAuthInterceptor(tokenProvider: TokenProvider): Interceptor {
         return AuthInterceptor(tokenProvider)
     }
 
+    /**
+     * Provides a singleton instance of OkHttpClient.
+     *
+     * @param authInterceptor The AuthInterceptor instance.
+     * @return An OkHttpClient instance.
+     */
     @Provides
     @Singleton
     fun provideOkHttpClient(authInterceptor: Interceptor): OkHttpClient {
@@ -71,6 +106,12 @@ object NetworkModule {
             .build()
     }
 
+    /**
+     * Provides a singleton instance of ActivitiesApiService.
+     *
+     * @param okHttpClient The OkHttpClient instance.
+     * @return An ActivitiesApiService instance.
+     */
     @Provides
     @Singleton
     fun provideActivitiesApiService(okHttpClient: OkHttpClient): ActivitiesApiService {
