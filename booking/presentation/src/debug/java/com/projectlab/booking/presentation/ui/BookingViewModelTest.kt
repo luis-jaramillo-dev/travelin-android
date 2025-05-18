@@ -13,6 +13,7 @@ import com.projectlab.core.domain.entity.ItineraryEntity
 import com.projectlab.core.domain.entity.UserEntity
 import com.projectlab.core.domain.model.EntityId
 import com.projectlab.core.domain.repository.ActivityRepository
+import com.projectlab.core.domain.repository.FirestoreActivityRepository
 import com.projectlab.core.domain.repository.FlightRepository
 import com.projectlab.core.domain.repository.FlightSegmentRepository
 import com.projectlab.core.domain.repository.HotelRepository
@@ -41,7 +42,7 @@ class BookingViewModelTest @Inject constructor(
     private val flightRepo : FlightRepository,
     private val flightSegmentRepo : FlightSegmentRepository,
     private val hotelRepo : HotelRepository,
-    private val activityRepo : ActivityRepository
+    private val activityRepo : FirestoreActivityRepository,
     // TODO : add other repositories as needed: flight, hotel, etc.
 ) : ViewModel(){
 

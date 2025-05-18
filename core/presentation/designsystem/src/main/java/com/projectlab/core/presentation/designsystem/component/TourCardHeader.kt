@@ -2,7 +2,6 @@ package com.projectlab.core.presentation.designsystem.component
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
-import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -26,13 +25,18 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavController
 import coil.compose.AsyncImage
 import com.projectlab.core.data.model.ActivityDto
 import com.projectlab.core.presentation.designsystem.R
 import com.projectlab.core.presentation.designsystem.theme.spacing
 
 @Composable
-fun TourCardHeader(modifier: Modifier = Modifier, activity: ActivityDto) {
+fun TourCardHeader(
+    modifier: Modifier = Modifier,
+    activity: ActivityDto,
+    navController: NavController
+) {
     Box(
         modifier = Modifier
             .height(428.dp)
@@ -55,9 +59,8 @@ fun TourCardHeader(modifier: Modifier = Modifier, activity: ActivityDto) {
                     .fillMaxWidth()
 
             ) {
-                Image(
-                    painter = painterResource(R.drawable.arrow_back),
-                    contentDescription = "Back",
+                BackArrowIconButton(
+                    onClick = {navController.popBackStack()},
                     modifier = Modifier
                         .size(50.dp)
                         .padding(5.dp)
@@ -83,12 +86,13 @@ fun TourCardHeader(modifier: Modifier = Modifier, activity: ActivityDto) {
 
             }
 
-            Row (modifier = Modifier
-                .clip(RoundedCornerShape(MaterialTheme.spacing.medium))
-                .background(Color(0xAA1A1A1A))
-                .fillMaxWidth()
-                .padding(MaterialTheme.spacing.medium)
-                ){
+            Row(
+                modifier = Modifier
+                    .clip(RoundedCornerShape(MaterialTheme.spacing.medium))
+                    .background(Color(0xAA1A1A1A))
+                    .fillMaxWidth()
+                    .padding(MaterialTheme.spacing.medium)
+            ) {
                 Column {
                     Text(
                         fontSize = 20.sp,

@@ -12,7 +12,7 @@ import com.projectlab.core.data.repository.FirestoreHotelRepositoryImpl
 import com.projectlab.core.data.repository.FirestoreItineraryRepositoryImpl
 import com.projectlab.core.data.repository.FirestoreUserRepositoryImpl
 import com.projectlab.core.data.repository.UsersRepositoryImpl
-import com.projectlab.core.domain.repository.ActivityRepository
+import com.projectlab.core.domain.repository.FirestoreActivityRepository
 import com.projectlab.core.domain.repository.FlightRepository
 import com.projectlab.core.domain.repository.FlightSegmentRepository
 import com.projectlab.core.domain.repository.HotelRepository
@@ -67,7 +67,7 @@ abstract class DataModule {
     @Binds
     abstract fun bindActivityRepository(
         impl: FirestoreActivityRepositoryImpl
-    ): ActivityRepository
+    ): FirestoreActivityRepository
 
     // TODO: implement: bind ItineraryRepository, FlightRepository, etc.
 
