@@ -2,6 +2,8 @@ package com.projectlab.core.data.di
 
 import android.content.Context
 import android.content.SharedPreferences
+import com.projectlab.core.data.network.AmadeusClientFactory
+import com.projectlab.core.data.network.HttpClientFactory
 import com.projectlab.core.data.network.AuthInterceptor
 import com.projectlab.core.data.remote.AmadeusApiService
 import com.projectlab.core.data.remote.ActivitiesApiService
@@ -61,6 +63,19 @@ object NetworkModule {
     }
 
     /**
+     * Provides the concrete factory to create OkHttpClient
+     * configured for Amadeus (logging, auth interceptor...).
+     *
+     * @param authInterceptor Interceptor that adds the Bearer token.
+     * @return HttpClientFactory for Amadeus.
+    */
+    @Provides
+    @Singleton
+    fun provideAmadeusClientFactory (
+        authInterceptor: AuthInterceptor
+    ) : HttpClientFactory = AmadeusClientFactory(authInterceptor)
+
+    /**
      * Provides a singleton instance of TokenProvider.
      *
      * @param sharedPreferences The SharedPreferences instance.
@@ -89,26 +104,21 @@ object NetworkModule {
     }
 
     /**
-     * Provides a singleton instance of OkHttpClient.
+     * Provides OkHttpClient using the factory injected.
      *
-     * @param authInterceptor The AuthInterceptor instance.
-     * @return An OkHttpClient instance.
+     * @param factory Factory that knows how to configure interceptors and logging.
+     * @return An OkHttpClient ready to be used with Retrofit.
+     *
      */
     @Provides
     @Singleton
-    fun provideOkHttpClient(authInterceptor: Interceptor): OkHttpClient {
-        val logging = HttpLoggingInterceptor().apply {
-            level = HttpLoggingInterceptor.Level.BODY
-        }
-
-        return OkHttpClient.Builder()
-            .addInterceptor(authInterceptor)
-            .addInterceptor(logging)
-            .build()
-    }
+    fun provideOkHttpClient(
+        factory: HttpClientFactory
+    ): OkHttpClient = factory.createClient()
 
     /**
-     * Provides a singleton instance of ActivitiesApiService.
+     * Provides ActivitiesApiService targeting BASE_URL using OkHttpClient
+     * with auth and logging.
      *
      * @param okHttpClient The OkHttpClient instance.
      * @return An ActivitiesApiService instance.
