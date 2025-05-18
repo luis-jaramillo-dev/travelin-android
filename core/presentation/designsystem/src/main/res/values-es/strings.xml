@@ -42,4 +42,5 @@
     <string name="read_more">Ver más</string>
     <string name="pricePerPerson">$%1$s/persona</string>
     <string name="bookNow">Book Now</string>
+    <string name="addToItinerary">Añadir al Itinerario</string>
 </resources>

@@ -41,12 +41,19 @@ fun TourCardHeader(
         modifier = Modifier
             .height(428.dp)
     ) {
-        AsyncImage(
-            model = activity.pictures[0],
-            contentDescription = "Header image",
-            contentScale = ContentScale.Crop,
-            modifier = modifier.fillMaxHeight()
-        )
+        if (activity.pictures.isNotEmpty()){
+            AsyncImage(
+                model = activity.pictures[0],
+                contentDescription = "Header image",
+                contentScale = ContentScale.Crop,
+                modifier = modifier.fillMaxHeight())
+        }else{
+            Image(
+                painter = painterResource(R.drawable.tourimageplaceholder),
+                contentDescription = "Header image",
+                contentScale = ContentScale.Crop,
+                modifier = modifier.fillMaxHeight())
+        }
         Column(
             modifier = Modifier
                 .padding(24.dp)
