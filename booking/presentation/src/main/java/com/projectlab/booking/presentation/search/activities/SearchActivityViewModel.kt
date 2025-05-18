@@ -1,4 +1,4 @@
-package com.projectlab.booking.presentation.activities.search
+package com.projectlab.booking.presentation.search.activities
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope

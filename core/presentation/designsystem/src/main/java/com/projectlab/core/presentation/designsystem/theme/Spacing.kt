@@ -67,6 +67,9 @@ object Spacing {
     // Gallery container size
     val galleryImageSize: Dp = 200.dp
 
+    // Home sizing
+    val homeHeaderImageSize: Dp = 381.dp
+
 }
 
 val LocalSpacing = staticCompositionLocalOf { Spacing }

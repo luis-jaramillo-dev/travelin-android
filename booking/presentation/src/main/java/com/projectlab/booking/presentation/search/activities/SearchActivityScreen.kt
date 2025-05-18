@@ -1,4 +1,4 @@
-package com.projectlab.booking.presentation.activities.search
+package com.projectlab.booking.presentation.search.activities
 
 import android.Manifest
 import android.util.Log

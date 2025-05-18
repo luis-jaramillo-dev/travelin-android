@@ -8,12 +8,12 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.navigation
-import com.projectlab.booking.presentation.activities.search.SearchActivityScreen
+import com.projectlab.booking.presentation.search.activities.SearchActivityScreen
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavType
 import androidx.navigation.navArgument
-import com.projectlab.booking.presentation.activities.detail.ActivityDetailScreen
-import com.projectlab.booking.presentation.activities.detail.ActivityDetailViewModel
+import com.projectlab.booking.presentation.detail.activities.ActivityDetailScreen
+import com.projectlab.booking.presentation.detail.activities.ActivityDetailViewModel
 import com.projectlab.core.presentation.ui.di.LocationUtilsEntryPoint
 import com.projectlab.feature.onboarding.presentation.ui.OnboardingScreen
 import com.projectlab.travelin_android.presentation.screens.login.LoginScreen
