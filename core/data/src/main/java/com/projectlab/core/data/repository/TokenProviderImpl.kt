@@ -7,6 +7,15 @@ import com.projectlab.core.domain.repository.TokenProvider
 import javax.inject.Inject
 import com.projectlab.core.data.config.Config
 
+/**
+ * TokenProviderImpl is an implementation of the TokenProvider interface.
+ * It is responsible for managing API access tokens, including fetching new tokens
+ * and caching them for future use.
+ *
+ * @param sharedPreferences SharedPreferences instance for storing the access token and expiration time.
+ * @param amadeusApiService AmadeusApiService instance for making API calls to fetch access tokens.
+ */
+
 class TokenProviderImpl @Inject constructor(
     private val sharedPreferences: SharedPreferences,
     private val amadeusApiService: AmadeusApiService

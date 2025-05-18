@@ -39,6 +39,14 @@ import com.projectlab.core.presentation.designsystem.component.SearchBarComponen
 import com.projectlab.core.presentation.designsystem.theme.spacing
 import com.projectlab.core.presentation.ui.utils.LocationUtils
 
+/**
+ *  This is the main screen for searching activities.
+ *  It includes a search bar and a list of activities.
+ *  It also handles location permissions and
+ *  retrieves the user's current location.
+ *
+ */
+
 @Composable
 fun SearchActivityScreen(
     modifier: Modifier = Modifier,
@@ -69,12 +77,19 @@ fun SearchActivityScreen(
         }
     }
 
+    /**
+     * @param onEnter: Callback function to handle the Enter key press event.
+     */
     val onEnter = {
         Log.d("SearchActivityViewModel", "Enter pressed")
         if (uiState.query.isNotBlank()) {
             searchActivityViewModel.onSearchSubmitted()
         }
     }
+
+    /**
+     * @param onSearchNearbyClick: Callback function to handle the search nearby button click event.
+     */
 
     val onSearchNearbyClick: () -> Unit = {
         if (!locationUtils.hasLocationPermission(context)) {
