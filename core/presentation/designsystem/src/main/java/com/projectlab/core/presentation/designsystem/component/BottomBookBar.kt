@@ -23,18 +23,32 @@ fun BottomBookBar(activity: ActivityDto) {
         modifier = Modifier
             .fillMaxWidth()
             .height(MaterialTheme.spacing.ImageSize)
-            .padding(horizontal = MaterialTheme.spacing.ScreenHorizontalPadding),
+            .padding(
+                horizontal = MaterialTheme.spacing.ScreenHorizontalPadding,
+                vertical = MaterialTheme.spacing.ScreenVerticalSpacing
+            ),
         horizontalArrangement = Arrangement.SpaceBetween,
         verticalAlignment = Alignment.CenterVertically
     ) {
-        Text(
-            text = stringResource(R.string.pricePerPerson, activity.price.amount),
-            fontSize = 18.sp,
-            fontWeight = FontWeight.W600,
-            color = MaterialTheme.colorScheme.primary
-        )
+        if (activity.price.amount.isNotEmpty()) {
+            Text(
+                text =
+                    stringResource(R.string.pricePerPerson, activity.price.amount),
+                fontSize = 18.sp,
+                fontWeight = FontWeight.W600,
+                color = MaterialTheme.colorScheme.primary
+            )
+        } else {
+            Text(
+                text = stringResource(R.string.tour_list_card_price_not_available),
+                fontSize = 12.sp,
+                fontWeight = FontWeight.W600,
+                color = MaterialTheme.colorScheme.primary
+            )
+        }
+
         ButtonComponent(
-            text = stringResource(R.string.bookNow),
+            text = stringResource(R.string.addToItinerary),
             onClick = { },
             variant = ButtonVariant.Primary,
         )

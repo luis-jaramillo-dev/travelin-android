@@ -110,7 +110,8 @@ fun NavGraphBuilder.detailGraph(navController: NavHostController) {
 
         ActivityDetailScreen(
             activityDetailViewModel = hiltViewModel<ActivityDetailViewModel>(),
-            activityId = activityId
+            activityId = activityId,
+            navController = navController
         )
     }
 }

@@ -8,7 +8,6 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.CircularProgressIndicator
@@ -23,8 +22,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import com.projectlab.core.data.model.ActivityDto
-import com.projectlab.core.domain.model.Activity
+import androidx.navigation.NavController
 import com.projectlab.core.presentation.designsystem.component.BottomBookBar
 import com.projectlab.core.presentation.designsystem.component.DescriptionBox
 import com.projectlab.core.presentation.designsystem.component.GalleryDialog
@@ -36,7 +34,8 @@ import com.projectlab.core.presentation.designsystem.theme.spacing
 fun ActivityDetailScreen(
     modifier: Modifier = Modifier,
     activityDetailViewModel: ActivityDetailViewModel,
-    activityId: String
+    activityId: String,
+    navController: NavController
 ) {
     LaunchedEffect(Unit) {
         activityDetailViewModel.onViewDetail(activityId)
@@ -57,6 +56,7 @@ fun ActivityDetailScreen(
             modifier = modifier,
             activityDetailViewModel = activityDetailViewModel,
             uiState = uiState,
+            navController = navController
         )
     }
 
@@ -68,6 +68,7 @@ fun ActivityDetailScreenComponent(
     modifier: Modifier = Modifier,
     activityDetailViewModel: ActivityDetailViewModel,
     uiState: ActivityDetailUiState,
+    navController: NavController
 ) {
     val activity = uiState.activity
     val scrollState = rememberScrollState()
@@ -84,31 +85,36 @@ fun ActivityDetailScreenComponent(
                 modifier = Modifier
                     .padding(innerPadding)
                     .verticalScroll(scrollState)
-                    .statusBarsPadding()
-                    .padding(bottom = MaterialTheme.spacing.ScreenVerticalSpacing), // puedes ajustar
+                    .padding(bottom = MaterialTheme.spacing.ScreenVerticalSpacing),
                 verticalArrangement = Arrangement.Top
             ) {
                 TourCardHeader(
                     modifier = Modifier,
                     activity = it,
+                    navController = navController,
                 )
                 Spacer(modifier = Modifier.height(MaterialTheme.spacing.ScreenVerticalSpacing))
 
-                DescriptionBox(
-                    modifier = Modifier,
-                    activity = it
-                )
-                Spacer(modifier = Modifier.height(MaterialTheme.spacing.ScreenVerticalSpacing))
-
-                Box(
-                    modifier = Modifier.fillMaxWidth(),
-                    contentAlignment = Alignment.Center
-                ) {
-                    GallerySection(
-                        modifier = modifier,
-                        images = activity.pictures,
-                        onSeeAllClick = { showGalleryDialog = true }
+                if (activity.description.isNotEmpty()) {
+                    DescriptionBox(
+                        modifier = Modifier,
+                        activity = it
                     )
+                }
+
+                Spacer(modifier = Modifier.height(MaterialTheme.spacing.ScreenVerticalSpacing))
+
+                if (activity.pictures.isNotEmpty()) {
+                    Box(
+                        modifier = Modifier.fillMaxWidth(),
+                        contentAlignment = Alignment.Center
+                    ) {
+                        GallerySection(
+                            modifier = modifier,
+                            images = activity.pictures,
+                            onSeeAllClick = { showGalleryDialog = true }
+                        )
+                    }
                 }
 
                 if (showGalleryDialog) {
