@@ -5,6 +5,7 @@ import android.content.SharedPreferences
 import com.projectlab.core.data.network.AuthInterceptor
 import com.projectlab.core.data.remote.AmadeusApiService
 import com.projectlab.core.data.remote.ActivitiesApiService
+import com.projectlab.core.data.remote.ActivityApiService
 import com.projectlab.core.data.repository.TokenProviderImpl
 import com.projectlab.core.domain.repository.TokenProvider
 import dagger.Module
@@ -121,5 +122,16 @@ object NetworkModule {
             .client(okHttpClient)
             .build()
             .create(ActivitiesApiService::class.java)
+    }
+
+    @Provides
+    @Singleton
+    fun provideActivityApiService(okHttpClient: OkHttpClient): ActivityApiService{
+        return Retrofit.Builder()
+            .baseUrl(BASE_URL)
+            .addConverterFactory(GsonConverterFactory.create())
+            .client(okHttpClient)
+            .build()
+            .create(ActivityApiService::class.java)
     }
 }

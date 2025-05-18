@@ -37,4 +37,9 @@
     <string name="error_server">Error del servidor. Intenta más tarde.</string>
     <string name="error_serialization">Error al procesar los datos.</string>
     <string name="error_unknown">Ocurrió un error desconocido.</string>
+    <string name="about">Descripción</string>
+    <string name="read_less">Ver menos</string>
+    <string name="read_more">Ver más</string>
+    <string name="pricePerPerson">$%1$s/persona</string>
+    <string name="bookNow">Book Now</string>
 </resources>

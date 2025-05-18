@@ -1,6 +1,8 @@
 package com.projectlab.core.presentation.designsystem.component
 
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
+import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -12,21 +14,25 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil.compose.AsyncImage
+import com.projectlab.core.data.model.ActivityDto
 import com.projectlab.core.presentation.designsystem.R
+import com.projectlab.core.presentation.designsystem.theme.spacing
 
 @Composable
-fun TourCardHeader(modifier: Modifier = Modifier, activity: com.projectlab.core.domain.model.Activity) {
+fun TourCardHeader(modifier: Modifier = Modifier, activity: ActivityDto) {
     Box(
         modifier = Modifier
             .height(428.dp)
@@ -77,7 +83,12 @@ fun TourCardHeader(modifier: Modifier = Modifier, activity: com.projectlab.core.
 
             }
 
-            Row {
+            Row (modifier = Modifier
+                .clip(RoundedCornerShape(MaterialTheme.spacing.medium))
+                .background(Color(0xAA1A1A1A))
+                .fillMaxWidth()
+                .padding(MaterialTheme.spacing.medium)
+                ){
                 Column {
                     Text(
                         fontSize = 20.sp,

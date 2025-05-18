@@ -10,6 +10,10 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.navigation
 import com.projectlab.booking.presentation.activities.search.SearchActivityScreen
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.navigation.NavType
+import androidx.navigation.navArgument
+import com.projectlab.booking.presentation.activities.detail.ActivityDetailScreen
+import com.projectlab.booking.presentation.activities.detail.ActivityDetailViewModel
 import com.projectlab.core.presentation.ui.di.LocationUtilsEntryPoint
 import com.projectlab.feature.onboarding.presentation.ui.OnboardingScreen
 import com.projectlab.travelin_android.presentation.screens.login.LoginScreen
@@ -28,6 +32,7 @@ fun NavigationRoot(
     ) {
         authGraph(navController)
         searchGraph(navController)
+        detailGraph(navController)
     }
 }
 
@@ -72,7 +77,7 @@ private fun NavGraphBuilder.authGraph(navController: NavHostController) {
     }
 }
 
-private fun NavGraphBuilder.searchGraph(navController: NavHostController){
+private fun NavGraphBuilder.searchGraph(navController: NavHostController) {
     composable(route = SearchScreens.Activities.route) {
 
         val context = LocalContext.current
@@ -85,7 +90,27 @@ private fun NavGraphBuilder.searchGraph(navController: NavHostController){
         SearchActivityScreen(
             locationViewModel = hiltViewModel(),
             searchActivityViewModel = hiltViewModel(),
-            locationUtils = locationUtils
+            locationUtils = locationUtils,
+            navController = navController,
+            onActivityClick = { activityId ->
+                navController.navigate(DetailScreens.ActivityDetail.createRoute(activityId))
+            }
+        )
+    }
+}
+
+fun NavGraphBuilder.detailGraph(navController: NavHostController) {
+    composable(
+        route = DetailScreens.ActivityDetail.route,
+        arguments = listOf(
+            navArgument("activityId") { type = NavType.StringType }
+        )
+    ) { backStackEntry ->
+        val activityId = backStackEntry.arguments?.getString("activityId") ?: ""
+
+        ActivityDetailScreen(
+            activityDetailViewModel = hiltViewModel<ActivityDetailViewModel>(),
+            activityId = activityId
         )
     }
 }
