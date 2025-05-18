@@ -11,15 +11,10 @@ import javax.inject.Inject
 
 class ActivityRepositoryImpl @Inject constructor(
     private val activityApiService: ActivityApiService,
-    private val tokenProvider: TokenProvider
 ) : ActivityRepository {
     override suspend fun getActivityById(
         id: String
     ): Result<Activity, DataError.Network> {
-        val token = tokenProvider.getAccessToken()
-        if (token.isEmpty()) {
-            throw Exception("Access token is missing")
-        }
         return try {
             val response = activityApiService.getActivityById(id)
             Result.Success(response.data.toDomain())

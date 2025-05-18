@@ -12,17 +12,12 @@ import com.projectlab.core.domain.util.Result
 
 class ActivitiesRepositoryImpl @Inject constructor(
     private val apiService: ActivitiesApiService,
-    private val tokenProvider: TokenProvider
 ) : ActivitiesRepository {
 
     override suspend fun getActivitiesByCoordinates(
         lat: Double,
         lon: Double
     ): Result<List<Activity>, DataError.Network> {
-        val token = tokenProvider.getAccessToken()
-        if (token.isEmpty()) {
-            throw Exception("Access token is missing")
-        }
         return try {
             val response = apiService.getActivitiesByLocation(latitude = lat, longitude = lon)
             response.data
