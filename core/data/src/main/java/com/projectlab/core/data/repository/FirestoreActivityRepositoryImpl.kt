@@ -24,10 +24,6 @@ import javax.inject.Inject
 class FirestoreActivityRepositoryImpl @Inject constructor(
     private val firestore: FirebaseFirestore
 ) : FirestoreActivityRepository {
-    override suspend fun getActivityById(id: String): Flow<ActivityEntity?> {
-        TODO("Not yet implemented")
-    }
-
     @RequiresApi(Build.VERSION_CODES.O)
     override suspend fun createActivity(activity: ActivityEntity): Result<EntityId> = runCatching {
         // user reference:
@@ -50,6 +46,10 @@ class FirestoreActivityRepositoryImpl @Inject constructor(
         docRef.set(dto).await()
         // return id:
         EntityId(docRef.id)
+    }
+
+    override suspend fun getActivityById(id: String): Flow<ActivityEntity?> {
+        TODO("Not yet implemented")
     }
 
 }
