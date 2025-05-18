@@ -8,7 +8,6 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.CircularProgressIndicator
@@ -24,8 +23,6 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.navigation.NavController
-import com.projectlab.core.data.model.ActivityDto
-import com.projectlab.core.domain.model.Activity
 import com.projectlab.core.presentation.designsystem.component.BottomBookBar
 import com.projectlab.core.presentation.designsystem.component.DescriptionBox
 import com.projectlab.core.presentation.designsystem.component.GalleryDialog
@@ -88,8 +85,7 @@ fun ActivityDetailScreenComponent(
                 modifier = Modifier
                     .padding(innerPadding)
                     .verticalScroll(scrollState)
-                    .statusBarsPadding()
-                    .padding(bottom = MaterialTheme.spacing.ScreenVerticalSpacing), // puedes ajustar
+                    .padding(bottom = MaterialTheme.spacing.ScreenVerticalSpacing),
                 verticalArrangement = Arrangement.Top
             ) {
                 TourCardHeader(
@@ -99,21 +95,26 @@ fun ActivityDetailScreenComponent(
                 )
                 Spacer(modifier = Modifier.height(MaterialTheme.spacing.ScreenVerticalSpacing))
 
-                DescriptionBox(
-                    modifier = Modifier,
-                    activity = it
-                )
+                if (activity.description.isNotEmpty()) {
+                    DescriptionBox(
+                        modifier = Modifier,
+                        activity = it
+                    )
+                }
+
                 Spacer(modifier = Modifier.height(MaterialTheme.spacing.ScreenVerticalSpacing))
 
-                Box(
-                    modifier = Modifier.fillMaxWidth(),
-                    contentAlignment = Alignment.Center
-                ) {
-                    GallerySection(
-                        modifier = modifier,
-                        images = activity.pictures,
-                        onSeeAllClick = { showGalleryDialog = true }
-                    )
+                if (activity.pictures.isNotEmpty()) {
+                    Box(
+                        modifier = Modifier.fillMaxWidth(),
+                        contentAlignment = Alignment.Center
+                    ) {
+                        GallerySection(
+                            modifier = modifier,
+                            images = activity.pictures,
+                            onSeeAllClick = { showGalleryDialog = true }
+                        )
+                    }
                 }
 
                 if (showGalleryDialog) {
