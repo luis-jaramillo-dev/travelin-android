@@ -5,8 +5,11 @@ import androidx.annotation.RequiresApi
 import com.google.firebase.firestore.FirebaseFirestore
 import com.projectlab.core.data.model.dto.FirestoreActivityDTO
 import com.projectlab.core.domain.entity.ActivityEntity
+import com.projectlab.core.domain.model.Activity
 import com.projectlab.core.domain.model.EntityId
 import com.projectlab.core.domain.repository.ActivityRepository
+import com.projectlab.core.domain.repository.FirestoreActivityRepository
+import com.projectlab.core.domain.util.DataError
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.tasks.await
 import javax.inject.Inject
@@ -20,7 +23,7 @@ import javax.inject.Inject
 
 class FirestoreActivityRepositoryImpl @Inject constructor(
     private val firestore: FirebaseFirestore
-) : ActivityRepository {
+) : FirestoreActivityRepository {
     @RequiresApi(Build.VERSION_CODES.O)
     override suspend fun createActivity(activity: ActivityEntity): Result<EntityId> = runCatching {
         // user reference:

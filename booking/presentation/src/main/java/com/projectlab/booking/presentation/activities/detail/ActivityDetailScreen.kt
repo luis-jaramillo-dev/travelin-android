@@ -23,6 +23,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.navigation.NavController
 import com.projectlab.core.data.model.ActivityDto
 import com.projectlab.core.domain.model.Activity
 import com.projectlab.core.presentation.designsystem.component.BottomBookBar
@@ -36,7 +37,8 @@ import com.projectlab.core.presentation.designsystem.theme.spacing
 fun ActivityDetailScreen(
     modifier: Modifier = Modifier,
     activityDetailViewModel: ActivityDetailViewModel,
-    activityId: String
+    activityId: String,
+    navController: NavController
 ) {
     LaunchedEffect(Unit) {
         activityDetailViewModel.onViewDetail(activityId)
@@ -57,6 +59,7 @@ fun ActivityDetailScreen(
             modifier = modifier,
             activityDetailViewModel = activityDetailViewModel,
             uiState = uiState,
+            navController = navController
         )
     }
 
@@ -68,6 +71,7 @@ fun ActivityDetailScreenComponent(
     modifier: Modifier = Modifier,
     activityDetailViewModel: ActivityDetailViewModel,
     uiState: ActivityDetailUiState,
+    navController: NavController
 ) {
     val activity = uiState.activity
     val scrollState = rememberScrollState()
@@ -91,6 +95,7 @@ fun ActivityDetailScreenComponent(
                 TourCardHeader(
                     modifier = Modifier,
                     activity = it,
+                    navController = navController,
                 )
                 Spacer(modifier = Modifier.height(MaterialTheme.spacing.ScreenVerticalSpacing))
 
