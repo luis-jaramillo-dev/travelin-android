@@ -1,13 +1,51 @@
 plugins {
-    id("java-library")
-    alias(libs.plugins.jetbrains.kotlin.jvm)
+    alias(libs.plugins.android.library)
+    alias(libs.plugins.kotlin.android)
+    // Ksp
+    alias(libs.plugins.devtools.ksp)
+    // Dagger Hilt
+    alias(libs.plugins.dagger.hilt.android)
+    // Compose
+    alias(libs.plugins.compose.compiler)
+    //fire base
+    alias(libs.plugins.google.services)
 }
-java {
-    sourceCompatibility = JavaVersion.VERSION_11
-    targetCompatibility = JavaVersion.VERSION_11
-}
-kotlin {
-    compilerOptions {
-        jvmTarget = org.jetbrains.kotlin.gradle.dsl.JvmTarget.JVM_11
+
+android {
+    namespace = "com.projectlab.booking"
+    compileSdk = 35
+
+    defaultConfig {
+        minSdk = 25
     }
+
+    compileOptions {
+        sourceCompatibility = JavaVersion.VERSION_11
+        targetCompatibility = JavaVersion.VERSION_11
+    }
+
+    kotlinOptions {
+        jvmTarget = "11"
+    }
+}
+
+dependencies {
+    // Core
+    implementation(libs.androidx.core.ktx)
+    implementation(libs.androidx.appcompat)
+    //hilt
+    implementation(libs.hilt.android)
+    implementation(libs.hilt.android.compiler)
+    implementation(project(":booking:domain"))
+    ksp(libs.hilt.android.compiler)
+
+
+    //Retrofit
+    implementation(libs.retrofit2)
+    implementation(libs.converter.gson)
+    //Fire store
+    implementation(platform(libs.firebase))
+    implementation(libs.firebase.firestore.ktx)
+    implementation(libs.hilt.navigation.compose)
+    implementation(libs.lifecycle.viewmodel.compose)
 }
