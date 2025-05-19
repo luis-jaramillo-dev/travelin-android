@@ -5,6 +5,12 @@ import com.projectlab.core.domain.model.Activity
 import com.projectlab.core.data.model.LocationDataDto
 import com.projectlab.core.data.model.PriceDto
 
+/**
+ * Extension function to convert an ActivityDto to a domain model Activity.
+ * This is used to map the data received from the API to the domain model used in the application.
+ *
+ * @return An Activity object with the same properties as the ActivityDto.
+ */
 fun ActivityDto.toDomain(): Activity {
     return Activity(
         id = id,
@@ -20,10 +26,19 @@ fun ActivityDto.toDomain(): Activity {
     )
 }
 
+/**
+ * Converts a list of ActivityDto objects to a list of Activity domain models.
+ */
 fun List<ActivityDto>.toDomainList(): List<Activity> {
     return map { it.toDomain() }
 }
 
+/**
+ * Extension function to convert an Activity domain model to an ActivityDto.
+ * This is used to map the domain model back to the data transfer object for API communication.
+ *
+ * @return An ActivityDto object with the same properties as the Activity.
+ */
 fun Activity.toDto(): ActivityDto {
     return ActivityDto(
         id = id,
@@ -36,6 +51,9 @@ fun Activity.toDto(): ActivityDto {
         rating = rating)
 }
 
+/**
+ * Converts a list of Activity domain models to a list of ActivityDto objects.
+ */
 fun List<Activity>.toDtoList(): List<ActivityDto> {
     return map { it.toDto() }
 }

@@ -1,6 +1,7 @@
 package com.projectlab.core.presentation.designsystem.component
 
 import androidx.compose.foundation.border
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -12,7 +13,6 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
@@ -29,7 +29,12 @@ import com.projectlab.core.presentation.designsystem.R
 import com.projectlab.core.presentation.designsystem.theme.spacing
 
 @Composable
-fun TourListCard(modifier: Modifier = Modifier, activity: ActivityDto, city: String?) {
+fun TourListCard(
+    modifier: Modifier = Modifier,
+    activity: ActivityDto,
+    city: String?,
+    onPress: () -> Unit
+) {
     val imageUrl = if (activity.pictures.isNotEmpty()) activity.pictures[0] else null
     val priceText = if (activity.price.amount != "" && activity.price.currencyCode != "") {
         "${activity.price.amount} ${activity.price.currencyCode}"
@@ -37,7 +42,7 @@ fun TourListCard(modifier: Modifier = Modifier, activity: ActivityDto, city: Str
         null
     }
 
-    Row {
+    Row(modifier = modifier.clickable(onClick = { onPress() })) {
         if (imageUrl != null) {
             ImageCardWithFavorite(modifier = Modifier, image = imageUrl)
         } else {

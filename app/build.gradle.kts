@@ -12,7 +12,7 @@ plugins {
     // Compose
     alias(libs.plugins.compose.compiler)
 
-    // Firebase
+    // Google Services
     alias(libs.plugins.google.services)
 }
 
@@ -65,6 +65,8 @@ dependencies {
     // Dagger Hilt + Ksp
     implementation(libs.hilt.android)
     ksp(libs.hilt.android.compiler)
+    implementation(libs.hilt.navigation)
+
 
     // Google
     implementation(platform(libs.firebase))
@@ -80,6 +82,10 @@ dependencies {
     implementation(libs.androidx.runtime.android)
     implementation(libs.kotlinx.serialization.json)
     implementation(libs.androidx.activity.compose)
+
+    // Firebase
+    implementation(platform(libs.firebase))
+    implementation(libs.firebase.firestore)
 
     // UI
     implementation(platform(libs.androidx.compose.bom))
