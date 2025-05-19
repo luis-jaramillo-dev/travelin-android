@@ -1,7 +1,5 @@
 package com.projectlab.core.data.network
 
-import android.util.Log
-import com.projectlab.core.data.repository.TokenProviderImpl
 import com.projectlab.core.domain.repository.TokenProvider
 import kotlinx.coroutines.runBlocking
 import okhttp3.Interceptor

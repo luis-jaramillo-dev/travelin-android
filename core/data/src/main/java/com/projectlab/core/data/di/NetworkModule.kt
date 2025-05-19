@@ -8,7 +8,7 @@ import com.projectlab.core.data.network.AuthInterceptor
 import com.projectlab.core.data.remote.AmadeusApiService
 import com.projectlab.core.data.remote.ActivitiesApiService
 import com.projectlab.core.data.remote.ActivityApiService
-import com.projectlab.core.data.repository.TokenProviderImpl
+import com.projectlab.core.data.repository.AmadeusTokenProviderImpl
 import com.projectlab.core.domain.repository.TokenProvider
 import dagger.Module
 import dagger.Provides
@@ -20,7 +20,6 @@ import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import javax.inject.Singleton
 import dagger.hilt.android.qualifiers.ApplicationContext
-import okhttp3.logging.HttpLoggingInterceptor
 
 /**
  * NetworkModule provides the necessary dependencies (with Dagger Hilt) for network operations.
@@ -87,8 +86,8 @@ object NetworkModule {
     fun provideTokenProvider(
         sharedPreferences: SharedPreferences,
         amadeusApiService: AmadeusApiService
-    ): TokenProviderImpl {
-        return TokenProviderImpl(sharedPreferences, amadeusApiService)
+    ): AmadeusTokenProviderImpl {
+        return AmadeusTokenProviderImpl(sharedPreferences, amadeusApiService)
     }
 
     /**
