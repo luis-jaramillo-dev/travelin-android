@@ -33,16 +33,6 @@ android {
 
 }
 
-//configurations.all {
-//    resolutionStrategy.dependencySubstitution {
-//        substitute(
-//            module("com.google.protobuf:protobuf-javalite")
-//        ).using(
-//            module(libs.protobuf.javalite.get().toString())
-//        )
-//    }
-//}
-
 dependencies {
     // Core System
     implementation(projects.core.domain)
