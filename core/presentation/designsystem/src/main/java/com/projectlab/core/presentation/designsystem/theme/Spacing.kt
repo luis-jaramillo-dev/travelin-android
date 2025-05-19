@@ -64,12 +64,18 @@ object Spacing {
     val SmallCornerRadius: Dp = 12.dp
     val FieldHeight: Dp = 56.dp
 
+    // Search screen
+    val searchPlacesPadding: Dp = 6.dp
+    val searchSpacer: Dp = 10.dp
+
     // Gallery container size
     val galleryImageSize: Dp = 200.dp
 
-    // Home sizing
-    val homeHeaderImageSize: Dp = 381.dp
-
+    // Header sizing
+    val homeHeaderImageSize: Dp = 400.dp
+    val TourCardHeaderSize: Dp = 428.dp
+    val homeHeaderSpacer: Dp = 105.dp
+    val searchBarWidth: Dp = 331.dp
 }
 
 val LocalSpacing = staticCompositionLocalOf { Spacing }

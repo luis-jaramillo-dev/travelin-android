@@ -29,6 +29,12 @@ class SearchActivityViewModel @Inject constructor(
         _uiState.update { it.copy(query = newQuery) }
     }
 
+    fun searchWithInitialQuery(query: String) {
+        if (query == uiState.value.query && uiState.value.activities.isNotEmpty()) return
+        _uiState.update { it.copy(query = query) }
+        onSearchSubmitted()
+    }
+
     fun onSearchSubmitted() {
         viewModelScope.launch {
             _uiState.update { it.copy(isLoading = true) }

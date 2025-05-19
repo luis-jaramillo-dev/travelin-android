@@ -1,4 +1,8 @@
 package com.projectlab.booking.presentation.home
 
-class HomeUiState {
-}
+import com.projectlab.core.data.model.ActivityDto
+
+data class HomeUiState (
+    val query: String = "",
+    val activities: List<ActivityDto> = emptyList(),
+    )

@@ -40,7 +40,7 @@ fun IconTextButton (
     disabledContentColor: Color = Color.White,
     icon: @Composable ()->Unit,
     text: String,
-    width: Int = 131
+    width: Int = 140
 ) {
     Button(
         onClick = onClick,
@@ -74,7 +74,7 @@ fun ButtonHotel(
     disabledContainerColor: Color = Color.White,
     disabledContentColor: Color = Color.White,
     text: String = "Hotel",
-    width: Int = 131,
+    width: Int = 140,
     iconColor: Color = Color(35,183,246)
 ){
     IconTextButton(
@@ -101,7 +101,7 @@ fun ButtonOversea(
     disabledContainerColor: Color = Color.White,
     disabledContentColor: Color = Color.White,
     text: String = "Oversea",
-    width: Int = 131,
+    width: Int = 140,
     iconColor: Color = Color(35,183,246)
 ){
     IconTextButton(
