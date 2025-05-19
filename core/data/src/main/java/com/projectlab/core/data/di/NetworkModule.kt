@@ -4,14 +4,13 @@ import android.content.Context
 import androidx.datastore.core.DataStore
 import androidx.datastore.dataStore
 import com.projectlab.core.data.config.AmadeusTokenSerializer
-import android.content.SharedPreferences
 import com.projectlab.core.data.network.AmadeusClientFactory
-import com.projectlab.core.data.network.HttpClientFactory
 import com.projectlab.core.data.network.AuthInterceptor
+import com.projectlab.core.data.network.HttpClientFactory
 import com.projectlab.core.data.proto.AmadeusToken
 import com.projectlab.core.data.remote.ActivitiesApiService
-import com.projectlab.core.data.remote.AmadeusApiService
 import com.projectlab.core.data.remote.ActivityApiService
+import com.projectlab.core.data.remote.AmadeusApiService
 import com.projectlab.core.data.repository.AmadeusTokenProviderImpl
 import com.projectlab.core.domain.repository.TokenProvider
 import dagger.Module
@@ -21,11 +20,9 @@ import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
 import okhttp3.Interceptor
 import okhttp3.OkHttpClient
-import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import javax.inject.Singleton
-import dagger.hilt.android.qualifiers.ApplicationContext
 
 /**
  * NetworkModule provides the necessary dependencies (with Dagger Hilt) for network operations.
