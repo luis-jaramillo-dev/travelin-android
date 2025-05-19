@@ -3,7 +3,11 @@ import java.util.Properties
 plugins {
     alias(libs.plugins.travelinandroid.android.library)
     alias(libs.plugins.travelinandroid.android.hilt)
+
+    // Proto DataStore
+    alias(libs.plugins.protobuf)
 }
+
 val localProperties = Properties().apply {
     val localFile = rootProject.file("local.properties")
     if (localFile.exists()) {
@@ -29,8 +33,17 @@ android {
 
 }
 
-dependencies {
+//configurations.all {
+//    resolutionStrategy.dependencySubstitution {
+//        substitute(
+//            module("com.google.protobuf:protobuf-javalite")
+//        ).using(
+//            module(libs.protobuf.javalite.get().toString())
+//        )
+//    }
+//}
 
+dependencies {
     // Core System
     implementation(projects.core.domain)
     implementation(projects.core.database)
@@ -44,4 +57,27 @@ dependencies {
 
     // Network
     implementation(libs.bundles.retrofit)
+
+    // Proto DataStore
+    implementation(libs.androidx.datastore)
+    implementation(libs.protobuf.javalite)
+}
+
+protobuf {
+    protoc {
+        artifact = libs.protobuf.protoc.get().toString()
+    }
+
+    // Generates the java Protobuf-lite code for the Protobufs in this project. See
+    // https://github.com/google/protobuf-gradle-plugin#customizing-protobuf-compilation
+    // for more information.
+    generateProtoTasks {
+        all().configureEach {
+            builtins {
+                create("java") {
+                    option("lite")
+                }
+            }
+        }
+    }
 }
