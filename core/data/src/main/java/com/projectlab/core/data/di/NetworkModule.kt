@@ -26,7 +26,7 @@ import javax.inject.Singleton
 
 /**
  * NetworkModule provides the necessary dependencies (with Dagger Hilt) for network operations.
- * It includes the Retrofit instance, OkHttpClient, and SharedPreferences.
+ * It includes the Retrofit instance, OkHttpClient, and DataStore.
  */
 
 @Module
@@ -40,10 +40,10 @@ object NetworkModule {
     )
 
     /**
-     * Provides a singleton instance of SharedPreferences.
+     * Provides a singleton instance of DataStore.
      *
      * @param context The application context.
-     * @return A SharedPreferences instance.
+     * @return A DataStore instance.
      */
     @Provides
     @Singleton
@@ -84,7 +84,7 @@ object NetworkModule {
     /**
      * Provides a singleton instance of TokenProvider.
      *
-     * @param sharedPreferences The SharedPreferences instance.
+     * @param amadeusTokenStore The DataStore instance.
      * @param amadeusApiService The AmadeusApiService instance.
      * @return A TokenProvider instance.
      */
