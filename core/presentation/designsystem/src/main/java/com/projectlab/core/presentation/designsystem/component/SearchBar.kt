@@ -8,6 +8,7 @@ import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
@@ -22,6 +23,7 @@ fun SearchBarComponent(
     query: String,
     onEnter: () -> Unit,
     onQueryChange: (String) -> Unit,
+    onSearchPressed: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
 
@@ -39,7 +41,19 @@ fun SearchBarComponent(
             keyboardActions = KeyboardActions(
                 onDone = { onEnter() }
             ),
-            singleLine = true
+            singleLine = true,
+            shape = MaterialTheme.shapes.large,
+            colors = TextFieldDefaults.colors(
+                unfocusedContainerColor = MaterialTheme.colorScheme.background,
+                focusedContainerColor = MaterialTheme.colorScheme.background,
+                unfocusedIndicatorColor = MaterialTheme.colorScheme.outlineVariant,
+                focusedIndicatorColor = MaterialTheme.colorScheme.primary
+            ),
+            trailingIcon = {
+                TravelinIconButton(
+                    onClick = onSearchPressed,
+                    icon = { IconSearch(modifier = Modifier) })
+            }
         )
     }
 }

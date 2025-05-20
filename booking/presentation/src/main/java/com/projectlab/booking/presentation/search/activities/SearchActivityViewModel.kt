@@ -1,4 +1,4 @@
-package com.projectlab.booking.presentation.activities.search
+package com.projectlab.booking.presentation.search.activities
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -27,6 +27,12 @@ class SearchActivityViewModel @Inject constructor(
 
     fun onQueryChanged(newQuery: String) {
         _uiState.update { it.copy(query = newQuery) }
+    }
+
+    fun searchWithInitialQuery(query: String) {
+        if (query == uiState.value.query && uiState.value.activities.isNotEmpty()) return
+        _uiState.update { it.copy(query = query) }
+        onSearchSubmitted()
     }
 
     fun onSearchSubmitted() {

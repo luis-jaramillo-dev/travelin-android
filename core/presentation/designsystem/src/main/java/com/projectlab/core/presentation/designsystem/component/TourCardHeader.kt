@@ -39,7 +39,7 @@ fun TourCardHeader(
 ) {
     Box(
         modifier = Modifier
-            .height(428.dp)
+            .height(MaterialTheme.spacing.TourCardHeaderSize)
     ) {
         if (activity.pictures.isNotEmpty()){
             AsyncImage(
