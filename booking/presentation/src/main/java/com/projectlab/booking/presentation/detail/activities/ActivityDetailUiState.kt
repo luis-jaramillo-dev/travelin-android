@@ -1,4 +1,4 @@
-package com.projectlab.booking.presentation.activities.detail
+package com.projectlab.booking.presentation.detail.activities
 
 import com.projectlab.core.data.model.ActivityDto
 

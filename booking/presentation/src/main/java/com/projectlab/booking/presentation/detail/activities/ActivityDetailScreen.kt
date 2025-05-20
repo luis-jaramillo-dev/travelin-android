@@ -1,4 +1,4 @@
-package com.projectlab.booking.presentation.activities.detail
+package com.projectlab.booking.presentation.detail.activities
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box

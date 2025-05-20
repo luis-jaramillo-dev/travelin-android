@@ -3,17 +3,16 @@ plugins {
     alias(libs.plugins.kotlin.android)
     alias(libs.plugins.kotlin.serialization)
 
-    // Ksp
-    alias(libs.plugins.devtools.ksp)
-
-    // Dagger Hilt
-    alias(libs.plugins.dagger.hilt.android)
+    alias(libs.plugins.travelinandroid.android.hilt)
 
     // Compose
     alias(libs.plugins.compose.compiler)
 
     // Google Services
     alias(libs.plugins.google.services)
+
+    // Jacoco
+    id("jacoco")
 }
 
 android {
@@ -56,11 +55,26 @@ dependencies {
     // Core System
     implementation(projects.core.presentation.designsystem)
     implementation(projects.core.presentation.ui)
+    implementation(projects.core.domain)
+    implementation(projects.core.data)
+    implementation(projects.core.database)
+
+    // Auth Module
     implementation(projects.auth.presentation)
     implementation(projects.auth.data)
+    implementation(projects.auth.domain)
+
+    // Feature Module
     implementation(projects.feature.onboarding.presentation)
-    implementation(projects.navigation)
+    implementation(projects.feature.onboarding.data)
+    implementation(projects.feature.onboarding.domain)
+
+    implementation(projects.navigation) /// Is it really needed?
+
+    // Booking
     implementation(projects.booking.presentation)
+    implementation(projects.booking.domain)
+    implementation(projects.booking.data)
 
     // Dagger Hilt + Ksp
     implementation(libs.hilt.android)

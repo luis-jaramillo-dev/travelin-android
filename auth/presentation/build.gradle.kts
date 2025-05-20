@@ -1,44 +1,10 @@
 plugins {
-    alias(libs.plugins.android.library)
-    alias(libs.plugins.kotlin.android)
-
-    // Compose
-    alias(libs.plugins.compose.compiler)
-
-    // Ksp
-    alias(libs.plugins.devtools.ksp)
-
-    // Dagger Hilt
-    alias(libs.plugins.dagger.hilt.android)
+    alias(libs.plugins.travelinandroid.android.library.compose)
+    alias(libs.plugins.travelinandroid.android.hilt)
 }
 
 android {
     namespace = "com.projectlab.auth.presentation"
-    compileSdk = 35
-
-    defaultConfig {
-        minSdk = 24
-
-        testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
-        consumerProguardFiles("consumer-rules.pro")
-    }
-
-    buildTypes {
-        release {
-            isMinifyEnabled = false
-            proguardFiles(
-                getDefaultProguardFile("proguard-android-optimize.txt"),
-                "proguard-rules.pro"
-            )
-        }
-    }
-    compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_11
-        targetCompatibility = JavaVersion.VERSION_11
-    }
-    kotlinOptions {
-        jvmTarget = "11"
-    }
 }
 
 dependencies {
@@ -48,26 +14,10 @@ dependencies {
     implementation(projects.core.domain)
     implementation(projects.core.presentation.designsystem)
 
-    // Dagger Hilt + Ksp
-    implementation(libs.hilt.android)
-    ksp(libs.hilt.android.compiler)
-
     // Navigation
+    // TODO this should be deleted, or used on :app module
     implementation(libs.hilt.navigation)
 
-    // Core
-    implementation(libs.androidx.core.ktx)
-    implementation(libs.androidx.appcompat)
-    implementation(libs.androidx.activity.compose)
-
-    // UI
-    implementation(platform(libs.androidx.compose.bom))
-    api(libs.androidx.compose.material3)
+    // Material Icons
     implementation(libs.androidx.compose.material.icons)
-
-    // Testing
-    testImplementation(libs.junit)
-    androidTestImplementation(libs.androidx.junit)
-    androidTestImplementation(libs.androidx.espresso.core)
-
 }

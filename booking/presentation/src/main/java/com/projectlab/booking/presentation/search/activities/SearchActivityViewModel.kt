@@ -1,4 +1,4 @@
-package com.projectlab.booking.presentation.activities.search
+package com.projectlab.booking.presentation.search.activities
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -44,6 +44,12 @@ class SearchActivityViewModel @Inject constructor(
      * It fetches activities based on the provided location.
      * It updates the UI state with the results or an error message.
      */
+
+    fun searchWithInitialQuery(query: String) {
+        if (query == uiState.value.query && uiState.value.activities.isNotEmpty()) return
+        _uiState.update { it.copy(query = query) }
+        onSearchSubmitted()
+    }
 
     fun onSearchSubmitted() {
         viewModelScope.launch {
