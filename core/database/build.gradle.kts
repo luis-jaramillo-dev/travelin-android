@@ -9,7 +9,7 @@ plugins {
     alias(libs.plugins.dagger.hilt.android)
 
     // Google Services
-    alias(libs.plugins.google.services)
+//    alias(libs.plugins.google.services)
 }
 
 android {

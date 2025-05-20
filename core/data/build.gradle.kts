@@ -9,7 +9,7 @@ plugins {
     //alias(libs.plugins.devtools.ksp)
 
     // Google Services
-    alias(libs.plugins.google.services)
+//    alias(libs.plugins.google.services)
 
     alias(libs.plugins.travelinandroid.android.hilt)
 }
