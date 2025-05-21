@@ -11,10 +11,26 @@ import java.net.SocketTimeoutException
 import java.net.UnknownHostException
 import javax.inject.Inject
 
+/**
+ * Use case for fetching activities based on latitude and longitude.
+ *
+ * @property api The API service to fetch activities.
+ * @property tokenProvider The token provider for API authentication.
+ */
+
 class GetActivitiesUseCase @Inject constructor(
     private val api: ActivitiesApiService,
     private val tokenProvider: TokenProvider
 ) {
+
+    /**
+     * Fetches activities based on the provided latitude and longitude.
+     *
+     * @param latitude The latitude of the location.
+     * @param longitude The longitude of the location.
+     * @return A Result containing a list of activities or an error.
+     */
+
     suspend operator fun invoke(latitude: Double, longitude: Double): Result<List<Activity>, DataError.Network> {
         return try {
             val response = api.getActivitiesByLocation(latitude, longitude)

@@ -18,6 +18,6 @@ object RepositoryModule {
         apiService: ActivitiesApiService,
         tokenProvider: TokenProvider
     ): ActivitiesRepository {
-        return ActivitiesRepositoryImpl(apiService, tokenProvider)
+        return ActivitiesRepositoryImpl(apiService)
     }
 }
