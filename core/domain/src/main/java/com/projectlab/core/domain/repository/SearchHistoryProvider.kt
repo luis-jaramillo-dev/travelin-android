@@ -1,27 +1,19 @@
 package com.projectlab.core.domain.repository
 
+import com.projectlab.core.domain.proto.SearchHistory.HistoryType
+
 /**
  * Interface for providing search history.
  * This interface is used to retrieve and cache search histories.
  *
- * - `getTYPESearchHistory()` is a suspend function that specific search history,
- * - `addTYPESearchEntry()` adds a new entry to that specific search history,
- * - `clearTYPESearchHistory()` clears that specific search history.
+ * - `getSearchHistory()` is a suspend function that search history,
+ * - `addSearchEntry()` adds a new entry to that search history,
+ * - `removeSearchEntry()` removes the entry at the specified index from that search history,
+ * - `clearSearchHistory()` clears that search history.
  */
 interface SearchHistoryProvider {
-    suspend fun getHotelsSearchHistory(): List<String>
-    suspend fun getActivitiesSearchHistory(): List<String>
-    suspend fun getFlightsSearchHistory(): List<String>
-
-    suspend fun addActivitySearchEntry(value: String): List<String>
-    suspend fun addFlightSearchEntry(value: String): List<String>
-    suspend fun addHotelSearchEntry(value: String): List<String>
-
-    suspend fun removeActivitySearchEntry(index: Int): List<String>
-    suspend fun removeFlightSearchEntry(index: Int): List<String>
-    suspend fun removeHotelSearchEntry(index: Int): List<String>
-
-    suspend fun clearActivitiesSearchHistory(): List<String>
-    suspend fun clearFlightsSearchHistory(): List<String>
-    suspend fun clearHotelsSearchHistory(): List<String>
+    suspend fun getSearchHistory(type: HistoryType): List<String>
+    suspend fun addSearchEntry(type: HistoryType, value: String): List<String>
+    suspend fun removeSearchEntry(type: HistoryType, index: Int): List<String>
+    suspend fun clearSearchHistory(type: HistoryType): List<String>
 }

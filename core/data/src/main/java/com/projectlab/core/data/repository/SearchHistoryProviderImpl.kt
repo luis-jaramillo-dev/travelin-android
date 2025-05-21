@@ -3,6 +3,7 @@ package com.projectlab.core.data.repository
 import androidx.datastore.core.DataStore
 import androidx.datastore.core.IOException
 import com.projectlab.core.domain.proto.SearchHistory
+import com.projectlab.core.domain.proto.SearchHistory.HistoryType
 import com.projectlab.core.domain.repository.SearchHistoryProvider
 import kotlinx.coroutines.flow.first
 import javax.inject.Inject
@@ -10,98 +11,91 @@ import javax.inject.Inject
 class SearchHistoryProviderImpl @Inject constructor(
     private val searchHistoryStore: DataStore<SearchHistory>,
 ) : SearchHistoryProvider {
-    override suspend fun getActivitiesSearchHistory(): List<String> {
-        return getSearchHistory().activitiesList
+    override suspend fun getSearchHistory(type: HistoryType): List<String> {
+        return getMutableSearchHistory(type)
     }
 
-    override suspend fun getFlightsSearchHistory(): List<String> {
-        return getSearchHistory().flightsList
-    }
-
-    override suspend fun getHotelsSearchHistory(): List<String> {
-        return getSearchHistory().hotelsList
-    }
-
-    override suspend fun addActivitySearchEntry(value: String): List<String> {
-        val list = getSearchHistory().activitiesList
+    override suspend fun addSearchEntry(type: HistoryType, value: String): List<String> {
+        val list = getMutableSearchHistory(type)
         list.add(value)
+
         searchHistoryStore.updateData { searchHistory ->
-            searchHistory.toBuilder().addActivities(value).build()
+            val builder = searchHistory.toBuilder()
+
+            when (type) {
+                HistoryType.ACTIVITY -> builder.addActivities(value)
+                HistoryType.FLIGHT -> builder.addFlights(value)
+                HistoryType.HOTEL -> builder.addHotels(value)
+
+                HistoryType.UNSPECIFIED,
+                HistoryType.UNRECOGNIZED,
+                    -> throw IllegalArgumentException("$type is not a valid search history type")
+            }
+
+            builder.build()
         }
+
         return list
     }
 
-    override suspend fun addFlightSearchEntry(value: String): List<String> {
-        val list = getSearchHistory().flightsList
-        list.add(value)
-        searchHistoryStore.updateData { searchHistory ->
-            searchHistory.toBuilder().addFlights(value).build()
-        }
-        return list
-    }
-
-    override suspend fun addHotelSearchEntry(value: String): List<String> {
-        val list = getSearchHistory().hotelsList
-        list.add(value)
-        searchHistoryStore.updateData { searchHistory ->
-            searchHistory.toBuilder().addHotels(value).build()
-        }
-        return list
-    }
-
-    override suspend fun removeActivitySearchEntry(index: Int): List<String> {
-        val list = getSearchHistory().activitiesList
+    override suspend fun removeSearchEntry(type: HistoryType, index: Int): List<String> {
+        val list = getMutableSearchHistory(type)
         list.removeAt(index)
+
         searchHistoryStore.updateData { searchHistory ->
-            searchHistory.toBuilder().clearActivities().addAllActivities(list).build()
+            val builder = searchHistory.toBuilder()
+
+            when (type) {
+                HistoryType.ACTIVITY -> builder.clearActivities().addAllActivities(list)
+                HistoryType.FLIGHT -> builder.clearFlights().addAllFlights(list)
+                HistoryType.HOTEL -> builder.clearHotels().addAllHotels(list)
+
+                HistoryType.UNSPECIFIED,
+                HistoryType.UNRECOGNIZED,
+                    -> throw IllegalArgumentException("$type is not a valid search history type")
+            }
+
+            builder.build()
         }
+
         return list
     }
 
-    override suspend fun removeFlightSearchEntry(index: Int): List<String> {
-        val list = getSearchHistory().flightsList
-        list.removeAt(index)
+    override suspend fun clearSearchHistory(type: HistoryType): List<String> {
         searchHistoryStore.updateData { searchHistory ->
-            searchHistory.toBuilder().clearFlights().addAllFlights(list).build()
-        }
-        return list
-    }
+            val builder = searchHistory.toBuilder()
 
-    override suspend fun removeHotelSearchEntry(index: Int): List<String> {
-        val list = getSearchHistory().hotelsList
-        list.removeAt(index)
-        searchHistoryStore.updateData { searchHistory ->
-            searchHistory.toBuilder().clearHotels().addAllHotels(list).build()
-        }
-        return list
-    }
+            when (type) {
+                HistoryType.ACTIVITY -> builder.clearActivities()
+                HistoryType.FLIGHT -> builder.clearFlights()
+                HistoryType.HOTEL -> builder.clearHotels()
 
-    override suspend fun clearActivitiesSearchHistory(): List<String> {
-        searchHistoryStore.updateData { searchHistory ->
-            searchHistory.toBuilder().clearActivities().build()
+                HistoryType.UNSPECIFIED,
+                HistoryType.UNRECOGNIZED,
+                    -> throw IllegalArgumentException("$type is not a valid search history type")
+            }
+
+            builder.build()
         }
+
         return mutableListOf()
     }
 
-    override suspend fun clearFlightsSearchHistory(): List<String> {
-        searchHistoryStore.updateData { searchHistory ->
-            searchHistory.toBuilder().clearFlights().build()
-        }
-        return mutableListOf()
-    }
-
-    override suspend fun clearHotelsSearchHistory(): List<String> {
-        searchHistoryStore.updateData { searchHistory ->
-            searchHistory.toBuilder().clearHotels().build()
-        }
-        return mutableListOf()
-    }
-
-    private suspend fun getSearchHistory(): SearchHistory {
-        return try {
+    private suspend fun getMutableSearchHistory(type: HistoryType): MutableList<String> {
+        val searchHistory = try {
             searchHistoryStore.data.first()
         } catch (_: IOException) {
             SearchHistory.getDefaultInstance()
+        }
+
+        return when (type) {
+            HistoryType.ACTIVITY -> searchHistory.activitiesList
+            HistoryType.FLIGHT -> searchHistory.flightsList
+            HistoryType.HOTEL -> searchHistory.hotelsList
+
+            HistoryType.UNSPECIFIED,
+            HistoryType.UNRECOGNIZED,
+                -> throw IllegalArgumentException("$type is not a valid search history type")
         }
     }
 }

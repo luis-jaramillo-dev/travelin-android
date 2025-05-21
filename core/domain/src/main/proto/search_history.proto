@@ -4,11 +4,11 @@ option java_package = "com.projectlab.core.domain.proto";
 option java_multiple_files = true;
 
 message SearchHistory {
-    enum Type {
-        TYPE_UNSPECIFIED = 0;
-        TYPE_ACTIVITY = 1;
-        TYPE_FLIGHT = 2;
-        TYPE_HOTEL = 3;
+    enum HistoryType {
+        UNSPECIFIED = 0;
+        ACTIVITY = 1;
+        FLIGHT = 2;
+        HOTEL = 3;
     }
 
     repeated string activities = 1;
