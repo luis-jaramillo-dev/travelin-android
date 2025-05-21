@@ -3,7 +3,7 @@ package com.projectlab.core.data.config
 import androidx.datastore.core.CorruptionException
 import androidx.datastore.core.Serializer
 import com.google.protobuf.InvalidProtocolBufferException
-import com.projectlab.core.data.proto.SearchHistory
+import com.projectlab.core.domain.proto.SearchHistory
 import java.io.InputStream
 import java.io.OutputStream
 

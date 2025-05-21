@@ -2,7 +2,7 @@ package com.projectlab.core.data.repository
 
 import androidx.datastore.core.DataStore
 import androidx.datastore.core.IOException
-import com.projectlab.core.data.proto.SearchHistory
+import com.projectlab.core.domain.proto.SearchHistory
 import com.projectlab.core.domain.repository.SearchHistoryProvider
 import kotlinx.coroutines.flow.first
 import javax.inject.Inject
