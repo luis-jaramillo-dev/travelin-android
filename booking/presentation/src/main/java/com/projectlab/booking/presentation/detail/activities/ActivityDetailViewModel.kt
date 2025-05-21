@@ -1,9 +1,8 @@
-package com.projectlab.booking.presentation.activities.detail
+package com.projectlab.booking.presentation.detail.activities
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.projectlab.core.data.mapper.toDto
-import com.projectlab.core.data.model.ActivityDto
 import com.projectlab.core.data.remote.ActivityApiService
 import com.projectlab.core.data.usecase.GetActivityUseCase
 import com.projectlab.core.domain.util.Result

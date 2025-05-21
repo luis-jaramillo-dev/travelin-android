@@ -44,6 +44,11 @@ sealed interface SearchScreens {
         override val route = "search_activities"
     }
 
+    data object ActivitiesWithQuery : SearchScreens {
+        override val route = "search_activities_with_query/{query}"
+        fun createRoute(query: String): String = "$route/$query"
+    }
+
     data object Hotels : SearchScreens {
         override val route = "search_hotels"
     }
@@ -68,5 +73,12 @@ sealed interface DetailScreens {
 
 }
 
+sealed interface HomeScreens {
+    val route: String
+
+    data object Home : HomeScreens {
+        override val route = "home"
+    }
+}
 
 
