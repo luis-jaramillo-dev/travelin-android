@@ -1,0 +1,17 @@
+syntax = "proto3";
+
+option java_package = "com.projectlab.core.data.proto";
+option java_multiple_files = true;
+
+message SearchHistory {
+    enum Type {
+        TYPE_UNSPECIFIED = 0;
+        TYPE_ACTIVITY = 1;
+        TYPE_FLIGHT = 2;
+        TYPE_HOTEL = 3;
+    }
+
+    repeated string activities = 1;
+    repeated string flights = 2;
+    repeated string hotels = 3;
+}
