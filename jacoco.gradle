@@ -1,0 +1,28 @@
+apply plugin: 'jacoco'
+
+jacoco {
+    toolVersion = libs.versions.jacoco.get()
+}
+
+tasks.jacocoTestReport {
+    dependsOn(tasks.test) // Ensure tests run before generating the report
+    reports {
+        xml.required.set(true) // Required for CI
+        html.required.set(true)
+    }
+}
+
+tasks.register("jacocoTestCoverageVerification", JacocoCoverageVerification::class) {
+    dependsOn(tasks.jacocoTestReport)
+    violationRules {
+        rule {
+            limit {
+                minimum = 0.5.toBigDecimal() // 50% minimum coverage
+            }
+        }
+    }
+}
+
+tasks.check {
+    dependsOn("jacocoTestCoverageVerification")
+}
