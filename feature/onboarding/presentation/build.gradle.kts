@@ -17,10 +17,6 @@ dependencies {
     implementation(projects.core.domain)
     implementation(projects.core.presentation.designsystem)
 
-    // Navigation
-    // TODO this should be deleted, or used on :app module
-    implementation(libs.hilt.navigation)
-
     // Testing
     testImplementation(platform(libs.androidx.compose.bom))
     androidTestImplementation(platform(libs.androidx.compose.bom))
