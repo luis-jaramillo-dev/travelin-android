@@ -24,6 +24,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
 import com.projectlab.core.presentation.designsystem.theme.TravelinTheme
 import com.projectlab.feature.onboarding.presentation.R
 import kotlinx.coroutines.launch
@@ -31,8 +32,13 @@ import kotlinx.coroutines.launch
 @Composable
 fun OnboardingScreen(
     modifier: Modifier = Modifier,
+    viewModel: OnboardingViewModel = hiltViewModel(),
     onNavigateToLogin: () -> Unit,
 ) {
+    if (viewModel.hasOpenedAppBefore()) {
+        return onNavigateToLogin()
+    }
+
     val scope = rememberCoroutineScope()
 
     val pages = listOf(
@@ -67,6 +73,7 @@ fun OnboardingScreen(
                         if (page < pages.lastIndex) {
                             pagerState.animateScrollToPage(page + 1)
                         } else {
+                            viewModel.setAsOpenedAppBefore()
                             onNavigateToLogin()
                         }
                     }
