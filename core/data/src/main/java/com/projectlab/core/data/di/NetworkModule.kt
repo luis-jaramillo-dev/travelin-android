@@ -4,6 +4,7 @@ import android.content.Context
 import androidx.datastore.core.DataStore
 import androidx.datastore.dataStore
 import com.projectlab.core.data.config.AmadeusTokenSerializer
+import com.projectlab.core.data.config.OnboardingFlagSerializer
 import com.projectlab.core.data.config.SearchHistorySerializer
 import com.projectlab.core.data.network.AmadeusClientFactory
 import com.projectlab.core.data.network.AuthInterceptor
@@ -12,8 +13,10 @@ import com.projectlab.core.data.remote.ActivitiesApiService
 import com.projectlab.core.data.remote.ActivityApiService
 import com.projectlab.core.data.remote.AmadeusApiService
 import com.projectlab.core.data.repository.AmadeusTokenProviderImpl
+import com.projectlab.core.data.repository.OnboardingFlagProviderImpl
 import com.projectlab.core.data.repository.SearchHistoryProviderImpl
 import com.projectlab.core.domain.proto.AmadeusToken
+import com.projectlab.core.domain.proto.OnboardingFlag
 import com.projectlab.core.domain.proto.SearchHistory
 import com.projectlab.core.domain.repository.TokenProvider
 import dagger.Module
@@ -37,6 +40,11 @@ import javax.inject.Singleton
 object NetworkModule {
     private const val BASE_URL = "https://test.api.amadeus.com/"
 
+    private val Context.onboardingFlagStore: DataStore<OnboardingFlag> by dataStore<OnboardingFlag>(
+        fileName = "onboarding_flag.pb",
+        serializer = OnboardingFlagSerializer,
+    )
+
     private val Context.amadeusTokenStore: DataStore<AmadeusToken> by dataStore<AmadeusToken>(
         fileName = "amadeus_token.pb",
         serializer = AmadeusTokenSerializer,
@@ -49,6 +57,21 @@ object NetworkModule {
 
     /**
      * Provides a singleton instance of AmadeusToken DataStore.
+     * Provides a singleton instance of OnboardingFlag DataStore.
+     *
+     * @param context The application context.
+     * @return An OnboardingFlag DataStore instance.
+     */
+    @Provides
+    @Singleton
+    fun provideOnboardingFlagStore(
+        @ApplicationContext context: Context,
+    ): DataStore<OnboardingFlag> {
+        return context.onboardingFlagStore
+    }
+
+    /**
+     * Provides a singleton instance of DataStore.
      *
      * @param context The application context.
      * @return A DataStore instance.
@@ -102,6 +125,20 @@ object NetworkModule {
     fun provideAmadeusClientFactory(
         authInterceptor: AuthInterceptor,
     ): HttpClientFactory = AmadeusClientFactory(authInterceptor)
+
+    /**
+     * Provides a singleton instance of OnboardingFlagProvider.
+     *
+     * @param onboardingFlagStore The OnboardingFlag DataStore instance.
+     * @return A OnboardingFlagProvider instance.
+     */
+    @Provides
+    @Singleton
+    fun provideOnboardingFlagProvider(
+        onboardingFlagStore: DataStore<OnboardingFlag>,
+    ): OnboardingFlagProviderImpl {
+        return OnboardingFlagProviderImpl(onboardingFlagStore)
+    }
 
     /**
      * Provides a singleton instance of TokenProvider.
