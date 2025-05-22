@@ -118,10 +118,11 @@ fun SearchActivityScreen(
             )
             SearchBarComponent(
                 query = uiState.query,
+                contentsDescription = "Search City Input",
+                placeholder = stringResource(R.string.search_city_placeholder),
                 onEnter = onEnter,
-                modifier = Modifier,
                 onQueryChange = { searchActivityViewModel.onQueryChanged(it) },
-                onSearchPressed = onEnter
+                onSearchPressed = onEnter,
             )
         }
         Spacer(modifier = Modifier.height(MaterialTheme.spacing.SectionSpacing))
