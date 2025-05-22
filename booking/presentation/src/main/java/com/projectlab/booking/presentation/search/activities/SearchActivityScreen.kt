@@ -1,7 +1,6 @@
 package com.projectlab.booking.presentation.search.activities
 
 import android.Manifest
-import android.util.Log
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.layout.Column
@@ -36,7 +35,7 @@ import com.projectlab.core.domain.model.Location
 import com.projectlab.core.presentation.designsystem.component.BackIconButton
 import com.projectlab.core.presentation.designsystem.component.ButtonComponent
 import com.projectlab.core.presentation.designsystem.component.ButtonVariant
-import com.projectlab.core.presentation.designsystem.component.SearchBarComponent
+import com.projectlab.core.presentation.designsystem.component.SearchBar
 import com.projectlab.core.presentation.designsystem.theme.spacing
 import com.projectlab.core.presentation.ui.utils.LocationUtils
 
@@ -116,7 +115,7 @@ fun SearchActivityScreen(
                     .size(MaterialTheme.spacing.extraLarge2)
                     .padding(MaterialTheme.spacing.extraSmall)
             )
-            SearchBarComponent(
+            SearchBar(
                 query = uiState.query,
                 contentsDescription = "Search City Input",
                 placeholder = stringResource(R.string.search_city_placeholder),

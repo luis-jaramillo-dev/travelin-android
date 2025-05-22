@@ -33,7 +33,7 @@ import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import com.projectlab.core.presentation.designsystem.component.ButtonHotel
 import com.projectlab.core.presentation.designsystem.component.ButtonOversea
-import com.projectlab.core.presentation.designsystem.component.SearchBarComponent
+import com.projectlab.core.presentation.designsystem.component.SearchBar
 import com.projectlab.core.presentation.designsystem.theme.spacing
 import com.projectlab.core.presentation.ui.utils.LocationUtils
 import com.projectlab.core.presentation.ui.viewmodel.LocationViewModel
@@ -141,7 +141,7 @@ fun HomeSearchComponent(
                 fontWeight = FontWeight.W600,
             )
             Spacer(modifier = Modifier.height(MaterialTheme.spacing.medium))
-            SearchBarComponent(
+            SearchBar(
                 query = uiState.query,
                 contentsDescription = "Search City Input",
                 placeholder = stringResource(DesignSystemR.string.search_city_placeholder),

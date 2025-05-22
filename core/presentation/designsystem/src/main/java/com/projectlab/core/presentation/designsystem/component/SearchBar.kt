@@ -39,7 +39,7 @@ import androidx.compose.ui.unit.toSize
 internal val historyMaxHeight: Dp = 270.dp
 
 @Composable
-fun SearchBarComponent(
+fun SearchBar(
     query: String,
     contentsDescription: String,
     placeholder: String,
