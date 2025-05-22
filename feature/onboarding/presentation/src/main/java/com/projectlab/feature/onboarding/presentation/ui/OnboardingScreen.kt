@@ -29,9 +29,28 @@ import com.projectlab.feature.onboarding.presentation.R
 import kotlinx.coroutines.launch
 
 @Composable
-fun OnboardingScreen(
-    modifier: Modifier = Modifier,
+fun OnboardingScreenRoot(
+    viewModel: OnboardingViewModel,
     onNavigateToLogin: () -> Unit,
+    modifier: Modifier = Modifier,
+) {
+    if (viewModel.hasOpenedAppBefore()) {
+        return onNavigateToLogin()
+    }
+
+    OnboardingScreen(
+        modifier = modifier,
+        onNavigateToLogin = {
+            viewModel.setAsOpenedAppBefore()
+            onNavigateToLogin()
+        }
+    )
+}
+
+@Composable
+fun OnboardingScreen(
+    onNavigateToLogin: () -> Unit,
+    modifier: Modifier = Modifier,
 ) {
     val scope = rememberCoroutineScope()
 
@@ -105,6 +124,8 @@ fun OnboardingScreen(
 @Composable
 fun OnboardingScreenPreview() {
     TravelinTheme {
-        OnboardingScreen {}
+        OnboardingScreen(
+            onNavigateToLogin = {},
+        )
     }
 }

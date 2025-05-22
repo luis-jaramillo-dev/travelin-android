@@ -3,7 +3,7 @@ package com.projectlab.core.data.config
 import androidx.datastore.core.CorruptionException
 import androidx.datastore.core.Serializer
 import com.google.protobuf.InvalidProtocolBufferException
-import com.projectlab.core.data.proto.AmadeusToken
+import com.projectlab.core.domain.proto.AmadeusToken
 import java.io.InputStream
 import java.io.OutputStream
 

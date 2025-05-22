@@ -4,9 +4,9 @@ import android.util.Log
 import androidx.datastore.core.DataStore
 import androidx.datastore.core.IOException
 import com.projectlab.core.data.config.Config
-import com.projectlab.core.data.proto.AmadeusToken
 import com.projectlab.core.data.remote.AccessTokenResponse
 import com.projectlab.core.data.remote.AmadeusApiService
+import com.projectlab.core.domain.proto.AmadeusToken
 import com.projectlab.core.domain.repository.TokenProvider
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.runBlocking
