@@ -26,6 +26,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.navigation.NavController
+import androidx.navigation.compose.currentBackStackEntryAsState
 import com.projectlab.core.presentation.designsystem.R
 import com.projectlab.core.presentation.designsystem.component.SearchPlaces
 import com.projectlab.core.presentation.designsystem.component.IconLocation
@@ -60,6 +61,19 @@ fun SearchActivityScreen(
     val address by locationViewModel.address
     val currentLocation = locationViewModel.location.value
     val uiState by searchActivityViewModel.uiState.collectAsState()
+    val backStackEntry by navController.currentBackStackEntryAsState()
+    val initialQuery = backStackEntry
+        ?.arguments
+        ?.getString("query")
+        .orEmpty()
+
+
+    // As soon as the Composable is mounted, start the search
+    LaunchedEffect(initialQuery) {
+        if (initialQuery.isNotBlank()) {
+            searchActivityViewModel.searchWithInitialQuery(initialQuery)
+        }
+    }
 
     val permissionLauncher = rememberLauncherForActivityResult(
         ActivityResultContracts.RequestPermission()
@@ -122,6 +136,7 @@ fun SearchActivityScreen(
                 onEnter = onEnter,
                 onQueryChange = { searchActivityViewModel.onQueryChanged(it) },
                 onSearchPressed = onEnter,
+                history = uiState.history,
             )
         }
         Spacer(modifier = Modifier.height(MaterialTheme.spacing.SectionSpacing))

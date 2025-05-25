@@ -8,5 +8,6 @@ data class SearchActivityUiState(
     val isLoading: Boolean = false,
     val error: String? = null,
     val showAllResults: Boolean = false,
-    val address: String? = null
+    val address: String? = null,
+    val history: List<String> = emptyList(),
 )

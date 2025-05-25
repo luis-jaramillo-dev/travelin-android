@@ -8,6 +8,9 @@ import com.projectlab.core.domain.util.Result
 import com.projectlab.core.data.usecase.GetActivitiesUseCase
 import com.projectlab.core.presentation.ui.utils.LocationUtils
 import com.projectlab.core.data.remote.ActivitiesApiService
+import com.projectlab.core.domain.proto.SearchHistory
+import com.projectlab.core.domain.proto.SearchHistory.HistoryType
+import com.projectlab.core.domain.repository.SearchHistoryProvider
 import com.projectlab.core.presentation.ui.utils.ErrorMapper
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.*
@@ -29,11 +32,20 @@ class SearchActivityViewModel @Inject constructor(
     private val activitiesApiService: ActivitiesApiService,
     private val getActivitiesUseCase: GetActivitiesUseCase,
     private val locationUtils: LocationUtils,
-    private val errorMapper: ErrorMapper
+    private val errorMapper: ErrorMapper,
+    private val historyProvider: SearchHistoryProvider
 ) : ViewModel() {
 
     private val _uiState = MutableStateFlow(SearchActivityUiState())
     val uiState: StateFlow<SearchActivityUiState> = _uiState.asStateFlow()
+
+    init {
+        // Load search history when the ViewModel is created
+        viewModelScope.launch {
+            val list = historyProvider.getSearchHistory(HistoryType.ACTIVITY)
+            _uiState.update { it.copy(history = list.takeLast(3).reversed()) }
+        }
+    }
 
     fun onQueryChanged(newQuery: String) {
         _uiState.update { it.copy(query = newQuery) }
@@ -55,6 +67,12 @@ class SearchActivityViewModel @Inject constructor(
         viewModelScope.launch {
             _uiState.update { it.copy(isLoading = true) }
             try {
+                // Save the search query to history
+                historyProvider.addSearchEntry(HistoryType.ACTIVITY, uiState.value.query)
+                // Load 3 last search history items
+                val updated = historyProvider.getSearchHistory(HistoryType.ACTIVITY)
+                _uiState.update { it.copy(history = updated.takeLast(3).reversed()) }
+
                 val locationData = locationUtils.getCoordinatesFromLocation(uiState.value.query)
                 if (locationData != null) {
                     when (val result = getActivitiesUseCase(locationData.latitude, locationData.longitude)) {

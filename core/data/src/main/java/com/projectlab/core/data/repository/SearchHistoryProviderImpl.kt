@@ -88,7 +88,8 @@ class SearchHistoryProviderImpl @Inject constructor(
             SearchHistory.getDefaultInstance()
         }
 
-        return when (type) {
+        // Protobuf returns immutable list, so we need to convert it to mutable list
+        val original: List<String> = when (type) {
             HistoryType.ACTIVITY -> searchHistory.activitiesList
             HistoryType.FLIGHT -> searchHistory.flightsList
             HistoryType.HOTEL -> searchHistory.hotelsList
@@ -97,5 +98,6 @@ class SearchHistoryProviderImpl @Inject constructor(
             HistoryType.UNRECOGNIZED,
                 -> throw IllegalArgumentException("$type is not a valid search history type")
         }
+        return original.toMutableList()
     }
 }

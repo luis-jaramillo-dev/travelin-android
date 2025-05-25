@@ -107,6 +107,7 @@ fun HomeSearchComponent(
 
     val onSearchPressed: () -> Unit = {
         if (uiState.query.isNotBlank()) {
+            homeViewModel.onSearchPressed()
             navController.navigate("search_activities_with_query/${uiState.query}")
         }
     }
@@ -149,12 +150,7 @@ fun HomeSearchComponent(
                 onQueryChange = onQueryChange,
                 onSearchPressed = onSearchPressed,
                 modifier = Modifier.fillMaxWidth(),
-                history = listOf(
-                    "History 1",
-                    "History 2",
-                    "History 3",
-                    "History 4",
-                ),
+                history = uiState.history,
             )
 
             Spacer(modifier = Modifier.height(MaterialTheme.spacing.medium))
