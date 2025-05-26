@@ -163,7 +163,7 @@ fun HomeSearchComponent(
             ) {
                 ButtonHotel(
                     modifier = Modifier,
-                    onClick = {},
+                    onClick = { navController.navigate("search_hotels") },
                 )
                 ButtonOversea(
                     modifier = Modifier,
