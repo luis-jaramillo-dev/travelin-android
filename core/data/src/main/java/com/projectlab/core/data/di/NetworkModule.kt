@@ -11,6 +11,7 @@ import com.projectlab.core.data.network.HttpClientFactory
 import com.projectlab.core.data.remote.ActivitiesApiService
 import com.projectlab.core.data.remote.ActivityApiService
 import com.projectlab.core.data.remote.AmadeusApiService
+import com.projectlab.core.data.remote.hotels.HotelsApiService
 import com.projectlab.core.data.repository.AmadeusTokenProviderImpl
 import com.projectlab.core.data.repository.OnboardingFlagProviderImpl
 import com.projectlab.core.domain.proto.AmadeusToken
@@ -185,5 +186,16 @@ object NetworkModule {
             .client(okHttpClient)
             .build()
             .create(ActivityApiService::class.java)
+    }
+
+    @Provides
+    @Singleton
+    fun provideHotelsApiService(okHttpClient: OkHttpClient): HotelsApiService {
+        return Retrofit.Builder()
+            .baseUrl(BASE_URL)
+            .addConverterFactory(GsonConverterFactory.create())
+            .client(okHttpClient)
+            .build()
+            .create(HotelsApiService::class.java)
     }
 }
