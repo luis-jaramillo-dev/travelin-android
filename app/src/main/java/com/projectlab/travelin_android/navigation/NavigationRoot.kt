@@ -16,6 +16,9 @@ import androidx.navigation.navArgument
 import com.projectlab.booking.presentation.detail.activities.ActivityDetailScreen
 import com.projectlab.booking.presentation.detail.activities.ActivityDetailViewModel
 import com.projectlab.booking.presentation.home.HomeScreen
+import com.projectlab.booking.presentation.screens.HotelsViewModel
+import com.projectlab.booking.presentation.screens.hotels.details.HotelDetailsScreen
+import com.projectlab.booking.presentation.screens.hotels.search.HotelSearchScreen
 import com.projectlab.booking.presentation.search.activities.SearchActivityViewModel
 import com.projectlab.core.presentation.ui.di.LocationUtilsEntryPoint
 import com.projectlab.core.presentation.ui.viewmodel.LocationViewModel
@@ -84,6 +87,7 @@ private fun NavGraphBuilder.authGraph(navController: NavHostController) {
 }
 
 private fun NavGraphBuilder.searchGraph(navController: NavHostController) {
+
     composable(route = SearchScreens.Activities.route) {
 
         val context = LocalContext.current
@@ -102,6 +106,8 @@ private fun NavGraphBuilder.searchGraph(navController: NavHostController) {
                 navController.navigate(DetailScreens.ActivityDetail.createRoute(activityId))
             }
         )
+
+
     }
 
     composable(
@@ -137,6 +143,13 @@ private fun NavGraphBuilder.searchGraph(navController: NavHostController) {
         )
 
     }
+
+    composable(route = SearchScreens.Hotels.route) {
+        HotelSearchScreen(
+            viewModel = hiltViewModel<HotelsViewModel>(),
+            navController = navController
+        )
+    }
 }
 
 fun NavGraphBuilder.detailGraph(navController: NavHostController) {
@@ -154,18 +167,35 @@ fun NavGraphBuilder.detailGraph(navController: NavHostController) {
             navController = navController
         )
     }
+
+    composable(
+        route = DetailScreens.HotelDetail.route,
+        arguments = listOf(
+            navArgument("hotelId") { type = NavType.StringType }
+        )
+    ) { backStackEntry ->
+        val hotelId = backStackEntry.arguments?.getString("hotelId") ?: ""
+        val parentEntry = remember(backStackEntry) {
+            navController.getBackStackEntry(SearchScreens.Hotels.route)
+        }
+
+        HotelDetailsScreen(
+            viewModel = hiltViewModel<HotelsViewModel>(parentEntry),
+            navController = navController,
+            hotelId = hotelId
+        )
+    }
+
 }
 
 fun NavGraphBuilder.homeGraph(navController: NavHostController) {
     composable(route = HomeScreens.Home.route) {
-
         val context = LocalContext.current
         val locationUtils = remember {
             EntryPointAccessors
                 .fromApplication(context.applicationContext, LocationUtilsEntryPoint::class.java)
                 .locationUtils()
         }
-
         HomeScreen(
             locationViewModel = hiltViewModel(),
             homeViewModel = hiltViewModel(),
@@ -173,5 +203,4 @@ fun NavGraphBuilder.homeGraph(navController: NavHostController) {
             locationUtils = locationUtils
         )
     }
-
 }
