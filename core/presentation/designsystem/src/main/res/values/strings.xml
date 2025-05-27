@@ -29,6 +29,7 @@
     <string name="unknown_location">Unknown location</string>
     <string name="tour_list_card_city_not_available">City not available</string>
     <string name="error_no_internet">No internet connection.</string>
+    <string name="error_not_found">Activity not found</string>
     <string name="error_unauthorized">Access denied. Please log in again.</string>
     <string name="error_timeout">The request timed out.</string>
     <string name="error_too_many_requests">Too many requests. Please try again later.</string>
@@ -43,4 +44,5 @@
     <string name="pricePerPerson">$%1$s/person</string>
     <string name="bookNow">Book Now</string>
     <string name="addToItinerary">Add to Itinerary</string>
+    <string name="backToHome">Back to Home</string>
 </resources>

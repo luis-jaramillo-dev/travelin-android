@@ -2,4 +2,5 @@
 <resources>
     <string name="exploreTheWorld">Explore the\nworld today</string>
     <string name="travelNextLevel">TravelIn - take your travel to the next level</string>
+    <string name="backToHome">Back to Home</string>
 </resources>

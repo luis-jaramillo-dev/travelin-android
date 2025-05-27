@@ -2,4 +2,5 @@
 <resources>
     <string name="exploreTheWorld">Explora el\nmundo hoy</string>
     <string name="travelNextLevel">TravelIn - lleva tus viajes al siguiente nivel</string>
+    <string name="backToHome">Volver al Home</string>
 </resources>

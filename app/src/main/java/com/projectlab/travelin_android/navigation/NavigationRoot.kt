@@ -13,8 +13,10 @@ import com.projectlab.booking.presentation.search.activities.SearchActivityScree
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavType
 import androidx.navigation.navArgument
+import androidx.navigation.navDeepLink
 import com.projectlab.booking.presentation.detail.activities.ActivityDetailScreen
 import com.projectlab.booking.presentation.detail.activities.ActivityDetailViewModel
+import com.projectlab.booking.presentation.detail.activities.ErrorScreen
 import com.projectlab.booking.presentation.home.HomeScreen
 import com.projectlab.booking.presentation.search.activities.SearchActivityViewModel
 import com.projectlab.core.presentation.ui.di.LocationUtilsEntryPoint
@@ -143,7 +145,8 @@ fun NavGraphBuilder.detailGraph(navController: NavHostController) {
         route = DetailScreens.ActivityDetail.route,
         arguments = listOf(
             navArgument("activityId") { type = NavType.StringType }
-        )
+        ),
+        deepLinks = listOf(navDeepLink { uriPattern = "https://app.travelin.com/details/{activityId}" })
     ) { backStackEntry ->
         val activityId = backStackEntry.arguments?.getString("activityId") ?: ""
 
@@ -153,10 +156,24 @@ fun NavGraphBuilder.detailGraph(navController: NavHostController) {
             navController = navController
         )
     }
+
+    composable(route = "error_screen/{message}",
+        arguments = listOf(navArgument("message") { type = NavType.StringType })
+    ) { backStackEntry ->
+        val message = backStackEntry.arguments?.getString("message") ?: "Actividad no encontrada"
+        ErrorScreen(
+            message = message,
+            onBack = { navController.navigate(HomeScreens.Home.route) }
+        )
+    }
+
 }
 
 fun NavGraphBuilder.homeGraph(navController: NavHostController) {
-    composable(route = HomeScreens.Home.route) {
+    composable(
+        route = HomeScreens.Home.route,
+        deepLinks = listOf(navDeepLink { uriPattern = "https://app.travelin.com/" })
+    ) {
 
         val context = LocalContext.current
         val locationUtils = remember {

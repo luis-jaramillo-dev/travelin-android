@@ -26,6 +26,7 @@ class ActivityDetailViewModel @Inject constructor(
     private val _uiState = MutableStateFlow(ActivityDetailUiState())
     val uiState: StateFlow<ActivityDetailUiState> = _uiState.asStateFlow()
 
+
     fun onViewDetail(activityId: String) {
         viewModelScope.launch {
             _uiState.update { it.copy(isLoading = true) }
