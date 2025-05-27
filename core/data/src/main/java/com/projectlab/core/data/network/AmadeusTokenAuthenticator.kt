@@ -25,7 +25,7 @@ import com.projectlab.core.domain.repository.TokenProvider
  * @param amadeusTokenStore The DataStore instance used to store the Amadeus token.
  */
 
-class TokenAuthenticator @Inject constructor(
+class AmadeusTokenAuthenticator @Inject constructor(
     private val tokenProvider: TokenProvider,
     private val amadeusApiService: AmadeusApiService,
     private val amadeusTokenStore: DataStore<AmadeusToken>
@@ -66,7 +66,7 @@ class TokenAuthenticator @Inject constructor(
         }
         // logcat message TODO: erase this one before production release
         Log.d(TAG, "➡️ Refresh received: token='${newTokenResponse.accessToken}', " +
-                "expiresIn=${newTokenResponse.expiresIn}")
+                "expiresIn=${newTokenResponse.expiresIn}") // expiresIn is in seconds
 
         // We calculate expiration time, save the new token in the DataStore
         // and update the internal cache.

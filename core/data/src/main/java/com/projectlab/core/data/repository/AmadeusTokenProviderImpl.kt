@@ -58,4 +58,14 @@ class AmadeusTokenProviderImpl @Inject constructor(
             null
         }
     }
+
+    fun getTokenExpirationInSeconds(): Long {
+        val now = System.currentTimeMillis() / 1000
+        return if (cachedToken != null && now < cachedExpiration) {
+            cachedExpiration - now
+        } else {
+            -1 // Expression for expired or non-cached token
+        }
+    }
+
 }

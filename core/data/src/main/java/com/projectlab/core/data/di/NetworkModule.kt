@@ -9,7 +9,7 @@ import com.projectlab.core.data.config.SearchHistorySerializer
 import com.projectlab.core.data.network.AmadeusClientFactory
 import com.projectlab.core.data.network.AuthInterceptor
 import com.projectlab.core.data.network.HttpClientFactory
-import com.projectlab.core.data.network.TokenAuthenticator
+import com.projectlab.core.data.network.AmadeusTokenAuthenticator
 import com.projectlab.core.data.remote.ActivitiesApiService
 import com.projectlab.core.data.remote.ActivityApiService
 import com.projectlab.core.data.remote.AmadeusApiService
@@ -126,8 +126,8 @@ object NetworkModule {
     @Singleton
     fun provideAmadeusClientFactory(
         authInterceptor: AuthInterceptor,
-        tokenAuthenticator: TokenAuthenticator,
-    ): HttpClientFactory = AmadeusClientFactory(authInterceptor, tokenAuthenticator)
+        amadeusTokenAuthenticator: AmadeusTokenAuthenticator,
+    ): HttpClientFactory = AmadeusClientFactory(authInterceptor, amadeusTokenAuthenticator)
 
     /**
      * Provides a singleton instance of OnboardingFlagProvider.
@@ -188,7 +188,7 @@ object NetworkModule {
         tokenProvider: TokenProvider,
         amadeusApiService: AmadeusApiService,
         amadeusTokenStore: DataStore<AmadeusToken>
-    ): Authenticator = TokenAuthenticator(tokenProvider, amadeusApiService, amadeusTokenStore)
+    ): Authenticator = AmadeusTokenAuthenticator(tokenProvider, amadeusApiService, amadeusTokenStore)
 
 
 

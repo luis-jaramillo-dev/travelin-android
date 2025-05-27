@@ -30,6 +30,7 @@ class AuthInterceptor @Inject constructor(
         }
         // logcat message TODO: erase this one before production release
         Log.d(TAG, "🔑 Token gotten: '${token.ifEmpty { "<EMPTY>" }}'")
+        Log.d(TAG, "Token expiration time: ${calculateRemainTokenTimeInSeconds()}")
 
         // If the token is empty, we will not add the Authorization header.
         val requestBuilder = chain.request().newBuilder()
@@ -49,5 +50,28 @@ class AuthInterceptor @Inject constructor(
         // logcat message TODO: erase this one before production release
         Log.d(TAG, "✅ intercept(): request sent, HTTP code: ${response.code}")
         return response
+    }
+
+    /**
+     * Calculates the remaining time for the token to expire in seconds.
+     * If the token is provided by AmadeusTokenProviderImpl, it retrieves the expiration time.
+     * Otherwise, it returns a message indicating that the remaining time cannot be determined.
+     *
+     * @return A string indicating the remaining time for the token to expire.
+     */
+    private fun calculateRemainTokenTimeInSeconds(): String {
+        return if (tokenProvider is com.projectlab.core.data.repository.AmadeusTokenProviderImpl) {
+            val secondsLeft =
+                (tokenProvider as com.projectlab.core.data.repository.AmadeusTokenProviderImpl)
+                .getTokenExpirationInSeconds()
+
+            if (secondsLeft > 0) {
+                "✅ Valid token, expires in $secondsLeft seconds"
+            } else {
+                "⛔ Expired token or not available, cannot determine remaining time"
+            }
+        } else {
+            "ℹ️ We cannot determine the remaining time for the token"
+        }
     }
 }

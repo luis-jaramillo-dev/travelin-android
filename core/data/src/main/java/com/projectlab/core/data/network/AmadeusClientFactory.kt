@@ -16,7 +16,7 @@ import javax.inject.Singleton
 @Singleton
 class AmadeusClientFactory @Inject constructor(
     private val authInterceptor : AuthInterceptor,
-    private val tokenAuthenticator: TokenAuthenticator
+    private val amadeusTokenAuthenticator: AmadeusTokenAuthenticator
 ) : HttpClientFactory {
     override fun createClient(): OkHttpClient {
         val logging = HttpLoggingInterceptor().apply {
@@ -25,7 +25,7 @@ class AmadeusClientFactory @Inject constructor(
         return OkHttpClient.Builder()
             .addInterceptor(logging)
             .addInterceptor(authInterceptor)
-            .authenticator(tokenAuthenticator)
+            .authenticator(amadeusTokenAuthenticator)
             .build()
     }
 
