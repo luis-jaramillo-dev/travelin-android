@@ -8,4 +8,5 @@ data class User(
     val lastName: String = "",
     val countryCode: String = "",
     val phoneNumber: String = "",
+    val favoritesHotels: List<String> = emptyList()
 )

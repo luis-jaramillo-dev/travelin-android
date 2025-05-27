@@ -1,21 +1,34 @@
 package com.projectlab.booking.presentation.screens.hotels.search.components
 
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.buildAnnotatedString
@@ -25,8 +38,10 @@ import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
+import coil.compose.rememberAsyncImagePainter
 import com.projectlab.booking.presentation.screens.HotelsViewModel
 import com.projectlab.booking.presentation.screens.hotels.search.HotelSearchUiState
+import com.projectlab.booking.presentation.search.hotels.components.HotelCard
 import com.projectlab.core.domain.model.Hotel
 import com.projectlab.core.presentation.designsystem.R
 import com.projectlab.core.presentation.designsystem.component.ButtonComponent
@@ -48,7 +63,8 @@ fun HotelSearchContent(
         navController = navController,
         onShowAllResults = {
             viewModel.showAllResults()
-        }
+        },
+        viewModel = viewModel
     )
 
 }
@@ -59,7 +75,8 @@ fun SearchHotelsResultsComponent(
     modifier: Modifier = Modifier,
     uiState: HotelSearchUiState,
     onShowAllResults: () -> Unit,
-    navController: NavHostController
+    navController: NavHostController,
+    viewModel: HotelsViewModel
 ) {
     val hotels = uiState.hotels
     val showAll = uiState.showAllResults
@@ -73,14 +90,13 @@ fun SearchHotelsResultsComponent(
         LazyColumn {
             items(itemsToShow) {
 
-
                 HotelCard(
                     hotel = it,
                     modifier = Modifier.fillMaxWidth(),
-
                     onPress = {
                         navController.navigate("hotelDetail/${it.id}")
-                    }
+                    },
+                    viewModel = viewModel
                 )
 
                 Spacer(modifier = Modifier.height(16.dp))
@@ -103,46 +119,7 @@ fun SearchHotelsResultsComponent(
 }
 
 
-@Composable
-fun HotelCard(
-    modifier: Modifier = Modifier,
-    hotel: Hotel,
 
-    onPress: () -> Unit
-) {
-    Row(modifier = modifier.clickable(onClick = { onPress() })) {
-        ImageCardWithFavorite(
-            modifier = Modifier,
-            image = hotel.displayImageUrl
-        )
-
-
-        Spacer(modifier = Modifier.width(MaterialTheme.spacing.medium))
-
-        Column(
-            modifier = Modifier.height(150.dp),
-            verticalArrangement = Arrangement.SpaceAround
-        ) {
-            Text(
-                fontSize = 14.sp,
-                fontWeight = FontWeight.W600,
-                text = hotel.name,
-                maxLines = 2,
-                overflow = TextOverflow.Ellipsis,
-                modifier = modifier.width(160.dp),
-            )
-            StarRatingBar(
-                maxStars = 5,
-                rating = hotel.rating.stars?.toFloat() ?: 0f,
-                textColor = Color.Black
-            )
-
-            PriceText(hotel.displayPrice.toString())
-
-
-        }
-    }
-}
 
 
 @Composable

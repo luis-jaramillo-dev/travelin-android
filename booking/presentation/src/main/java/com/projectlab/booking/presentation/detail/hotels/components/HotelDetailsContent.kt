@@ -48,6 +48,7 @@ import com.projectlab.core.domain.model.Hotel
 import com.projectlab.core.domain.model.HotelOffer
 
 import com.projectlab.core.presentation.designsystem.R
+import com.projectlab.core.presentation.designsystem.theme.spacing
 
 @Composable
 fun HotelDetailsContent(
@@ -59,7 +60,12 @@ fun HotelDetailsContent(
     var imageHeight by remember { mutableIntStateOf(0) }
 
     Box(
-        modifier = modifier.padding(paddingValues),
+        modifier = modifier
+            .padding(paddingValues)
+            .padding(
+                bottom =
+                    MaterialTheme.spacing.ScreenVerticalSpacing
+            ),
         contentAlignment = Alignment.TopStart
     ) {
         Column(modifier = Modifier.fillMaxSize()) {

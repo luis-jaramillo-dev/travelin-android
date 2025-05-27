@@ -3,6 +3,8 @@ package com.projectlab.booking.presentation.screens.hotels.search
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.statusBarsPadding
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
@@ -12,6 +14,7 @@ import androidx.navigation.NavHostController
 import com.projectlab.booking.presentation.screens.HotelsViewModel
 import com.projectlab.booking.presentation.screens.hotels.search.components.HotelSearchContent
 import com.projectlab.booking.presentation.screens.hotels.search.components.HotelSearchHeader
+import com.projectlab.core.presentation.designsystem.theme.spacing
 
 @Composable
 fun HotelSearchScreen(
@@ -29,10 +32,10 @@ fun HotelSearchScreen(
             Box(
                 modifier = Modifier
                     .fillMaxSize()
-                    .padding(it),
+                    .padding(it)
+                    .padding(horizontal = MaterialTheme.spacing.SectionSpacing),
             ) {
                 HotelSearchContent(
-
                     viewModel = viewModel,
                     navController = navController,
                     uiState = uiState

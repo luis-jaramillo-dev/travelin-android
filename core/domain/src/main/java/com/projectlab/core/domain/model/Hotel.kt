@@ -6,7 +6,7 @@ data class Hotel(
     val location: HotelLocation,
     val rating: HotelRating,
     val displayPrice: String,
-    val isFavourite: Boolean = false,
+    var isFavourite: Boolean = false,
     val displayImageUrl: String,
     val hotelOffers: List<HotelOffer>?,
     val amenities: List<String>? = emptyList(),

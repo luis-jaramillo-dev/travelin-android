@@ -5,8 +5,10 @@ import com.projectlab.core.domain.repository.ActivitiesRepository
 import com.projectlab.core.data.remote.ActivitiesApiService
 import com.projectlab.core.data.remote.hotels.HotelsApiService
 import com.projectlab.core.data.repository.HotelsRepositoryImpl
+import com.projectlab.core.data.repository.UsersRepositoryImpl
 import com.projectlab.core.domain.repository.HotelsRepository
 import com.projectlab.core.domain.repository.TokenProvider
+import com.projectlab.core.domain.repository.UsersRepository
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -26,9 +28,7 @@ object RepositoryModule {
 
     @Provides
     fun provideHotelsRepository(
-        apiService: HotelsApiService,
-        tokenProvider: TokenProvider
-    ): HotelsRepository {
-        return HotelsRepositoryImpl(apiService, tokenProvider)
-    }
+        impl: HotelsRepositoryImpl
+    ): HotelsRepository = impl
+
 }

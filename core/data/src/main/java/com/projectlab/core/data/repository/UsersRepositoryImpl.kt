@@ -1,6 +1,7 @@
 package com.projectlab.core.data.repository
 
 import com.google.firebase.firestore.CollectionReference
+import com.google.firebase.firestore.FieldValue
 import com.projectlab.core.domain.model.Response
 import com.projectlab.core.domain.entity.UserEntity
 import com.projectlab.core.domain.model.User
@@ -36,11 +37,13 @@ class UsersRepositoryImpl @Inject constructor(private val usersRef: CollectionRe
                 phoneNumber = "",
             )
             trySend(user)
+            println(user)
         }
 
         awaitClose {
             snapshotListener.remove()
         }
     }
+
 
 }

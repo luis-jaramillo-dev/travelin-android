@@ -1,5 +1,7 @@
 package com.projectlab.core.data.repository
 
+import com.google.firebase.firestore.CollectionReference
+import com.google.firebase.firestore.FieldValue
 import com.projectlab.core.data.mock.randomHotelAmenities
 import com.projectlab.core.data.mock.randomHotelDisplayImageUrl
 import com.projectlab.core.data.mock.randomHotelOffers
@@ -8,16 +10,20 @@ import com.projectlab.core.data.mock.randomHotelRating
 import com.projectlab.core.data.remote.hotels.HotelsApiService
 import com.projectlab.core.domain.model.Hotel
 import com.projectlab.core.domain.model.HotelLocation
+import com.projectlab.core.domain.model.Response
 import com.projectlab.core.domain.repository.HotelsRepository
 import com.projectlab.core.domain.repository.TokenProvider
 import com.projectlab.core.domain.util.DataError
 import com.projectlab.core.domain.util.Result
+import kotlinx.coroutines.tasks.await
 import javax.inject.Inject
 
 class HotelsRepositoryImpl @Inject constructor(
     private val apiService: HotelsApiService,
-    private val tokenProvider: TokenProvider
+    private val tokenProvider: TokenProvider,
+    private val usersRef: CollectionReference
 ) : HotelsRepository {
+
     override suspend fun getHotelsByCity(
         cityCode: String,
         amenities: String,
@@ -65,5 +71,32 @@ class HotelsRepositoryImpl @Inject constructor(
             Result.Error(DataError.Network.UNKNOWN)
         }
     }
+
+    override suspend fun favoriteHotel(
+        userId: String, hotelId: String
+    ): Result<Boolean, DataError.Network> {
+        return try {
+            usersRef.document(userId).update("favoritesHotels", FieldValue.arrayUnion(hotelId))
+                .await()
+            Result.Success(true)
+
+        } catch (e: Exception) {
+            Result.Error(DataError.Network.UNKNOWN)
+        }
+    }
+
+    override suspend fun unfavoriteHotel(
+        userId: String,
+        hotelId: String
+    ): Result<Boolean, DataError.Network> {
+        return try {
+            usersRef.document(userId).update("favoritesHotels", FieldValue.arrayRemove(hotelId))
+                .await()
+            Result.Success(true)
+        } catch (e: Exception) {
+            Result.Error(DataError.Network.UNKNOWN)
+        }
+    }
+
 
 }
