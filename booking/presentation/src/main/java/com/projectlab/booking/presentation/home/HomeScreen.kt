@@ -101,6 +101,10 @@ fun HomeSearchComponent(
     navController: NavController,
     homeViewModel: HomeViewModel,
 ) {
+    LaunchedEffect(homeViewModel) {
+        homeViewModel.fetchSearchHistory()
+    }
+
     val onQueryChange: (String) -> Unit = { newQuery ->
         homeViewModel.onQueryChange(newQuery)
     }

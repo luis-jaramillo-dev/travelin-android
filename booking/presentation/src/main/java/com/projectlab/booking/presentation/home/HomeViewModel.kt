@@ -22,15 +22,11 @@ class HomeViewModel @Inject constructor(
     private val errorMapper: ErrorMapper,
     private val historyProvider: SearchHistoryProvider,
 ) : ViewModel() {
-
     private val _uiState = MutableStateFlow(HomeUiState())
     val uiState: StateFlow<HomeUiState> = _uiState.asStateFlow()
 
-    // TODO ensure it's updated when going back from SearchActivity
-    init {
-        // Load search history when the ViewModel is created
+    fun fetchSearchHistory() {
         viewModelScope.launch {
-            historyProvider.clearSearchHistory(HistoryType.ACTIVITY)
             val list = historyProvider.getSearchHistory(HistoryType.ACTIVITY)
             _uiState.update { it.copy(history = list.reversed()) }
         }
