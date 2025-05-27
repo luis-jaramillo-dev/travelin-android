@@ -147,16 +147,14 @@ object NetworkModule {
      * Provides a singleton instance of TokenProvider.
      *
      * @param amadeusTokenStore The DataStore instance.
-     * @param amadeusApiService The AmadeusApiService instance.
      * @return A TokenProvider instance.
      */
     @Provides
     @Singleton
     fun provideTokenProvider(
-        amadeusTokenStore: DataStore<AmadeusToken>,
-        amadeusApiService: AmadeusApiService,
+        amadeusTokenStore: DataStore<AmadeusToken>
     ): AmadeusTokenProviderImpl {
-        return AmadeusTokenProviderImpl(amadeusTokenStore, amadeusApiService)
+        return AmadeusTokenProviderImpl(amadeusTokenStore)
     }
 
     /**
@@ -187,8 +185,10 @@ object NetworkModule {
 
     @Provides @Singleton
     fun provideTokenAuthenticator(
-        tokenProvider: TokenProvider
-    ): Authenticator = TokenAuthenticator(tokenProvider)
+        tokenProvider: TokenProvider,
+        amadeusApiService: AmadeusApiService,
+        amadeusTokenStore: DataStore<AmadeusToken>
+    ): Authenticator = TokenAuthenticator(tokenProvider, amadeusApiService, amadeusTokenStore)
 
 
 
