@@ -10,7 +10,11 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - uses: actions/checkout@v4
+      # Checkout the code
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      # Create google-services.json
       - name: Create google-services from secret
         env:
           GOOGLE_SERVICES_JSON_CONTENT: ${{ secrets.GOOGLE_SERVICES_JSON }}
@@ -23,9 +27,6 @@ jobs:
             echo "GOOGLE_SERVICES_JSON secret not found. Exiting build"
             exit 1
           fi
-      # Checkout the code
-      - name: Checkout code
-        uses: actions/checkout@v4
 
       # Set up JDK
       - name: Set up JDK 17
