@@ -43,6 +43,13 @@ fun ActivityDetailScreen(
 
     val uiState by activityDetailViewModel.uiState.collectAsState()
 
+    uiState.error?.let { error ->
+        println("Error: $error")
+        LaunchedEffect(error) {
+            navController.navigate("error_screen/${error}")
+        }
+    }
+
     if (uiState.isLoading) {
         Box(
             modifier = Modifier

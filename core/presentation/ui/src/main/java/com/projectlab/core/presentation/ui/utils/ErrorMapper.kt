@@ -13,6 +13,7 @@ class ErrorMapper @Inject constructor(
 ) {
     fun map(error: DataError.Network): String {
         return when (error) {
+            DataError.Network.NOT_FOUND -> context.getString(R.string.error_not_found)
             DataError.Network.NO_INTERNET -> context.getString(R.string.error_no_internet)
             DataError.Network.UNAUTHORIZED -> context.getString(R.string.error_unauthorized)
             DataError.Network.REQUEST_TIMEOUT -> context.getString(R.string.error_timeout)

@@ -29,6 +29,7 @@
     <string name="unknown_location">Ubicación desconocida</string>
     <string name="tour_list_card_city_not_available">Ciudad no disponible</string>
     <string name="error_no_internet">Sin conexión a internet.</string>
+    <string name="error_not_found">Actividad no encontrada</string>
     <string name="error_unauthorized">Acceso denegado. Por favor inicia sesión.</string>
     <string name="error_timeout">La solicitud ha expirado.</string>
     <string name="error_too_many_requests">Demasiadas solicitudes. Intenta más tarde.</string>
@@ -43,4 +44,5 @@
     <string name="pricePerPerson">$%1$s/persona</string>
     <string name="bookNow">Book Now</string>
     <string name="addToItinerary">Añadir al Itinerario</string>
+    <string name="backToHome">Volver al Home</string>
 </resources>

@@ -24,6 +24,7 @@ class GetActivityUseCase @Inject constructor(
                     when (e.code()) {
                         401 -> DataError.Network.UNAUTHORIZED
                         500 -> DataError.Network.SERVER_ERROR
+                        404 -> DataError.Network.NOT_FOUND
                         else -> DataError.Network.UNKNOWN
                     }
                 }
