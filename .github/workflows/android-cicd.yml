@@ -19,10 +19,15 @@ jobs:
           echo "pwd: $(pwd)"
           echo "TEMP_PATH: $TEMP_PATH"
           echo "TARGET_PATH: $TARGET_PATH"
-          if [ -d $TEMP_PATH ]; then
-            echo "Directory exists."
+          if [ -d $GITHUB_WORKSPACE ]; then
+            echo "Directory $GITHUB_WORKSPACE exists."
           else
-            echo "Directory doesn't exist."
+            echo "Directory $GITHUB_WORKSPACE doesn't exist."
+          fi
+          if [ -d $TEMP_PATH ]; then
+            echo "Directory $TEMP_PATH exists."
+          else
+            echo "Directory $TEMP_PATH doesn't exist."
           fi
           if [ -n "$GOOGLE_SERVICES_JSON_CONTENT" ]; then
             echo "Creating $TARGET_PATH"
