@@ -2,11 +2,20 @@ package com.projectlab.core.presentation.designsystem.component
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.AccountCircle
 import androidx.compose.material.icons.filled.Favorite
+import androidx.compose.material.icons.filled.Flight
 import androidx.compose.material.icons.filled.Home
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
@@ -19,11 +28,21 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import com.projectlab.core.presentation.designsystem.theme.spacing
 
+enum class BottomNavRoute {
+    HOME,
+    FAVORITES,
+    TRIPS,
+    PROFILE,
+}
+
 @Composable
 fun BottomNavigationBar(
-    current: String,
+    current: BottomNavRoute,
     onHomeClick: () -> Unit,
-    ) {
+    onFavoritesClick: () -> Unit,
+    onTripsClick: () -> Unit,
+    onProfileClick: () -> Unit,
+) {
     Surface(
         tonalElevation = MaterialTheme.spacing.TinySpacing,
         shadowElevation = MaterialTheme.spacing.SectionSpacing,
@@ -38,22 +57,28 @@ fun BottomNavigationBar(
             verticalAlignment = Alignment.CenterVertically
         ) {
             BottomNavItem(
-                icon = Icons.Default.AccountCircle,
-                label = "Profile",
-                selected = current == "profile",
-                onClick = { }
+                icon = Icons.Default.Home,
+                label = "Home",
+                selected = current == BottomNavRoute.HOME,
+                onClick = onHomeClick
             )
             BottomNavItem(
                 icon = Icons.Default.Favorite,
-                label = "Trips",
-                selected = current == "trips",
-                onClick = { }
+                label = "Favorites",
+                selected = current == BottomNavRoute.FAVORITES,
+                onClick = onFavoritesClick
             )
             BottomNavItem(
-                icon = Icons.Default.Home,
-                label = "Home",
-                selected = current == "home",
-                onClick = onHomeClick
+                icon = Icons.Default.Flight,
+                label = "Trips",
+                selected = current == BottomNavRoute.TRIPS,
+                onClick = onTripsClick
+            )
+            BottomNavItem(
+                icon = Icons.Default.AccountCircle,
+                label = "Profile",
+                selected = current == BottomNavRoute.PROFILE,
+                onClick = onProfileClick
             )
         }
     }
@@ -64,7 +89,7 @@ fun BottomNavItem(
     icon: ImageVector,
     label: String,
     selected: Boolean,
-    onClick: () -> Unit
+    onClick: () -> Unit,
 ) {
     Column(
         modifier = Modifier
