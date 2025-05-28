@@ -12,20 +12,39 @@ class SearchHistoryProviderImpl @Inject constructor(
     private val searchHistoryStore: DataStore<SearchHistory>,
 ) : SearchHistoryProvider {
     override suspend fun getSearchHistory(type: HistoryType): List<String> {
-        return getMutableSearchHistory(type)
+        val searchHistory = try {
+            searchHistoryStore.data.first()
+        } catch (_: IOException) {
+            SearchHistory.getDefaultInstance()
+        }
+
+        return when (type) {
+            HistoryType.ACTIVITY -> searchHistory.activitiesList
+            HistoryType.FLIGHT -> searchHistory.flightsList
+            HistoryType.HOTEL -> searchHistory.hotelsList
+
+            HistoryType.UNSPECIFIED,
+            HistoryType.UNRECOGNIZED,
+                -> throw IllegalArgumentException("$type is not a valid search history type")
+        }
     }
 
     override suspend fun addSearchEntry(type: HistoryType, value: String): List<String> {
-        val list = getMutableSearchHistory(type)
-        list.add(value)
+        val history = LinkedHashSet(getSearchHistory(type))
+
+        if (history.contains(value)) {
+            history.remove(value)
+        }
+
+        history.add(value)
 
         searchHistoryStore.updateData { searchHistory ->
             val builder = searchHistory.toBuilder()
 
             when (type) {
-                HistoryType.ACTIVITY -> builder.addActivities(value)
-                HistoryType.FLIGHT -> builder.addFlights(value)
-                HistoryType.HOTEL -> builder.addHotels(value)
+                HistoryType.ACTIVITY -> builder.clearActivities().addAllActivities(history)
+                HistoryType.FLIGHT -> builder.clearFlights().addAllFlights(history)
+                HistoryType.HOTEL -> builder.clearHotels().addAllHotels(history)
 
                 HistoryType.UNSPECIFIED,
                 HistoryType.UNRECOGNIZED,
@@ -35,20 +54,20 @@ class SearchHistoryProviderImpl @Inject constructor(
             builder.build()
         }
 
-        return list
+        return history.toList()
     }
 
-    override suspend fun removeSearchEntry(type: HistoryType, index: Int): List<String> {
-        val list = getMutableSearchHistory(type)
-        list.removeAt(index)
+    override suspend fun removeSearchEntry(type: HistoryType, value: String): List<String> {
+        val history = LinkedHashSet(getSearchHistory(type))
+        history.remove(value)
 
         searchHistoryStore.updateData { searchHistory ->
             val builder = searchHistory.toBuilder()
 
             when (type) {
-                HistoryType.ACTIVITY -> builder.clearActivities().addAllActivities(list)
-                HistoryType.FLIGHT -> builder.clearFlights().addAllFlights(list)
-                HistoryType.HOTEL -> builder.clearHotels().addAllHotels(list)
+                HistoryType.ACTIVITY -> builder.clearActivities().addAllActivities(history)
+                HistoryType.FLIGHT -> builder.clearFlights().addAllFlights(history)
+                HistoryType.HOTEL -> builder.clearHotels().addAllHotels(history)
 
                 HistoryType.UNSPECIFIED,
                 HistoryType.UNRECOGNIZED,
@@ -58,7 +77,7 @@ class SearchHistoryProviderImpl @Inject constructor(
             builder.build()
         }
 
-        return list
+        return history.toList()
     }
 
     override suspend fun clearSearchHistory(type: HistoryType): List<String> {
@@ -78,24 +97,6 @@ class SearchHistoryProviderImpl @Inject constructor(
             builder.build()
         }
 
-        return mutableListOf()
-    }
-
-    private suspend fun getMutableSearchHistory(type: HistoryType): MutableList<String> {
-        val searchHistory = try {
-            searchHistoryStore.data.first()
-        } catch (_: IOException) {
-            SearchHistory.getDefaultInstance()
-        }
-
-        return when (type) {
-            HistoryType.ACTIVITY -> searchHistory.activitiesList
-            HistoryType.FLIGHT -> searchHistory.flightsList
-            HistoryType.HOTEL -> searchHistory.hotelsList
-
-            HistoryType.UNSPECIFIED,
-            HistoryType.UNRECOGNIZED,
-                -> throw IllegalArgumentException("$type is not a valid search history type")
-        }
+        return listOf()
     }
 }
