@@ -17,9 +17,8 @@ import javax.inject.Inject
 
 @HiltViewModel
 class LoginViewModel @Inject constructor(
-    private val authUseCase: AuthUseCases
+    private val authUseCase: AuthUseCases,
 ) : ViewModel() {
-
     private val _loginFlow = MutableStateFlow<Response<FirebaseUser>?>(value = null)
     val loginFlow: StateFlow<Response<FirebaseUser>?> = _loginFlow
 
