@@ -16,6 +16,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -31,6 +32,8 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
+import com.projectlab.core.presentation.designsystem.component.BottomNavRoute
+import com.projectlab.core.presentation.designsystem.component.BottomNavigationBar
 import com.projectlab.core.presentation.designsystem.component.ButtonHotel
 import com.projectlab.core.presentation.designsystem.component.ButtonOversea
 import com.projectlab.core.presentation.designsystem.component.SearchBar
@@ -47,6 +50,9 @@ fun HomeScreen(
     homeViewModel: HomeViewModel,
     navController: NavController,
     locationUtils: LocationUtils,
+    onFavoritesClick: () -> Unit,
+    onTripsClick: () -> Unit,
+    onProfileClick: () -> Unit,
 ) {
     val context = LocalContext.current
     val currentLocation = locationViewModel.location.value
@@ -70,12 +76,24 @@ fun HomeScreen(
         }
     }
 
-    HomeScreenComponent(
-        modifier = modifier,
-        uiState = uiState,
-        navController = navController,
-        homeViewModel = homeViewModel,
-    )
+    Scaffold(
+        bottomBar = {
+            BottomNavigationBar(
+                BottomNavRoute.HOME,
+                onHomeClick = {},
+                onFavoritesClick,
+                onTripsClick,
+                onProfileClick,
+            )
+        },
+    ) { paddingValues ->
+        HomeScreenComponent(
+            modifier = modifier.padding(paddingValues),
+            uiState = uiState,
+            navController = navController,
+            homeViewModel = homeViewModel,
+        )
+    }
 }
 
 @Composable

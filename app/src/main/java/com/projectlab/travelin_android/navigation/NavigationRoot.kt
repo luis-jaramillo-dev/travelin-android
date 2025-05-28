@@ -137,7 +137,7 @@ private fun NavGraphBuilder.searchGraph(navController: NavHostController) {
     }
 }
 
-fun NavGraphBuilder.detailGraph(navController: NavHostController) {
+private fun NavGraphBuilder.detailGraph(navController: NavHostController) {
     composable(
         route = DetailScreens.ActivityDetail.route,
         arguments = listOf(
@@ -154,7 +154,7 @@ fun NavGraphBuilder.detailGraph(navController: NavHostController) {
     }
 }
 
-fun NavGraphBuilder.homeGraph(navController: NavHostController) {
+private fun NavGraphBuilder.homeGraph(navController: NavHostController) {
     composable(route = HomeScreens.Home.route) {
         val context = LocalContext.current
         val locationUtils = remember {
@@ -168,6 +168,9 @@ fun NavGraphBuilder.homeGraph(navController: NavHostController) {
             homeViewModel = hiltViewModel(),
             navController = navController,
             locationUtils = locationUtils,
+            onFavoritesClick = {},
+            onTripsClick = {},
+            onProfileClick = { navController.navigate(AuthScreens.Profile.route) },
         )
     }
 }
