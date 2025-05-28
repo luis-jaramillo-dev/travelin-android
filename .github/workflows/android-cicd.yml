@@ -14,8 +14,8 @@ jobs:
         env:
           GOOGLE_SERVICES_JSON_CONTENT: ${{ secrets.GOOGLE_SERVICES_JSON }}
         run: |
-          REPO_NAME:$(echo "$GITHUB_REPOSITORY" | cut -d'/' -f2)
-          TARGET_PATH:"/home/runner/$REPO_NAME/$REPO_NAME/app/google-services.json"
+          REPO_NAME=$(echo "$GITHUB_REPOSITORY" | cut -d'/' -f2)
+          TARGET_PATH="/home/runner/$REPO_NAME/$REPO_NAME/app/google-services.json"
           if [-f "$FILE_PATH"]; then
             cat "$FILE_PATH" | base64
           else
