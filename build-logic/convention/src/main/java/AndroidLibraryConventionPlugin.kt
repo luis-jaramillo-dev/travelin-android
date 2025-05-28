@@ -2,14 +2,12 @@ import com.android.build.api.dsl.LibraryExtension
 import com.kotlinpl.convention.ExtensionType
 import com.kotlinpl.convention.configureBuildTypes
 import com.kotlinpl.convention.configureKotlinAndroid
-import com.kotlinpl.convention.getLibrary
 import com.kotlinpl.convention.libs
 import org.gradle.api.Plugin
 import org.gradle.api.Project
 import org.gradle.kotlin.dsl.apply
 import org.gradle.kotlin.dsl.configure
 import org.gradle.kotlin.dsl.dependencies
-import org.gradle.kotlin.dsl.kotlin
 
 class AndroidLibraryConventionPlugin: Plugin<Project> {
     override fun apply(target: Project) {
@@ -34,13 +32,18 @@ class AndroidLibraryConventionPlugin: Plugin<Project> {
             }
 
             dependencies {
-                "implementation"(libs.findLibrary("androidx.core.ktx").get())
-                "implementation"(libs.findLibrary("androidx.appcompat").get())
-
-                // Test
+                "implementation"(libs.findLibrary("androidx-core-ktx").get())
+                "implementation"(libs.findLibrary("androidx-appcompat").get())
                 "testImplementation"(libs.findLibrary("junit").get())
-                "androidTestImplementation"(libs.findLibrary("androidx.junit").get())
-                "androidTestImplementation"(libs.findLibrary("androidx.espresso.core").get())
+                "testImplementation"(libs.findLibrary("kotlinx-coroutines-test").get())
+                "testImplementation"(libs.findLibrary("androidx-test-core").get())
+                "testImplementation"(libs.findLibrary("androidx-test-core-ktx").get())
+                "androidTestImplementation"(libs.findLibrary("kotlinx-coroutines-test").get())
+                "androidTestImplementation"(libs.findLibrary("androidx-test-core").get())
+                "androidTestImplementation"(libs.findLibrary("androidx-test-core-ktx").get())
+                "androidTestImplementation"(libs.findLibrary("androidx-junit").get())
+                "androidTestImplementation"(libs.findLibrary("androidx-test-rules").get())
+                "androidTestImplementation"(libs.findLibrary("androidx-espresso.core").get())
             }
         }
     }

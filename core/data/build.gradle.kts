@@ -9,7 +9,7 @@ plugins {
     //alias(libs.plugins.devtools.ksp)
 
     // Google Services
-    alias(libs.plugins.google.services)
+//    alias(libs.plugins.google.services)
 
     alias(libs.plugins.travelinandroid.android.hilt)
 }
@@ -59,4 +59,7 @@ dependencies {
     // Network
     implementation(libs.bundles.retrofit)
 
+    // Proto DataStore
+    implementation(libs.androidx.datastore)
+    implementation(libs.protobuf.javalite)
 }

@@ -1,4 +1,4 @@
-package com.projectlab.booking.presentation.activities.search
+package com.projectlab.booking.presentation.search.activities
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -14,6 +14,16 @@ import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
+/**
+ * ViewModel for the SearchActivity screen.
+ * It handles the logic for searching activities based on user input and location.
+ *
+ * @param activitiesApiService API service for fetching activities.
+ * @param getActivitiesUseCase Use case for getting activities.
+ * @param locationUtils Utility class for handling location-related tasks.
+ * @param errorMapper Mapper for converting errors to user-friendly messages.
+ */
+
 @HiltViewModel
 class SearchActivityViewModel @Inject constructor(
     private val activitiesApiService: ActivitiesApiService,
@@ -27,6 +37,18 @@ class SearchActivityViewModel @Inject constructor(
 
     fun onQueryChanged(newQuery: String) {
         _uiState.update { it.copy(query = newQuery) }
+    }
+
+    /**
+     * onSearchSubmitted() is called when the user submits a search query.
+     * It fetches activities based on the provided location.
+     * It updates the UI state with the results or an error message.
+     */
+
+    fun searchWithInitialQuery(query: String) {
+        if (query == uiState.value.query && uiState.value.activities.isNotEmpty()) return
+        _uiState.update { it.copy(query = query) }
+        onSearchSubmitted()
     }
 
     fun onSearchSubmitted() {

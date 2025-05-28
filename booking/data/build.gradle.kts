@@ -2,10 +2,7 @@ plugins {
     alias(libs.plugins.travelinandroid.android.library)
 
     // Dagger Hilt
-    alias(libs.plugins.dagger.hilt.android)
-
-    // KSP
-    alias(libs.plugins.devtools.ksp)
+    alias(libs.plugins.travelinandroid.android.hilt)
 }
 
 android {
@@ -22,9 +19,6 @@ dependencies {
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.appcompat)
 
-    // Dagger Hilt + Ksp
-    implementation(libs.hilt.android)
-    ksp(libs.hilt.android.compiler)
 
     // Network
     implementation(libs.retrofit)
