@@ -24,6 +24,7 @@ val localProperties = Properties().apply {
 val apiKey = localProperties.getProperty("API_KEY") ?: ""
 val apiSecret = localProperties.getProperty("API_SECRET") ?: ""
 val baseUrl = localProperties.getProperty("BASE_URL") ?: ""
+val appUrl = localProperties.getProperty("APP_URL") ?: ""
 
 android {
     namespace = "com.projectlab.core.data"
@@ -31,6 +32,7 @@ android {
         buildConfigField("String", "API_KEY", "\"$apiKey\"")
         buildConfigField("String", "API_SECRET", "\"$apiSecret\"")
         buildConfigField("String", "BASE_URL", "\"$baseUrl\"")
+        buildConfigField("String", "APP_URL", "\"$appUrl\"")
     }
 
     buildFeatures {

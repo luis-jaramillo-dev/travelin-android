@@ -19,6 +19,7 @@ import com.projectlab.booking.presentation.detail.activities.ActivityDetailViewM
 import com.projectlab.booking.presentation.detail.activities.ErrorScreen
 import com.projectlab.booking.presentation.home.HomeScreen
 import com.projectlab.booking.presentation.search.activities.SearchActivityViewModel
+import com.projectlab.core.data.BuildConfig
 import com.projectlab.core.presentation.ui.di.LocationUtilsEntryPoint
 import com.projectlab.core.presentation.ui.viewmodel.LocationViewModel
 import com.projectlab.feature.onboarding.presentation.ui.OnboardingScreenRoot
@@ -147,7 +148,7 @@ fun NavGraphBuilder.detailGraph(navController: NavHostController) {
         arguments = listOf(
             navArgument("activityId") { type = NavType.StringType }
         ),
-        deepLinks = listOf(navDeepLink { uriPattern = "https://app.travelin.com/details/{activityId}" })
+        deepLinks = listOf(navDeepLink { uriPattern = "details/{activityId}" })
     ) { backStackEntry ->
         val activityId = backStackEntry.arguments?.getString("activityId") ?: ""
 
