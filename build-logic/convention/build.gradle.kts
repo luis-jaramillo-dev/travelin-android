@@ -12,7 +12,7 @@ java {
 }
 kotlin {
     compilerOptions {
-        jvmTarget = JvmTarget.JVM_11
+        jvmTarget = JvmTarget.JVM_17
     }
 }
 
@@ -51,6 +51,17 @@ gradlePlugin {
         register("androidLibraryCompose") {
             id = libs.plugins.travelinandroid.android.library.compose.get().pluginId
             implementationClass = "AndroidLibraryComposeConventionPlugin"
+        }
+
+        register("jvmLibrary") {
+            id = libs.plugins.travelinandroid.jvm.library.get().pluginId
+
+            implementationClass = "JvmLibraryConventionPlugin"
+        }
+
+        register("hilt") {
+            id = libs.plugins.travelinandroid.android.hilt.get().pluginId
+            implementationClass = "HiltConventionPlugin"
         }
     }
 }

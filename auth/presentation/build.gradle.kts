@@ -1,45 +1,23 @@
 plugins {
-    alias(libs.plugins.android.library)
-    alias(libs.plugins.kotlin.android)
+    alias(libs.plugins.travelinandroid.android.library.compose)
+    alias(libs.plugins.travelinandroid.android.hilt)
 }
 
 android {
     namespace = "com.projectlab.auth.presentation"
-    compileSdk = 35
-
-    defaultConfig {
-        minSdk = 25
-
-        testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
-        consumerProguardFiles("consumer-rules.pro")
-    }
-
-    buildTypes {
-        release {
-            isMinifyEnabled = false
-            proguardFiles(
-                getDefaultProguardFile("proguard-android-optimize.txt"),
-                "proguard-rules.pro"
-            )
-        }
-    }
-    compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_11
-        targetCompatibility = JavaVersion.VERSION_11
-    }
-    kotlinOptions {
-        jvmTarget = "11"
-    }
 }
 
 dependencies {
 
-    // Core
-    implementation(libs.androidx.core.ktx)
-    implementation(libs.androidx.appcompat)
+    // Core System
+    implementation(projects.auth.domain)
+    implementation(projects.core.domain)
+    implementation(projects.core.presentation.designsystem)
 
-    // Testing
-    testImplementation(libs.junit)
-    androidTestImplementation(libs.androidx.junit)
-    androidTestImplementation(libs.androidx.espresso.core)
+    // Navigation
+    // TODO this should be deleted, or used on :app module
+    implementation(libs.hilt.navigation)
+
+    // Material Icons
+    implementation(libs.androidx.compose.material.icons)
 }

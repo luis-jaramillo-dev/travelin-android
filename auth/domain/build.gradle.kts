@@ -1,13 +1,19 @@
 plugins {
-    id("java-library")
-    alias(libs.plugins.jetbrains.kotlin.jvm)
+    alias(libs.plugins.travelinandroid.android.library)
 }
-java {
-    sourceCompatibility = JavaVersion.VERSION_11
-    targetCompatibility = JavaVersion.VERSION_11
+
+android {
+    namespace = "com.projectlab.auth.domain"
 }
-kotlin {
-    compilerOptions {
-        jvmTarget = org.jetbrains.kotlin.gradle.dsl.JvmTarget.JVM_11
-    }
+
+dependencies {
+    // Core System
+    implementation(projects.core.domain)
+
+    // Firebase -> FirebaseAuth
+    // TODO this shouldn't be here
+    // You can move it to :auth:data :auth:presentation or both
+    implementation(platform(libs.firebase))
+    api(libs.firebase.auth)
+
 }

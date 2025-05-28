@@ -19,13 +19,16 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
+import coil.compose.rememberAsyncImagePainter
 import com.projectlab.core.presentation.designsystem.R
 
 //Icons to be replaced by the final icons
 
 @Composable
-fun ImageCardWithFavorite (modifier: Modifier = Modifier, image: String){
-
+fun ImageCardWithFavorite(
+    modifier: Modifier = Modifier,
+    image: String?
+) {
     var isSaved by remember { mutableStateOf(false) }
 
     val icon = if (isSaved) {
@@ -34,13 +37,20 @@ fun ImageCardWithFavorite (modifier: Modifier = Modifier, image: String){
         painterResource(R.drawable.unsaved_product)
     }
 
+    val painter = rememberAsyncImagePainter(
+        model = image,
+        placeholder = painterResource(R.drawable.tourimageplaceholder),
+        error = painterResource(R.drawable.tourimageplaceholder),
+        fallback = painterResource(R.drawable.tourimageplaceholder)
+    )
+
     Box(
         modifier = Modifier
             .size(122.dp)
             .clip(RoundedCornerShape(15.dp))
     ) {
-        AsyncImage(
-            model = image,
+        Image(
+            painter = painter,
             contentDescription = "Tour image",
             contentScale = ContentScale.Crop,
             modifier = modifier.fillMaxHeight()
@@ -56,5 +66,4 @@ fun ImageCardWithFavorite (modifier: Modifier = Modifier, image: String){
                 .clickable { isSaved = !isSaved }
         )
     }
-
 }

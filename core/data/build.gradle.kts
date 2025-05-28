@@ -1,45 +1,65 @@
+import java.util.Properties
+
 plugins {
-    alias(libs.plugins.android.library)
-    alias(libs.plugins.kotlin.android)
+    alias(libs.plugins.travelinandroid.android.library)
+        // Dagger Hilt
+    //alias(libs.plugins.dagger.hilt.android)
+
+    // Ksp
+    //alias(libs.plugins.devtools.ksp)
+
+    // Google Services
+//    alias(libs.plugins.google.services)
+
+    alias(libs.plugins.travelinandroid.android.hilt)
 }
+
+val localProperties = Properties().apply {
+    val localFile = rootProject.file("local.properties")
+    if (localFile.exists()) {
+        load(localFile.inputStream())
+    }
+}
+
+val apiKey = localProperties.getProperty("API_KEY") ?: ""
+val apiSecret = localProperties.getProperty("API_SECRET") ?: ""
+val baseUrl = localProperties.getProperty("BASE_URL") ?: ""
 
 android {
     namespace = "com.projectlab.core.data"
-    compileSdk = 35
-
     defaultConfig {
-        minSdk = 24
-
-        testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
-        consumerProguardFiles("consumer-rules.pro")
+        buildConfigField("String", "API_KEY", "\"$apiKey\"")
+        buildConfigField("String", "API_SECRET", "\"$apiSecret\"")
+        buildConfigField("String", "BASE_URL", "\"$baseUrl\"")
     }
 
-    buildTypes {
-        release {
-            isMinifyEnabled = false
-            proguardFiles(
-                getDefaultProguardFile("proguard-android-optimize.txt"),
-                "proguard-rules.pro"
-            )
-        }
+    buildFeatures {
+        buildConfig = true
     }
-    compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_11
-        targetCompatibility = JavaVersion.VERSION_11
-    }
-    kotlinOptions {
-        jvmTarget = "11"
-    }
+
 }
 
 dependencies {
 
-    // Core
-    implementation(libs.androidx.core.ktx)
-    implementation(libs.androidx.appcompat)
+    // Dagger Hilt + Ksp
+    //implementation(libs.hilt.android)
+    //ksp(libs.hilt.android.compiler)
 
-    // Testing
-    testImplementation(libs.junit)
-    androidTestImplementation(libs.androidx.junit)
-    androidTestImplementation(libs.androidx.espresso.core)
+    // Core System
+    implementation(projects.core.domain)
+    implementation(projects.core.database)
+
+    // Core
+    implementation(libs.androidx.room.runtime)
+
+    // Firebase -> Firestore
+    implementation(platform(libs.firebase))
+    implementation(libs.firebase.firestore)
+
+    // Network
+    implementation(libs.bundles.retrofit)
+
+    // Proto DataStore
+    implementation(libs.androidx.datastore)
+    implementation(libs.protobuf.javalite)
 }

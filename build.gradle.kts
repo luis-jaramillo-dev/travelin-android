@@ -15,4 +15,9 @@ plugins {
     // Compose
     alias(libs.plugins.compose.compiler) apply false
 
+    // Firebase
+    alias(libs.plugins.google.services) apply false
+
+    // Proto DataStore
+    alias(libs.plugins.protobuf) apply false
 }
