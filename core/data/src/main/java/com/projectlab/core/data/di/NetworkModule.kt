@@ -172,20 +172,6 @@ object NetworkModule {
     }
 
     /**
-     * Provides a singleton instance of SearchHistoryProvider.
-     *
-     * @param searchHistoryStore The SearchHistory DataStore instance.
-     * @return A SearchHistoryProvider instance.
-     */
-    @Provides
-    @Singleton
-    fun provideSearchHistoryProvider(
-        searchHistoryStore: DataStore<SearchHistory>,
-    ): SearchHistoryProviderImpl {
-        return SearchHistoryProviderImpl(searchHistoryStore)
-    }
-
-    /**
      * Provides a singleton instance of AuthInterceptor.
      *
      * @param tokenProvider The TokenProvider instance.
