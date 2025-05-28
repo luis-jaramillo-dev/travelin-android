@@ -14,8 +14,7 @@ jobs:
         env:
           GOOGLE_SERVICES_JSON_CONTENT: ${{ secrets.GOOGLE_SERVICES_JSON }}
         run: |
-          REPO_NAME=$(echo "$GITHUB_REPOSITORY" | cut -d'/' -f2)
-          TARGET_PATH="/home/runner/$REPO_NAME/$REPO_NAME/app/google-services.json"
+          TARGET_PATH="$GITHUB_WORKSPACE/app/google-services.json"
           if [ -n "$GOOGLE_SERVICES_JSON_CONTENT" ]; then
             echo "Creating $TARGET_PATH"
             echo "$GOOGLE_SERVICES_JSON_CONTENT" > $TARGET_PATH
