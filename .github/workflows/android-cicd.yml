@@ -10,6 +10,7 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
+      - uses: actions/checkout@v4
       - name: Create google-services from secret
         env:
           GOOGLE_SERVICES_JSON_CONTENT: ${{ secrets.GOOGLE_SERVICES_JSON }}
