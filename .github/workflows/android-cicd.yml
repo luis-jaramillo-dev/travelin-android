@@ -16,10 +16,8 @@ jobs:
         run: |
           TARGET_PATH="$GITHUB_WORKSPACE/app/google-services.json"
           echo "pwd: $(pwd)"
-          echo "ls pwd: $(ls pwd)"
-          echo "ls .: $(ls .)"
           echo "TARGET_PATH: $TARGET_PATH"
-          echo "ls TARGET_PATH: $(ls TARGET_PATH)"
+          echo "ls TARGET_PATH: $(ls $TARGET_PATH)"
           if [ -n "$GOOGLE_SERVICES_JSON_CONTENT" ]; then
             echo "Creating $TARGET_PATH"
             echo "$GOOGLE_SERVICES_JSON_CONTENT" > $TARGET_PATH
