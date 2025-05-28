@@ -32,4 +32,8 @@ dependencies {
     // UI
     implementation(libs.coil.compose)
 
+    // Proto DataStore
+    implementation(libs.androidx.datastore)
+    implementation(libs.protobuf.javalite)
+
 }

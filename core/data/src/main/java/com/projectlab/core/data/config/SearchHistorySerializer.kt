@@ -3,20 +3,20 @@ package com.projectlab.core.data.config
 import androidx.datastore.core.CorruptionException
 import androidx.datastore.core.Serializer
 import com.google.protobuf.InvalidProtocolBufferException
-import com.projectlab.core.domain.proto.AmadeusToken
+import com.projectlab.core.domain.proto.SearchHistory
 import java.io.InputStream
 import java.io.OutputStream
 
-object AmadeusTokenSerializer : Serializer<AmadeusToken> {
-    override val defaultValue: AmadeusToken = AmadeusToken.getDefaultInstance()
+object SearchHistorySerializer : Serializer<SearchHistory> {
+    override val defaultValue: SearchHistory = SearchHistory.getDefaultInstance()
 
-    override suspend fun readFrom(input: InputStream): AmadeusToken {
+    override suspend fun readFrom(input: InputStream): SearchHistory {
         try {
-            return AmadeusToken.parseFrom(input)
+            return SearchHistory.parseFrom(input)
         } catch (exception: InvalidProtocolBufferException) {
             throw CorruptionException("Cannot read proto.", exception)
         }
     }
 
-    override suspend fun writeTo(t: AmadeusToken, output: OutputStream) = t.writeTo(output)
+    override suspend fun writeTo(t: SearchHistory, output: OutputStream) = t.writeTo(output)
 }

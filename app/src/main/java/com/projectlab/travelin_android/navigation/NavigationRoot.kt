@@ -21,7 +21,7 @@ import com.projectlab.booking.presentation.home.HomeScreen
 import com.projectlab.booking.presentation.search.activities.SearchActivityViewModel
 import com.projectlab.core.presentation.ui.di.LocationUtilsEntryPoint
 import com.projectlab.core.presentation.ui.viewmodel.LocationViewModel
-import com.projectlab.feature.onboarding.presentation.ui.OnboardingScreen
+import com.projectlab.feature.onboarding.presentation.ui.OnboardingScreenRoot
 import com.projectlab.travelin_android.presentation.screens.login.LoginScreen
 import com.projectlab.travelin_android.presentation.screens.profile.ProfileScreen
 import com.projectlab.travelin_android.presentation.screens.register.RegisterScreen
@@ -50,7 +50,8 @@ private fun NavGraphBuilder.authGraph(navController: NavHostController) {
     ) {
 
         composable(route = AuthScreens.Onboarding.route) {
-            OnboardingScreen(
+            OnboardingScreenRoot(
+                viewModel = hiltViewModel(),
                 onNavigateToLogin = { navController.navigate(AuthScreens.Login.route) }
             )
         }

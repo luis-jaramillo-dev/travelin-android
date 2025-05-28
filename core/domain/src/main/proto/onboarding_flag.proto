@@ -1,0 +1,8 @@
+syntax = "proto3";
+
+option java_package = "com.projectlab.core.domain.proto";
+option java_multiple_files = true;
+
+message OnboardingFlag {
+    optional bool opened_app = 1;
+}

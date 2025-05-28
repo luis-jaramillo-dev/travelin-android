@@ -17,17 +17,17 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.setValue
-import androidx.compose.runtime.remember
 import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.navigation.NavController
 import com.projectlab.core.presentation.designsystem.component.BottomBookBar
 import com.projectlab.core.presentation.designsystem.component.DescriptionBox
 import com.projectlab.core.presentation.designsystem.component.GalleryDialog
-import com.projectlab.core.presentation.designsystem.component.TourCardHeader
 import com.projectlab.core.presentation.designsystem.component.GallerySection
+import com.projectlab.core.presentation.designsystem.component.TourCardHeader
 import com.projectlab.core.presentation.designsystem.theme.spacing
 
 @Composable
@@ -35,7 +35,7 @@ fun ActivityDetailScreen(
     modifier: Modifier = Modifier,
     activityDetailViewModel: ActivityDetailViewModel,
     activityId: String,
-    navController: NavController
+    navController: NavController,
 ) {
     LaunchedEffect(Unit) {
         activityDetailViewModel.onViewDetail(activityId)
@@ -66,8 +66,6 @@ fun ActivityDetailScreen(
             navController = navController
         )
     }
-
-
 }
 
 @Composable
@@ -75,7 +73,7 @@ fun ActivityDetailScreenComponent(
     modifier: Modifier = Modifier,
     activityDetailViewModel: ActivityDetailViewModel,
     uiState: ActivityDetailUiState,
-    navController: NavController
+    navController: NavController,
 ) {
     val activity = uiState.activity
     val scrollState = rememberScrollState()
@@ -134,5 +132,3 @@ fun ActivityDetailScreenComponent(
         }
     }
 }
-
-
