@@ -15,9 +15,15 @@ jobs:
           GOOGLE_SERVICES_JSON_CONTENT: ${{ secrets.GOOGLE_SERVICES_JSON }}
         run: |
           TARGET_PATH="$GITHUB_WORKSPACE/app/google-services.json"
+          TEMP_PATH="$GITHUB_WORKSPACE/app"
           echo "pwd: $(pwd)"
+          echo "TEMP_PATH: $TEMP_PATH"
           echo "TARGET_PATH: $TARGET_PATH"
-          echo "ls TARGET_PATH: $(ls $TARGET_PATH)"
+          if [ -d $TEMP_PATH ]; then
+            echo "Directory exists."
+          else
+            echo "Directory doesn't exist."
+          fi
           if [ -n "$GOOGLE_SERVICES_JSON_CONTENT" ]; then
             echo "Creating $TARGET_PATH"
             echo "$GOOGLE_SERVICES_JSON_CONTENT" > $TARGET_PATH
