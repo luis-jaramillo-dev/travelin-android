@@ -155,6 +155,7 @@ fun HomeSearchComponent(
                 onSearchPressed = onSearchPressed,
                 modifier = Modifier.fillMaxWidth(),
                 history = uiState.history,
+                onDeleteHistoryEntry = { value -> homeViewModel.onDeleteHistoryEntry(value) }
             )
 
             Spacer(modifier = Modifier.height(MaterialTheme.spacing.medium))

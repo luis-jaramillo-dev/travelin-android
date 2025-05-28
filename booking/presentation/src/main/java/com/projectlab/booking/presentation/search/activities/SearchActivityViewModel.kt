@@ -98,6 +98,13 @@ class SearchActivityViewModel @Inject constructor(
         _uiState.update { it.copy(showAllResults = true) }
     }
 
+    fun onDeleteHistoryEntry(value: String) {
+        viewModelScope.launch {
+            val updated = historyProvider.removeSearchEntry(HistoryType.ACTIVITY, value)
+            _uiState.update { it.copy(history = updated.reversed()) }
+        }
+    }
+
     private fun onSearchSubmitted(isInitial: Boolean) {
         viewModelScope.launch {
             _uiState.update { it.copy(isLoading = true) }

@@ -44,6 +44,13 @@ class HomeViewModel @Inject constructor(
         }
     }
 
+    fun onDeleteHistoryEntry(value: String) {
+        viewModelScope.launch {
+            val updated = historyProvider.removeSearchEntry(HistoryType.ACTIVITY, value)
+            _uiState.update { it.copy(history = updated.reversed()) }
+        }
+    }
+
     fun clearQuery() {
         _uiState.update { it.copy(query = "") }
     }
