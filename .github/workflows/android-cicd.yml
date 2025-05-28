@@ -16,10 +16,11 @@ jobs:
         run: |
           REPO_NAME=$(echo "$GITHUB_REPOSITORY" | cut -d'/' -f2)
           TARGET_PATH="/home/runner/$REPO_NAME/$REPO_NAME/app/google-services.json"
-          if [-f "$FILE_PATH"]; then
-            cat "$FILE_PATH" | base64
+          if [-n "$GOOGLE_SERVICES_JSON_CONTENT"]; then
+            echo "Creating $TARGET_PATH"
+            echo "$GOOGLE_SERVICES_JSON_CONTENT" > $TARGET_PATH
           else
-            echo "File not found $FILE_PATH"
+            echo "GOOGLE_SERVICES_JSON secret not found. Exiting build"
             exit 1
           fi
       # Checkout the code
