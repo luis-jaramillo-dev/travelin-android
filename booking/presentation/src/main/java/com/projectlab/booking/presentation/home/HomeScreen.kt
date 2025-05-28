@@ -111,8 +111,9 @@ fun HomeSearchComponent(
 
     val onSearchPressed: () -> Unit = {
         if (uiState.query.isNotBlank()) {
+            val query = uiState.query
             homeViewModel.onSearchPressed()
-            navController.navigate("search_activities_with_query/${uiState.query}")
+            navController.navigate("search_activities_with_query/$query")
         }
     }
 

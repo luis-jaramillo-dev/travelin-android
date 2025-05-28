@@ -40,7 +40,7 @@ class HomeViewModel @Inject constructor(
         if (_uiState.value.query.isBlank()) return
         viewModelScope.launch {
             val updated = historyProvider.addSearchEntry(HistoryType.ACTIVITY, _uiState.value.query)
-            _uiState.update { it.copy(history = updated.reversed()) }
+            _uiState.update { it.copy(query = "", history = updated.reversed()) }
         }
     }
 
