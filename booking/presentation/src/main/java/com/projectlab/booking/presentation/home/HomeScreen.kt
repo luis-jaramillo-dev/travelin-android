@@ -101,13 +101,19 @@ fun HomeSearchComponent(
     navController: NavController,
     homeViewModel: HomeViewModel,
 ) {
+    LaunchedEffect(homeViewModel) {
+        homeViewModel.fetchSearchHistory()
+    }
+
     val onQueryChange: (String) -> Unit = { newQuery ->
         homeViewModel.onQueryChange(newQuery)
     }
 
     val onSearchPressed: () -> Unit = {
         if (uiState.query.isNotBlank()) {
-            navController.navigate("search_activities_with_query/${uiState.query}")
+            val query = uiState.query
+            homeViewModel.onSearchPressed()
+            navController.navigate("search_activities_with_query/$query")
         }
     }
 
@@ -149,12 +155,8 @@ fun HomeSearchComponent(
                 onQueryChange = onQueryChange,
                 onSearchPressed = onSearchPressed,
                 modifier = Modifier.fillMaxWidth(),
-                history = listOf(
-                    "History 1",
-                    "History 2",
-                    "History 3",
-                    "History 4",
-                ),
+                history = uiState.history,
+                onDeleteHistoryEntry = { value -> homeViewModel.onDeleteHistoryEntry(value) }
             )
 
             Spacer(modifier = Modifier.height(MaterialTheme.spacing.medium))

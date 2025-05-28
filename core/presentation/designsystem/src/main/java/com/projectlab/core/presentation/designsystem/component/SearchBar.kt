@@ -47,7 +47,31 @@ fun SearchBar(
     onQueryChange: (String) -> Unit,
     onSearchPressed: () -> Unit,
     modifier: Modifier = Modifier,
-    history: List<String> = listOf(),
+) {
+    SearchBar(
+        query = query,
+        contentsDescription = contentsDescription,
+        placeholder = placeholder,
+        onEnter = onEnter,
+        onQueryChange = onQueryChange,
+        onSearchPressed = onSearchPressed,
+        history = emptyList<String>(),
+        onDeleteHistoryEntry = {},
+        modifier = modifier,
+    )
+}
+
+@Composable
+fun SearchBar(
+    query: String,
+    contentsDescription: String,
+    placeholder: String,
+    onEnter: () -> Unit,
+    onQueryChange: (String) -> Unit,
+    onSearchPressed: () -> Unit,
+    history: List<String>,
+    onDeleteHistoryEntry: (String) -> Unit,
+    modifier: Modifier = Modifier,
 ) {
     var boxSize by remember { mutableStateOf(Size.Zero) }
     var expanded by rememberSaveable { mutableStateOf(false) }
@@ -116,6 +140,15 @@ fun SearchBar(
             history.forEach { entry ->
                 ListItem(
                     headlineContent = { Text(entry) },
+                    leadingContent = { IconHistory() },
+                    trailingContent = {
+                        IconCross(
+                            modifier = Modifier
+                                .clickable {
+                                    onDeleteHistoryEntry(entry)
+                                },
+                        )
+                    },
                     modifier = Modifier
                         .fillMaxWidth()
                         .clickable {
