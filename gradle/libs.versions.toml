@@ -41,6 +41,7 @@ protobufProtocVersion = "4.26.1"
 lifecycleKtx = "2.6.1"
 kotlinxCoroutinesTest = "1.10.2"
 androidxTest = "1.6.1"
+jacoco = "0.8.12" # check newer version
 
 [libraries]
 androidx-activity-compose = { module = "androidx.activity:activity-compose", version.ref = "activityCompose" }

@@ -1,6 +1,7 @@
 import com.android.build.api.dsl.ApplicationExtension
 import com.kotlinpl.convention.ExtensionType
 import com.kotlinpl.convention.configureBuildTypes
+import com.kotlinpl.convention.configureJacocoWithBuildType
 import com.kotlinpl.convention.configureKotlinAndroid
 import com.kotlinpl.convention.libs
 import com.kotlinpl.convention.version
@@ -21,6 +22,7 @@ class AndroidApplicationConventionPlugin : Plugin <Project> {
                 defaultConfig.targetSdk = libs.version("projectTargetSdk").toInt()
 
                 configureBuildTypes(this, ExtensionType.APPLICATION)
+                configureJacocoWithBuildType(this, ExtensionType.APPLICATION)
             }
         }
     }
