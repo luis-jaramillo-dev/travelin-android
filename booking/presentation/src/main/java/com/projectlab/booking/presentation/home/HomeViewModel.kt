@@ -2,8 +2,8 @@ package com.projectlab.booking.presentation.home
 
 import androidx.lifecycle.ViewModel
 import com.projectlab.core.data.usecase.GetActivitiesUseCase
+import com.projectlab.core.domain.repository.LocationRepository
 import com.projectlab.core.presentation.ui.utils.ErrorMapper
-import com.projectlab.core.presentation.ui.utils.LocationUtils
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.*
 import javax.inject.Inject
@@ -11,7 +11,7 @@ import javax.inject.Inject
 @HiltViewModel
 class HomeViewModel @Inject constructor(
     private val getActivitiesUseCase: GetActivitiesUseCase,
-    private val locationUtils: LocationUtils,
+    private val locationRepository: LocationRepository,
     private val errorMapper: ErrorMapper
 ) : ViewModel() {
 

@@ -6,8 +6,9 @@ import com.projectlab.core.data.mapper.toDtoList
 import com.projectlab.core.domain.model.Location
 import com.projectlab.core.domain.util.Result
 import com.projectlab.core.data.usecase.GetActivitiesUseCase
-import com.projectlab.core.presentation.ui.utils.LocationUtils
 import com.projectlab.core.data.remote.ActivitiesApiService
+import com.projectlab.core.domain.use_cases.location.GetCityFromCoordinatesUseCase
+import com.projectlab.core.domain.use_cases.location.GetCoordinatesFromCityUseCase
 import com.projectlab.core.presentation.ui.utils.ErrorMapper
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.*
@@ -20,7 +21,6 @@ import javax.inject.Inject
  *
  * @param activitiesApiService API service for fetching activities.
  * @param getActivitiesUseCase Use case for getting activities.
- * @param locationUtils Utility class for handling location-related tasks.
  * @param errorMapper Mapper for converting errors to user-friendly messages.
  */
 
@@ -28,7 +28,8 @@ import javax.inject.Inject
 class SearchActivityViewModel @Inject constructor(
     private val activitiesApiService: ActivitiesApiService,
     private val getActivitiesUseCase: GetActivitiesUseCase,
-    private val locationUtils: LocationUtils,
+    private val getCoordinatesFromCityUseCase: GetCoordinatesFromCityUseCase,
+    private val getCityFromCoordinatesUseCase: GetCityFromCoordinatesUseCase,
     private val errorMapper: ErrorMapper
 ) : ViewModel() {
 
@@ -55,9 +56,9 @@ class SearchActivityViewModel @Inject constructor(
         viewModelScope.launch {
             _uiState.update { it.copy(isLoading = true) }
             try {
-                val locationData = locationUtils.getCoordinatesFromLocation(uiState.value.query)
+                val locationData = getCoordinatesFromCityUseCase(uiState.value.query)
                 if (locationData != null) {
-                    when (val result = getActivitiesUseCase(locationData.latitude, locationData.longitude)) {
+                    when (val result = getActivitiesUseCase(locationData.first, locationData.second)) {
                         is Result.Success -> {
                             _uiState.update { it.copy(activities = result.data.toDtoList()) }
                         }
@@ -81,7 +82,7 @@ class SearchActivityViewModel @Inject constructor(
         viewModelScope.launch {
             _uiState.update { it.copy(isLoading = true, error = null) }
             try {
-                val addressString = locationUtils.reverseGeocodeLocation(location)
+                val addressString = getCityFromCoordinatesUseCase(location.latitude, location.longitude)
                 _uiState.update { it.copy(address = addressString, query = addressString) }
 
 

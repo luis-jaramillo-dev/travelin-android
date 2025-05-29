@@ -1,7 +1,6 @@
 package com.projectlab.booking.presentation.search.activities
 
 import android.Manifest
-import android.util.Log
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.layout.Column
@@ -38,7 +37,6 @@ import com.projectlab.core.presentation.designsystem.component.ButtonComponent
 import com.projectlab.core.presentation.designsystem.component.ButtonVariant
 import com.projectlab.core.presentation.designsystem.component.SearchBarComponent
 import com.projectlab.core.presentation.designsystem.theme.spacing
-import com.projectlab.core.presentation.ui.utils.LocationUtils
 
 /**
  *  This is the main screen for searching activities.
@@ -53,7 +51,6 @@ fun SearchActivityScreen(
     modifier: Modifier = Modifier,
     locationViewModel: LocationViewModel,
     searchActivityViewModel: SearchActivityViewModel,
-    locationUtils: LocationUtils,
     navController: NavController,
     onActivityClick: (String) -> Unit
 ) {
@@ -73,7 +70,7 @@ fun SearchActivityScreen(
     }
 
     LaunchedEffect(Unit) {
-        if (!locationUtils.hasLocationPermission(context)) {
+        if (!locationViewModel.hasLocationPermission()) {
             permissionLauncher.launch(Manifest.permission.ACCESS_FINE_LOCATION)
         } else {
             locationViewModel.getCurrentLocation()
@@ -94,7 +91,7 @@ fun SearchActivityScreen(
      */
 
     val onSearchNearbyClick: () -> Unit = {
-        if (!locationUtils.hasLocationPermission(context)) {
+        if (!locationViewModel.hasLocationPermission()) {
             permissionLauncher.launch(Manifest.permission.ACCESS_FINE_LOCATION)
         } else {
             locationViewModel.getCurrentLocation()
@@ -138,7 +135,8 @@ fun SearchActivityScreen(
         SearchActivityResultsComponent(
             uiState = uiState,
             onShowAllResults = { searchActivityViewModel.showAllResults() },
-            navController = navController
+            navController = navController,
+            reverseGeocode = { location -> locationViewModel.reverseGeocodeLocation(location) }
         )
     }
 }
@@ -147,13 +145,11 @@ fun SearchActivityScreen(
 fun SearchActivityResultsComponent(
     uiState: SearchActivityUiState,
     onShowAllResults: () -> Unit,
-    navController: NavController
+    navController: NavController,
+    reverseGeocode: suspend (Location) -> String
 ) {
     val activities = uiState.activities
     val showAll = uiState.showAllResults
-
-    val context = LocalContext.current
-    val locationUtils = remember { LocationUtils(context) }
 
     val cityMap = remember { mutableStateMapOf<String, String?>() }
 
@@ -164,7 +160,7 @@ fun SearchActivityResultsComponent(
                     latitude = activity.geoCode.latitude,
                     longitude = activity.geoCode.longitude
                 )
-                val city = locationUtils.reverseGeocodeLocation(location)
+                val city = reverseGeocode(location)
                 cityMap[activity.id] = city
             }
         }

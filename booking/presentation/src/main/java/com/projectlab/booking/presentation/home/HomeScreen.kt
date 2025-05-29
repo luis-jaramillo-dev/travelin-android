@@ -36,7 +36,6 @@ import com.projectlab.core.presentation.designsystem.component.ButtonHotel
 import com.projectlab.core.presentation.designsystem.component.ButtonOversea
 import com.projectlab.core.presentation.designsystem.component.SearchBarComponent
 import com.projectlab.core.presentation.designsystem.theme.spacing
-import com.projectlab.core.presentation.ui.utils.LocationUtils
 import com.projectlab.core.presentation.ui.viewmodel.LocationViewModel
 
 @Composable
@@ -45,7 +44,6 @@ fun HomeScreen(
     locationViewModel: LocationViewModel,
     homeViewModel: HomeViewModel,
     navController: NavController,
-    locationUtils: LocationUtils,
 ) {
     val context = LocalContext.current
     val currentLocation = locationViewModel.location.value
@@ -62,7 +60,7 @@ fun HomeScreen(
     }
 
     LaunchedEffect(Unit) {
-        if (!locationUtils.hasLocationPermission(context)) {
+        if (!locationViewModel.hasLocationPermission()) {
             permissionLauncher.launch(Manifest.permission.ACCESS_FINE_LOCATION)
         } else {
             locationViewModel.getCurrentLocation()
@@ -73,11 +71,11 @@ fun HomeScreen(
     HomeScreenComponent(
         modifier = modifier,
         uiState = uiState,
-        navController = navController,
-        homeViewModel = homeViewModel
+        onQueryChange = homeViewModel::onQueryChange,
+        onQuerySubmitted = { query ->
+            navController.navigate("search_activities_with_query/$query")
+        },
     )
-
-
 }
 
 
@@ -85,18 +83,16 @@ fun HomeScreen(
 fun HomeScreenComponent(
     modifier: Modifier = Modifier,
     uiState: HomeUiState,
-    navController: NavController,
-    homeViewModel: HomeViewModel
+    onQueryChange: (String) -> Unit,
+    onQuerySubmitted: (String) -> Unit,
 ) {
-
     Column {
         HomeSearchComponent(
             uiState = uiState,
-            navController = navController,
-            homeViewModel = homeViewModel
+            onQueryChange = onQueryChange,
+            onQuerySubmitted = onQuerySubmitted,
         )
     }
-
 }
 
 
@@ -104,8 +100,8 @@ fun HomeScreenComponent(
 fun HomeSearchComponent(
     modifier: Modifier = Modifier,
     uiState: HomeUiState,
-    navController: NavController,
-    homeViewModel: HomeViewModel
+    onQueryChange: (String) -> Unit,
+    onQuerySubmitted: (String) -> Unit,
 ) {
     Box(modifier = Modifier.height(MaterialTheme.spacing.homeHeaderImageSize)) {
         Image(
@@ -142,13 +138,13 @@ fun HomeSearchComponent(
                     query = uiState.query,
                     onEnter = {
                         if (uiState.query.isNotBlank()) {
-                            navController.navigate("search_activities_with_query/${uiState.query}")
+                            onQuerySubmitted(uiState.query)
                         }
                     },
-                    onQueryChange = { newQuery -> homeViewModel.onQueryChange(newQuery) },
+                    onQueryChange = onQueryChange,
                     onSearchPressed = {
                         if (uiState.query.isNotBlank()) {
-                            navController.navigate("search_activities_with_query/${uiState.query}")
+                            onQuerySubmitted(uiState.query)
                         }
                     }
                 )

@@ -31,7 +31,10 @@ class GetActivitiesUseCase @Inject constructor(
      * @return A Result containing a list of activities or an error.
      */
 
-    suspend operator fun invoke(latitude: Double, longitude: Double): Result<List<Activity>, DataError.Network> {
+    suspend operator fun invoke(
+        latitude: Double,
+        longitude: Double
+    ): Result<List<Activity>, DataError.Network> {
         return try {
             val response = api.getActivitiesByLocation(latitude, longitude)
             val mappedActivities = response.data.map { it.toDomain() }
