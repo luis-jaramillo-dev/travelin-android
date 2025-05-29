@@ -14,6 +14,7 @@ import androidx.navigation.compose.navigation
 import androidx.navigation.navArgument
 import com.projectlab.booking.presentation.detail.activities.ActivityDetailScreen
 import com.projectlab.booking.presentation.detail.activities.ActivityDetailViewModel
+import com.projectlab.booking.presentation.favorites.FavoritesScreen
 import com.projectlab.booking.presentation.home.HomeScreen
 import com.projectlab.booking.presentation.search.activities.SearchActivityScreen
 import com.projectlab.booking.presentation.search.activities.SearchActivityViewModel
@@ -38,6 +39,7 @@ fun NavigationRoot(
         searchGraph(navController)
         detailGraph(navController)
         homeGraph(navController)
+        favoritesGraph(navController)
     }
 }
 
@@ -71,7 +73,7 @@ private fun NavGraphBuilder.authGraph(navController: NavHostController) {
             ProfileScreen(
                 onLogoutClick = { navController.navigate(AuthScreens.Login.route) },
                 onHomeClick = { navController.navigate(HomeScreens.Home.route) },
-                onFavoritesClick = {},
+                onFavoritesClick = { navController.navigate(FavoritesScreens.Favorites.route) },
                 onTripsClick = {},
             )
         }
@@ -168,7 +170,18 @@ private fun NavGraphBuilder.homeGraph(navController: NavHostController) {
             homeViewModel = hiltViewModel(),
             navController = navController,
             locationUtils = locationUtils,
-            onFavoritesClick = {},
+            onFavoritesClick = { navController.navigate(FavoritesScreens.Favorites.route) },
+            onTripsClick = {},
+            onProfileClick = { navController.navigate(AuthScreens.Profile.route) },
+        )
+    }
+}
+
+private fun NavGraphBuilder.favoritesGraph(navController: NavHostController) {
+    composable(route = FavoritesScreens.Favorites.route) {
+        FavoritesScreen(
+            viewModel = hiltViewModel(),
+            onHomeClick = { navController.navigate(HomeScreens.Home.route) },
             onTripsClick = {},
             onProfileClick = { navController.navigate(AuthScreens.Profile.route) },
         )
