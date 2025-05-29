@@ -31,10 +31,11 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
-import com.projectlab.booking.presentation.R
+import com.projectlab.booking.presentation.R as BookingR
+import com.projectlab.core.presentation.designsystem.R as DesignSystemR
 import com.projectlab.core.presentation.designsystem.component.ButtonHotel
 import com.projectlab.core.presentation.designsystem.component.ButtonOversea
-import com.projectlab.core.presentation.designsystem.component.SearchBarComponent
+import com.projectlab.core.presentation.designsystem.component.SearchBar
 import com.projectlab.core.presentation.designsystem.theme.spacing
 import com.projectlab.core.presentation.ui.viewmodel.LocationViewModel
 
@@ -67,14 +68,25 @@ fun HomeScreen(
         }
     }
 
+    LaunchedEffect(Unit) {
+        homeViewModel.navigationEvent.collect { route : String ->
+            navController.navigate(route)
+        }
+    }
+
+    LaunchedEffect(homeViewModel) {
+        homeViewModel.fetchSearchHistory()
+    }
 
     HomeScreenComponent(
         modifier = modifier,
         uiState = uiState,
         onQueryChange = homeViewModel::onQueryChange,
-        onQuerySubmitted = { query ->
-            navController.navigate("search_activities_with_query/$query")
+        onQuerySubmitted = {
+            homeViewModel.onSearchPressed()
+            homeViewModel.onSearchSubmitted()
         },
+        onDeleteHistoryEntry = homeViewModel::onDeleteHistoryEntry
     )
 }
 
@@ -84,13 +96,15 @@ fun HomeScreenComponent(
     modifier: Modifier = Modifier,
     uiState: HomeUiState,
     onQueryChange: (String) -> Unit,
-    onQuerySubmitted: (String) -> Unit,
+    onQuerySubmitted: () -> Unit,
+    onDeleteHistoryEntry: (String) -> Unit,
 ) {
     Column {
         HomeSearchComponent(
             uiState = uiState,
             onQueryChange = onQueryChange,
             onQuerySubmitted = onQuerySubmitted,
+            onDeleteHistoryEntry = onDeleteHistoryEntry
         )
     }
 }
@@ -101,11 +115,13 @@ fun HomeSearchComponent(
     modifier: Modifier = Modifier,
     uiState: HomeUiState,
     onQueryChange: (String) -> Unit,
-    onQuerySubmitted: (String) -> Unit,
+    onQuerySubmitted: () -> Unit,
+    onDeleteHistoryEntry: (String) -> Unit,
 ) {
+
     Box(modifier = Modifier.height(MaterialTheme.spacing.homeHeaderImageSize)) {
         Image(
-            painter = painterResource(R.drawable.homebackground),
+            painter = painterResource(BookingR.drawable.homebackground),
             contentDescription = "Home Background",
             contentScale = ContentScale.Crop,
             modifier = modifier
@@ -120,33 +136,30 @@ fun HomeSearchComponent(
         Column(modifier = Modifier.padding(MaterialTheme.spacing.semiLarge)) {
             Spacer(modifier = Modifier.height(MaterialTheme.spacing.homeHeaderSpacer))
             Text(
-                text = stringResource(R.string.exploreTheWorld),
+                text = stringResource(BookingR.string.exploreTheWorld),
                 style = MaterialTheme.typography.headlineLarge,
                 color = MaterialTheme.colorScheme.surfaceVariant,
                 fontSize = 37.sp,
                 fontWeight = FontWeight.W900
             )
             Text(
-                text = stringResource(R.string.travelNextLevel),
+                text = stringResource(BookingR.string.travelNextLevel),
                 style = MaterialTheme.typography.titleSmall,
                 color = MaterialTheme.colorScheme.surfaceVariant,
                 fontWeight = FontWeight.W600
             )
             Spacer(modifier = Modifier.height(MaterialTheme.spacing.medium))
             Box(Modifier.fillMaxWidth()) {
-                SearchBarComponent(
+                SearchBar(
                     query = uiState.query,
-                    onEnter = {
-                        if (uiState.query.isNotBlank()) {
-                            onQuerySubmitted(uiState.query)
-                        }
-                    },
+                    contentsDescription = "Search City Input",
+                    placeholder = stringResource(DesignSystemR.string.search_city_placeholder),
+                    onEnter = onQuerySubmitted,
                     onQueryChange = onQueryChange,
-                    onSearchPressed = {
-                        if (uiState.query.isNotBlank()) {
-                            onQuerySubmitted(uiState.query)
-                        }
-                    }
+                    onSearchPressed = onQuerySubmitted,
+                    modifier = Modifier.fillMaxWidth(),
+                    history = uiState.history,
+                    onDeleteHistoryEntry = onDeleteHistoryEntry
                 )
             }
 

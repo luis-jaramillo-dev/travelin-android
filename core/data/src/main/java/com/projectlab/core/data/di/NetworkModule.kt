@@ -5,22 +5,27 @@ import androidx.datastore.core.DataStore
 import androidx.datastore.dataStore
 import com.projectlab.core.data.config.AmadeusTokenSerializer
 import com.projectlab.core.data.config.OnboardingFlagSerializer
+import com.projectlab.core.data.config.SearchHistorySerializer
 import com.projectlab.core.data.network.AmadeusClientFactory
 import com.projectlab.core.data.network.AuthInterceptor
 import com.projectlab.core.data.network.HttpClientFactory
+import com.projectlab.core.data.network.AmadeusTokenAuthenticator
 import com.projectlab.core.data.remote.ActivitiesApiService
 import com.projectlab.core.data.remote.ActivityApiService
 import com.projectlab.core.data.remote.AmadeusApiService
 import com.projectlab.core.data.repository.AmadeusTokenProviderImpl
 import com.projectlab.core.data.repository.OnboardingFlagProviderImpl
+import com.projectlab.core.data.repository.SearchHistoryProviderImpl
 import com.projectlab.core.domain.proto.AmadeusToken
 import com.projectlab.core.domain.proto.OnboardingFlag
+import com.projectlab.core.domain.proto.SearchHistory
 import com.projectlab.core.domain.repository.TokenProvider
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
+import okhttp3.Authenticator
 import okhttp3.Interceptor
 import okhttp3.OkHttpClient
 import retrofit2.Retrofit
@@ -47,7 +52,13 @@ object NetworkModule {
         serializer = AmadeusTokenSerializer,
     )
 
+    private val Context.searchHistoryStore: DataStore<SearchHistory> by dataStore<SearchHistory>(
+        fileName = "search_history.pb",
+        serializer = SearchHistorySerializer,
+    )
+
     /**
+     * Provides a singleton instance of AmadeusToken DataStore.
      * Provides a singleton instance of OnboardingFlag DataStore.
      *
      * @param context The application context.
@@ -76,6 +87,20 @@ object NetworkModule {
     }
 
     /**
+     * Provides a singleton instance of SearchHistory DataStore.
+     *
+     * @param context The application context.
+     * @return A DataStore instance.
+     */
+    @Provides
+    @Singleton
+    fun provideSearchHistoryStore(
+        @ApplicationContext context: Context,
+    ): DataStore<SearchHistory> {
+        return context.searchHistoryStore
+    }
+
+    /**
      * Provides a singleton instance of AmadeusApiService.
      *
      * @return An AmadeusApiService instance.
@@ -96,12 +121,13 @@ object NetworkModule {
      *
      * @param authInterceptor Interceptor that adds the Bearer token.
      * @return HttpClientFactory for Amadeus.
-    */
+     */
     @Provides
     @Singleton
-    fun provideAmadeusClientFactory (
-        authInterceptor: AuthInterceptor
-    ) : HttpClientFactory = AmadeusClientFactory(authInterceptor)
+    fun provideAmadeusClientFactory(
+        authInterceptor: AuthInterceptor,
+        amadeusTokenAuthenticator: AmadeusTokenAuthenticator,
+    ): HttpClientFactory = AmadeusClientFactory(authInterceptor, amadeusTokenAuthenticator)
 
     /**
      * Provides a singleton instance of OnboardingFlagProvider.
@@ -121,16 +147,28 @@ object NetworkModule {
      * Provides a singleton instance of TokenProvider.
      *
      * @param amadeusTokenStore The DataStore instance.
-     * @param amadeusApiService The AmadeusApiService instance.
      * @return A TokenProvider instance.
      */
     @Provides
     @Singleton
     fun provideTokenProvider(
-        amadeusTokenStore: DataStore<AmadeusToken>,
-        amadeusApiService: AmadeusApiService,
+        amadeusTokenStore: DataStore<AmadeusToken>
     ): AmadeusTokenProviderImpl {
-        return AmadeusTokenProviderImpl(amadeusTokenStore, amadeusApiService)
+        return AmadeusTokenProviderImpl(amadeusTokenStore)
+    }
+
+    /**
+     * Provides a singleton instance of SearchHistoryProvider.
+     *
+     * @param searchHistoryStore The SearchHistory DataStore instance.
+     * @return A SearchHistoryProvider instance.
+     */
+    @Provides
+    @Singleton
+    fun provideSearchHistoryProvider(
+        searchHistoryStore: DataStore<SearchHistory>,
+    ): SearchHistoryProviderImpl {
+        return SearchHistoryProviderImpl(searchHistoryStore)
     }
 
     /**
@@ -145,6 +183,15 @@ object NetworkModule {
         return AuthInterceptor(tokenProvider)
     }
 
+    @Provides @Singleton
+    fun provideTokenAuthenticator(
+        tokenProvider: TokenProvider,
+        amadeusApiService: AmadeusApiService,
+        amadeusTokenStore: DataStore<AmadeusToken>
+    ): Authenticator = AmadeusTokenAuthenticator(tokenProvider, amadeusApiService, amadeusTokenStore)
+
+
+
     /**
      * Provides OkHttpClient using the factory injected.
      *
@@ -155,7 +202,7 @@ object NetworkModule {
     @Provides
     @Singleton
     fun provideOkHttpClient(
-        factory: HttpClientFactory
+        factory: HttpClientFactory,
     ): OkHttpClient = factory.createClient()
 
     /**
@@ -178,7 +225,7 @@ object NetworkModule {
 
     @Provides
     @Singleton
-    fun provideActivityApiService(okHttpClient: OkHttpClient): ActivityApiService{
+    fun provideActivityApiService(okHttpClient: OkHttpClient): ActivityApiService {
         return Retrofit.Builder()
             .baseUrl(BASE_URL)
             .addConverterFactory(GsonConverterFactory.create())
