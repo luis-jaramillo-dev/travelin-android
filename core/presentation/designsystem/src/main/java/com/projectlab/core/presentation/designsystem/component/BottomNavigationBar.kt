@@ -46,7 +46,7 @@ fun BottomNavigationBar(
     Surface(
         tonalElevation = MaterialTheme.spacing.TinySpacing,
         shadowElevation = MaterialTheme.spacing.SectionSpacing,
-        color = Color.Transparent
+        color = Color.Transparent,
     ) {
         Row(
             modifier = Modifier
@@ -54,31 +54,31 @@ fun BottomNavigationBar(
                 .height(MaterialTheme.spacing.BottomBarHeight)
                 .background(MaterialTheme.colorScheme.background),
             horizontalArrangement = Arrangement.SpaceEvenly,
-            verticalAlignment = Alignment.CenterVertically
+            verticalAlignment = Alignment.CenterVertically,
         ) {
             BottomNavItem(
                 icon = Icons.Default.Home,
                 label = "Home",
                 selected = current == BottomNavRoute.HOME,
-                onClick = onHomeClick
+                onClick = onHomeClick,
             )
             BottomNavItem(
                 icon = Icons.Default.Favorite,
                 label = "Favorites",
                 selected = current == BottomNavRoute.FAVORITES,
-                onClick = onFavoritesClick
+                onClick = onFavoritesClick,
             )
             BottomNavItem(
                 icon = Icons.Default.Flight,
                 label = "Trips",
                 selected = current == BottomNavRoute.TRIPS,
-                onClick = onTripsClick
+                onClick = onTripsClick,
             )
             BottomNavItem(
                 icon = Icons.Default.AccountCircle,
                 label = "Profile",
                 selected = current == BottomNavRoute.PROFILE,
-                onClick = onProfileClick
+                onClick = onProfileClick,
             )
         }
     }
@@ -95,18 +95,26 @@ fun BottomNavItem(
         modifier = Modifier
             .clickable(onClick = onClick)
             .padding(vertical = MaterialTheme.spacing.SmallSpacing),
-        horizontalAlignment = Alignment.CenterHorizontally
+        horizontalAlignment = Alignment.CenterHorizontally,
     ) {
         Icon(
             imageVector = icon,
             contentDescription = label,
-            tint = if (selected) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.onSurfaceVariant
+            tint = if (selected) {
+                MaterialTheme.colorScheme.primary
+            } else {
+                MaterialTheme.colorScheme.onSurfaceVariant
+            },
         )
         Text(
             text = label,
             style = MaterialTheme.typography.labelSmall.copy(
-                color = if (selected) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.onSurfaceVariant
-            )
+                color = if (selected) {
+                    MaterialTheme.colorScheme.primary
+                } else {
+                    MaterialTheme.colorScheme.onSurfaceVariant
+                },
+            ),
         )
         Spacer(modifier = Modifier.height(MaterialTheme.spacing.TinySpacing))
         if (selected) {
@@ -116,8 +124,8 @@ fun BottomNavItem(
                     .height(MaterialTheme.spacing.TinySpacing)
                     .background(
                         MaterialTheme.colorScheme.primary,
-                        shape = RoundedCornerShape(MaterialTheme.spacing.CornerRadius)
-                    )
+                        shape = RoundedCornerShape(MaterialTheme.spacing.CornerRadius),
+                    ),
             )
         } else {
             Spacer(modifier = Modifier.height(MaterialTheme.spacing.TinySpacing))
