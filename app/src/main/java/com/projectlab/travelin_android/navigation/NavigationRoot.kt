@@ -80,7 +80,7 @@ private fun NavGraphBuilder.authGraph(navController: NavHostController) {
 
         composable(route = AuthScreens.Successful.route) {
             SuccessfulScreen(
-                onProfileClick = { navController.navigate(AuthScreens.Profile.route) },
+                onNextClick = { navController.navigate(HomeScreens.Home.route) },
             )
         }
     }
