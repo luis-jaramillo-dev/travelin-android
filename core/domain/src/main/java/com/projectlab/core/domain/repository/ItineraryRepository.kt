@@ -16,5 +16,8 @@ import kotlin.Unit;
 
 interface ItineraryRepository {
     suspend fun createItinerary(itinerary: ItineraryEntity): Result<EntityId>
-    suspend fun getItinerariesById(id: String): Flow<ItineraryEntity?>
+    suspend fun getItinerariesById(userId: String, itineraryId: String): Flow<ItineraryEntity?>
+    suspend fun getAllItinerariesForUser(userId: String): Flow<List<ItineraryEntity>>
+    suspend fun updateItinerary(itinerary: ItineraryEntity): Result<Unit>
+    suspend fun deleteItinerary(userId: String, itineraryId: String): Result<Unit>
 }

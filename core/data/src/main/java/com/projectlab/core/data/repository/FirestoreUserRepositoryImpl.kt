@@ -11,6 +11,7 @@ import com.projectlab.core.domain.entity.UserEntity
 import com.projectlab.core.domain.repository.UserRepository
 import com.projectlab.core.data.model.dto.FirestoreUserDTO
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.flow
 
 /**
  * FirestoreUserRepositoryImpl is a concrete implementation of the UserRepository interface.
@@ -26,7 +27,7 @@ class FirestoreUserRepositoryImpl @Inject constructor(
     private var userCol = firestore.collection("Users")
 
     override suspend fun createUser(user: UserEntity): Result<EntityId> = runCatching {
-        // create dto:
+        // Convert domain to DTO:
         val dto = FirestoreUserDTO.fromDomain(user)
         // add to firestore:
         val docRef = userCol.document()
@@ -35,7 +36,37 @@ class FirestoreUserRepositoryImpl @Inject constructor(
         EntityId(docRef.id)
     }
 
-    override suspend fun getUserById(id: String): Flow<UserEntity?> {
-        TODO("Not yet implemented")
+    override suspend fun getUserById(id: String): Flow<UserEntity?> = flow {
+        // Reference user document by ID:
+        val snap = userCol.document(id).get().await()
+        if (snap.exists()) {
+            val dto = snap.toObject(FirestoreUserDTO::class.java)
+            emit(dto?.toDomain(snap.id))
+        } else {
+            emit(null)
+        }
+    }
+
+    override suspend fun getAllUsers(): Flow<List<UserEntity>> = flow {
+        // Fetch all users from the collection
+        val snap = userCol.get().await()
+        val list = snap.documents.mapNotNull { doc ->
+            doc.toObject(FirestoreUserDTO::class.java)
+                ?.toDomain(doc.id)
+        }
+        emit(list)
+    }
+
+    override suspend fun updateUser(user: UserEntity): Result<Unit> = runCatching {
+        // convert updated domain to DTO:
+        val dto = FirestoreUserDTO.fromDomain(user)
+        // Overwrite the user document:
+        userCol.document(user.id).set(dto).await()
+    }
+
+    override suspend fun deleteUser(id: String): Result<Unit> = runCatching {
+        // Delete the user document by ID:
+        userCol.document(id).delete().await()
+
     }
 }

@@ -17,4 +17,7 @@ import kotlinx.coroutines.flow.Flow
 interface UserRepository {
     suspend fun createUser(user: UserEntity): Result<EntityId>
     suspend fun getUserById(id: String): Flow<UserEntity?>
+    suspend fun getAllUsers(): Flow<List<UserEntity>>
+    suspend fun updateUser(user: UserEntity): Result<Unit>
+    suspend fun deleteUser(id: String): Result<Unit>
 }
