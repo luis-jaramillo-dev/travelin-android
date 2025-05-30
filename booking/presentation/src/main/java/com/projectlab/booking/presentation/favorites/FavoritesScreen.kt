@@ -24,7 +24,6 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
@@ -45,7 +44,7 @@ private enum class FavoriteTabItem {
 
 @Composable
 fun FavoritesScreen(
-    viewModel: FavoritesScreenViewModel,
+    viewModel: FavoritesViewModel,
     onHomeClick: () -> Unit,
     onTripsClick: () -> Unit,
     onProfileClick: () -> Unit,
@@ -70,7 +69,7 @@ fun FavoritesScreen(
 
 @Composable
 private fun FavoritesScreenComponent(
-    viewModel: FavoritesScreenViewModel,
+    viewModel: FavoritesViewModel,
     modifier: Modifier = Modifier,
 ) {
     var selectedTab by remember { mutableStateOf(FavoriteTabItem.DESTINATIONS) }
