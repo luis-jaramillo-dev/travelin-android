@@ -54,7 +54,7 @@ jobs:
 
       # Generate coverage report
       - name: Generate coverage report
-        run: ./gradlew jacocoTestReport
+        run: ./gradlew createDebugCombinedReport
 
       # Enforce minimum coverage
       - name: Enforce minimum coverage

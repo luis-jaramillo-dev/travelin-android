@@ -10,7 +10,6 @@ class JvmLibraryConventionPlugin : Plugin<Project> {
             apply(plugin = "org.jetbrains.kotlin.jvm")
 
             configureKotlinJvm()
-            configureJacocoJvm()
         }
     }
 }

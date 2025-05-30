@@ -1,7 +1,5 @@
 import com.android.build.api.dsl.LibraryExtension
-import com.kotlinpl.convention.ExtensionType
 import com.kotlinpl.convention.configureAndroidCompose
-import com.kotlinpl.convention.configureJacocoWithBuildType
 import org.gradle.api.Plugin
 import org.gradle.api.Project
 import org.gradle.kotlin.dsl.apply
@@ -16,7 +14,6 @@ class AndroidLibraryComposeConventionPlugin: Plugin<Project> {
             val extensions = extensions.getByType<LibraryExtension>()
 
             configureAndroidCompose(extensions)
-            configureJacocoWithBuildType(extensions, ExtensionType.LIBRARY)
         }
     }
 }
