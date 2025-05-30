@@ -8,5 +8,11 @@ import com.projectlab.core.domain.util.Result
 import kotlinx.coroutines.flow.Flow
 
 interface ActivityRepository {
-    suspend fun getActivityById(id: String): Result<Activity, DataError.Network>
+    suspend fun getAPIActivityById(id: String): Result<Activity, DataError.Network>
+    suspend fun createActivity(activity: ActivityEntity): kotlin.Result<EntityId>
+    suspend fun getActivityById(id: String): Flow<ActivityEntity?>
+    suspend fun getActivitiesByCoordinates(
+        latitude: Double,
+        longitude: Double,
+    ): Result<List<Activity>, DataError.Network>
 }

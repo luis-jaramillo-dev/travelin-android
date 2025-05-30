@@ -7,10 +7,9 @@ import com.projectlab.core.data.config.AmadeusTokenSerializer
 import com.projectlab.core.data.config.OnboardingFlagSerializer
 import com.projectlab.core.data.config.SearchHistorySerializer
 import com.projectlab.core.data.network.AmadeusClientFactory
+import com.projectlab.core.data.network.AmadeusTokenAuthenticator
 import com.projectlab.core.data.network.AuthInterceptor
 import com.projectlab.core.data.network.HttpClientFactory
-import com.projectlab.core.data.network.AmadeusTokenAuthenticator
-import com.projectlab.core.data.remote.ActivitiesApiService
 import com.projectlab.core.data.remote.ActivityApiService
 import com.projectlab.core.data.remote.AmadeusApiService
 import com.projectlab.core.data.repository.AmadeusTokenProviderImpl
@@ -152,7 +151,7 @@ object NetworkModule {
     @Provides
     @Singleton
     fun provideTokenProvider(
-        amadeusTokenStore: DataStore<AmadeusToken>
+        amadeusTokenStore: DataStore<AmadeusToken>,
     ): AmadeusTokenProviderImpl {
         return AmadeusTokenProviderImpl(amadeusTokenStore)
     }
@@ -183,14 +182,14 @@ object NetworkModule {
         return AuthInterceptor(tokenProvider)
     }
 
-    @Provides @Singleton
+    @Provides
+    @Singleton
     fun provideTokenAuthenticator(
         tokenProvider: TokenProvider,
         amadeusApiService: AmadeusApiService,
-        amadeusTokenStore: DataStore<AmadeusToken>
-    ): Authenticator = AmadeusTokenAuthenticator(tokenProvider, amadeusApiService, amadeusTokenStore)
-
-
+        amadeusTokenStore: DataStore<AmadeusToken>,
+    ): Authenticator =
+        AmadeusTokenAuthenticator(tokenProvider, amadeusApiService, amadeusTokenStore)
 
     /**
      * Provides OkHttpClient using the factory injected.
@@ -206,23 +205,12 @@ object NetworkModule {
     ): OkHttpClient = factory.createClient()
 
     /**
-     * Provides ActivitiesApiService targeting BASE_URL using OkHttpClient
+     * Provides ActivityApiService targeting BASE_URL using OkHttpClient
      * with auth and logging.
      *
      * @param okHttpClient The OkHttpClient instance.
-     * @return An ActivitiesApiService instance.
+     * @return An ActivityApiService instance.
      */
-    @Provides
-    @Singleton
-    fun provideActivitiesApiService(okHttpClient: OkHttpClient): ActivitiesApiService {
-        return Retrofit.Builder()
-            .baseUrl(BASE_URL)
-            .addConverterFactory(GsonConverterFactory.create())
-            .client(okHttpClient)
-            .build()
-            .create(ActivitiesApiService::class.java)
-    }
-
     @Provides
     @Singleton
     fun provideActivityApiService(okHttpClient: OkHttpClient): ActivityApiService {

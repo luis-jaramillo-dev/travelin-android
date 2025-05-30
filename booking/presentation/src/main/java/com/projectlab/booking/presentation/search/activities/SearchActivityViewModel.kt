@@ -3,7 +3,7 @@ package com.projectlab.booking.presentation.search.activities
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.projectlab.core.data.mapper.toDtoList
-import com.projectlab.core.data.remote.ActivitiesApiService
+import com.projectlab.core.data.remote.ActivityApiService
 import com.projectlab.core.data.usecase.GetActivitiesUseCase
 import com.projectlab.core.domain.model.Location
 import com.projectlab.core.domain.proto.SearchHistory.HistoryType
@@ -23,7 +23,7 @@ import javax.inject.Inject
  * ViewModel for the SearchActivity screen.
  * It handles the logic for searching activities based on user input and location.
  *
- * @param activitiesApiService API service for fetching activities.
+ * @param activityApiService API service for fetching activities.
  * @param getActivitiesUseCase Use case for getting activities.
  * @param locationUtils Utility class for handling location-related tasks.
  * @param errorMapper Mapper for converting errors to user-friendly messages.
@@ -31,7 +31,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class SearchActivityViewModel @Inject constructor(
-    private val activitiesApiService: ActivitiesApiService,
+    private val activityApiService: ActivityApiService,
     private val getActivitiesUseCase: GetActivitiesUseCase,
     private val locationUtils: LocationUtils,
     private val errorMapper: ErrorMapper,
