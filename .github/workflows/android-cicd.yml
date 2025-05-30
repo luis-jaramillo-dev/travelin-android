@@ -1,0 +1,73 @@
+name: CI Pipeline
+
+on:
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      # Checkout the code
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      # Create google-services.json
+      - name: Create google-services from secret
+        env:
+          GOOGLE_SERVICES_JSON_CONTENT: ${{ secrets.GOOGLE_SERVICES_JSON }}
+        run: |
+          TARGET_PATH="$GITHUB_WORKSPACE/app/google-services.json"
+          if [ -n "$GOOGLE_SERVICES_JSON_CONTENT" ]; then
+            echo "Creating $TARGET_PATH"
+            echo "$GOOGLE_SERVICES_JSON_CONTENT" > $TARGET_PATH
+          else
+            echo "GOOGLE_SERVICES_JSON secret not found. Exiting build"
+            exit 1
+          fi
+
+      # Set up JDK
+      - name: Set up JDK 17
+        uses: actions/setup-java@v4
+        with:
+          distribution: 'temurin'
+          java-version: '17'
+
+      # Cache Gradle dependencies
+      - name: Cache Gradle dependencies
+        uses: actions/cache@v4
+        with:
+          path: ~/.gradle/caches
+          key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle*', '**/gradle-wrapper.properties') }}
+          restore-keys: |
+            ${{ runner.os }}-gradle-
+
+      # Run tests
+      - name: Run tests
+        run: ./gradlew test
+
+      # Check code style
+      - name: Check code style
+        run: ./gradlew check
+
+      # Generate coverage report
+      - name: Generate coverage report
+        run: ./gradlew createDebugCombinedReport
+
+      # Enforce minimum coverage
+      - name: Enforce minimum coverage
+        run: |
+          MODULES=$(find "$GITHUB_WORKSPACE" -maxdepth 1 -type d | grep -vE '(gradle|build|build-logic|navigation|^.\/\.\w+|\.$)$')
+          for MODULE in $MODULES; do
+            REPORTS=$(find "$MODULE" -maxdepth 7 -type f | grep -E '*DebugCombinedCoverageReport.xml$')
+            for REPORT in $REPORTS; do
+              COVERAGE=$(grep -o 'TOTAL.*\K\d+\.\d+' $REPORT)
+              MIN_COVERAGE=0.0
+              if (( $(echo "$COVERAGE < $MIN_COVERAGE" | bc -l) )); then
+                echo "Code coverage ($COVERAGE%) is below the minimum threshold ($MIN_COVERAGE%), on module ($MODULE),\n report ($REPORT)"
+                exit 1
+              fi
+            done
+          done

@@ -3,6 +3,7 @@ plugins {
 
     // Dagger Hilt
     alias(libs.plugins.travelinandroid.android.hilt)
+    alias(libs.plugins.travelinandroid.android.library.jacoco)
 }
 
 android {

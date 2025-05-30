@@ -14,7 +14,6 @@ class AndroidLibraryComposeConventionPlugin: Plugin<Project> {
             val extensions = extensions.getByType<LibraryExtension>()
 
             configureAndroidCompose(extensions)
-
         }
     }
 }
