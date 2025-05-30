@@ -5,8 +5,10 @@ import androidx.annotation.RequiresApi
 import com.google.firebase.firestore.FirebaseFirestore
 import com.projectlab.core.data.mapper.toDomain
 import com.projectlab.core.data.model.dto.FirestoreActivityDTO
+import com.projectlab.core.data.model.dto.FirestoreFavoriteActivityDTO
 import com.projectlab.core.data.remote.ActivityApiService
 import com.projectlab.core.domain.entity.ActivityEntity
+import com.projectlab.core.domain.entity.FavoriteActivityEntity
 import com.projectlab.core.domain.model.Activity
 import com.projectlab.core.domain.model.EntityId
 import com.projectlab.core.domain.repository.ActivityRepository
@@ -65,6 +67,40 @@ class ActivityRepositoryImpl @Inject constructor(
 
     override suspend fun getActivityById(id: String): Flow<ActivityEntity?> {
         TODO("Not yet implemented")
+    }
+
+    override suspend fun saveFavoriteActivity(
+        activity: FavoriteActivityEntity,
+    ): kotlin.Result<EntityId> = runCatching {
+        val userDoc = firestore
+            .collection("Users")
+            .document(activity.userRef.value)
+
+        val locationDoc = firestore
+            .collection("Locations")
+            .document(activity.locationRef.value)
+
+        val dto = FirestoreFavoriteActivityDTO.fromDomain(activity, locationDoc)
+        val favoritesCollection = userDoc.collection("FavoriteActivities")
+        val docRef = favoritesCollection.document()
+        docRef.set(dto).await()
+
+        EntityId(docRef.id)
+    }
+
+    override suspend fun removeFavoriteActivityById(
+        userId: EntityId,
+        activityId: EntityId,
+    ): kotlin.Result<Unit> = runCatching {
+        val userDoc = firestore
+            .collection("Users")
+            .document(userId.value)
+
+        val activityDoc = userDoc
+            .collection("FavoriteActivities")
+            .document(activityId.value)
+
+        activityDoc.delete().await()
     }
 
     override suspend fun getActivitiesByCoordinates(
