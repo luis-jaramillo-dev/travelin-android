@@ -5,7 +5,6 @@ import androidx.annotation.RequiresApi
 import com.google.firebase.firestore.FirebaseFirestore
 import com.projectlab.core.data.mapper.toDomain
 import com.projectlab.core.data.model.dto.FirestoreActivityDTO
-import com.projectlab.core.data.model.dto.FirestoreFavoriteActivityDTO
 import com.projectlab.core.data.remote.ActivityApiService
 import com.projectlab.core.domain.entity.ActivityEntity
 import com.projectlab.core.domain.entity.FavoriteActivityEntity
@@ -70,20 +69,16 @@ class ActivityRepositoryImpl @Inject constructor(
     }
 
     override suspend fun saveFavoriteActivity(
+        userId: EntityId,
         activity: FavoriteActivityEntity,
     ): kotlin.Result<EntityId> = runCatching {
         val userDoc = firestore
             .collection("Users")
-            .document(activity.userRef.value)
+            .document(userId.value)
 
-        val locationDoc = firestore
-            .collection("Locations")
-            .document(activity.locationRef.value)
-
-        val dto = FirestoreFavoriteActivityDTO.fromDomain(activity, locationDoc)
         val favoritesCollection = userDoc.collection("FavoriteActivities")
         val docRef = favoritesCollection.document()
-        docRef.set(dto).await()
+        docRef.set(activity).await()
 
         EntityId(docRef.id)
     }

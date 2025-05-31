@@ -1,9 +1,10 @@
 package com.projectlab.booking.presentation.favorites
 
-import com.projectlab.core.data.model.ActivityDto
+import com.projectlab.core.domain.entity.FavoriteActivityEntity
 
 data class FavoritesUIState(
     val query: String = "",
-    val destinations: List<ActivityDto> = emptyList(),
-    // val hotels: List<ActivityDto> = emptyList(),
+    val isLoading: Boolean = false,
+    val error: String? = null,
+    val destinations: List<FavoriteActivityEntity> = emptyList(),
 )

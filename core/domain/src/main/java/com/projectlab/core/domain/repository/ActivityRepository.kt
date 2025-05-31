@@ -12,9 +12,14 @@ interface ActivityRepository {
     suspend fun getAPIActivityById(id: String): Result<Activity, DataError.Network>
 
     suspend fun createActivity(activity: ActivityEntity): kotlin.Result<EntityId>
+
     suspend fun getActivityById(id: String): Flow<ActivityEntity?>
 
-    suspend fun saveFavoriteActivity(activity: FavoriteActivityEntity): kotlin.Result<EntityId>
+    suspend fun saveFavoriteActivity(
+        userId: EntityId,
+        activity: FavoriteActivityEntity,
+    ): kotlin.Result<EntityId>
+
     suspend fun removeFavoriteActivityById(
         userId: EntityId,
         activityId: EntityId,
