@@ -15,6 +15,11 @@ interface ActivityRepository {
 
     suspend fun getActivityById(id: String): Flow<ActivityEntity?>
 
+    fun queryFavoriteActivities(
+        userId: String,
+        nameQuery: String? = null,
+    ): Flow<FavoriteActivityEntity>
+
     suspend fun saveFavoriteActivity(
         userId: String,
         activity: FavoriteActivityEntity,

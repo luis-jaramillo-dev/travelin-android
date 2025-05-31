@@ -14,6 +14,8 @@ import com.projectlab.core.domain.repository.ActivityRepository
 import com.projectlab.core.domain.util.DataError
 import com.projectlab.core.domain.util.Result
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.filter
+import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.tasks.await
 import javax.inject.Inject
 
@@ -66,6 +68,28 @@ class ActivityRepositoryImpl @Inject constructor(
 
     override suspend fun getActivityById(id: String): Flow<ActivityEntity?> {
         TODO("Not yet implemented")
+    }
+
+    override fun queryFavoriteActivities(
+        userId: String,
+        nameQuery: String?,
+    ): Flow<FavoriteActivityEntity> = flow {
+        val userDoc = firestore
+            .collection("Users")
+            .document(userId)
+
+        val documents = userDoc
+            .collection("FavoriteActivities")
+            .get()
+            .await()
+
+        documents.map { doc ->
+            emit(doc.toObject(FavoriteActivityEntity::class.java))
+        }
+    }.filter { activity ->
+        nameQuery == null
+            || nameQuery.isEmpty()
+            || activity.name.contains(nameQuery, ignoreCase = true)
     }
 
     override suspend fun saveFavoriteActivity(

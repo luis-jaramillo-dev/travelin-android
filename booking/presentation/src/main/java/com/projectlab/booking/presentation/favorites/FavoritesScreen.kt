@@ -79,8 +79,12 @@ private fun FavoritesScreenComponent(
         viewModel.onQueryChange(newQuery)
     }
 
-    // TODO should just filter, no extra screens
     val onSearchPressed: () -> Unit = {
+        when (selectedTab) {
+            FavoriteTabItem.DESTINATIONS -> viewModel.queryFavoriteActivities()
+            // TODO
+            FavoriteTabItem.HOTELS -> {}
+        }
     }
 
     Column(
