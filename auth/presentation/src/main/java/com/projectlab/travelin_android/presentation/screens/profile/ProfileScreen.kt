@@ -17,7 +17,8 @@ fun ProfileScreen(
             ProfileContent(
                 paddingValues = it,
                 viewModel = viewModel,
-                onLogoutClick = onLogoutClick
+                onLogoutClick = onLogoutClick,
+                state = viewModel.state
             )
         },
         bottomBar = { BottomNavigationBar("profile", onHomeClick) }

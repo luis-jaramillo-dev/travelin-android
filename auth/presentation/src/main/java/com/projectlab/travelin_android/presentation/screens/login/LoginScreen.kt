@@ -26,6 +26,7 @@ fun LoginScreen(
             LoginContent(
                 paddingValues = it,
                 viewModel = viewModel,
+                state = viewModel.state,
             )
         },
         bottomBar = { LoginBottomBar(onRegisterClick = onRegisterClick) }

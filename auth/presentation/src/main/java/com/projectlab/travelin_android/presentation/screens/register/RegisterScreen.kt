@@ -24,7 +24,13 @@ fun RegisterScreen(
     ) {
     Scaffold(
         topBar = { },
-        content = { RegisterContent(paddingValues = it, viewModel = viewModel) },
+        content = {
+            RegisterContent(
+                paddingValues = it,
+                viewModel = viewModel,
+                state = viewModel.state
+            )
+        },
         bottomBar = { RegisterBottomBar(onLoginClick) }
     )
 

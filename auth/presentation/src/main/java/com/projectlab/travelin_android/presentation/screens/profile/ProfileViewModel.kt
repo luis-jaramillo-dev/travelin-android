@@ -9,6 +9,7 @@ import com.projectlab.auth.domain.use_cases.AuthUseCases
 import com.projectlab.core.domain.entity.UserEntity
 import com.projectlab.core.domain.model.EntityId
 import com.projectlab.core.domain.use_cases.users.UsersUseCases
+import com.projectlab.travelin_android.presentation.screens.register.RegisterState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -20,18 +21,7 @@ class ProfileViewModel @Inject constructor(
 ) : ViewModel() {
     val currentUser = authUseCase.getCurrentUser()
 
-    var userEntityData by mutableStateOf(
-        UserEntity(
-            // id = EntityId(""), // TODO: check if we use EntityId or not
-            id = "",
-            email = "",
-            age = "",
-            firstName = "",
-            lastName = "",
-            countryCode = "",
-            phoneNumber = ""
-        )
-    )
+    var state by mutableStateOf(ProfileState())
         private set
 
     init {
@@ -40,7 +30,7 @@ class ProfileViewModel @Inject constructor(
 
     private fun getUserById() = viewModelScope.launch {
         usersUseCases.getUserById(currentUser!!.uid).collect() {
-            userEntityData = it
+            state.userEntityData.value = it
         }
     }
 
