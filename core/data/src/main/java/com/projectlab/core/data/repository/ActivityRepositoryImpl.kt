@@ -69,31 +69,31 @@ class ActivityRepositoryImpl @Inject constructor(
     }
 
     override suspend fun saveFavoriteActivity(
-        userId: EntityId,
+        userId: String,
         activity: FavoriteActivityEntity,
-    ): kotlin.Result<EntityId> = runCatching {
+    ): kotlin.Result<String> = runCatching {
         val userDoc = firestore
             .collection("Users")
-            .document(userId.value)
+            .document(userId)
 
         val favoritesCollection = userDoc.collection("FavoriteActivities")
         val docRef = favoritesCollection.document()
         docRef.set(activity).await()
 
-        EntityId(docRef.id)
+        docRef.id
     }
 
     override suspend fun removeFavoriteActivityById(
-        userId: EntityId,
-        activityId: EntityId,
+        userId: String,
+        activityId: String,
     ): kotlin.Result<Unit> = runCatching {
         val userDoc = firestore
             .collection("Users")
-            .document(userId.value)
+            .document(userId)
 
         val activityDoc = userDoc
             .collection("FavoriteActivities")
-            .document(activityId.value)
+            .document(activityId)
 
         activityDoc.delete().await()
     }

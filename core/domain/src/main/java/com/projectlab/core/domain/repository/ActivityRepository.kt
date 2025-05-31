@@ -16,13 +16,13 @@ interface ActivityRepository {
     suspend fun getActivityById(id: String): Flow<ActivityEntity?>
 
     suspend fun saveFavoriteActivity(
-        userId: EntityId,
+        userId: String,
         activity: FavoriteActivityEntity,
-    ): kotlin.Result<EntityId>
+    ): kotlin.Result<String>
 
     suspend fun removeFavoriteActivityById(
-        userId: EntityId,
-        activityId: EntityId,
+        userId: String,
+        activityId: String,
     ): kotlin.Result<Unit>
 
     suspend fun getActivitiesByCoordinates(
