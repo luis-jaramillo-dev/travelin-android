@@ -1,24 +1,68 @@
 package com.projectlab.core.data
 
-import androidx.test.platform.app.InstrumentationRegistry
+import android.content.Context
+import android.location.Address
 import androidx.test.ext.junit.runners.AndroidJUnit4
+import com.google.android.gms.location.FusedLocationProviderClient
+import com.projectlab.core.data.service.GeocoderService
+import com.projectlab.core.data.utils.LocationUtils
+import com.projectlab.core.domain.model.Location
+import kotlinx.coroutines.runBlocking
 
 import org.junit.Test
 import org.junit.runner.RunWith
 
 import org.junit.Assert.*
+import org.junit.Before
+import org.mockito.Mockito
+import org.mockito.Mockito.mock
+import org.mockito.MockitoAnnotations
 
-/**
- * Instrumented test, which will execute on an Android device.
- *
- * See [testing documentation](http://d.android.com/tools/testing).
- */
 @RunWith(AndroidJUnit4::class)
-class ExampleInstrumentedTest {
+class LocationUtilsTest {
+    private val location = Location(latitude = -33.43778, longitude = -70.65028)
+
+    private val context = mock<Context>()
+
+    private val geocoderService = mock<GeocoderService>()
+
+    private val fusedLocationClient = mock<FusedLocationProviderClient>()
+
+    private lateinit var locationUtils: LocationUtils
+
+    @Before
+    fun setUp() {
+        MockitoAnnotations.openMocks(this)
+        locationUtils = LocationUtils(
+            context = context,
+            geocoderService = geocoderService,
+            fusedLocationClient = fusedLocationClient
+        )
+    }
+
     @Test
-    fun useAppContext() {
-        // Context of the app under test.
-        val appContext = InstrumentationRegistry.getInstrumentation().targetContext
-        assertEquals("com.projectlab.core.data.test", appContext.packageName)
+    fun convertsCoordinatesToAddress() = runBlocking  {
+
+        val fakeAddress = mock(Address::class.java).apply {
+            Mockito.`when`(this.locality).thenReturn("Santiago")
+            Mockito.`when`(this.countryName).thenReturn("Chile")
+        }
+
+        val fakeAddressList = mutableListOf(fakeAddress)
+
+        Mockito.`when`(geocoderService.getFromLocation(location.latitude, location.longitude, 1))
+            .thenReturn(fakeAddressList)
+
+        val address = locationUtils.reverseGeocodeLocation(location)
+        assertEquals("Santiago, Chile", address)
+
+    }
+
+    @Test
+    fun convertsAddressToCoordinates() = runBlocking {
+        val location = locationUtils.getCoordinatesFromLocation("Santiago, Chile")
+        assertEquals(-33.43778, location?.latitude)
+        assertEquals(-70.65028, location?.longitude)
+
     }
 }
