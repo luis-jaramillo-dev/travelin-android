@@ -1,8 +1,9 @@
 package com.projectlab.travelin_android.presentation.screens.login
 
-import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.derivedStateOf
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.google.firebase.auth.FirebaseUser
@@ -23,17 +24,18 @@ class LoginViewModel @Inject constructor(
     private val _loginFlow = MutableStateFlow<Response<FirebaseUser>?>(value = null)
     val loginFlow: StateFlow<Response<FirebaseUser>?> = _loginFlow
 
-    val email: MutableState<String> = mutableStateOf("")
-    val password: MutableState<String> = mutableStateOf("")
 
-    val isEmailValid = derivedStateOf { AuthValidator.isEmailValid(email.value) }
+    var state by mutableStateOf(LoginState())
+        private set
+
+    val isEmailValid = derivedStateOf { AuthValidator.isEmailValid(state.email.value) }
     val emailError = derivedStateOf {
-        if (email.value.isNotEmpty() && !isEmailValid.value) "Enter a valid email" else null
+        if (state.email.value.isNotEmpty() && !isEmailValid.value) "Enter a valid email" else null
     }
 
-    val isPasswordValid = derivedStateOf { AuthValidator.isPasswordValid(password.value) }
+    val isPasswordValid = derivedStateOf { AuthValidator.isPasswordValid(state.password.value) }
     val passwordError = derivedStateOf {
-        if (password.value.isNotEmpty() && !isPasswordValid.value) "Password must be at least 6 characters, include an uppercase and a number" else null
+        if (state.password.value.isNotEmpty() && !isPasswordValid.value) "Password must be at least 6 characters, include an uppercase and a number" else null
     }
 
     val isFormValid = derivedStateOf {
@@ -50,7 +52,7 @@ class LoginViewModel @Inject constructor(
 
     fun login() = viewModelScope.launch {
         _loginFlow.value = Response.Loading
-        val result = authUseCase.login(email.value, password.value)
+        val result = authUseCase.login(state.email.value, state.password.value)
         _loginFlow.value = result
     }
 }

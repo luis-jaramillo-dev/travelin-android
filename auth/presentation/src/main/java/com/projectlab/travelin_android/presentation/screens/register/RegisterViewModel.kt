@@ -1,15 +1,15 @@
 package com.projectlab.travelin_android.presentation.screens.register
 
-import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.derivedStateOf
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.google.firebase.auth.FirebaseUser
 import com.projectlab.auth.domain.use_cases.AuthUseCases
 import com.projectlab.core.domain.model.Response
 import com.projectlab.core.domain.entity.UserEntity
-import com.projectlab.core.domain.model.EntityId
 import com.projectlab.core.domain.use_cases.users.UsersUseCases
 import com.projectlab.travelin_android.presentation.validation.AuthValidator
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -24,34 +24,28 @@ class RegisterViewModel @Inject constructor(
     private val authUseCases: AuthUseCases
 ) : ViewModel() {
 
-    val firstName: MutableState<String> = mutableStateOf("")
-    val lastName: MutableState<String> = mutableStateOf("")
-    val countryCode: MutableState<String> = mutableStateOf("+56")
-    val phoneNumber: MutableState<String> = mutableStateOf("")
-    val age: MutableState<String> = mutableStateOf("")
-    val email: MutableState<String> = mutableStateOf("")
-    val password: MutableState<String> = mutableStateOf("")
-    val termsAndConditions: MutableState<Boolean> = mutableStateOf(false)
+    var state by mutableStateOf(RegisterState())
+        private set
 
-
-    val isAgeValid = derivedStateOf { AuthValidator.isAgeValid(age.value) }
+    val isAgeValid = derivedStateOf { AuthValidator.isAgeValid(state.age.value) }
     val ageError = derivedStateOf {
-        if (age.value.isNotEmpty() && !isAgeValid.value) "Enter a valid age" else null
+        if (state.age.value.isNotEmpty() && !isAgeValid.value) "Enter a valid age" else null
     }
 
-    val isEmailValid = derivedStateOf { AuthValidator.isEmailValid(email.value) }
+    val isEmailValid = derivedStateOf { AuthValidator.isEmailValid(state.email.value) }
     val emailError = derivedStateOf {
-        if (email.value.isNotEmpty() && !isEmailValid.value) "Enter a valid email" else null
+        if (state.email.value.isNotEmpty() && !isEmailValid.value) "Enter a valid email" else null
     }
 
-    val isPasswordValid = derivedStateOf { AuthValidator.isPasswordValid(password.value) }
+    val isPasswordValid = derivedStateOf { AuthValidator.isPasswordValid(state.password.value) }
     val passwordError = derivedStateOf {
-        if (password.value.isNotEmpty() && !isPasswordValid.value) "Password must be at least 6 characters, include an uppercase and a number" else null
+        if (state.password.value.isNotEmpty() && !isPasswordValid.value) "Password must be at least 6 characters, include an uppercase and a number" else null
     }
 
-    val isTermsAccepted = derivedStateOf { AuthValidator.isTermsAccepted(termsAndConditions.value) }
+    val isTermsAccepted =
+        derivedStateOf { AuthValidator.isTermsAccepted(state.termsAndConditions.value) }
     val termsError = derivedStateOf {
-        if (!termsAndConditions.value) "You must accept the terms and conditions" else null
+        if (!state.termsAndConditions.value) "You must accept the terms and conditions" else null
     }
 
     val isFormValid = derivedStateOf {
@@ -61,9 +55,9 @@ class RegisterViewModel @Inject constructor(
             passwordError.value,
             termsError.value
         ).all { it == null } &&
-                firstName.value.isNotBlank() &&
-                lastName.value.isNotBlank() &&
-                phoneNumber.value.isNotBlank()
+                state.firstName.value.isNotBlank() &&
+                state.lastName.value.isNotBlank() &&
+                state.phoneNumber.value.isNotBlank()
     }
 
     private val _registerFlow = MutableStateFlow<Response<FirebaseUser>?>(value = null)
@@ -79,7 +73,7 @@ class RegisterViewModel @Inject constructor(
 
     fun register() = viewModelScope.launch {
         _registerFlow.value = Response.Loading
-        val result = authUseCases.register(email.value, password.value)
+        val result = authUseCases.register(state.email.value, state.password.value)
         _registerFlow.value = result
     }
 
@@ -87,14 +81,13 @@ class RegisterViewModel @Inject constructor(
         val currentUser = authUseCases.getCurrentUser()
 
         val newUserEntity = UserEntity(
-            // id = EntityId(currentUser!!.uid), TODO: check if we use EntityId or not
             id = currentUser!!.uid,
-            email = email.value,
-            age = age.value,
-            firstName = firstName.value,
-            lastName = lastName.value,
-            countryCode = countryCode.value,
-            phoneNumber = phoneNumber.value
+            email = state.email.value,
+            age = state.age.value,
+            firstName = state.firstName.value,
+            lastName = state.lastName.value,
+            countryCode = state.countryCode.value,
+            phoneNumber = state.phoneNumber.value
         )
         usersUseCases.createUser(newUserEntity)
     }
