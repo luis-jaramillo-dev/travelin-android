@@ -1,6 +1,5 @@
 package com.projectlab.travelin_android.presentation.screens.login
 
-import android.util.Log
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.mutableStateOf
@@ -12,7 +11,6 @@ import com.projectlab.core.domain.model.Response
 import com.projectlab.core.domain.repository.UserSessionProvider
 import com.projectlab.travelin_android.presentation.validation.AuthValidator
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.async
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
@@ -58,10 +56,7 @@ class LoginViewModel @Inject constructor(
             _loginFlow.value = Response.Loading
 
             viewModelScope.launch {
-                viewModelScope.async {
-                    userSessionProvider.setUserSessionId(currentUser.uid)
-                }.await()
-
+                userSessionProvider.setUserSessionId(currentUser.uid)
                 _loginFlow.value = Response.Success(currentUser)
             }
         }
