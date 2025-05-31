@@ -6,6 +6,7 @@ import androidx.datastore.dataStore
 import com.projectlab.core.data.config.AmadeusTokenSerializer
 import com.projectlab.core.data.config.OnboardingFlagSerializer
 import com.projectlab.core.data.config.SearchHistorySerializer
+import com.projectlab.core.data.config.UserSessionSerializer
 import com.projectlab.core.data.network.AmadeusClientFactory
 import com.projectlab.core.data.network.AmadeusTokenAuthenticator
 import com.projectlab.core.data.network.AuthInterceptor
@@ -15,9 +16,11 @@ import com.projectlab.core.data.remote.AmadeusApiService
 import com.projectlab.core.data.repository.AmadeusTokenProviderImpl
 import com.projectlab.core.data.repository.OnboardingFlagProviderImpl
 import com.projectlab.core.data.repository.SearchHistoryProviderImpl
+import com.projectlab.core.data.repository.UserSessionProviderImpl
 import com.projectlab.core.domain.proto.AmadeusToken
 import com.projectlab.core.domain.proto.OnboardingFlag
 import com.projectlab.core.domain.proto.SearchHistory
+import com.projectlab.core.domain.proto.UserSession
 import com.projectlab.core.domain.repository.TokenProvider
 import dagger.Module
 import dagger.Provides
@@ -54,6 +57,11 @@ object NetworkModule {
     private val Context.searchHistoryStore: DataStore<SearchHistory> by dataStore<SearchHistory>(
         fileName = "search_history.pb",
         serializer = SearchHistorySerializer,
+    )
+
+    private val Context.userSessionStore: DataStore<UserSession> by dataStore<UserSession>(
+        fileName = "user_session.pb",
+        serializer = UserSessionSerializer,
     )
 
     /**
@@ -97,6 +105,20 @@ object NetworkModule {
         @ApplicationContext context: Context,
     ): DataStore<SearchHistory> {
         return context.searchHistoryStore
+    }
+
+    /**
+     * Provides a singleton instance of UserSession DataStore.
+     *
+     * @param context The application context.
+     * @return A DataStore instance.
+     */
+    @Provides
+    @Singleton
+    fun provideUserSessionStore(
+        @ApplicationContext context: Context,
+    ): DataStore<UserSession> {
+        return context.userSessionStore
     }
 
     /**
@@ -168,6 +190,20 @@ object NetworkModule {
         searchHistoryStore: DataStore<SearchHistory>,
     ): SearchHistoryProviderImpl {
         return SearchHistoryProviderImpl(searchHistoryStore)
+    }
+
+    /**
+     * Provides a singleton instance of UserSessionProvider.
+     *
+     * @param userSessionStore The UserSession DataStore instance.
+     * @return A UserSessionProvider instance.
+     */
+    @Provides
+    @Singleton
+    fun provideUserSessionProvider(
+        userSessionStore: DataStore<UserSession>,
+    ): UserSessionProviderImpl {
+        return UserSessionProviderImpl(userSessionStore)
     }
 
     /**
