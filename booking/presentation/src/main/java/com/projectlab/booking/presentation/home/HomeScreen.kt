@@ -45,6 +45,7 @@ fun HomeScreen(
     locationViewModel: LocationViewModel,
     homeViewModel: HomeViewModel,
     navController: NavController,
+    onClickSearchHotel: () -> Unit
 ) {
     val context = LocalContext.current
     val currentLocation = locationViewModel.location.value
@@ -69,7 +70,7 @@ fun HomeScreen(
     }
 
     LaunchedEffect(Unit) {
-        homeViewModel.navigationEvent.collect { route : String ->
+        homeViewModel.navigationEvent.collect { route: String ->
             navController.navigate(route)
         }
     }
@@ -86,7 +87,8 @@ fun HomeScreen(
             homeViewModel.onSearchPressed()
             homeViewModel.onSearchSubmitted()
         },
-        onDeleteHistoryEntry = homeViewModel::onDeleteHistoryEntry
+        onDeleteHistoryEntry = homeViewModel::onDeleteHistoryEntry,
+        onClickSearchHotel = { onClickSearchHotel() }
     )
 }
 
@@ -98,13 +100,15 @@ fun HomeScreenComponent(
     onQueryChange: (String) -> Unit,
     onQuerySubmitted: () -> Unit,
     onDeleteHistoryEntry: (String) -> Unit,
+    onClickSearchHotel: () -> Unit
 ) {
     Column {
         HomeSearchComponent(
             uiState = uiState,
             onQueryChange = onQueryChange,
             onQuerySubmitted = onQuerySubmitted,
-            onDeleteHistoryEntry = onDeleteHistoryEntry
+            onDeleteHistoryEntry = onDeleteHistoryEntry,
+            onClickSearchHotel = { onClickSearchHotel() }
         )
     }
 }
@@ -117,6 +121,7 @@ fun HomeSearchComponent(
     onQueryChange: (String) -> Unit,
     onQuerySubmitted: () -> Unit,
     onDeleteHistoryEntry: (String) -> Unit,
+    onClickSearchHotel: () -> Unit
 ) {
 
     Box(modifier = Modifier.height(MaterialTheme.spacing.homeHeaderImageSize)) {
@@ -172,7 +177,7 @@ fun HomeSearchComponent(
             ) {
                 ButtonHotel(
                     modifier = Modifier,
-                    onClick = { navController.navigate("search_hotels") },
+                    onClick = { onClickSearchHotel() },
                 )
                 ButtonOversea(
                     modifier = Modifier,

@@ -190,6 +190,7 @@ fun NavGraphBuilder.homeGraph(navController: NavHostController) {
             locationViewModel = hiltViewModel(),
             homeViewModel = hiltViewModel(),
             navController = navController,
+            onClickSearchHotel = { navController.navigate(SearchScreens.Hotels.route) }
         )
     }
 }
