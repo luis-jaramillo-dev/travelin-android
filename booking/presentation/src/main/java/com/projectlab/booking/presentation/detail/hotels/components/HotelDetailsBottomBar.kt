@@ -20,7 +20,8 @@ import com.projectlab.core.presentation.designsystem.theme.spacing
 @Composable
 fun HotelDetailsBottomBar(
     modifier: Modifier = Modifier,
-    hotel: Hotel
+    hotel: Hotel,
+    onClickBookingHotel: () -> Unit
 ) {
 
     Row(
@@ -42,7 +43,7 @@ fun HotelDetailsBottomBar(
         )
         ButtonComponent(
             text = "Book now!",
-            onClick = { },
+            onClick = { onClickBookingHotel() },
             variant = ButtonVariant.Primary,
         )
     }

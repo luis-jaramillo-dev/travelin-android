@@ -13,6 +13,8 @@ import com.projectlab.booking.presentation.search.activities.SearchActivityScree
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavType
 import androidx.navigation.navArgument
+import com.projectlab.booking.presentation.booking.hotels.BookingHotelScreen
+import com.projectlab.booking.presentation.booking.successful.BookingSuccessful
 import com.projectlab.booking.presentation.detail.activities.ActivityDetailScreen
 import com.projectlab.booking.presentation.detail.activities.ActivityDetailViewModel
 import com.projectlab.booking.presentation.home.HomeScreen
@@ -44,6 +46,7 @@ fun NavigationRoot(
         searchGraph(navController)
         detailGraph(navController)
         homeGraph(navController)
+        bookingGraph(navController)
     }
 }
 
@@ -177,8 +180,8 @@ fun NavGraphBuilder.detailGraph(navController: NavHostController) {
 
         HotelDetailsScreen(
             viewModel = hiltViewModel<HotelsViewModel>(parentEntry),
-            navController = navController,
-            hotelId = hotelId
+            hotelId = hotelId,
+            onClickBookingHotel = { navController.navigate(BookingScreens.HotelBooking.route) }
         )
     }
 
@@ -192,5 +195,19 @@ fun NavGraphBuilder.homeGraph(navController: NavHostController) {
             navController = navController,
             onClickSearchHotel = { navController.navigate(SearchScreens.Hotels.route) }
         )
+    }
+}
+
+
+fun NavGraphBuilder.bookingGraph(navController: NavHostController) {
+
+    composable(route = BookingScreens.HotelBooking.route) {
+        BookingHotelScreen(
+            onSuccessBooking = { navController.navigate(BookingScreens.Successful.route) },
+        )
+    }
+
+    composable(route = BookingScreens.Successful.route) {
+        BookingSuccessful()
     }
 }

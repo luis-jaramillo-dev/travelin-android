@@ -17,8 +17,8 @@ import com.projectlab.booking.presentation.screens.hotels.details.components.Hot
 fun HotelDetailsScreen(
     modifier: Modifier = Modifier,
     viewModel: HotelsViewModel,
-    navController: NavHostController,
     hotelId: String,
+    onClickBookingHotel: () -> Unit
 ) {
     val state by viewModel.uiStateHotelDetails.collectAsState()
 
@@ -46,7 +46,8 @@ fun HotelDetailsScreen(
             },
             bottomBar = {
                 HotelDetailsBottomBar(
-                    hotel = currentHotel
+                    hotel = currentHotel,
+                    onClickBookingHotel = { onClickBookingHotel() }
                 )
             }
         )
