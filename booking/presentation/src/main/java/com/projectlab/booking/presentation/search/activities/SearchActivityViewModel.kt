@@ -8,10 +8,10 @@ import com.projectlab.core.data.usecase.GetActivitiesUseCase
 import com.projectlab.core.domain.model.Location
 import com.projectlab.core.domain.proto.SearchHistory.HistoryType
 import com.projectlab.core.domain.repository.SearchHistoryProvider
+import com.projectlab.core.domain.use_cases.error.ErrorMapper
 import com.projectlab.core.domain.util.Result
 import com.projectlab.core.domain.use_cases.location.GetCityFromCoordinatesUseCase
 import com.projectlab.core.domain.use_cases.location.GetCoordinatesFromCityUseCase
-import com.projectlab.core.presentation.ui.utils.ErrorMapper
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -47,7 +47,7 @@ class SearchActivityViewModel @Inject constructor(
         // Load search history when the ViewModel is created
         viewModelScope.launch {
             val list = historyProvider.getSearchHistory(HistoryType.ACTIVITY)
-            _uiState.update { it.copy(history = list.reversed()) }
+            _uiState.update { it.copy(history = list.orEmpty().reversed()) }
         }
     }
 
@@ -62,8 +62,19 @@ class SearchActivityViewModel @Inject constructor(
      */
 
     fun searchWithInitialQuery(query: String) {
-        if (query == uiState.value.query && uiState.value.activities.isNotEmpty()) return
-        _uiState.update { it.copy(query = query) }
+        val currentState = uiState.value
+
+        if (currentState.searchOrigin == SearchOrigin.LOCATION) return
+
+        if (query == currentState.query && currentState.activities.isNotEmpty()) return
+
+        _uiState.update {
+            it.copy(
+                query = query,
+                searchOrigin = SearchOrigin.QUERY
+            )
+        }
+
         onSearchSubmitted()
     }
 
@@ -81,7 +92,12 @@ class SearchActivityViewModel @Inject constructor(
 
                 when (val result = getActivitiesUseCase(location.latitude, location.longitude)) {
                     is Result.Success -> {
-                        _uiState.update { it.copy(activities = result.data.toDtoList()) }
+                        _uiState.update {
+                            it.copy(
+                                activities = result.data.toDtoList(),
+                                searchOrigin = SearchOrigin.LOCATION
+                            )
+                        }
                     }
                     is Result.Error -> {
                         _uiState.update { it.copy(error = errorMapper.map(result.error)) }

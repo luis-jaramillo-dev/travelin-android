@@ -18,7 +18,7 @@ import javax.inject.Inject
  * @property tokenProvider The token provider for API authentication.
  */
 
-class GetActivitiesUseCase @Inject constructor(
+open class GetActivitiesUseCase @Inject constructor(
     private val api: ActivitiesApiService,
     private val tokenProvider: TokenProvider
 ) {
@@ -31,7 +31,7 @@ class GetActivitiesUseCase @Inject constructor(
      * @return A Result containing a list of activities or an error.
      */
 
-    suspend operator fun invoke(
+    open suspend operator fun invoke(
         latitude: Double,
         longitude: Double
     ): Result<List<Activity>, DataError.Network> {

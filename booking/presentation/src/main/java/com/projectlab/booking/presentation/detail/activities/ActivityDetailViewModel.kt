@@ -5,8 +5,8 @@ import androidx.lifecycle.viewModelScope
 import com.projectlab.core.data.mapper.toDto
 import com.projectlab.core.data.remote.ActivityApiService
 import com.projectlab.core.data.usecase.GetActivityUseCase
+import com.projectlab.core.domain.use_cases.error.ErrorMapper
 import com.projectlab.core.domain.util.Result
-import com.projectlab.core.presentation.ui.utils.ErrorMapper
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
