@@ -19,26 +19,26 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
-import androidx.compose.runtime.remember
-import androidx.compose.ui.Modifier
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateMapOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
+import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.navigation.NavController
-import com.projectlab.core.presentation.designsystem.R
-import com.projectlab.core.presentation.designsystem.component.SearchPlaces
-import com.projectlab.core.presentation.designsystem.component.IconLocation
-import com.projectlab.core.presentation.designsystem.component.TourListCard
-import com.projectlab.core.presentation.ui.viewmodel.LocationViewModel
+import androidx.navigation.compose.currentBackStackEntryAsState
 import com.projectlab.core.domain.model.Location
+import com.projectlab.core.presentation.designsystem.R
 import com.projectlab.core.presentation.designsystem.component.BackIconButton
 import com.projectlab.core.presentation.designsystem.component.ButtonComponent
 import com.projectlab.core.presentation.designsystem.component.ButtonVariant
-import com.projectlab.core.presentation.designsystem.component.SearchBarComponent
+import com.projectlab.core.presentation.designsystem.component.IconLocation
+import com.projectlab.core.presentation.designsystem.component.SearchBar
+import com.projectlab.core.presentation.designsystem.component.SearchPlaces
+import com.projectlab.core.presentation.designsystem.component.TourListCard
 import com.projectlab.core.presentation.designsystem.theme.spacing
-import com.projectlab.core.presentation.ui.utils.LocationUtils
+import com.projectlab.core.presentation.ui.viewmodel.LocationViewModel
 
 /**
  *  This is the main screen for searching activities.
@@ -53,14 +53,25 @@ fun SearchActivityScreen(
     modifier: Modifier = Modifier,
     locationViewModel: LocationViewModel,
     searchActivityViewModel: SearchActivityViewModel,
-    locationUtils: LocationUtils,
     navController: NavController,
-    onActivityClick: (String) -> Unit
+    onActivityClick: (String) -> Unit,
 ) {
     val context = LocalContext.current
     val address by locationViewModel.address
     val currentLocation = locationViewModel.location.value
     val uiState by searchActivityViewModel.uiState.collectAsState()
+    val backStackEntry by navController.currentBackStackEntryAsState()
+    val initialQuery = backStackEntry
+        ?.arguments
+        ?.getString("query")
+        .orEmpty()
+
+    // As soon as the Composable is mounted, start the search
+    LaunchedEffect(initialQuery) {
+        if (initialQuery.isNotBlank()) {
+            searchActivityViewModel.searchWithInitialQuery(initialQuery)
+        }
+    }
 
     val permissionLauncher = rememberLauncherForActivityResult(
         ActivityResultContracts.RequestPermission()
@@ -73,7 +84,7 @@ fun SearchActivityScreen(
     }
 
     LaunchedEffect(Unit) {
-        if (!locationUtils.hasLocationPermission(context)) {
+        if (!locationViewModel.hasLocationPermission()) {
             permissionLauncher.launch(Manifest.permission.ACCESS_FINE_LOCATION)
         } else {
             locationViewModel.getCurrentLocation()
@@ -94,7 +105,7 @@ fun SearchActivityScreen(
      */
 
     val onSearchNearbyClick: () -> Unit = {
-        if (!locationUtils.hasLocationPermission(context)) {
+        if (!locationViewModel.hasLocationPermission()) {
             permissionLauncher.launch(Manifest.permission.ACCESS_FINE_LOCATION)
         } else {
             locationViewModel.getCurrentLocation()
@@ -116,12 +127,17 @@ fun SearchActivityScreen(
                     .size(MaterialTheme.spacing.extraLarge2)
                     .padding(MaterialTheme.spacing.extraSmall)
             )
-            SearchBarComponent(
+            SearchBar(
                 query = uiState.query,
+                contentsDescription = "Search City Input",
+                placeholder = stringResource(R.string.search_city_placeholder),
                 onEnter = onEnter,
-                modifier = Modifier,
                 onQueryChange = { searchActivityViewModel.onQueryChanged(it) },
-                onSearchPressed = onEnter
+                onSearchPressed = onEnter,
+                history = uiState.history,
+                onDeleteHistoryEntry = { value ->
+                    searchActivityViewModel.onDeleteHistoryEntry(value)
+                }
             )
         }
         Spacer(modifier = Modifier.height(MaterialTheme.spacing.SectionSpacing))
@@ -138,7 +154,8 @@ fun SearchActivityScreen(
         SearchActivityResultsComponent(
             uiState = uiState,
             onShowAllResults = { searchActivityViewModel.showAllResults() },
-            navController = navController
+            navController = navController,
+            reverseGeocode = { location -> locationViewModel.reverseGeocodeLocation(location) }
         )
     }
 }
@@ -147,13 +164,11 @@ fun SearchActivityScreen(
 fun SearchActivityResultsComponent(
     uiState: SearchActivityUiState,
     onShowAllResults: () -> Unit,
-    navController: NavController
+    navController: NavController,
+    reverseGeocode: suspend (Location) -> String
 ) {
     val activities = uiState.activities
     val showAll = uiState.showAllResults
-
-    val context = LocalContext.current
-    val locationUtils = remember { LocationUtils(context) }
 
     val cityMap = remember { mutableStateMapOf<String, String?>() }
 
@@ -164,7 +179,7 @@ fun SearchActivityResultsComponent(
                     latitude = activity.geoCode.latitude,
                     longitude = activity.geoCode.longitude
                 )
-                val city = locationUtils.reverseGeocodeLocation(location)
+                val city = reverseGeocode(location)
                 cityMap[activity.id] = city
             }
         }

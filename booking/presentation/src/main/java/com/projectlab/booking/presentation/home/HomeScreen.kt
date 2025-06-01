@@ -31,12 +31,12 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
-import com.projectlab.booking.presentation.R
+import com.projectlab.booking.presentation.R as BookingR
+import com.projectlab.core.presentation.designsystem.R as DesignSystemR
 import com.projectlab.core.presentation.designsystem.component.ButtonHotel
 import com.projectlab.core.presentation.designsystem.component.ButtonOversea
-import com.projectlab.core.presentation.designsystem.component.SearchBarComponent
+import com.projectlab.core.presentation.designsystem.component.SearchBar
 import com.projectlab.core.presentation.designsystem.theme.spacing
-import com.projectlab.core.presentation.ui.utils.LocationUtils
 import com.projectlab.core.presentation.ui.viewmodel.LocationViewModel
 
 @Composable
@@ -45,7 +45,6 @@ fun HomeScreen(
     locationViewModel: LocationViewModel,
     homeViewModel: HomeViewModel,
     navController: NavController,
-    locationUtils: LocationUtils,
 ) {
     val context = LocalContext.current
     val currentLocation = locationViewModel.location.value
@@ -62,22 +61,33 @@ fun HomeScreen(
     }
 
     LaunchedEffect(Unit) {
-        if (!locationUtils.hasLocationPermission(context)) {
+        if (!locationViewModel.hasLocationPermission()) {
             permissionLauncher.launch(Manifest.permission.ACCESS_FINE_LOCATION)
         } else {
             locationViewModel.getCurrentLocation()
         }
     }
 
+    LaunchedEffect(Unit) {
+        homeViewModel.navigationEvent.collect { route : String ->
+            navController.navigate(route)
+        }
+    }
+
+    LaunchedEffect(homeViewModel) {
+        homeViewModel.fetchSearchHistory()
+    }
 
     HomeScreenComponent(
         modifier = modifier,
         uiState = uiState,
-        navController = navController,
-        homeViewModel = homeViewModel
+        onQueryChange = homeViewModel::onQueryChange,
+        onQuerySubmitted = {
+            homeViewModel.onSearchPressed()
+            homeViewModel.onSearchSubmitted()
+        },
+        onDeleteHistoryEntry = homeViewModel::onDeleteHistoryEntry
     )
-
-
 }
 
 
@@ -85,18 +95,18 @@ fun HomeScreen(
 fun HomeScreenComponent(
     modifier: Modifier = Modifier,
     uiState: HomeUiState,
-    navController: NavController,
-    homeViewModel: HomeViewModel
+    onQueryChange: (String) -> Unit,
+    onQuerySubmitted: () -> Unit,
+    onDeleteHistoryEntry: (String) -> Unit,
 ) {
-
     Column {
         HomeSearchComponent(
             uiState = uiState,
-            navController = navController,
-            homeViewModel = homeViewModel
+            onQueryChange = onQueryChange,
+            onQuerySubmitted = onQuerySubmitted,
+            onDeleteHistoryEntry = onDeleteHistoryEntry
         )
     }
-
 }
 
 
@@ -104,12 +114,14 @@ fun HomeScreenComponent(
 fun HomeSearchComponent(
     modifier: Modifier = Modifier,
     uiState: HomeUiState,
-    navController: NavController,
-    homeViewModel: HomeViewModel
+    onQueryChange: (String) -> Unit,
+    onQuerySubmitted: () -> Unit,
+    onDeleteHistoryEntry: (String) -> Unit,
 ) {
+
     Box(modifier = Modifier.height(MaterialTheme.spacing.homeHeaderImageSize)) {
         Image(
-            painter = painterResource(R.drawable.homebackground),
+            painter = painterResource(BookingR.drawable.homebackground),
             contentDescription = "Home Background",
             contentScale = ContentScale.Crop,
             modifier = modifier
@@ -124,33 +136,30 @@ fun HomeSearchComponent(
         Column(modifier = Modifier.padding(MaterialTheme.spacing.semiLarge)) {
             Spacer(modifier = Modifier.height(MaterialTheme.spacing.homeHeaderSpacer))
             Text(
-                text = stringResource(R.string.exploreTheWorld),
+                text = stringResource(BookingR.string.exploreTheWorld),
                 style = MaterialTheme.typography.headlineLarge,
                 color = MaterialTheme.colorScheme.surfaceVariant,
                 fontSize = 37.sp,
                 fontWeight = FontWeight.W900
             )
             Text(
-                text = stringResource(R.string.travelNextLevel),
+                text = stringResource(BookingR.string.travelNextLevel),
                 style = MaterialTheme.typography.titleSmall,
                 color = MaterialTheme.colorScheme.surfaceVariant,
                 fontWeight = FontWeight.W600
             )
             Spacer(modifier = Modifier.height(MaterialTheme.spacing.medium))
             Box(Modifier.fillMaxWidth()) {
-                SearchBarComponent(
+                SearchBar(
                     query = uiState.query,
-                    onEnter = {
-                        if (uiState.query.isNotBlank()) {
-                            navController.navigate("search_activities_with_query/${uiState.query}")
-                        }
-                    },
-                    onQueryChange = { newQuery -> homeViewModel.onQueryChange(newQuery) },
-                    onSearchPressed = {
-                        if (uiState.query.isNotBlank()) {
-                            navController.navigate("search_activities_with_query/${uiState.query}")
-                        }
-                    }
+                    contentsDescription = "Search City Input",
+                    placeholder = stringResource(DesignSystemR.string.search_city_placeholder),
+                    onEnter = onQuerySubmitted,
+                    onQueryChange = onQueryChange,
+                    onSearchPressed = onQuerySubmitted,
+                    modifier = Modifier.fillMaxWidth(),
+                    history = uiState.history,
+                    onDeleteHistoryEntry = onDeleteHistoryEntry
                 )
             }
 
