@@ -6,15 +6,15 @@ import androidx.compose.runtime.State
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.projectlab.core.domain.model.Location
+import com.projectlab.core.domain.repository.LocationRepository
 import com.projectlab.core.presentation.designsystem.R
-import com.projectlab.core.presentation.ui.utils.LocationUtils
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
 class LocationViewModel @Inject constructor(
-    private val locationUtils: LocationUtils
+    private val locationRepository: LocationRepository
 ) : ViewModel() {
 
     private val _location = mutableStateOf<Location?>(null)
@@ -23,11 +23,23 @@ class LocationViewModel @Inject constructor(
     private val _address = mutableStateOf<String>("Unknown location")
     val address: State<String> = _address
 
+    fun hasLocationPermission(): Boolean {
+        return locationRepository.hasLocationPermission()
+    }
+
+    suspend fun reverseGeocodeLocation(location: Location): String {
+        return locationRepository.reverseGeocodeLocation(location)
+    }
+
+    suspend fun getCoordinatesFromLocation(locationName: String): Location? {
+        return locationRepository.getCoordinatesFromLocation(locationName)
+    }
+
     fun updateLocation(newLocation: Location) {
         _location.value = newLocation
 
         viewModelScope.launch {
-            _address.value = locationUtils.reverseGeocodeLocation(newLocation)
+            _address.value = locationRepository.reverseGeocodeLocation(newLocation)
         }
     }
 
@@ -38,11 +50,11 @@ class LocationViewModel @Inject constructor(
 
     fun getCurrentLocation() {
         viewModelScope.launch {
-            if (locationUtils.hasLocationPermission(locationUtils.context)) {
-                val currentLocation = locationUtils.getCurrentLocation()
+            if (locationRepository.hasLocationPermission()) {
+                val currentLocation = locationRepository.getCurrentLocation()
                 if (currentLocation != null) {
                     _location.value = currentLocation
-                    _address.value = locationUtils.reverseGeocodeLocation(currentLocation)
+                    _address.value = locationRepository.reverseGeocodeLocation(currentLocation)
                 } else {
                     _address.value = "Could not get location"
                 }

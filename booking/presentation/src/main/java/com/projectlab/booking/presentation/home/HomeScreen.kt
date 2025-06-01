@@ -31,14 +31,13 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
+import com.projectlab.booking.presentation.R as BookingR
+import com.projectlab.core.presentation.designsystem.R as DesignSystemR
 import com.projectlab.core.presentation.designsystem.component.ButtonHotel
 import com.projectlab.core.presentation.designsystem.component.ButtonOversea
 import com.projectlab.core.presentation.designsystem.component.SearchBar
 import com.projectlab.core.presentation.designsystem.theme.spacing
-import com.projectlab.core.presentation.ui.utils.LocationUtils
 import com.projectlab.core.presentation.ui.viewmodel.LocationViewModel
-import com.projectlab.booking.presentation.R as BookingR
-import com.projectlab.core.presentation.designsystem.R as DesignSystemR
 
 @Composable
 fun HomeScreen(
@@ -46,7 +45,6 @@ fun HomeScreen(
     locationViewModel: LocationViewModel,
     homeViewModel: HomeViewModel,
     navController: NavController,
-    locationUtils: LocationUtils,
 ) {
     val context = LocalContext.current
     val currentLocation = locationViewModel.location.value
@@ -63,59 +61,63 @@ fun HomeScreen(
     }
 
     LaunchedEffect(Unit) {
-        if (!locationUtils.hasLocationPermission(context)) {
+        if (!locationViewModel.hasLocationPermission()) {
             permissionLauncher.launch(Manifest.permission.ACCESS_FINE_LOCATION)
         } else {
             locationViewModel.getCurrentLocation()
         }
     }
 
+    LaunchedEffect(Unit) {
+        homeViewModel.navigationEvent.collect { route : String ->
+            navController.navigate(route)
+        }
+    }
+
+    LaunchedEffect(homeViewModel) {
+        homeViewModel.fetchSearchHistory()
+    }
+
     HomeScreenComponent(
         modifier = modifier,
         uiState = uiState,
-        navController = navController,
-        homeViewModel = homeViewModel,
+        onQueryChange = homeViewModel::onQueryChange,
+        onQuerySubmitted = {
+            homeViewModel.onSearchPressed()
+            homeViewModel.onSearchSubmitted()
+        },
+        onDeleteHistoryEntry = homeViewModel::onDeleteHistoryEntry
     )
 }
+
 
 @Composable
 fun HomeScreenComponent(
     modifier: Modifier = Modifier,
     uiState: HomeUiState,
-    navController: NavController,
-    homeViewModel: HomeViewModel,
+    onQueryChange: (String) -> Unit,
+    onQuerySubmitted: () -> Unit,
+    onDeleteHistoryEntry: (String) -> Unit,
 ) {
     Column {
         HomeSearchComponent(
             uiState = uiState,
-            navController = navController,
-            homeViewModel = homeViewModel,
+            onQueryChange = onQueryChange,
+            onQuerySubmitted = onQuerySubmitted,
+            onDeleteHistoryEntry = onDeleteHistoryEntry
         )
     }
 }
+
 
 @Composable
 fun HomeSearchComponent(
     modifier: Modifier = Modifier,
     uiState: HomeUiState,
-    navController: NavController,
-    homeViewModel: HomeViewModel,
+    onQueryChange: (String) -> Unit,
+    onQuerySubmitted: () -> Unit,
+    onDeleteHistoryEntry: (String) -> Unit,
 ) {
-    LaunchedEffect(homeViewModel) {
-        homeViewModel.fetchSearchHistory()
-    }
-
-    val onQueryChange: (String) -> Unit = { newQuery ->
-        homeViewModel.onQueryChange(newQuery)
-    }
-
-    val onSearchPressed: () -> Unit = {
-        if (uiState.query.isNotBlank()) {
-            val query = uiState.query
-            homeViewModel.onSearchPressed()
-            navController.navigate("search_activities_with_query/$query")
-        }
-    }
 
     Box(modifier = Modifier.height(MaterialTheme.spacing.homeHeaderImageSize)) {
         Image(
@@ -124,12 +126,12 @@ fun HomeSearchComponent(
             contentScale = ContentScale.Crop,
             modifier = modifier
                 .fillMaxHeight()
-                .fillMaxWidth(),
+                .fillMaxWidth()
         )
         Box(
             modifier = Modifier
                 .fillMaxSize()
-                .background(Color(0x33000000)),
+                .background(Color(0x33000000))
         )
         Column(modifier = Modifier.padding(MaterialTheme.spacing.semiLarge)) {
             Spacer(modifier = Modifier.height(MaterialTheme.spacing.homeHeaderSpacer))
@@ -138,33 +140,35 @@ fun HomeSearchComponent(
                 style = MaterialTheme.typography.headlineLarge,
                 color = MaterialTheme.colorScheme.surfaceVariant,
                 fontSize = 37.sp,
-                fontWeight = FontWeight.W900,
+                fontWeight = FontWeight.W900
             )
             Text(
                 text = stringResource(BookingR.string.travelNextLevel),
                 style = MaterialTheme.typography.titleSmall,
                 color = MaterialTheme.colorScheme.surfaceVariant,
-                fontWeight = FontWeight.W600,
+                fontWeight = FontWeight.W600
             )
             Spacer(modifier = Modifier.height(MaterialTheme.spacing.medium))
-            SearchBar(
-                query = uiState.query,
-                contentsDescription = "Search City Input",
-                placeholder = stringResource(DesignSystemR.string.search_city_placeholder),
-                onEnter = onSearchPressed,
-                onQueryChange = onQueryChange,
-                onSearchPressed = onSearchPressed,
-                modifier = Modifier.fillMaxWidth(),
-                history = uiState.history,
-                onDeleteHistoryEntry = { value -> homeViewModel.onDeleteHistoryEntry(value) }
-            )
+            Box(Modifier.fillMaxWidth()) {
+                SearchBar(
+                    query = uiState.query,
+                    contentsDescription = "Search City Input",
+                    placeholder = stringResource(DesignSystemR.string.search_city_placeholder),
+                    onEnter = onQuerySubmitted,
+                    onQueryChange = onQueryChange,
+                    onSearchPressed = onQuerySubmitted,
+                    modifier = Modifier.fillMaxWidth(),
+                    history = uiState.history,
+                    onDeleteHistoryEntry = onDeleteHistoryEntry
+                )
+            }
 
             Spacer(modifier = Modifier.height(MaterialTheme.spacing.medium))
 
             Row(
                 horizontalArrangement = Arrangement.SpaceAround,
                 verticalAlignment = Alignment.CenterVertically,
-                modifier = Modifier.fillMaxWidth(),
+                modifier = Modifier.fillMaxWidth()
             ) {
                 ButtonHotel(
                     modifier = Modifier,
@@ -172,7 +176,7 @@ fun HomeSearchComponent(
                 )
                 ButtonOversea(
                     modifier = Modifier,
-                    onClick = {},
+                    onClick = {}
                 )
             }
         }
