@@ -42,9 +42,9 @@ fun VerticalFavoriteCard(
     onFavoriteClick: () -> Unit,
     onClick: () -> Unit,
     modifier: Modifier = Modifier,
-    imageHeight: Dp = 200.dp,
-    favoriteButtonSize: Dp = 40.dp,
-    favoriteButtonPadding: Dp = 16.dp,
+    imageHeight: Dp = MaterialTheme.spacing.favoriteImageHeight,
+    favoriteButtonSize: Dp = MaterialTheme.spacing.favoriteButtonSize,
+    favoriteButtonPadding: Dp = MaterialTheme.spacing.favoriteButtonPadding,
 ) {
     val interactionSource = remember { MutableInteractionSource() }
 

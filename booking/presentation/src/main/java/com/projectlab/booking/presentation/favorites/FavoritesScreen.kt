@@ -29,7 +29,6 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.unit.dp
 import com.projectlab.booking.presentation.R
 import com.projectlab.core.presentation.designsystem.component.BottomNavRoute
 import com.projectlab.core.presentation.designsystem.component.BottomNavigationBar
@@ -176,7 +175,7 @@ private fun FavoritesScreenComponent(
                                 onFavoriteClick = { viewModel.removeFavoriteActivity(favorite.id) },
                                 onClick = { onActivityClick(favorite.id) },
                                 modifier = Modifier
-                                    .height(300.dp)
+                                    .height(MaterialTheme.spacing.favoriteCardHeight)
                                     .weight(1f),
                             )
                         }
