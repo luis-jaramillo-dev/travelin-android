@@ -15,5 +15,8 @@ import kotlinx.coroutines.flow.Flow
 
 interface FlightRepository {
     suspend fun createFlight(flight: FlightEntity): Result<EntityId>
-    suspend fun getFlightsById(id: String): Flow<FlightEntity?>
+    suspend fun getFlightById(userId: String, itinId: String, flightId: String): Flow<FlightEntity?>
+    suspend fun getAllFlightsForItinerary(userId: String, itinId: String): Flow<List<FlightEntity>>
+    suspend fun updateFlight(flight: FlightEntity): Result<Unit>
+    suspend fun deleteFlight(userId: String, itinId: String, flightId: String): Result<Unit>
 }

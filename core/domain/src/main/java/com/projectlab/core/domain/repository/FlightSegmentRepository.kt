@@ -15,5 +15,23 @@ import kotlinx.coroutines.flow.Flow
 
 interface FlightSegmentRepository {
     suspend fun createFlightSegment(flightSegment: FlightSegmentEntity): Result<EntityId>
-    suspend fun getFlightSegmentById(id: String): Flow<FlightSegmentEntity?>
+    suspend fun getFlightSegmentById(
+        userId: String,
+        itinId: String,
+        flightId: String,
+        segmentId: String
+    ): Flow<FlightSegmentEntity?>
+    suspend fun getAllFlightSegmentsForFlight(
+        userId: String,
+        itinId: String,
+        flightId: String
+    ): Flow<List<FlightSegmentEntity>>
+    suspend fun updateFlightSegment(flightSegment: FlightSegmentEntity): Result<Unit>
+    suspend fun deleteFlightSegment(
+        userId: String,
+        itinId: String,
+        flightId: String,
+        segmentId: String
+    ): Result<Unit>
+
 }
