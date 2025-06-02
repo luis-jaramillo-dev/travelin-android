@@ -56,18 +56,53 @@ jobs:
       - name: Generate coverage report
         run: ./gradlew createDebugCombinedReport
 
+      # Check Coverage
+      - name: Check minimum coverage
+        run: ./gradlew jacocoTestCoverageReport
+
       # Enforce minimum coverage
       - name: Enforce minimum coverage
         run: |
           MODULES=$(find "$GITHUB_WORKSPACE" -maxdepth 1 -type d | grep -vE '(gradle|build|build-logic|navigation|^.\/\.\w+|\.$)$')
+
+          LOC_COVERED=0
+          LOC_MISSED=0
+
           for MODULE in $MODULES; do
-            REPORTS=$(find "$MODULE" -maxdepth 7 -type f | grep -E '*DebugCombinedCoverageReport.xml$')
+            REPORTS=$(find "$MODULE" -maxdepth 7 -type f | grep -E '.*DebugCombinedCoverageReport.csv$')
             for REPORT in $REPORTS; do
-              COVERAGE=$(grep -o 'TOTAL.*\K\d+\.\d+' $REPORT)
-              MIN_COVERAGE=0.0
-              if (( $(echo "$COVERAGE < $MIN_COVERAGE" | bc -l) )); then
-                echo "Code coverage ($COVERAGE%) is below the minimum threshold ($MIN_COVERAGE%), on module ($MODULE),\n report ($REPORT)"
-                exit 1
-              fi
+#              echo "Report: $REPORT"
+#              awk -F ',' '{ print $6, $7 }' $REPORT
+              BRANCH_COVERED=$( \
+                 awk -F ',' \
+                 'BEGIN { sum_branch_covered = 0; } \
+                 { sum_branch_covered += $7; } \
+                 END { print sum_branch_covered; }' \
+                 $REPORT \
+              )
+          
+              BRANCH_MISSED=$( \
+                awk -F ',' \
+                'BEGIN { sum_branch_missed = 0; } \
+                { sum_branch_missed += $6; } \
+                END { print sum_branch_missed; }' \
+                $REPORT \
+              )
+               
+              (( LOC_COVERED += BRANCH_COVERED ));
+              (( LOC_MISSED += BRANCH_MISSED ));
             done
           done
+
+          COVERAGE=$(echo "scale=2; $LOC_COVERED / $LOC_MISSED" | bc)
+          MIN_COVERAGE=0.0
+                
+          echo "$COVERAGE"
+          echo "$MIN_COVERAGE"
+
+          if (( $(echo "$COVERAGE" < "$MIN_COVERAGE" | bc -l )); then
+            echo "Code coverage ($COVERAGE%) is below the minimum threshold ($MIN_COVERAGE%), on module ($MODULE),\n report ($REPORT)"
+            exit 1
+          else
+            echo "SUCCESS OPERATION"
+          fi

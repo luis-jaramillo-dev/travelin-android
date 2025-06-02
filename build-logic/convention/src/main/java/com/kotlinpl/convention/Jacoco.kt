@@ -53,7 +53,6 @@ internal fun Project.configureJacocoAndroid(
                 "create${variant.name.capitalize()}CombinedCoverageReport",
                 JacocoReport::class,
             ) {
-
                 classDirectories.setFrom(
                     allJars,
                     allDirectories.map { dirs ->
@@ -64,7 +63,7 @@ internal fun Project.configureJacocoAndroid(
                 )
                 reports {
                     xml.required = true
-                    html.required = true
+                    csv.required = true
                 }
 
                 fun SourceDirectories.Flat?.toFilePaths(): Provider<List<String>> = this
@@ -111,17 +110,11 @@ internal fun Project.configureJacocoAndroid(
 }
 
 internal fun Project.configureJacocoJvm() {
-    configure<JacocoPluginExtension> {
-        toolVersion = libs.version("jacoco")
-    }
-
     extensions.configure<JavaPluginExtension> {
 
 
         tasks.register<JacocoReport>("jacocoTestReport") {
             dependsOn(tasks.withType<Test>())
-
-            val sourceDirs = this.
 
             reports {
                 xml.required.set(true)
