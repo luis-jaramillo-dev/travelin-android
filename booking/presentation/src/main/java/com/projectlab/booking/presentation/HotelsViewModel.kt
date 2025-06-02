@@ -5,6 +5,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.projectlab.booking.presentation.booking.hotels.BookingHotelState
 import com.projectlab.booking.presentation.screens.hotels.details.HotelDetailsUiState
 import com.projectlab.booking.presentation.screens.hotels.search.HotelSearchUiState
 import com.projectlab.core.domain.model.Hotel
@@ -27,11 +28,15 @@ class HotelsViewModel @Inject constructor(
     private val usersUseCases: UsersUseCases
 ) : ViewModel() {
 
+
     private val _uiStateHotelSearch = MutableStateFlow(HotelSearchUiState())
     val uiStateHotelSearch: StateFlow<HotelSearchUiState> = _uiStateHotelSearch.asStateFlow()
 
     private val _uiStateHotelDetails = MutableStateFlow(HotelDetailsUiState())
     val uiStateHotelDetails: StateFlow<HotelDetailsUiState> = _uiStateHotelDetails.asStateFlow()
+
+    var bookingState by mutableStateOf(BookingHotelState())
+        private set
 
     private var user by mutableStateOf(
         User()
@@ -43,8 +48,14 @@ class HotelsViewModel @Inject constructor(
     }
 
     private fun getUserById() = viewModelScope.launch {
-        usersUseCases.getUserById("7wmWegYUANOFv8ZvKZN1GzHoqvV2").collect() {
+        usersUseCases.getUserById("F8OFfRyvIlhs3oATxAyJEgRzaKn2").collect() {
             user = it
+            bookingState = bookingState.copy(
+                guestName = "${it.firstName} ${it.lastName}",
+                guestNumber = it.phoneNumber,
+                countryCode = it.countryCode,
+                email = it.email,
+            )
         }
     }
 
@@ -90,6 +101,9 @@ class HotelsViewModel @Inject constructor(
     fun getHotelDetails(hotelId: String) {
         val hotelFound = _uiStateHotelSearch.value.hotels.find { it.id == hotelId }
         _uiStateHotelDetails.update { it.copy(currentHotel = hotelFound) }
+        bookingState = bookingState.copy(currentHotel = hotelFound)
+
+        println(bookingState)
     }
 
     fun favoriteHotel(hotelId: String) {
