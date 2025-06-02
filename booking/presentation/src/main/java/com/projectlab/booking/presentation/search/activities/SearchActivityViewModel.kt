@@ -9,8 +9,9 @@ import com.projectlab.core.domain.model.Location
 import com.projectlab.core.domain.proto.SearchHistory.HistoryType
 import com.projectlab.core.domain.repository.SearchHistoryProvider
 import com.projectlab.core.domain.util.Result
+import com.projectlab.core.domain.use_cases.location.GetCityFromCoordinatesUseCase
+import com.projectlab.core.domain.use_cases.location.GetCoordinatesFromCityUseCase
 import com.projectlab.core.presentation.ui.utils.ErrorMapper
-import com.projectlab.core.presentation.ui.utils.LocationUtils
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -25,7 +26,6 @@ import javax.inject.Inject
  *
  * @param activitiesApiService API service for fetching activities.
  * @param getActivitiesUseCase Use case for getting activities.
- * @param locationUtils Utility class for handling location-related tasks.
  * @param errorMapper Mapper for converting errors to user-friendly messages.
  */
 
@@ -33,10 +33,12 @@ import javax.inject.Inject
 class SearchActivityViewModel @Inject constructor(
     private val activitiesApiService: ActivitiesApiService,
     private val getActivitiesUseCase: GetActivitiesUseCase,
-    private val locationUtils: LocationUtils,
+    private val getCoordinatesFromCityUseCase: GetCoordinatesFromCityUseCase,
+    private val getCityFromCoordinatesUseCase: GetCityFromCoordinatesUseCase,
     private val errorMapper: ErrorMapper,
     private val historyProvider: SearchHistoryProvider,
-) : ViewModel() {
+
+    ) : ViewModel() {
 
     private val _uiState = MutableStateFlow(SearchActivityUiState())
     val uiState: StateFlow<SearchActivityUiState> = _uiState.asStateFlow()
@@ -62,7 +64,7 @@ class SearchActivityViewModel @Inject constructor(
     fun searchWithInitialQuery(query: String) {
         if (query == uiState.value.query && uiState.value.activities.isNotEmpty()) return
         _uiState.update { it.copy(query = query) }
-        onSearchSubmitted(true)
+        onSearchSubmitted()
     }
 
     fun onSearchSubmitted() {
@@ -73,7 +75,7 @@ class SearchActivityViewModel @Inject constructor(
         viewModelScope.launch {
             _uiState.update { it.copy(isLoading = true, error = null) }
             try {
-                val addressString = locationUtils.reverseGeocodeLocation(location)
+                val addressString = getCityFromCoordinatesUseCase(location.latitude, location.longitude)
                 _uiState.update { it.copy(address = addressString, query = addressString) }
 
 
@@ -81,7 +83,6 @@ class SearchActivityViewModel @Inject constructor(
                     is Result.Success -> {
                         _uiState.update { it.copy(activities = result.data.toDtoList()) }
                     }
-
                     is Result.Error -> {
                         _uiState.update { it.copy(error = errorMapper.map(result.error)) }
                     }
@@ -115,11 +116,11 @@ class SearchActivityViewModel @Inject constructor(
                     _uiState.update { it.copy(history = updated.reversed()) }
                 }
 
-                val locationData = locationUtils.getCoordinatesFromLocation(uiState.value.query)
+                val locationData = getCoordinatesFromCityUseCase(uiState.value.query)
                 if (locationData != null) {
                     when (val result = getActivitiesUseCase(
-                        locationData.latitude,
-                        locationData.longitude,
+                        locationData.first,
+                        locationData.second,
                     )) {
                         is Result.Success -> {
                             _uiState.update { it.copy(activities = result.data.toDtoList()) }

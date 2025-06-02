@@ -1,6 +1,7 @@
-package com.projectlab.core.presentation.ui.di
+package com.projectlab.core.data.di
 
-import com.projectlab.core.presentation.ui.utils.LocationUtils
+
+import com.projectlab.core.data.utils.LocationUtils
 import dagger.hilt.EntryPoint
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent

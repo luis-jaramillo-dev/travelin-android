@@ -17,7 +17,7 @@ import com.projectlab.booking.presentation.detail.activities.ActivityDetailScree
 import com.projectlab.booking.presentation.detail.activities.ActivityDetailViewModel
 import com.projectlab.booking.presentation.home.HomeScreen
 import com.projectlab.booking.presentation.search.activities.SearchActivityViewModel
-import com.projectlab.core.presentation.ui.di.LocationUtilsEntryPoint
+import com.projectlab.core.data.di.LocationUtilsEntryPoint
 import com.projectlab.core.presentation.ui.viewmodel.LocationViewModel
 import com.projectlab.feature.onboarding.presentation.ui.OnboardingScreenRoot
 import com.projectlab.travelin_android.presentation.screens.login.LoginScreen
@@ -85,18 +85,9 @@ private fun NavGraphBuilder.authGraph(navController: NavHostController) {
 
 private fun NavGraphBuilder.searchGraph(navController: NavHostController) {
     composable(route = SearchScreens.Activities.route) {
-
-        val context = LocalContext.current
-        val locationUtils = remember {
-            EntryPointAccessors
-                .fromApplication(context.applicationContext, LocationUtilsEntryPoint::class.java)
-                .locationUtils()
-        }
-
         SearchActivityScreen(
             locationViewModel = hiltViewModel(),
             searchActivityViewModel = hiltViewModel(),
-            locationUtils = locationUtils,
             navController = navController,
             onActivityClick = { activityId ->
                 navController.navigate(DetailScreens.ActivityDetail.createRoute(activityId))
@@ -129,7 +120,6 @@ private fun NavGraphBuilder.searchGraph(navController: NavHostController) {
         SearchActivityScreen(
             locationViewModel = locationViewModel,
             searchActivityViewModel = searchActivityViewModel,
-            locationUtils = locationUtils,
             navController = navController,
             onActivityClick = { activityId ->
                 navController.navigate(DetailScreens.ActivityDetail.createRoute(activityId))
@@ -158,20 +148,10 @@ fun NavGraphBuilder.detailGraph(navController: NavHostController) {
 
 fun NavGraphBuilder.homeGraph(navController: NavHostController) {
     composable(route = HomeScreens.Home.route) {
-
-        val context = LocalContext.current
-        val locationUtils = remember {
-            EntryPointAccessors
-                .fromApplication(context.applicationContext, LocationUtilsEntryPoint::class.java)
-                .locationUtils()
-        }
-
         HomeScreen(
             locationViewModel = hiltViewModel(),
             homeViewModel = hiltViewModel(),
             navController = navController,
-            locationUtils = locationUtils
         )
     }
-
 }

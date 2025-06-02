@@ -42,6 +42,10 @@ lifecycleKtx = "2.6.1"
 kotlinxCoroutinesTest = "1.10.2"
 androidxTest = "1.6.1"
 jacoco = "0.8.12" # check newer version
+junitKtx = "1.2.1"
+mockito = "5.2.0"
+mockito-kotlin = "4.0.0"
+compose-ui-test = "1.6.1"
 
 [libraries]
 androidx-activity-compose = { module = "androidx.activity:activity-compose", version.ref = "activityCompose" }
@@ -97,6 +101,10 @@ kotlinx-coroutines-test = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-t
 androidx-datastore = { group = "androidx.datastore", name = "datastore", version.ref = "datastoreVersion" }
 protobuf-javalite = { group = "com.google.protobuf", name = "protobuf-javalite", version.ref = "protobufProtocVersion" }
 protobuf-protoc = { group = "com.google.protobuf", name = "protoc", version.ref = "protobufProtocVersion" }
+compose-ui-test = { module = "androidx.compose.ui:ui-test-junit4", version.ref = "compose-ui-test" }
+compose-ui-test-manifest = { module = "androidx.compose.ui:ui-test-manifest", version.ref = "compose-ui-test" }
+mockito-android = { module = "org.mockito:mockito-android", version.ref = "mockito"}
+mockito-kotlin = { module = "org.mockito:mockito-kotlin", version.ref = "mockito-kotlin"}
 
 # Convention PLugins Dependencies
 android-gradlePlugin = { group = "com.android.tools.build", name = "gradle", version.ref = "androidGradlePlugin" }
@@ -107,6 +115,7 @@ ksp-gradlePlugin = { group = "com.google.devtools.ksp", name = "com.google.devto
 androidx-appcompat = { group = "androidx.appcompat", name = "appcompat", version.ref = "appcompat" }
 material = { group = "com.google.android.material", name = "material", version.ref = "material" }
 androidx-navigation-runtime-android = { group = "androidx.navigation", name = "navigation-runtime-android", version.ref = "navigationRuntimeAndroid" }
+androidx-junit-ktx = { group = "androidx.test.ext", name = "junit-ktx", version.ref = "junitKtx" }
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }
