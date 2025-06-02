@@ -88,6 +88,8 @@ jobs:
 
           if [ "$(echo "$COVERAGE < $MIN_COVERAGE" | bc -l )" -eq -1  ]; then
             echo "Code coverage ($COVERAGE%) is below the minimum threshold ($MIN_COVERAGE%)"
+            exit 1
           else
             echo "SUCCESS OPERATION"
+            exit 0
           fi
