@@ -59,7 +59,6 @@ jobs:
       # Enforce minimum coverage
       - name: Enforce minimum coverage
         run: |
-          GITHUB_WORKSPACE="." #TODO DELETE THIS LINE
           MODULES=$(find "$GITHUB_WORKSPACE" -maxdepth 1 -type d | grep -vE '(gradle|build|build-logic|navigation|^.\/\.\w+|\.$)$')
 
           LOC_COVERED=0
