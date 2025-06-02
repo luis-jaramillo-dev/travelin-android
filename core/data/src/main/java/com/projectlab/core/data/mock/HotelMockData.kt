@@ -65,6 +65,7 @@ private val photoUrls = listOf(
 
 fun randomHotelPrice(stars: Int) = Random.nextInt(from = 35 + stars * 20, until = stars * 150)
 
+fun randomHotelPhoneNumber() = Random.nextLong(from = 10000000000, until = 9999999999999).toString()
 
 fun randomHotelOffers(stars: Int): List<HotelOffer> {
     val numberOfBedrooms = Random.nextInt(from = 1, until = 5)
