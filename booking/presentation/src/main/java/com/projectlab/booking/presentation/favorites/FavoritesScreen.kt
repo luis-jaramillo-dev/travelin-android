@@ -2,6 +2,7 @@ package com.projectlab.booking.presentation.favorites
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -12,12 +13,16 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.lazy.grid.GridCells
+import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
+import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -34,6 +39,7 @@ import com.projectlab.core.presentation.designsystem.component.BackIconButton
 import com.projectlab.core.presentation.designsystem.component.BottomNavRoute
 import com.projectlab.core.presentation.designsystem.component.BottomNavigationBar
 import com.projectlab.core.presentation.designsystem.component.SearchBar
+import com.projectlab.core.presentation.designsystem.component.VerticalFavoriteCard
 import com.projectlab.core.presentation.designsystem.theme.bodyFontFamily
 import com.projectlab.core.presentation.designsystem.theme.spacing
 
@@ -74,6 +80,14 @@ private fun FavoritesScreenComponent(
 ) {
     var selectedTab by remember { mutableStateOf(FavoriteTabItem.DESTINATIONS) }
     val uiState by viewModel.uiState.collectAsState()
+    val favorites by remember {
+        derivedStateOf {
+            when (selectedTab) {
+                FavoriteTabItem.DESTINATIONS -> uiState.destinations
+                FavoriteTabItem.HOTELS -> emptyList() // TODO
+            }
+        }
+    }
 
     val onQueryChange: (String) -> Unit = { newQuery ->
         viewModel.onQueryChange(newQuery)
@@ -82,8 +96,7 @@ private fun FavoritesScreenComponent(
     val onSearchPressed: () -> Unit = {
         when (selectedTab) {
             FavoriteTabItem.DESTINATIONS -> viewModel.queryFavoriteActivities()
-            // TODO
-            FavoriteTabItem.HOTELS -> {}
+            FavoriteTabItem.HOTELS -> null // TODO
         }
     }
 
@@ -157,7 +170,28 @@ private fun FavoritesScreenComponent(
 
             Spacer(modifier = Modifier.height(40.dp))
 
-            // TODO put cards grid here
+            LazyVerticalGrid(
+                columns = GridCells.Fixed(2),
+                horizontalArrangement = Arrangement.spacedBy(24.dp),
+                verticalArrangement = Arrangement.spacedBy(24.dp),
+                modifier = Modifier
+                    .fillMaxSize(),
+            ) {
+                items(favorites) { favorite ->
+                    VerticalFavoriteCard(
+                        name = favorite.name,
+                        description = favorite.description,
+                        location = favorite.location,
+                        rating = favorite.rating,
+                        pictureUrl = favorite.pictures.getOrElse(0) { null },
+                        onFavoriteClick = {},
+                        onClick = {},
+                        modifier = Modifier
+                            .height(300.dp)
+                            .weight(1f),
+                    )
+                }
+            }
         }
     }
 }

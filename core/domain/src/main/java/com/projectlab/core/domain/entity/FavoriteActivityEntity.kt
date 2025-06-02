@@ -13,4 +13,7 @@ data class FavoriteActivityEntity(
     val currency: String,
     val rating: Float,
     val location: String,
+    val latitude: Double,
+    val longitude: Double,
+    val pictures: List<String>,
 )
