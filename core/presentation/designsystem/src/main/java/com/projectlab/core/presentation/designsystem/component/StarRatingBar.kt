@@ -17,8 +17,8 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import com.projectlab.core.presentation.designsystem.R
+import com.projectlab.core.presentation.designsystem.theme.gold
 import com.projectlab.core.presentation.designsystem.theme.spacing
 import kotlin.math.ceil
 
@@ -26,7 +26,7 @@ import kotlin.math.ceil
 fun StarRatingBar(
     rating: Float,
     modifier: Modifier = Modifier,
-    starSize: Dp = 12.dp,
+    starSize: Dp = MaterialTheme.spacing.ElementSpacing,
     spaceBetween: Dp = MaterialTheme.spacing.extraSmall,
     showRatingText: Boolean = true,
     textColor: Color = MaterialTheme.colorScheme.onPrimary,
@@ -50,7 +50,7 @@ fun StarRatingBar(
             Icon(
                 painter = icon,
                 contentDescription = null,
-                tint = Color(0xFFFFB23F),
+                tint = MaterialTheme.colorScheme.gold,
                 modifier = Modifier.size(starSize)
             )
 
@@ -60,16 +60,17 @@ fun StarRatingBar(
         }
 
         if (showRatingText) {
-            Spacer(modifier = Modifier.width(10.dp))
+            Spacer(modifier = Modifier.width(MaterialTheme.spacing.small))
 
             Text(
-                color = textColor,
                 text = if (rating > 0) {
                     rating.toString()
                 } else {
                     stringResource(R.string.tour_list_card_no_reviews)
                 },
-                fontSize = 12.sp,
+                style = MaterialTheme.typography.bodySmall.copy(
+                    color = textColor,
+                ),
             )
         }
     }
@@ -79,8 +80,9 @@ fun StarRatingBar(
 @Composable
 fun StarRatingBarPreview() {
     StarRatingBar(
-        maxStars = 5,
-        rating = 3F,
-        textColor = Color.Black
+        rating = 3.2f,
+        starSize = 16.dp,
+        spaceBetween = 0.dp,
+        textColor = Color.Black,
     )
 }
