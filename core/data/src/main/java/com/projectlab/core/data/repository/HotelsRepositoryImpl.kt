@@ -5,12 +5,12 @@ import com.google.firebase.firestore.FieldValue
 import com.projectlab.core.data.mock.randomHotelAmenities
 import com.projectlab.core.data.mock.randomHotelDisplayImageUrl
 import com.projectlab.core.data.mock.randomHotelOffers
+import com.projectlab.core.data.mock.randomHotelPhoneNumber
 import com.projectlab.core.data.mock.randomHotelPhotoUrls
 import com.projectlab.core.data.mock.randomHotelRating
 import com.projectlab.core.data.remote.hotels.HotelsApiService
 import com.projectlab.core.domain.model.Hotel
 import com.projectlab.core.domain.model.HotelLocation
-import com.projectlab.core.domain.model.Response
 import com.projectlab.core.domain.repository.HotelsRepository
 import com.projectlab.core.domain.repository.TokenProvider
 import com.projectlab.core.domain.util.DataError
@@ -28,14 +28,7 @@ class HotelsRepositoryImpl @Inject constructor(
         cityCode: String,
         amenities: String,
         ratings: String
-
     ): Result<List<Hotel>, DataError.Network> {
-
-
-        val token = tokenProvider.getAccessToken()
-        if (token.isEmpty()) {
-            throw Exception("Access token is missing")
-        }
 
         return try {
             val ratingQuery = "2, 3, 4, 5"
@@ -62,7 +55,8 @@ class HotelsRepositoryImpl @Inject constructor(
                     displayImageUrl = randomHotelDisplayImageUrl(),
                     hotelOffers = hotelOffers,
                     amenities = randomHotelAmenities(),
-                    photoUrls = randomHotelPhotoUrls()
+                    photoUrls = randomHotelPhotoUrls(),
+                    phoneNumber = randomHotelPhoneNumber()
                 )
             }
             Result.Success(hotelsResponse)
@@ -97,6 +91,4 @@ class HotelsRepositoryImpl @Inject constructor(
             Result.Error(DataError.Network.UNKNOWN)
         }
     }
-
-
 }
