@@ -28,16 +28,13 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import com.projectlab.booking.presentation.R
 import com.projectlab.core.presentation.designsystem.component.BottomNavRoute
 import com.projectlab.core.presentation.designsystem.component.BottomNavigationBar
 import com.projectlab.core.presentation.designsystem.component.SearchBar
 import com.projectlab.core.presentation.designsystem.component.VerticalFavoriteCard
-import com.projectlab.core.presentation.designsystem.theme.bodyFontFamily
 import com.projectlab.core.presentation.designsystem.theme.spacing
 
 private enum class FavoriteTabItem {
@@ -100,7 +97,7 @@ private fun FavoritesScreenComponent(
     Column(
         modifier = modifier
             .fillMaxSize()
-            .padding(vertical = 10.dp),
+            .padding(vertical = MaterialTheme.spacing.regular),
     ) {
         SearchBar(
             query = uiState.query,
@@ -111,26 +108,28 @@ private fun FavoritesScreenComponent(
             onSearchPressed = onSearchPressed,
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(horizontal = 20.dp),
+                .padding(horizontal = MaterialTheme.spacing.semiLarge),
         )
 
-        Spacer(modifier = Modifier.height(10.dp))
+        Spacer(modifier = Modifier.height(MaterialTheme.spacing.regular))
 
         Column(
             modifier = Modifier
                 .fillMaxSize()
-                .padding(start = 24.dp, end = 24.dp, bottom = 24.dp),
+                .padding(
+                    start = MaterialTheme.spacing.semiLarge,
+                    end = MaterialTheme.spacing.semiLarge,
+                    bottom = MaterialTheme.spacing.semiLarge,
+                ),
         ) {
             Text(
                 text = stringResource(R.string.favorites),
-                style = TextStyle(
-                    fontSize = 20.sp,
-                    fontFamily = bodyFontFamily,
+                style = MaterialTheme.typography.titleLarge.copy(
                     fontWeight = FontWeight.SemiBold,
                 ),
             )
 
-            Spacer(modifier = Modifier.height(16.dp))
+            Spacer(modifier = Modifier.height(MaterialTheme.spacing.medium))
 
             Row(
                 modifier = Modifier
@@ -150,12 +149,12 @@ private fun FavoritesScreenComponent(
                 )
             }
 
-            Spacer(modifier = Modifier.height(40.dp))
+            Spacer(modifier = Modifier.height(MaterialTheme.spacing.extraLarge))
 
             LazyVerticalGrid(
                 columns = GridCells.Fixed(2),
-                horizontalArrangement = Arrangement.spacedBy(24.dp),
-                verticalArrangement = Arrangement.spacedBy(24.dp),
+                horizontalArrangement = Arrangement.spacedBy(MaterialTheme.spacing.semiLarge),
+                verticalArrangement = Arrangement.spacedBy(MaterialTheme.spacing.semiLarge),
                 modifier = Modifier
                     .fillMaxSize(),
             ) {
@@ -201,7 +200,7 @@ private fun FavoriteTabItem(
                 },
             ),
             modifier = Modifier
-                .padding(vertical = 8.dp)
+                .padding(vertical = MaterialTheme.spacing.small),
         )
 
         if (selected) {
