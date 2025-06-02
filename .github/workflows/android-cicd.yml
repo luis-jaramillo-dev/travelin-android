@@ -67,19 +67,17 @@ jobs:
           for MODULE in $MODULES; do
             REPORTS=$(find "$MODULE" -maxdepth 7 -type f | grep -E '.*DebugCombinedCoverageReport.csv$')
             
-            sum_branch_covered=0;
-            sum_branch_missed=0;
             for REPORT in $REPORTS; do
-              BRANCH_COVERED=$( awk -F ',' '{ sum_branch_covered += $7; } END { print sum_branch_covered }' $REPORT )
+              BRANCH_COVERED=$( awk -F ',' 'BEGIN { sum_branch_covered=0; } { sum_branch_covered += $7; } END { print sum_branch_covered }' $REPORT )
           
-              BRANCH_MISSED=$( awk -F ',' '{ sum_branch_missed += $6; } END { print sum_branch_missed }' $REPORT )
+              BRANCH_MISSED=$( awk -F ',' 'BEGIN { sum_branch_missed=0; } { sum_branch_missed += $6; } END { print sum_branch_missed }' $REPORT )
             done
                
             (( LOC_COVERED += BRANCH_COVERED ))
             (( LOC_MISSED += BRANCH_MISSED ))
           done
 
-          COVERAGE=$(echo "scale=2; $LOC_COVERED / $LOC_MISSED" | bc)
+          COVERAGE=$(echo "scale=2; $LOC_COVERED / ($LOC_MISSED + $LOC_COVERED) * 100" | bc)
           MIN_COVERAGE=0.0
                 
           echo "$COVERAGE"
