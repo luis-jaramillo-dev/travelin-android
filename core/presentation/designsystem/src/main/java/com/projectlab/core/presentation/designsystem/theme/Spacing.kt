@@ -13,11 +13,17 @@ object Spacing {
     /** 0.dp */
     val none: Dp = 0.dp
 
+    /** 2.dp */
+    val tiny: Dp = 2.dp
+
     /** 4.dp */
     val extraSmall: Dp = 4.dp
 
     /** 8.dp */
     val small: Dp = 8.dp
+
+    /** 10.dp */
+    val regular: Dp = 10.dp
 
     /** 16.dp */
     val medium: Dp = 16.dp
