@@ -1,0 +1,40 @@
+GROUP,PACKAGE,CLASS,INSTRUCTION_MISSED,INSTRUCTION_COVERED,BRANCH_MISSED,BRANCH_COVERED,LINE_MISSED,LINE_COVERED,COMPLEXITY_MISSED,COMPLEXITY_COVERED,METHOD_MISSED,METHOD_COVERED
+presentation,com.projectlab.booking.presentation.search.activities,ComposableSingletons.SearchActivityScreenKt.lambda.-37303689.new Function3() {...},55,0,12,0,1,0,7,0,1,0
+presentation,com.projectlab.booking.presentation.search.activities,SearchActivityScreenKt.SearchActivityResultsComponent.2.1.1.1.new Function0() {...},12,0,0,0,2,0,1,0,1,0
+presentation,com.projectlab.booking.presentation.search.activities,SearchActivityViewModel,215,0,6,0,28,0,12,0,9,0
+presentation,com.projectlab.booking.presentation.search.activities,SearchActivityViewModel.onDeleteHistoryEntry.new Function2() {...},35,0,0,0,4,0,1,0,1,0
+presentation,com.projectlab.booking.presentation.search.activities,SearchActivityScreenKt.SearchActivityResultsComponent.1.new Function2() {...},62,0,2,0,10,0,2,0,1,0
+presentation,com.projectlab.booking.presentation.search.activities,SearchActivityViewModel.searchByCurrentLocation.new Function2() {...},159,0,4,0,14,0,3,0,1,0
+presentation,com.projectlab.booking.presentation.search.activities,SearchActivityUiState,99,0,0,0,9,0,9,0,9,0
+presentation,com.projectlab.booking.presentation.search.activities,SearchActivityScreenKt,1202,0,122,0,88,0,74,0,13,0
+presentation,com.projectlab.booking.presentation.search.activities,SearchActivityViewModel.onSearchSubmitted.new Function2() {...},203,0,8,0,22,0,5,0,1,0
+presentation,com.projectlab.booking.presentation.search.activities,SearchActivityScreenKt.SearchActivityScreen.2.new Function2() {...},28,0,4,0,5,0,3,0,1,0
+presentation,com.projectlab.booking.presentation.search.activities,SearchActivityScreenKt.SearchActivityScreen.1.new Function2() {...},28,0,6,0,4,0,4,0,1,0
+presentation,com.projectlab.booking.presentation.search.activities,ComposableSingletons.SearchActivityScreenKt,11,0,0,0,1,0,1,0,1,0
+presentation,com.projectlab.booking.presentation.search.activities,SearchActivityScreenKt.SearchActivityResultsComponent.2.1.new Function3() {...},75,0,8,0,8,0,5,0,1,0
+presentation,com.projectlab.booking.presentation.search.activities,SearchActivityScreenKt.SearchActivityResultsComponent.lambda.29.lambda.28..inlined.items.default.new Function1() {...},8,0,0,0,1,0,1,0,1,0
+presentation,com.projectlab.booking.presentation.search.activities,SearchActivityScreenKt.SearchActivityResultsComponent.lambda.29.lambda.28..inlined.items.default.new Function1() {...},8,0,0,0,1,0,1,0,1,0
+presentation,com.projectlab.booking.presentation.search.activities,SearchActivityScreenKt.SearchActivityResultsComponent.lambda.29.lambda.28..inlined.items.default.new Function1() {...},2,0,0,0,1,0,1,0,1,0
+presentation,com.projectlab.booking.presentation.search.activities,SearchActivityViewModel.new Function2() {...},33,0,0,0,4,0,1,0,1,0
+presentation,com.projectlab.booking.presentation.search.activities,SearchActivityScreenKt.SearchActivityResultsComponent.lambda.29.lambda.28..inlined.items.default.new Function4() {...},77,0,16,0,2,0,9,0,1,0
+presentation,com.projectlab.booking.presentation.ui,AppUiTestKt.BookingScreen.2.new Function2() {...},22,0,4,0,4,0,3,0,1,0
+presentation,com.projectlab.booking.presentation.ui,BookingViewModelTest.setupTestData.new Function2() {...},543,0,24,0,95,0,13,0,1,0
+presentation,com.projectlab.booking.presentation.ui,ComposableSingletons.AppUiTestKt.lambda.421844674.new Function3() {...},50,0,8,0,2,0,5,0,1,0
+presentation,com.projectlab.booking.presentation.ui,ComposableSingletons.AppUiTestKt,11,0,0,0,1,0,1,0,1,0
+presentation,com.projectlab.booking.presentation.ui,BookingViewModelTest,66,0,0,0,12,0,3,0,3,0
+presentation,com.projectlab.booking.presentation.ui,AppUiTestKt,400,0,38,0,26,0,25,0,6,0
+presentation,com.projectlab.booking.presentation.home,HomeViewModel,136,0,2,0,19,0,8,0,7,0
+presentation,com.projectlab.booking.presentation.home,HomeViewModel.onDeleteHistoryEntry.new Function2() {...},31,0,0,0,4,0,1,0,1,0
+presentation,com.projectlab.booking.presentation.home,HomeViewModel.fetchSearchHistory.new Function2() {...},29,0,0,0,4,0,1,0,1,0
+presentation,com.projectlab.booking.presentation.home,HomeScreenKt.HomeScreen.1.new Function2() {...},28,0,4,0,5,0,3,0,1,0
+presentation,com.projectlab.booking.presentation.home,HomeUiState,51,0,0,0,5,0,5,0,5,0
+presentation,com.projectlab.booking.presentation.home,HomeViewModel.onSearchPressed.new Function2() {...},35,0,0,0,4,0,1,0,1,0
+presentation,com.projectlab.booking.presentation.home,HomeScreenKt.HomeSearchComponent.1.new Function2() {...},17,0,2,0,3,0,2,0,1,0
+presentation,com.projectlab.booking.presentation.home,HomeScreenKt,1149,0,128,0,91,0,74,0,10,0
+presentation,com.projectlab.booking.presentation.detail.activities,ActivityDetailScreenKt.ActivityDetailScreenComponent.1.new Function2() {...},30,0,8,0,2,0,5,0,1,0
+presentation,com.projectlab.booking.presentation.detail.activities,ActivityDetailScreenKt.ActivityDetailScreenComponent.1.new Function3() {...},259,0,20,0,31,0,13,0,3,0
+presentation,com.projectlab.booking.presentation.detail.activities,ActivityDetailViewModel,60,0,0,0,9,0,3,0,3,0
+presentation,com.projectlab.booking.presentation.detail.activities,ActivityDetailScreenKt,520,0,72,0,30,0,41,0,5,0
+presentation,com.projectlab.booking.presentation.detail.activities,ActivityDetailScreenKt.ActivityDetailScreen.1.new Function2() {...},19,0,2,0,3,0,2,0,1,0
+presentation,com.projectlab.booking.presentation.detail.activities,ActivityDetailViewModel.onViewDetail.new Function2() {...},105,0,4,0,12,0,3,0,1,0
+presentation,com.projectlab.booking.presentation.detail.activities,ActivityDetailUiState,42,0,0,0,5,0,5,0,5,0
