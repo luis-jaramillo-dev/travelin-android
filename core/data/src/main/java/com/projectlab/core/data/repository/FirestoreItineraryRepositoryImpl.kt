@@ -44,7 +44,7 @@ class FirestoreItineraryRepositoryImpl @Inject constructor (
         itineraryId: String
     ): Flow<ItineraryEntity?> = flow {
         // we get the snapshot and map it to the DTO
-        // If the snapshot exists, we map to domain, convert it to a FlightSegmentEntity and emit
+        // If the snapshot exists, we map to domain, convert it to a ItineraryEntity and emit
         // Otherwise, we emit null
         val snap = usersCol.document(userId)
             .collection("Itineraries").document(itineraryId)
