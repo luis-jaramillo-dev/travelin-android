@@ -61,6 +61,8 @@ class FirestoreActivityRepositoryImpl @Inject constructor(
             .collection("Itineraries").document(itinId)
             .collection("Activities").document(activityId)
         // we get the snapshot and map it to the DTO
+        // If the snapshot exists, we map to domain, convert it to an ActivityEntity and emit
+        // Otherwise, we emit null
         val snap = docRef.get().await()
         if (snap.exists()) {
             val dto = snap.toObject(FirestoreActivityDTO::class.java)
@@ -80,11 +82,13 @@ class FirestoreActivityRepositoryImpl @Inject constructor(
         userId: String,
         itinId: String
     ): Flow<List<ActivityEntity>> = flow {
+        // Route to the Activities collection for the given user and itinerary
         val snaps = firestore
             .collection("Users").document(userId)
             .collection("Itineraries").document(itinId)
             .collection("Activities").get().await()
 
+        // For each document, convert the DTO to domain (ActivityEntity):
         val list = snaps.documents.mapNotNull { doc ->
             doc.toObject(FirestoreActivityDTO::class.java)
                 ?.toDomain(
@@ -98,14 +102,17 @@ class FirestoreActivityRepositoryImpl @Inject constructor(
 
     @RequiresApi(Build.VERSION_CODES.O)
     override suspend fun updateActivity(activity: ActivityEntity): Result<Unit> = runCatching {
+        // We retrieve the user and itinerary references from the object reference
         val userId = activity.userRef?.value
             ?: throw IllegalArgumentException("userRef is null")
         val itinId = activity.itineraryRef?.value
             ?: throw IllegalArgumentException("itineraryRef is null")
 
+        // Recostruct the document routes/references:
         val userDoc = firestore.collection("Users").document(userId)
         val itinDoc = userDoc.collection("Itineraries").document(itinId)
 
+        // convert to DTO:
         val dto = FirestoreActivityDTO.fromDomain(
             domain = activity,
             userDoc = userDoc,
@@ -114,6 +121,7 @@ class FirestoreActivityRepositoryImpl @Inject constructor(
                 .document(activity.locationRef?.value ?: throw IllegalArgumentException("locationRef is null"))
         )
 
+        // Overwrite, set() the specific activity document:
         firestore.collection("Users").document(userId)
             .collection("Itineraries").document(itinId)
             .collection("Activities").document(activity.id)

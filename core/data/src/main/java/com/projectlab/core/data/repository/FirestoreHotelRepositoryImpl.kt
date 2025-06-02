@@ -58,6 +58,8 @@ class FirestoreHotelRepositoryImpl @Inject constructor (
             .collection("Itineraries").document(itinId)
             .collection("Hotels").document(hotelId)
         // we get the snapshot and map it to the DTO
+        // If the snapshot exists, we convert it to a HotelEntity
+        // Otherwise, we emit null
         val snap = docRef.get().await()
         if (snap.exists()) {
             val dto = snap.toObject(FirestoreHotelDTO::class.java)
@@ -77,12 +79,13 @@ class FirestoreHotelRepositoryImpl @Inject constructor (
         userId: String,
         itinId: String
     ): Flow<List<HotelEntity>> = flow {
+        // Route to the Hotels collection for the given user and itinerary
         val snaps = firestore
             .collection("Users").document(userId)
             .collection("Itineraries").document(itinId)
             .collection("Hotels").get().await()
 
-        // For each document, convert the DTO to Domain:
+        // For each document, convert the DTO to Domain (HotelEntity):
         val list = snaps.documents.mapNotNull { doc ->
             doc.toObject(FirestoreHotelDTO::class.java)
                 ?.toDomain(
@@ -96,14 +99,17 @@ class FirestoreHotelRepositoryImpl @Inject constructor (
 
     @RequiresApi(Build.VERSION_CODES.O)
     override suspend fun updateHotel(hotel: HotelEntity): Result<Unit> = runCatching {
+        // We retrieve the user and itinerary references from the object reference
         val userId = hotel.userRef?.value
             ?: throw IllegalArgumentException("userRef is null")
         val itinId = hotel.itineraryRef?.value
             ?: throw IllegalArgumentException("itineraryRef is null")
 
+        // Reconstruct the document routes/references:
         val userDoc = firestore.collection("Users").document(userId)
         val itinDoc = userDoc.collection("Itineraries").document(itinId)
 
+        // Convert to DTO:
         val dto = FirestoreHotelDTO.fromDomain(
             domain = hotel,
             userDocRef = userDoc,
@@ -112,7 +118,7 @@ class FirestoreHotelRepositoryImpl @Inject constructor (
                 .document(hotel.locationRef?.value ?: throw IllegalArgumentException("locationRef is null"))
         )
 
-        // We do .set() on the existing document and await. TODO: handle errors.
+        // Overwrite, set() the specific hotel document. TODO: handle errors.
         firestore.collection("Users").document(userId)
             .collection("Itineraries").document(itinId)
             .collection("Hotels").document(hotel.id)

@@ -92,7 +92,7 @@ class FirestoreFlightRepositoryImpl @Inject constructor (
         userId: String,
         itinId: String
     ): Flow<List<FlightEntity>> = flow {
-        // rute to the Flights collection for the given user and itinerary
+        // route to the Flights collection for the given user and itinerary
         val snaps = firestore
             .collection("Users").document(userId)
             .collection("Itineraries").document(itinId)
@@ -135,7 +135,7 @@ class FirestoreFlightRepositoryImpl @Inject constructor (
                     ?: throw IllegalArgumentException("arrivalAirport.airportCodeRef is null"))
         )
 
-        // Overwrite, set() the specific flight document:
+        // Overwrite, set() the specific flight document. TODO: handle errors.
         firestore.collection("Users").document(userId)
             .collection("Itineraries").document(itineraryId)
             .collection("Flights").document(flight.id)

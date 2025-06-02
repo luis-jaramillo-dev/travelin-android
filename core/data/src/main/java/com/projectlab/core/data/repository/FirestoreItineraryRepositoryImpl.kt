@@ -43,11 +43,18 @@ class FirestoreItineraryRepositoryImpl @Inject constructor (
         userId: String,
         itineraryId: String
     ): Flow<ItineraryEntity?> = flow {
+        // we get the snapshot and map it to the DTO
+        // If the snapshot exists, we map to domain, convert it to a FlightSegmentEntity and emit
+        // Otherwise, we emit null
         val snap = usersCol.document(userId)
-            .collection("Itineraries").document(itineraryId).get().await()
+            .collection("Itineraries").document(itineraryId)
+            .get().await()
         if (snap.exists()) {
             val dto = snap.toObject(FirestoreItineraryDTO::class.java)
-            emit(dto?.toDomain(snap.id, EntityId(userId)))
+            emit(dto?.toDomain(
+                docId = snap.id,
+                userRef =  EntityId(userId))
+            )
         } else {
             emit(null)
         }
@@ -55,22 +62,39 @@ class FirestoreItineraryRepositoryImpl @Inject constructor (
 
     override suspend fun getAllItinerariesForUser(userId: String): Flow<List<ItineraryEntity>> = flow {
         // Fetch all itineraries for a user
+        // Route to the itineraries collection of the user
         val snaps = usersCol.document(userId)
             .collection("Itineraries").get().await()
+
+        //For each document, convert the DTO to a domain (ItineraryEntity):
         val list = snaps.documents.mapNotNull { doc ->
             doc.toObject(FirestoreItineraryDTO::class.java)
-                ?.toDomain(doc.id, EntityId(userId))
+                ?.toDomain(
+                    docId =  doc.id,
+                    userRef = EntityId(userId)
+                )
         }
         emit(list)
     }
 
     @RequiresApi(Build.VERSION_CODES.O)
     override suspend fun updateItinerary(itinerary: ItineraryEntity): Result<Unit> = runCatching {
-        val dto = FirestoreItineraryDTO.fromDomain(itinerary)
-        usersCol.document(itinerary.userRef!!.value)
+        // We retrieve the userId from the object reference
+        val userId = itinerary.userRef?.value
+            ?: throw IllegalArgumentException("userRef is null")
+
+        // Reconstruct the document routes/references:
+        val userDocRef = usersCol.document(userId) // we don't used it still
+
+        // convert to dto:
+        val dto = FirestoreItineraryDTO.fromDomain(
+            domain = itinerary
+        )
+
+        // Overwrite, set() the specific itinerary document. TODO: handle errors.
+        usersCol.document(userId)
             .collection("Itineraries").document(itinerary.id)
-            .set(dto)
-            .await()
+            .set(dto).await()
     }
 
     override suspend fun deleteItinerary(

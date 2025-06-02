@@ -104,7 +104,7 @@ class FirestoreFlightSegmentRepositoryImpl @Inject constructor (
         itinId: String,
         flightId: String
     ): Flow<List<FlightSegmentEntity>> = flow {
-        // rute to the FlightSegments collection for the given user, itinerary and flight
+        // Route to the FlightSegments collection for the given user, itinerary and flight
         val snaps = firestore
             .collection("Users").document(userId)
             .collection("Itineraries").document(itinId)
@@ -136,7 +136,7 @@ class FirestoreFlightSegmentRepositoryImpl @Inject constructor (
         val flightId = flightSegment.flightRef?.value
             ?: throw IllegalArgumentException("flightRef is null")
 
-        // Reconstruct the document routes:
+        // Reconstruct the document routes/references:
         val userDocRef = firestore.collection("Users").document(userId)
         val itineraryDocRef = userDocRef.collection("Itineraries").document(itineraryId)
         val flightDocRef = itineraryDocRef.collection("Flights").document(flightId)
@@ -155,7 +155,7 @@ class FirestoreFlightSegmentRepositoryImpl @Inject constructor (
                     ?: throw IllegalArgumentException("arrivalAirportCodeRef is null"))
         )
 
-        // Overwrite, set() the specific flight document:
+        // Overwrite, set() the specific flight segment document. TODO: handle errors.
         firestore.collection("Users").document(userId)
             .collection("Itineraries").document(itineraryId)
             .collection("Flights").document(flightId)
