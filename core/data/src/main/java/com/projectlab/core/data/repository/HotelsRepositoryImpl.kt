@@ -28,14 +28,7 @@ class HotelsRepositoryImpl @Inject constructor(
         cityCode: String,
         amenities: String,
         ratings: String
-
     ): Result<List<Hotel>, DataError.Network> {
-
-
-        val token = tokenProvider.getAccessToken()
-        if (token.isEmpty()) {
-            throw Exception("Access token is missing")
-        }
 
         return try {
             val ratingQuery = "2, 3, 4, 5"
@@ -98,6 +91,4 @@ class HotelsRepositoryImpl @Inject constructor(
             Result.Error(DataError.Network.UNKNOWN)
         }
     }
-
-
 }
