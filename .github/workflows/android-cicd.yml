@@ -72,14 +72,13 @@ jobs:
               BRANCH_COVERED=$( awk -F ',' 'BEGIN { sum_branch_covered=0; } { sum_branch_covered += $7; } END { print sum_branch_covered }' $REPORT )
           
               BRANCH_MISSED=$( awk -F ',' 'BEGIN { sum_branch_missed=0; } { sum_branch_missed += $6; } END { print sum_branch_missed }' $REPORT )
-          
-              echo "DO WE HAVE BRANCH COUNTED?"
-              echo "BRANCH_COVERED: $BRANCH_COVERED"
-              echo "BRANCH_MISSED: $BRANCH_MISSED" 
             done
                
             (( LOC_COVERED += BRANCH_COVERED ))
             (( LOC_MISSED += BRANCH_MISSED ))
+          
+            echo "LOC_COVERED: $LOC_COVERED"
+            echo "LOC_MISSED: $LOC_MISSED"
           done
 
           COVERAGE=$(echo "scale=2; $LOC_COVERED / ($LOC_MISSED + $LOC_COVERED) * 100" | bc)
