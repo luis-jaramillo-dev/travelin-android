@@ -11,8 +11,6 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.items
@@ -35,7 +33,6 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.projectlab.booking.presentation.R
-import com.projectlab.core.presentation.designsystem.component.BackIconButton
 import com.projectlab.core.presentation.designsystem.component.BottomNavRoute
 import com.projectlab.core.presentation.designsystem.component.BottomNavigationBar
 import com.projectlab.core.presentation.designsystem.component.SearchBar
@@ -105,32 +102,17 @@ private fun FavoritesScreenComponent(
             .fillMaxSize()
             .padding(vertical = 10.dp),
     ) {
-        Row(
+        SearchBar(
+            query = uiState.query,
+            contentsDescription = stringResource(R.string.search_favorites_input),
+            placeholder = stringResource(R.string.search_into_your_favorites),
+            onEnter = onSearchPressed,
+            onQueryChange = onQueryChange,
+            onSearchPressed = onSearchPressed,
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(horizontal = 20.dp),
-            verticalAlignment = Alignment.CenterVertically,
-        ) {
-            BackIconButton(
-                modifier = Modifier
-                    .size(MaterialTheme.spacing.IconSize),
-                // TODO
-                onClick = {},
-            )
-
-            Spacer(modifier = Modifier.width(10.dp))
-
-            SearchBar(
-                query = uiState.query,
-                contentsDescription = stringResource(R.string.search_favorites_input),
-                placeholder = stringResource(R.string.search_into_your_favorites),
-                onEnter = onSearchPressed,
-                onQueryChange = onQueryChange,
-                onSearchPressed = onSearchPressed,
-                modifier = Modifier
-                    .fillMaxWidth(),
-            )
-        }
+        )
 
         Spacer(modifier = Modifier.height(10.dp))
 
