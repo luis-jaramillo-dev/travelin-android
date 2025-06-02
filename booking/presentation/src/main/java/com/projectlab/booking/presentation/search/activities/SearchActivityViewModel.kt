@@ -3,11 +3,14 @@ package com.projectlab.booking.presentation.search.activities
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.projectlab.core.data.mapper.toDtoList
-import com.projectlab.core.data.remote.ActivityApiService
+import com.projectlab.core.data.model.ActivityDto
 import com.projectlab.core.data.usecase.GetActivitiesUseCase
+import com.projectlab.core.domain.entity.FavoriteActivityEntity
 import com.projectlab.core.domain.model.Location
 import com.projectlab.core.domain.proto.SearchHistory.HistoryType
+import com.projectlab.core.domain.repository.ActivityRepository
 import com.projectlab.core.domain.repository.SearchHistoryProvider
+import com.projectlab.core.domain.repository.UserSessionProvider
 import com.projectlab.core.domain.util.Result
 import com.projectlab.core.presentation.ui.utils.ErrorMapper
 import com.projectlab.core.presentation.ui.utils.LocationUtils
@@ -23,7 +26,6 @@ import javax.inject.Inject
  * ViewModel for the SearchActivity screen.
  * It handles the logic for searching activities based on user input and location.
  *
- * @param activityApiService API service for fetching activities.
  * @param getActivitiesUseCase Use case for getting activities.
  * @param locationUtils Utility class for handling location-related tasks.
  * @param errorMapper Mapper for converting errors to user-friendly messages.
@@ -31,13 +33,13 @@ import javax.inject.Inject
 
 @HiltViewModel
 class SearchActivityViewModel @Inject constructor(
-    private val activityApiService: ActivityApiService,
     private val getActivitiesUseCase: GetActivitiesUseCase,
+    private val activitiesRepository: ActivityRepository,
+    private val userSessionProvider: UserSessionProvider,
     private val locationUtils: LocationUtils,
     private val errorMapper: ErrorMapper,
     private val historyProvider: SearchHistoryProvider,
 ) : ViewModel() {
-
     private val _uiState = MutableStateFlow(SearchActivityUiState())
     val uiState: StateFlow<SearchActivityUiState> = _uiState.asStateFlow()
 
@@ -76,7 +78,6 @@ class SearchActivityViewModel @Inject constructor(
                 val addressString = locationUtils.reverseGeocodeLocation(location)
                 _uiState.update { it.copy(address = addressString, query = addressString) }
 
-
                 when (val result = getActivitiesUseCase(location.latitude, location.longitude)) {
                     is Result.Success -> {
                         _uiState.update { it.copy(activities = result.data.toDtoList()) }
@@ -105,13 +106,58 @@ class SearchActivityViewModel @Inject constructor(
         }
     }
 
+    fun setFavorite(activity: ActivityDto, isFavorite: Boolean) {
+        viewModelScope.launch {
+            try {
+                val userId = userSessionProvider.getUserSessionId()
+
+                if (userId == null) {
+                    _uiState.update { it.copy(error = "Could not get current user") }
+                    return@launch
+                }
+
+                if (!isFavorite) {
+                    activitiesRepository.removeFavoriteActivityById(userId, activity.id)
+                    return@launch
+                }
+
+                val location = locationUtils.reverseGeocodeLocation(
+                    Location(
+                        latitude = activity.geoCode.latitude,
+                        longitude = activity.geoCode.longitude,
+                    )
+                )
+
+                val favoriteActivity = FavoriteActivityEntity(
+                    id = activity.id,
+                    name = activity.name,
+                    description = activity.description,
+                    minimumDuration = activity.minimumDuration,
+                    price = activity.price.amount,
+                    currency = activity.price.currencyCode,
+                    rating = activity.rating,
+                    location = location,
+                    latitude = activity.geoCode.latitude,
+                    longitude = activity.geoCode.longitude,
+                    pictures = activity.pictures,
+                )
+
+                activitiesRepository.saveFavoriteActivity(userId, favoriteActivity)
+            } catch (e: Exception) {
+                _uiState.update { it.copy(error = e.localizedMessage ?: "Unknown error") }
+            }
+        }
+    }
+
     private fun onSearchSubmitted(isInitial: Boolean) {
         viewModelScope.launch {
             _uiState.update { it.copy(isLoading = true) }
             try {
                 if (!isInitial) {
-                    val updated = historyProvider
-                        .addSearchEntry(HistoryType.ACTIVITY, uiState.value.query)
+                    val updated = historyProvider.addSearchEntry(
+                        type = HistoryType.ACTIVITY,
+                        value = uiState.value.query,
+                    )
                     _uiState.update { it.copy(history = updated.reversed()) }
                 }
 

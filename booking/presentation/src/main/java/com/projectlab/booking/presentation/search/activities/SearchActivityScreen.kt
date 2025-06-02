@@ -27,6 +27,7 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.navigation.NavController
 import androidx.navigation.compose.currentBackStackEntryAsState
+import com.projectlab.core.data.model.ActivityDto
 import com.projectlab.core.domain.model.Location
 import com.projectlab.core.presentation.designsystem.R
 import com.projectlab.core.presentation.designsystem.component.BackIconButton
@@ -116,6 +117,10 @@ fun SearchActivityScreen(
         }
     }
 
+    val onFavoriteClick: (ActivityDto, Boolean) -> Unit = { activity, isFavorite ->
+        searchActivityViewModel.setFavorite(activity, isFavorite)
+    }
+
     Column(
         modifier = modifier
             .statusBarsPadding()
@@ -155,7 +160,8 @@ fun SearchActivityScreen(
         SearchActivityResultsComponent(
             uiState = uiState,
             onShowAllResults = { searchActivityViewModel.showAllResults() },
-            navController = navController
+            navController = navController,
+            onFavoriteClick = onFavoriteClick,
         )
     }
 }
@@ -165,6 +171,7 @@ fun SearchActivityResultsComponent(
     uiState: SearchActivityUiState,
     onShowAllResults: () -> Unit,
     navController: NavController,
+    onFavoriteClick: (ActivityDto, Boolean) -> Unit,
 ) {
     val activities = uiState.activities
     val showAll = uiState.showAllResults
@@ -209,7 +216,10 @@ fun SearchActivityResultsComponent(
                     city = city,
                     onPress = {
                         navController.navigate("activityDetail/${activity.id}")
-                    }
+                    },
+                    onFavoritePress = { isFavorite ->
+                        onFavoriteClick(activity, isFavorite)
+                    },
                 )
 
                 Spacer(modifier = Modifier.height(MaterialTheme.spacing.medium))

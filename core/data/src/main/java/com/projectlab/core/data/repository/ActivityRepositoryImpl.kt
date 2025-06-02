@@ -1,6 +1,7 @@
 package com.projectlab.core.data.repository
 
 import android.os.Build
+import android.util.Log
 import androidx.annotation.RequiresApi
 import com.google.firebase.firestore.FirebaseFirestore
 import com.projectlab.core.data.mapper.toDomain
@@ -84,12 +85,16 @@ class ActivityRepositoryImpl @Inject constructor(
             .await()
 
         documents.map { doc ->
-            emit(doc.toObject(FavoriteActivityEntity::class.java))
+            val activity = doc.toObject(FavoriteActivityEntity::class.java)
+
+            val include = nameQuery == null
+                || nameQuery.isEmpty()
+                || activity.name.contains(nameQuery, ignoreCase = true)
+
+            if (include) {
+                emit(activity)
+            }
         }
-    }.filter { activity ->
-        nameQuery == null
-            || nameQuery.isEmpty()
-            || activity.name.contains(nameQuery, ignoreCase = true)
     }
 
     override suspend fun saveFavoriteActivity(
@@ -101,7 +106,7 @@ class ActivityRepositoryImpl @Inject constructor(
             .document(userId)
 
         val favoritesCollection = userDoc.collection("FavoriteActivities")
-        val docRef = favoritesCollection.document()
+        val docRef = favoritesCollection.document(activity.id)
         docRef.set(activity).await()
 
         docRef.id

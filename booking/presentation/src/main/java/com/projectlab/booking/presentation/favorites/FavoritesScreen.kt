@@ -20,7 +20,6 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
-import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -48,6 +47,7 @@ fun FavoritesScreen(
     onHomeClick: () -> Unit,
     onTripsClick: () -> Unit,
     onProfileClick: () -> Unit,
+    onActivityClick: (id: String) -> Unit,
 ) {
     Scaffold(
         bottomBar = {
@@ -62,6 +62,7 @@ fun FavoritesScreen(
     ) { padding ->
         FavoritesScreenComponent(
             viewModel = viewModel,
+            onActivityClick = onActivityClick,
             modifier = Modifier.padding(padding),
         )
     }
@@ -70,18 +71,11 @@ fun FavoritesScreen(
 @Composable
 private fun FavoritesScreenComponent(
     viewModel: FavoritesViewModel,
+    onActivityClick: (id: String) -> Unit,
     modifier: Modifier = Modifier,
 ) {
     var selectedTab by remember { mutableStateOf(FavoriteTabItem.DESTINATIONS) }
     val uiState by viewModel.uiState.collectAsState()
-    val favorites by remember {
-        derivedStateOf {
-            when (selectedTab) {
-                FavoriteTabItem.DESTINATIONS -> uiState.destinations
-                FavoriteTabItem.HOTELS -> emptyList() // TODO
-            }
-        }
-    }
 
     val onQueryChange: (String) -> Unit = { newQuery ->
         viewModel.onQueryChange(newQuery)
@@ -149,7 +143,7 @@ private fun FavoritesScreenComponent(
                 )
             }
 
-            Spacer(modifier = Modifier.height(MaterialTheme.spacing.extraLarge))
+            Spacer(modifier = Modifier.height(MaterialTheme.spacing.semiLarge))
 
             LazyVerticalGrid(
                 columns = GridCells.Fixed(2),
@@ -158,19 +152,27 @@ private fun FavoritesScreenComponent(
                 modifier = Modifier
                     .fillMaxSize(),
             ) {
-                items(favorites) { favorite ->
-                    VerticalFavoriteCard(
-                        name = favorite.name,
-                        description = favorite.description,
-                        location = favorite.location,
-                        rating = favorite.rating,
-                        pictureUrl = favorite.pictures.getOrElse(0) { null },
-                        onFavoriteClick = {},
-                        onClick = {},
-                        modifier = Modifier
-                            .height(300.dp)
-                            .weight(1f),
-                    )
+                when (selectedTab) {
+                    FavoriteTabItem.DESTINATIONS -> {
+                        items(uiState.destinations) { favorite ->
+                            VerticalFavoriteCard(
+                                name = favorite.name,
+                                description = favorite.description,
+                                location = favorite.location,
+                                rating = favorite.rating,
+                                pictureUrl = favorite.pictures.getOrElse(0) { null },
+                                onFavoriteClick = { viewModel.removeFavoriteActivity(favorite.id) },
+                                onClick = { onActivityClick(favorite.id) },
+                                modifier = Modifier
+                                    .height(300.dp)
+                                    .weight(1f),
+                            )
+                        }
+                    }
+
+                    FavoriteTabItem.HOTELS -> {
+                        // TODO
+                    }
                 }
             }
         }

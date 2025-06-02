@@ -69,4 +69,23 @@ class FavoritesViewModel @Inject constructor(
             }
         }
     }
+
+    fun removeFavoriteActivity(activityId: String) {
+        viewModelScope.launch {
+            try {
+                val userId = userSessionProvider.getUserSessionId()
+
+                if (userId == null) {
+                    _uiState.update { it.copy(error = "Could not get current user") }
+                    return@launch
+                }
+
+                activitiesRepository.removeFavoriteActivityById(userId, activityId)
+
+                queryFavoriteActivities()
+            } catch (e: Exception) {
+                _uiState.update { it.copy(error = e.localizedMessage ?: "Unknown error") }
+            }
+        }
+    }
 }
