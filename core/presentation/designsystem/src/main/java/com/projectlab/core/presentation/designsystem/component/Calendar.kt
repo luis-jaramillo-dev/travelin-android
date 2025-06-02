@@ -192,3 +192,94 @@ fun FlexibleDateRangePickerDialogPreview() {
         )
     }
 }
+
+@RequiresApi(Build.VERSION_CODES.O)
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+fun TravelinDatePickerBottomSheet(
+    onDismiss: () -> Unit,
+    onConfirm: (Pair<Long?, Long?>) -> Unit,
+    availableDates: List<LocalDate>? = null,
+    availableDateRange: ClosedRange<LocalDate>? = null,
+    initialStartDateMillis: Long? = null,
+    initialEndDateMillis: Long? = null,
+    selectableYearFrom: Int? = null,
+    titleText: String = stringResource(R.string.calendar_title)
+) {
+
+    val pickerState = rememberDateRangePickerState(
+        initialSelectedStartDateMillis = initialStartDateMillis,
+        initialSelectedEndDateMillis = initialEndDateMillis,
+        selectableDates = object : SelectableDates {
+            override fun isSelectableDate(utcTimeMillis: Long): Boolean {
+                val date = Instant.ofEpochMilli(utcTimeMillis)
+                    .atZone(ZoneId.systemDefault())
+                    .toLocalDate()
+
+                return when {
+                    availableDates != null -> availableDates.contains(date)
+                    availableDateRange != null -> date in availableDateRange
+                    else -> true
+                }
+            }
+
+            override fun isSelectableYear(year: Int): Boolean {
+                return selectableYearFrom?.let { year >= it } != false
+            }
+        }
+    )
+
+    val modalBottomSheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true)
+
+    ModalBottomSheet(
+        onDismissRequest = { onDismiss() },
+        sheetState = modalBottomSheetState,
+        dragHandle = { BottomSheetDefaults.DragHandle() },
+    ) {
+        Column {
+            DateRangePicker(
+                state = pickerState,
+                showModeToggle = false,
+                title = {
+                    Text(
+                        text = titleText,
+                        style = MaterialTheme.typography.titleLarge,
+                        fontWeight = FontWeight.Black,
+                        modifier = Modifier
+                            .padding(
+                                bottom = MaterialTheme.spacing.semiLarge,
+                            )
+                    )
+                },
+                headline = {},
+                modifier = Modifier
+                    .weight(1f)
+                    .fillMaxWidth()
+                    .padding(24.dp)
+            )
+            Row(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .shadow(
+                        elevation = MaterialTheme.spacing.medium,
+                        clip = false
+                    )
+                    .background(MaterialTheme.colorScheme.surfaceContainerHigh)
+                    .padding(MaterialTheme.spacing.medium),
+                horizontalArrangement = Arrangement.spacedBy(MaterialTheme.spacing.medium)
+            ) {
+                ButtonComponent(
+                    variant = ButtonVariant.Primary,
+                    onClick = {
+                        onConfirm(
+                            pickerState.selectedStartDateMillis to pickerState.selectedEndDateMillis
+                        )
+                    },
+                    text = stringResource(R.string.calendar_button_accept),
+                    fullWidth = true,
+                    modifier = Modifier.weight(1f),
+                )
+            }
+        }
+    }
+}

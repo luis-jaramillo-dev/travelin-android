@@ -53,6 +53,7 @@ sealed interface SearchScreens {
         override val route = "search_hotels"
     }
 
+
     data object Flights : SearchScreens {
         override val route = "search_flights"
     }
@@ -67,8 +68,10 @@ sealed interface DetailScreens {
         fun createRoute(activityId: String): String = "activityDetail/$activityId"
     }
 
+    @Serializable
     data object HotelDetail : DetailScreens {
         override val route = "hotelDetail/{hotelId}"
+        fun createRoute(hotelId: String): String = "hotelDetail/$hotelId"
     }
 
 }
@@ -79,6 +82,19 @@ sealed interface HomeScreens {
     data object Home : HomeScreens {
         override val route = "home"
     }
+}
+
+sealed interface BookingScreens {
+    val route: String
+
+    data object HotelBooking : BookingScreens {
+        override val route = "hotel_booking"
+    }
+
+    data object Successful : BookingScreens, Screens {
+        override val route = "successful"
+    }
+
 }
 
 
