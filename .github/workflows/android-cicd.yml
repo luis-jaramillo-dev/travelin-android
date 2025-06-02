@@ -80,7 +80,6 @@ jobs:
             echo "Branch missed: $LOC_MISSED"
           done
 
-          echo "End loop"
           echo "BRANCH_COVERED: $LOC_COVERED"
           echo "BRANCH_MISSED: $LOC_MISSED"
 
@@ -94,6 +93,5 @@ jobs:
             echo "Code coverage ($COVERAGE%) is below the minimum threshold ($MIN_COVERAGE%)"
             exit 1
           else
-            echo "SUCCESS OPERATION"
-#            exit 0
+            echo "Test Coverage of ($MIN_COVERAGE) fulfilled"
           fi
