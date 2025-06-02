@@ -76,9 +76,6 @@ jobs:
                
             (( LOC_COVERED += BRANCH_COVERED ))
             (( LOC_MISSED += BRANCH_MISSED ))
-          
-            echo "LOC_COVERED: $LOC_COVERED"
-            echo "LOC_MISSED: $LOC_MISSED"
           done
 
           COVERAGE=$(echo "scale=2; $LOC_COVERED / ($LOC_MISSED + $LOC_COVERED) * 100" | bc -l)
