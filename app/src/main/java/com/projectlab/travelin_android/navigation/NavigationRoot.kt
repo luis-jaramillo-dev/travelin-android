@@ -1,5 +1,7 @@
 package com.projectlab.travelin_android.navigation
 
+import android.os.Build
+import androidx.annotation.RequiresApi
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.remember
@@ -199,11 +201,18 @@ fun NavGraphBuilder.homeGraph(navController: NavHostController) {
 }
 
 
+@RequiresApi(Build.VERSION_CODES.O)
 fun NavGraphBuilder.bookingGraph(navController: NavHostController) {
 
-    composable(route = BookingScreens.HotelBooking.route) {
+    composable(route = BookingScreens.HotelBooking.route) { backStackEntry ->
+        val parentEntry = remember(backStackEntry) {
+            navController.getBackStackEntry(SearchScreens.Hotels.route)
+        }
+
         BookingHotelScreen(
             onSuccessBooking = { navController.navigate(BookingScreens.Successful.route) },
+            onClickBack = { navController.popBackStack() },
+            viewModel = hiltViewModel<HotelsViewModel>(parentEntry),
         )
     }
 
