@@ -59,6 +59,7 @@ jobs:
       # Enforce minimum coverage
       - name: Enforce minimum coverage
         run: |
+          GITHUB_WORKSPACE="." #TODO DELETE THIS LINE
           MODULES=$(find "$GITHUB_WORKSPACE" -maxdepth 1 -type d | grep -vE '(gradle|build|build-logic|navigation|^.\/\.\w+|\.$)$')
 
           LOC_COVERED=0
@@ -66,8 +67,8 @@ jobs:
 
           for MODULE in $MODULES; do
             REPORTS=$(find "$MODULE" -maxdepth 7 -type f | grep -E '.*DebugCombinedCoverageReport.csv$')
-            
             for REPORT in $REPORTS; do
+              echo "Analysing report: $REPORT"
               BRANCH_COVERED=$( awk -F ',' 'BEGIN { sum_branch_covered=0; } { sum_branch_covered += $7; } END { print sum_branch_covered }' $REPORT )
           
               BRANCH_MISSED=$( awk -F ',' 'BEGIN { sum_branch_missed=0; } { sum_branch_missed += $6; } END { print sum_branch_missed }' $REPORT )
@@ -75,8 +76,11 @@ jobs:
                
             (( LOC_COVERED += BRANCH_COVERED ))
             (( LOC_MISSED += BRANCH_MISSED ))
+            echo "Branch covered: $LOC_COVERED"
+            echo "Branch missed: $LOC_MISSED"
           done
 
+          echo "End loop"
           echo "BRANCH_COVERED: $LOC_COVERED"
           echo "BRANCH_MISSED: $LOC_MISSED"
 
@@ -91,5 +95,5 @@ jobs:
             exit 1
           else
             echo "SUCCESS OPERATION"
-            exit 0
+#            exit 0
           fi
