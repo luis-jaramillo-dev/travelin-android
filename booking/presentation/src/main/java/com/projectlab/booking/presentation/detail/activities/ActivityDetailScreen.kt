@@ -43,20 +43,24 @@ fun ActivityDetailScreen(
 
     val uiState by activityDetailViewModel.uiState.collectAsState()
 
+    val onFavoriteClick: () -> Unit = {
+        activityDetailViewModel.updateFavorite()
+    }
+
     if (uiState.isLoading) {
         Box(
             modifier = Modifier
                 .fillMaxSize(),
-            contentAlignment = Alignment.Center
+            contentAlignment = Alignment.Center,
         ) {
             CircularProgressIndicator()
         }
     } else {
         ActivityDetailScreenComponent(
             modifier = modifier,
-            activityDetailViewModel = activityDetailViewModel,
             uiState = uiState,
-            navController = navController
+            navController = navController,
+            onFavoriteClick = onFavoriteClick,
         )
     }
 }
@@ -64,9 +68,9 @@ fun ActivityDetailScreen(
 @Composable
 fun ActivityDetailScreenComponent(
     modifier: Modifier = Modifier,
-    activityDetailViewModel: ActivityDetailViewModel,
     uiState: ActivityDetailUiState,
     navController: NavController,
+    onFavoriteClick: () -> Unit,
 ) {
     val activity = uiState.activity
     val scrollState = rememberScrollState()
@@ -77,26 +81,30 @@ fun ActivityDetailScreenComponent(
             modifier = Modifier.fillMaxSize(),
             bottomBar = {
                 BottomBookBar(activity = activity)
-            }
+            },
         ) { innerPadding ->
             Column(
                 modifier = Modifier
                     .padding(innerPadding)
                     .verticalScroll(scrollState)
                     .padding(bottom = MaterialTheme.spacing.ScreenVerticalSpacing),
-                verticalArrangement = Arrangement.Top
+                verticalArrangement = Arrangement.Top,
             ) {
                 TourCardHeader(
                     modifier = Modifier,
                     activity = it,
                     navController = navController,
+                    isFavorite = uiState.isFavorite,
+                    isFavoriteLoading = uiState.isFavoriteLoading,
+                    onFavoriteClick = onFavoriteClick,
                 )
+
                 Spacer(modifier = Modifier.height(MaterialTheme.spacing.ScreenVerticalSpacing))
 
                 if (activity.description.isNotEmpty()) {
                     DescriptionBox(
                         modifier = Modifier,
-                        activity = it
+                        activity = it,
                     )
                 }
 
@@ -105,12 +113,12 @@ fun ActivityDetailScreenComponent(
                 if (activity.pictures.isNotEmpty()) {
                     Box(
                         modifier = Modifier.fillMaxWidth(),
-                        contentAlignment = Alignment.Center
+                        contentAlignment = Alignment.Center,
                     ) {
                         GallerySection(
                             modifier = modifier,
                             images = activity.pictures,
-                            onSeeAllClick = { showGalleryDialog = true }
+                            onSeeAllClick = { showGalleryDialog = true },
                         )
                     }
                 }
@@ -118,7 +126,7 @@ fun ActivityDetailScreenComponent(
                 if (showGalleryDialog) {
                     GalleryDialog(
                         images = activity.pictures,
-                        onDismissRequest = { showGalleryDialog = false }
+                        onDismissRequest = { showGalleryDialog = false },
                     )
                 }
             }

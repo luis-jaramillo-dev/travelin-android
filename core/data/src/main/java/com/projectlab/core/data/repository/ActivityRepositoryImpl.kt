@@ -1,7 +1,6 @@
 package com.projectlab.core.data.repository
 
 import android.os.Build
-import android.util.Log
 import androidx.annotation.RequiresApi
 import com.google.firebase.firestore.FirebaseFirestore
 import com.projectlab.core.data.mapper.toDomain
@@ -15,7 +14,6 @@ import com.projectlab.core.domain.repository.ActivityRepository
 import com.projectlab.core.domain.util.DataError
 import com.projectlab.core.domain.util.Result
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.filter
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.tasks.await
 import javax.inject.Inject
@@ -95,6 +93,23 @@ class ActivityRepositoryImpl @Inject constructor(
                 emit(activity)
             }
         }
+    }
+
+    override suspend fun isFavoriteActivity(
+        userId: String,
+        activityId: String,
+    ): kotlin.Result<Boolean> = runCatching {
+        val userDoc = firestore
+            .collection("Users")
+            .document(userId)
+
+        val document = userDoc
+            .collection("FavoriteActivities")
+            .document(activityId)
+            .get()
+            .await()
+
+        document != null
     }
 
     override suspend fun saveFavoriteActivity(
