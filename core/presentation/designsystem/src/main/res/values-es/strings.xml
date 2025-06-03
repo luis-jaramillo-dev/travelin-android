@@ -43,4 +43,6 @@
     <string name="pricePerPerson">$%1$s/persona</string>
     <string name="bookNow">Book Now</string>
     <string name="addToItinerary">Añadir al Itinerario</string>
+    <string name="remove_favorite">Remover Favorito</string>
+    <string name="image_of">Imagen de %1$s</string>
 </resources>

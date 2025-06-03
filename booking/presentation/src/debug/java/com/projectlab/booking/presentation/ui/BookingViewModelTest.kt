@@ -12,7 +12,7 @@ import com.projectlab.core.domain.entity.HotelEntity
 import com.projectlab.core.domain.entity.ItineraryEntity
 import com.projectlab.core.domain.entity.UserEntity
 import com.projectlab.core.domain.model.EntityId
-import com.projectlab.core.domain.repository.FirestoreActivityRepository
+import com.projectlab.core.domain.repository.ActivityRepository
 import com.projectlab.core.domain.repository.FlightRepository
 import com.projectlab.core.domain.repository.FlightSegmentRepository
 import com.projectlab.core.domain.repository.HotelRepository
@@ -37,14 +37,14 @@ import android.util.Log
 
 @HiltViewModel
 class BookingViewModelTest @Inject constructor(
-    private val userRepo : UserRepository,
-    private val itineraryRepo : ItineraryRepository,
-    private val flightRepo : FlightRepository,
-    private val flightSegmentRepo : FlightSegmentRepository,
-    private val hotelRepo : HotelRepository,
-    private val activityRepo : FirestoreActivityRepository,
+    private val userRepo: UserRepository,
+    private val itineraryRepo: ItineraryRepository,
+    private val flightRepo: FlightRepository,
+    private val flightSegmentRepo: FlightSegmentRepository,
+    private val hotelRepo: HotelRepository,
+    private val activityRepo: ActivityRepository,
     // TODO : add other repositories as needed: flight, hotel, etc.
-) : ViewModel(){
+) : ViewModel() {
 
     // we define a state in order to inform the UI about the data was successfully loaded or not
     private val _seedResult = MutableStateFlow<Result<Unit>?>(null)
@@ -205,7 +205,7 @@ class BookingViewModelTest @Inject constructor(
 
         _seedResult.value = Result.success(Unit) // indicate success, if all went well
     }
-
+    
     // Launches the collection of all itineraries for a user:
     fun fetchAllItineraries(userId: String) = viewModelScope.launch {
         try {

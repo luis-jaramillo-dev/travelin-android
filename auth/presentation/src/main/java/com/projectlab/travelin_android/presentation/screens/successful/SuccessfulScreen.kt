@@ -14,7 +14,7 @@ import com.projectlab.travelin_android.presentation.screens.successful.component
 
 @Composable
 fun SuccessfulScreen(
-    onProfileClick: () -> Unit
+    onNextClick: () -> Unit
 ) {
     Box(
         modifier = Modifier
@@ -31,7 +31,7 @@ fun SuccessfulScreen(
         Scaffold(
             containerColor = Color.Transparent,
             topBar = { },
-            content = { SuccessfulContent(it, onProfileClick = onProfileClick) },
+            content = { SuccessfulContent(it, onNextClick = onNextClick) },
         )
     }
 }
