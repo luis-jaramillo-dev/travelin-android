@@ -10,6 +10,7 @@ import com.projectlab.booking.presentation.screens.hotels.details.DetailHotelSta
 import com.projectlab.booking.presentation.screens.hotels.search.SearchHotelState
 import com.projectlab.core.domain.model.Hotel
 import com.projectlab.core.domain.model.User
+import com.projectlab.core.domain.repository.UserSessionProvider
 import com.projectlab.core.domain.use_cases.hotels.HotelsUseCases
 import com.projectlab.core.domain.use_cases.users.UsersUseCases
 import com.projectlab.core.domain.util.Result
@@ -24,7 +25,8 @@ import javax.inject.Inject
 @HiltViewModel
 class HotelsViewModel @Inject constructor(
     private val hotelsUseCases: HotelsUseCases,
-    private val usersUseCases: UsersUseCases
+    private val usersUseCases: UsersUseCases,
+    private val userSessionProvider: UserSessionProvider,
 ) : ViewModel() {
 
     private val _uiStateHotelSearch = MutableStateFlow(SearchHotelState())
@@ -33,8 +35,6 @@ class HotelsViewModel @Inject constructor(
     private val _uiStateHotelDetails = MutableStateFlow(DetailHotelState())
     val uiStateHotelDetails: StateFlow<DetailHotelState> = _uiStateHotelDetails.asStateFlow()
 
-    // TODO: CHANGE FOR PROTO IMPL
-    val userId = "7wmWegYUANOFv8ZvKZN1GzHoqvV2"
 
     var detailHotelState by mutableStateOf(DetailHotelState())
         private set
@@ -48,11 +48,14 @@ class HotelsViewModel @Inject constructor(
         private set
 
     init {
+
         getUserById()
     }
 
-    private fun getUserById() = viewModelScope.launch {
-        usersUseCases.getUserById(userId).collect() {
+    fun getUserById() = viewModelScope.launch {
+        val userId = userSessionProvider.getUserSessionId()
+
+        usersUseCases.getUserById(userId.toString()).collect() {
             user = it
         }
     }
@@ -104,7 +107,7 @@ class HotelsViewModel @Inject constructor(
     fun favoriteHotel(hotelId: String) {
         viewModelScope.launch {
             try {
-                when (hotelsUseCases.favoriteHotel(userId, hotelId)) {
+                when (hotelsUseCases.favoriteHotel(user.id, hotelId)) {
                     is Result.Success -> {
 
                         val updatedHotels = _uiStateHotelSearch.value.hotels.map {
@@ -136,7 +139,7 @@ class HotelsViewModel @Inject constructor(
     fun unfavoriteHotel(hotelId: String) {
         viewModelScope.launch {
             try {
-                when (hotelsUseCases.unfavoriteHotel(userId, hotelId)) {
+                when (hotelsUseCases.unfavoriteHotel(user.id, hotelId)) {
                     is Result.Success -> {
 
                         val updatedHotels = _uiStateHotelSearch.value.hotels.map {
