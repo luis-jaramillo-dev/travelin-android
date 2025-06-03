@@ -10,7 +10,6 @@ interface Screens {
 }
 
 sealed interface AuthScreens {
-
     data object Onboarding : AuthScreens, Screens {
         override val route = "onboarding"
     }
@@ -34,7 +33,6 @@ sealed interface AuthScreens {
     data object Successful : AuthScreens, Screens {
         override val route = "successful"
     }
-
 }
 
 sealed interface SearchScreens {
@@ -53,6 +51,7 @@ sealed interface SearchScreens {
         override val route = "search_hotels"
     }
 
+
     data object Flights : SearchScreens {
         override val route = "search_flights"
     }
@@ -67,10 +66,11 @@ sealed interface DetailScreens {
         fun createRoute(activityId: String): String = "activityDetail/$activityId"
     }
 
+    @Serializable
     data object HotelDetail : DetailScreens {
         override val route = "hotelDetail/{hotelId}"
+        fun createRoute(hotelId: String): String = "hotelDetail/$hotelId"
     }
-
 }
 
 sealed interface HomeScreens {
@@ -81,4 +81,10 @@ sealed interface HomeScreens {
     }
 }
 
+sealed interface FavoritesScreens {
+    val route: String
 
+    data object Favorites : FavoritesScreens {
+        override val route = "favorites"
+    }
+}

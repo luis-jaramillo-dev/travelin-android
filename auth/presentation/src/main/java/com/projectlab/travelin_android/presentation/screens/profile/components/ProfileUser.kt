@@ -26,7 +26,6 @@ fun ProfileUser(
     modifier: Modifier = Modifier,
     viewModel: ProfileViewModel
 ) {
-    val userName = "John Doe"
     val userBio = "Mars, Solar System"
 
     Row(
@@ -61,14 +60,14 @@ fun ProfileUser(
             )
 
             Text(
-                text = viewModel.userEntityData.email,
+                text = viewModel.user.email,
                 style = MaterialTheme.typography.titleMedium.copy(
                     fontWeight = FontWeight.Bold,
                     color = MaterialTheme.colorScheme.onBackground
                 )
             )
             Text(
-                text = viewModel.userEntityData.age,
+                text = viewModel.user.age,
                 style = MaterialTheme.typography.titleMedium.copy(
                     fontWeight = FontWeight.Bold,
                     color = MaterialTheme.colorScheme.onBackground

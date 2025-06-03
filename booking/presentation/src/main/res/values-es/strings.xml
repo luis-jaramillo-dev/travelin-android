@@ -2,4 +2,9 @@
 <resources>
     <string name="exploreTheWorld">Explora el\nmundo hoy</string>
     <string name="travelNextLevel">TravelIn - lleva tus viajes al siguiente nivel</string>
+    <string name="search_into_your_favorites">Busca en tus favoritos</string>
+    <string name="search_favorites_input">Input de búsqueda de favoritos</string>
+    <string name="destinations">Destinos</string>
+    <string name="hotels">Hoteles</string>
+    <string name="favorites">Favoritos</string>
 </resources>
