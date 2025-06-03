@@ -7,7 +7,6 @@ import com.google.firebase.ktx.Firebase
 import com.projectlab.core.data.Constants.REFERENCE_USERS
 import com.projectlab.core.data.repository.AmadeusTokenProviderImpl
 import com.projectlab.core.data.repository.FlightRepositoryImpl
-import com.projectlab.core.data.repository.FlightSegmentRepositoryImpl
 import com.projectlab.core.data.repository.HotelRepositoryImpl
 import com.projectlab.core.data.repository.ItineraryRepositoryImpl
 import com.projectlab.core.data.repository.UserRepositoryImpl
@@ -16,7 +15,6 @@ import com.projectlab.core.data.repository.SearchHistoryProviderImpl
 import com.projectlab.core.data.repository.UserSessionProviderImpl
 import com.projectlab.core.data.repository.UsersRepositoryImpl
 import com.projectlab.core.domain.repository.FlightRepository
-import com.projectlab.core.domain.repository.FlightSegmentRepository
 import com.projectlab.core.domain.repository.HotelRepository
 import com.projectlab.core.domain.repository.ItineraryRepository
 import com.projectlab.core.domain.repository.OnboardingFlagProvider
@@ -83,10 +81,6 @@ abstract class DataModule {
         impl: FlightRepositoryImpl,
     ): FlightRepository
 
-    @Binds
-    abstract fun bindFlightSegmentRepository(
-        impl: FlightSegmentRepositoryImpl,
-    ): FlightSegmentRepository
 
     @Binds
     abstract fun bindHotelRepository(

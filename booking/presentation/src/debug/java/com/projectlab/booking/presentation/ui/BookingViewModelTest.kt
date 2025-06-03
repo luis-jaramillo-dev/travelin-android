@@ -14,7 +14,6 @@ import com.projectlab.core.domain.entity.UserEntity
 import com.projectlab.core.domain.model.EntityId
 import com.projectlab.core.domain.repository.ActivityRepository
 import com.projectlab.core.domain.repository.FlightRepository
-import com.projectlab.core.domain.repository.FlightSegmentRepository
 import com.projectlab.core.domain.repository.HotelRepository
 import com.projectlab.core.domain.repository.ItineraryRepository
 import com.projectlab.core.domain.repository.UserRepository
@@ -40,7 +39,6 @@ class BookingViewModelTest @Inject constructor(
     private val userRepo: UserRepository,
     private val itineraryRepo: ItineraryRepository,
     private val flightRepo: FlightRepository,
-    private val flightSegmentRepo: FlightSegmentRepository,
     private val hotelRepo: HotelRepository,
     private val activityRepo: ActivityRepository,
     // TODO : add other repositories as needed: flight, hotel, etc.
@@ -154,7 +152,7 @@ class BookingViewModelTest @Inject constructor(
         )
 
         // We create the flight segment in Firestore through the repository
-        val flightSegmentRes = flightSegmentRepo.createFlightSegment(flightSegment)
+        val flightSegmentRes = flightRepo.createFlightSegment(flightSegment)
         if (flightSegmentRes.isFailure) {
             _seedResult.value = Result.failure(flightSegmentRes.exceptionOrNull()!!)
             return@launch
