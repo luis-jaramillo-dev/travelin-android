@@ -7,7 +7,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.projectlab.auth.domain.use_cases.AuthUseCases
 import com.projectlab.core.domain.entity.UserEntity
-import com.projectlab.core.domain.model.EntityId
+import com.projectlab.core.domain.repository.UserSessionProvider
 import com.projectlab.core.domain.use_cases.users.UsersUseCases
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
@@ -16,7 +16,8 @@ import javax.inject.Inject
 @HiltViewModel
 class ProfileViewModel @Inject constructor(
     private val authUseCase: AuthUseCases,
-    private val usersUseCases: UsersUseCases
+    private val usersUseCases: UsersUseCases,
+    private val userSessionProvider: UserSessionProvider,
 ) : ViewModel() {
     val currentUser = authUseCase.getCurrentUser()
 
@@ -39,12 +40,16 @@ class ProfileViewModel @Inject constructor(
     }
 
     private fun getUserById() = viewModelScope.launch {
-        usersUseCases.getUserById(currentUser!!.uid).collect() {
+        usersUseCases.getUserById(currentUser!!.uid).collect {
             userEntityData = it
         }
     }
 
     fun logout() {
+        viewModelScope.launch {
+            userSessionProvider.deleteUserSession()
+        }
+
         authUseCase.logout()
     }
 }
