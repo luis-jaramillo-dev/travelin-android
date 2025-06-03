@@ -6,6 +6,7 @@ plugins {
 
 android {
     namespace = "com.projectlab.core.presentation.ui"
+
 }
 
 dependencies {
@@ -23,4 +24,10 @@ dependencies {
     implementation(libs.androidx.material3.android)
     implementation(libs.coil.compose)
     api(libs.androidx.compose.material3)
+
+    // Testing
+    implementation(libs.androidx.junit.ktx)
+    androidTestImplementation(libs.mockito.android)
+    androidTestImplementation(libs.compose.ui.test)
+    debugImplementation(libs.compose.ui.test.manifest)
 }

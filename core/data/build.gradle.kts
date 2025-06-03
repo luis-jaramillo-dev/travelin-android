@@ -62,4 +62,11 @@ dependencies {
     // Proto DataStore
     implementation(libs.androidx.datastore)
     implementation(libs.protobuf.javalite)
+    implementation(libs.play.services.location)
+
+    // Testing
+    implementation(libs.androidx.junit.ktx)
+    androidTestImplementation(libs.mockito.android)
+    androidTestImplementation(libs.compose.ui.test)
+    debugImplementation(libs.compose.ui.test.manifest)
 }
