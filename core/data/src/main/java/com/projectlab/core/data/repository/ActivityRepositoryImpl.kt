@@ -65,8 +65,95 @@ class ActivityRepositoryImpl @Inject constructor(
             EntityId(docRef.id)
         }
 
-    override suspend fun getActivityById(id: String): Flow<ActivityEntity?> {
-        TODO("Not yet implemented")
+
+    @RequiresApi(Build.VERSION_CODES.O)
+    override suspend fun getActivityById(
+        userId: String,
+        itinId: String,
+        activityId: String
+    ): Flow<ActivityEntity?> = flow {
+        // Get the document reference for the activity
+        val docRef = firestore
+            .collection("Users").document(userId)
+            .collection("Itineraries").document(itinId)
+            .collection("Activities").document(activityId)
+        // we get the snapshot and map it to the DTO
+        // If the snapshot exists, we map to domain, convert it to an ActivityEntity and emit
+        // Otherwise, we emit null
+        val snap = docRef.get().await()
+        if (snap.exists()) {
+            val dto = snap.toObject(FirestoreActivityDTO::class.java)
+            emit(
+                dto?.toDomain(
+                    docId = snap.id,
+                    userRef = EntityId(userId),
+                    itineraryRef = EntityId(itinId)
+                )
+            )
+        } else {
+            emit(null)
+        }
+    }
+
+    override suspend fun getAllActivitiesForItinerary(
+        userId: String,
+        itinId: String
+    ): Flow<List<ActivityEntity>> = flow {
+        // Route to the Activities collection for the given user and itinerary
+        val snaps = firestore
+            .collection("Users").document(userId)
+            .collection("Itineraries").document(itinId)
+            .collection("Activities").get().await()
+
+        // For each document, convert the DTO to domain (ActivityEntity):
+        val list = snaps.documents.mapNotNull { doc ->
+            doc.toObject(FirestoreActivityDTO::class.java)
+                ?.toDomain(
+                    docId = doc.id,
+                    userRef = EntityId(userId),
+                    itineraryRef = EntityId(itinId)
+                )
+        }
+        emit(list)
+    }
+
+    @RequiresApi(Build.VERSION_CODES.O)
+    override suspend fun updateActivity(activity: ActivityEntity): kotlin.Result<Unit> = runCatching {
+        // We retrieve the user and itinerary references from the object reference
+        val userId = activity.userRef?.value
+            ?: throw IllegalArgumentException("userRef is null")
+        val itinId = activity.itineraryRef?.value
+            ?: throw IllegalArgumentException("itineraryRef is null")
+
+        // Recostruct the document routes/references:
+        val userDoc = firestore.collection("Users").document(userId)
+        val itinDoc = userDoc.collection("Itineraries").document(itinId)
+
+        // convert to DTO:
+        val dto = FirestoreActivityDTO.fromDomain(
+            domain = activity,
+            userDoc = userDoc,
+            itineraryDoc = itinDoc,
+            locationDoc = firestore.collection("Locations")
+                .document(activity.locationRef?.value ?: throw IllegalArgumentException("locationRef is null"))
+        )
+
+        // Overwrite, set() the specific activity document:
+        firestore.collection("Users").document(userId)
+            .collection("Itineraries").document(itinId)
+            .collection("Activities").document(activity.id)
+            .set(dto).await()
+    }
+
+    override suspend fun deleteActivity(
+        userId: String,
+        itinId: String,
+        activityId: String
+    ): kotlin.Result<Unit> = runCatching {
+        firestore.collection("Users").document(userId)
+            .collection("Itineraries").document(itinId)
+            .collection("Activities").document(activityId)
+            .delete().await()
     }
 
     override fun queryFavoriteActivities(
