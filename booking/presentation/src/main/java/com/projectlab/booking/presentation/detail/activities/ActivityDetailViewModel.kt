@@ -3,8 +3,12 @@ package com.projectlab.booking.presentation.detail.activities
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.projectlab.core.data.mapper.toDto
-import com.projectlab.core.data.remote.ActivityApiService
 import com.projectlab.core.data.usecase.GetActivityUseCase
+import com.projectlab.core.domain.entity.FavoriteActivityEntity
+import com.projectlab.core.domain.use_cases.activities.IsFavoriteActivityUseCase
+import com.projectlab.core.domain.use_cases.activities.RemoveFavoriteActivityByIdUseCase
+import com.projectlab.core.domain.use_cases.activities.SaveFavoriteActivityUseCase
+import com.projectlab.core.domain.use_cases.location.GetCityFromCoordinatesUseCase
 import com.projectlab.core.domain.util.Result
 import com.projectlab.core.presentation.ui.utils.ErrorMapper
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -17,12 +21,13 @@ import javax.inject.Inject
 
 @HiltViewModel
 class ActivityDetailViewModel @Inject constructor(
-    private val activityApiService: ActivityApiService,
+    private val isFavoriteActivityUseCase: IsFavoriteActivityUseCase,
+    private val saveFavoriteActivityUseCase: SaveFavoriteActivityUseCase,
+    private val removeFavoriteActivityByIdUseCase: RemoveFavoriteActivityByIdUseCase,
+    private val getCityFromCoordinatesUseCase: GetCityFromCoordinatesUseCase,
     private val getActivityUseCase: GetActivityUseCase,
-    private val errorMapper: ErrorMapper
-
+    private val errorMapper: ErrorMapper,
 ) : ViewModel() {
-
     private val _uiState = MutableStateFlow(ActivityDetailUiState())
     val uiState: StateFlow<ActivityDetailUiState> = _uiState.asStateFlow()
 
@@ -32,7 +37,23 @@ class ActivityDetailViewModel @Inject constructor(
             try {
                 when (val result = getActivityUseCase(activityId)) {
                     is Result.Success -> {
-                        _uiState.update { it.copy(activity = result.data.toDto()) }
+                        val isFavorite = isFavoriteActivityUseCase(activityId)
+
+                        if (isFavorite.isSuccess) {
+                            _uiState.update {
+                                it.copy(
+                                    activity = result.data.toDto(),
+                                    isFavorite = isFavorite.getOrElse { false },
+                                )
+                            }
+                        } else {
+                            _uiState.update {
+                                it.copy(
+                                    error = isFavorite.exceptionOrNull()?.localizedMessage
+                                        ?: "Unknown error"
+                                )
+                            }
+                        }
                     }
 
                     is Result.Error -> {
@@ -41,9 +62,54 @@ class ActivityDetailViewModel @Inject constructor(
                 }
             } catch (e: Exception) {
                 _uiState.update { it.copy(error = e.localizedMessage ?: "Unknown error") }
-
             } finally {
                 _uiState.update { it.copy(isLoading = false) }
+            }
+        }
+    }
+
+    fun updateFavorite() {
+        val activity = _uiState.value.activity
+
+        if (activity == null) {
+            _uiState.update { it.copy(error = "Could not get current activity") }
+            return
+        }
+
+        viewModelScope.launch {
+            _uiState.update { it.copy(isFavoriteLoading = true) }
+
+            try {
+                if (_uiState.value.isFavorite) {
+                    removeFavoriteActivityByIdUseCase(activity.id)
+                    _uiState.update { it.copy(isFavorite = false) }
+                } else {
+                    val location = getCityFromCoordinatesUseCase(
+                        activity.geoCode.latitude,
+                        activity.geoCode.longitude,
+                    )
+
+                    val favoriteActivity = FavoriteActivityEntity(
+                        id = activity.id,
+                        name = activity.name,
+                        description = activity.description,
+                        minimumDuration = activity.minimumDuration,
+                        price = activity.price.amount,
+                        currency = activity.price.currencyCode,
+                        rating = activity.rating,
+                        location = location,
+                        latitude = activity.geoCode.latitude,
+                        longitude = activity.geoCode.longitude,
+                        pictures = activity.pictures,
+                    )
+
+                    saveFavoriteActivityUseCase(favoriteActivity)
+                    _uiState.update { it.copy(isFavorite = true) }
+                }
+            } catch (e: Exception) {
+                _uiState.update { it.copy(error = e.localizedMessage ?: "Unknown error") }
+            } finally {
+                _uiState.update { it.copy(isFavoriteLoading = false) }
             }
         }
     }

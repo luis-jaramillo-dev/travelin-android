@@ -18,7 +18,6 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
-import coil.compose.AsyncImage
 import coil.compose.rememberAsyncImagePainter
 import com.projectlab.core.presentation.designsystem.R
 
@@ -27,7 +26,8 @@ import com.projectlab.core.presentation.designsystem.R
 @Composable
 fun ImageCardWithFavorite(
     modifier: Modifier = Modifier,
-    image: String?
+    image: String?,
+    onFavoritePress: (Boolean) -> Unit,
 ) {
     var isSaved by remember { mutableStateOf(false) }
 
@@ -63,7 +63,10 @@ fun ImageCardWithFavorite(
                 .size(50.dp)
                 .align(Alignment.TopEnd)
                 .padding(5.dp)
-                .clickable { isSaved = !isSaved }
+                .clickable {
+                    isSaved = !isSaved
+                    onFavoritePress(isSaved)
+                },
         )
     }
 }

@@ -15,7 +15,7 @@ import com.projectlab.travelin_android.presentation.components.ButtonSimple
 
 @Composable
 fun SuccessfulBottom(
-    onProfileClick: () -> Unit
+    onNextClick: () -> Unit
 ) {
     Column(
         modifier = Modifier
@@ -27,7 +27,7 @@ fun SuccessfulBottom(
         ButtonSimple(
             text = "Let's Explore",
             onClick = {
-                onProfileClick()
+                onNextClick()
             },
             containerColor = Color.White,
             contentColor = onSurfaceLight

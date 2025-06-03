@@ -91,12 +91,17 @@ fun SearchBar(
             modifier = Modifier
                 .fillMaxWidth()
                 .semantics { contentDescription = contentsDescription },
-            placeholder = { Text(text = placeholder) },
-            keyboardOptions = KeyboardOptions.Default.copy(
-                imeAction = ImeAction.Done,
+            placeholder = {
+                Text(
+                    text = placeholder,
+                    style = MaterialTheme.typography.bodySmall,
+                )
+            },
+            keyboardOptions = KeyboardOptions(
+                imeAction = ImeAction.Search,
             ),
             keyboardActions = KeyboardActions(
-                onDone = { onEnter() },
+                onSearch = { onEnter() },
             ),
             singleLine = true,
             shape = MaterialTheme.shapes.large,
