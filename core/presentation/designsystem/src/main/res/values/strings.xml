@@ -45,4 +45,11 @@
     <string name="addToItinerary">Add to Itinerary</string>
     <string name="remove_favorite">Remove Favorite</string>
     <string name="image_of">Image of %1$s</string>
+
+    <!--    Hotels-->
+    <string name="price_per_night">from %1$s /per night</string>
+    <string name="favorite_hotel">Save hotel  %1$s on favorites</string>
+    <string name="unfavorite_hotel">Delete hotel  %1$s from favorites</string>
+
+
 </resources>
