@@ -23,12 +23,9 @@ interface ActivityRepository {
     suspend fun saveFavoriteActivity(
         userId: String,
         activity: FavoriteActivityEntity,
-    ): kotlin.Result<String>
-
-    suspend fun removeFavoriteActivityById(
-        userId: String,
-        activityId: String,
     ): kotlin.Result<Unit>
+
+    suspend fun removeFavoriteActivityById(userId: String, activityId: String): kotlin.Result<Unit>
 
     suspend fun getActivitiesByCoordinates(
         latitude: Double,

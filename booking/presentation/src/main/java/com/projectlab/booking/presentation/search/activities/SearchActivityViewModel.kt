@@ -8,12 +8,12 @@ import com.projectlab.core.data.usecase.GetActivitiesUseCase
 import com.projectlab.core.domain.entity.FavoriteActivityEntity
 import com.projectlab.core.domain.model.Location
 import com.projectlab.core.domain.proto.SearchHistory.HistoryType
-import com.projectlab.core.domain.repository.ActivityRepository
 import com.projectlab.core.domain.repository.SearchHistoryProvider
-import com.projectlab.core.domain.repository.UserSessionProvider
-import com.projectlab.core.domain.util.Result
+import com.projectlab.core.domain.use_cases.activities.RemoveFavoriteActivityByIdUseCase
+import com.projectlab.core.domain.use_cases.activities.SaveFavoriteActivityUseCase
 import com.projectlab.core.domain.use_cases.location.GetCityFromCoordinatesUseCase
 import com.projectlab.core.domain.use_cases.location.GetCoordinatesFromCityUseCase
+import com.projectlab.core.domain.util.Result
 import com.projectlab.core.presentation.ui.utils.ErrorMapper
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -34,10 +34,10 @@ import javax.inject.Inject
 @HiltViewModel
 class SearchActivityViewModel @Inject constructor(
     private val getActivitiesUseCase: GetActivitiesUseCase,
-    private val activitiesRepository: ActivityRepository,
-    private val userSessionProvider: UserSessionProvider,
     private val getCoordinatesFromCityUseCase: GetCoordinatesFromCityUseCase,
     private val getCityFromCoordinatesUseCase: GetCityFromCoordinatesUseCase,
+    private val saveFavoriteActivityUseCase: SaveFavoriteActivityUseCase,
+    private val removeFavoriteActivityByIdUseCase: RemoveFavoriteActivityByIdUseCase,
     private val errorMapper: ErrorMapper,
     private val historyProvider: SearchHistoryProvider,
 ) : ViewModel() {
@@ -113,15 +113,8 @@ class SearchActivityViewModel @Inject constructor(
     fun setFavorite(activity: ActivityDto, isFavorite: Boolean) {
         viewModelScope.launch {
             try {
-                val userId = userSessionProvider.getUserSessionId()
-
-                if (userId == null) {
-                    _uiState.update { it.copy(error = "Could not get current user") }
-                    return@launch
-                }
-
                 if (!isFavorite) {
-                    activitiesRepository.removeFavoriteActivityById(userId, activity.id)
+                    removeFavoriteActivityByIdUseCase(activity.id)
                     return@launch
                 }
 
@@ -144,7 +137,7 @@ class SearchActivityViewModel @Inject constructor(
                     pictures = activity.pictures,
                 )
 
-                activitiesRepository.saveFavoriteActivity(userId, favoriteActivity)
+                saveFavoriteActivityUseCase(favoriteActivity)
             } catch (e: Exception) {
                 _uiState.update { it.copy(error = e.localizedMessage ?: "Unknown error") }
             }

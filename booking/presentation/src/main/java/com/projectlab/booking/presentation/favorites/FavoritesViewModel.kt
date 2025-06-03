@@ -3,8 +3,8 @@ package com.projectlab.booking.presentation.favorites
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.projectlab.core.domain.entity.FavoriteActivityEntity
-import com.projectlab.core.domain.repository.ActivityRepository
-import com.projectlab.core.domain.repository.UserSessionProvider
+import com.projectlab.core.domain.use_cases.activities.QueryFavoriteActivitiesUseCase
+import com.projectlab.core.domain.use_cases.activities.RemoveFavoriteActivityByIdUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.ensureActive
@@ -19,8 +19,8 @@ import kotlin.coroutines.cancellation.CancellationException
 
 @HiltViewModel
 class FavoritesViewModel @Inject constructor(
-    private val activitiesRepository: ActivityRepository,
-    private val userSessionProvider: UserSessionProvider,
+    private val queryFavoriteActivitiesUseCase: QueryFavoriteActivitiesUseCase,
+    private val removeFavoriteActivityByIdUseCase: RemoveFavoriteActivityByIdUseCase,
 ) : ViewModel() {
     private val _uiState = MutableStateFlow(FavoritesUIState())
     val uiState: StateFlow<FavoritesUIState> = _uiState.asStateFlow()
@@ -42,19 +42,22 @@ class FavoritesViewModel @Inject constructor(
             _uiState.update { it.copy(isLoading = true, destinations = emptyList()) }
 
             try {
-                val userId = userSessionProvider.getUserSessionId()
+                val result = queryFavoriteActivitiesUseCase(_uiState.value.query)
 
-                if (userId == null) {
-                    _uiState.update { it.copy(error = "Could not get current user") }
-                } else {
-                    val destinations = mutableListOf<FavoriteActivityEntity>()
+                if (result.isFailure) {
+                    _uiState.update {
+                        it.copy(
+                            error = (result.exceptionOrNull() ?: "Unknown error").toString()
+                        )
+                    }
+                }
 
-                    activitiesRepository.queryFavoriteActivities(userId, _uiState.value.query)
-                        .collect { activity ->
-                            ensureActive()
-                            destinations.add(activity)
-                            _uiState.update { it.copy(destinations = destinations.toList()) }
-                        }
+                val destinations = mutableListOf<FavoriteActivityEntity>()
+
+                result.getOrNull()?.collect { activity ->
+                    ensureActive()
+                    destinations.add(activity)
+                    _uiState.update { it.copy(destinations = destinations.toList()) }
                 }
             } catch (e: Exception) {
                 // cancelling a job throws an exception
@@ -73,15 +76,7 @@ class FavoritesViewModel @Inject constructor(
     fun removeFavoriteActivity(activityId: String) {
         viewModelScope.launch {
             try {
-                val userId = userSessionProvider.getUserSessionId()
-
-                if (userId == null) {
-                    _uiState.update { it.copy(error = "Could not get current user") }
-                    return@launch
-                }
-
-                activitiesRepository.removeFavoriteActivityById(userId, activityId)
-
+                removeFavoriteActivityByIdUseCase(activityId)
                 queryFavoriteActivities()
             } catch (e: Exception) {
                 _uiState.update { it.copy(error = e.localizedMessage ?: "Unknown error") }
