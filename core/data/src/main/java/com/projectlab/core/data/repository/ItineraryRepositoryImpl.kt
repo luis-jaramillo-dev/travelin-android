@@ -19,7 +19,7 @@ import javax.inject.Inject
  * @param firestore The FirebaseFirestore instance used to interact with Firestore.
  */
 
-class FirestoreItineraryRepositoryImpl @Inject constructor (
+class ItineraryRepositoryImpl @Inject constructor (
     private val firestore: FirebaseFirestore
 ) : ItineraryRepository {
     private val usersCol = firestore.collection("Users")

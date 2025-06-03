@@ -6,11 +6,11 @@ import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 import com.projectlab.core.data.Constants.REFERENCE_USERS
 import com.projectlab.core.data.repository.AmadeusTokenProviderImpl
-import com.projectlab.core.data.repository.FirestoreFlightRepositoryImpl
-import com.projectlab.core.data.repository.FirestoreFlightSegmentRepositoryImpl
-import com.projectlab.core.data.repository.FirestoreHotelRepositoryImpl
-import com.projectlab.core.data.repository.FirestoreItineraryRepositoryImpl
-import com.projectlab.core.data.repository.FirestoreUserRepositoryImpl
+import com.projectlab.core.data.repository.FlightRepositoryImpl
+import com.projectlab.core.data.repository.FlightSegmentRepositoryImpl
+import com.projectlab.core.data.repository.HotelRepositoryImpl
+import com.projectlab.core.data.repository.ItineraryRepositoryImpl
+import com.projectlab.core.data.repository.UserRepositoryImpl
 import com.projectlab.core.data.repository.OnboardingFlagProviderImpl
 import com.projectlab.core.data.repository.SearchHistoryProviderImpl
 import com.projectlab.core.data.repository.UserSessionProviderImpl
@@ -70,27 +70,27 @@ abstract class DataModule {
 
     @Binds
     abstract fun bindUserRepository(
-        impl: FirestoreUserRepositoryImpl,
+        impl: UserRepositoryImpl,
     ): UserRepository
 
     @Binds
     abstract fun bindItineraryRepository(
-        impl: FirestoreItineraryRepositoryImpl,
+        impl: ItineraryRepositoryImpl,
     ): ItineraryRepository
 
     @Binds
     abstract fun bindFlightRepository(
-        impl: FirestoreFlightRepositoryImpl,
+        impl: FlightRepositoryImpl,
     ): FlightRepository
 
     @Binds
     abstract fun bindFlightSegmentRepository(
-        impl: FirestoreFlightSegmentRepositoryImpl,
+        impl: FlightSegmentRepositoryImpl,
     ): FlightSegmentRepository
 
     @Binds
     abstract fun bindHotelRepository(
-        impl: FirestoreHotelRepositoryImpl,
+        impl: HotelRepositoryImpl,
     ): HotelRepository
 
     // TODO: implement: bind ItineraryRepository, FlightRepository, etc.

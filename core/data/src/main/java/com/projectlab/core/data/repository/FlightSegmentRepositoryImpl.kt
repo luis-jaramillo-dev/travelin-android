@@ -19,7 +19,7 @@ import kotlinx.coroutines.tasks.await
  * @param firestore The FirebaseFirestore instance used to interact with Firestore.
  */
 
-class FirestoreFlightSegmentRepositoryImpl @Inject constructor (
+class FlightSegmentRepositoryImpl @Inject constructor (
     private val firestore: FirebaseFirestore
 ) : FlightSegmentRepository {
     @RequiresApi(Build.VERSION_CODES.O)

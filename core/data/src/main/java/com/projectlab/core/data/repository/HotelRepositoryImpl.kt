@@ -19,7 +19,7 @@ import javax.inject.Inject
  * @param firestore The FirebaseFirestore instance used to interact with Firestore.
  */
 
-class FirestoreHotelRepositoryImpl @Inject constructor (
+class HotelRepositoryImpl @Inject constructor (
     private val firestore : FirebaseFirestore
 ) : HotelRepository {
 

@@ -20,7 +20,7 @@ import kotlinx.coroutines.flow.flow
  * @param firestore The FirebaseFirestore instance used to interact with Firestore.
  */
 
-class FirestoreUserRepositoryImpl @Inject constructor(
+class UserRepositoryImpl @Inject constructor(
     private val firestore: FirebaseFirestore
 ) : UserRepository {
 
