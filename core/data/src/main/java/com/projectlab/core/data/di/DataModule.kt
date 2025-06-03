@@ -7,7 +7,7 @@ import com.google.firebase.ktx.Firebase
 import com.projectlab.core.data.Constants.REFERENCE_USERS
 import com.projectlab.core.data.repository.AmadeusTokenProviderImpl
 import com.projectlab.core.database.services.FirestoreActivityImpl
-import com.projectlab.core.database.services.FirestoreFlightFirestoreImpl
+import com.projectlab.core.database.services.FirestoreFlightImpl
 import com.projectlab.core.database.services.FirestoreHotelImpl
 import com.projectlab.core.database.services.FirestoreItineraryImpl
 import com.projectlab.core.database.services.FirestoreUserImpl
@@ -81,7 +81,7 @@ abstract class DataModule {
 
     @Binds
     abstract fun bindFirestoreFlight(
-        impl: FirestoreFlightFirestoreImpl,
+        impl: FirestoreFlightImpl,
     ): FirestoreFlight
 
 

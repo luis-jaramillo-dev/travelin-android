@@ -14,13 +14,13 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 
 /**
- * FirestoreFlightFirestoreImpl is a concrete implementation of the FirestoreFlight interface.
+ * FirestoreFlightImpl is a concrete implementation of the FirestoreFlight interface.
  * It uses Firestore to perform CRUD operations on flight data.
  *
  * @param firestore The FirebaseFirestore instance used to interact with Firestore.
  */
 
-class FirestoreFlightFirestoreImpl @Inject constructor (
+class FirestoreFlightImpl @Inject constructor (
     private val firestore: FirebaseFirestore
 ) : FirestoreFlight {
 
