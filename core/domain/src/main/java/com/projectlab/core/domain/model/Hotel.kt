@@ -23,14 +23,14 @@ data class HotelLocation(
 )
 
 data class HotelRating(
-    val stars: Int?,
+    val stars: Int,
     val overallRating: Int,
     val numberOfReviews: Int,
 )
 
 data class HotelOffer(
     val id: String,
-    val price: Price,
+    val price: HotelPrice,
     val checkInDate: String,
     val checkOutDate: String,
     val room: HotelRoom
@@ -45,4 +45,9 @@ data class HotelRoom(
     val adults: Int,
     val childAges: Int,
     val squareMeters: Int
+)
+
+data class HotelPrice(
+    val amount: Double,
+    val currencyCode: String
 )

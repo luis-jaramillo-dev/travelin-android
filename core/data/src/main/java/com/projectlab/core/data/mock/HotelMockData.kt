@@ -1,9 +1,12 @@
 package com.projectlab.core.data.mock
 
+import com.projectlab.core.data.utils.CurrencyUtils
 import com.projectlab.core.domain.model.HotelOffer
+import com.projectlab.core.domain.model.HotelPrice
 import com.projectlab.core.domain.model.HotelRating
 import com.projectlab.core.domain.model.HotelRoom
 import com.projectlab.core.domain.model.Price
+import java.util.Locale
 import kotlin.random.Random
 
 fun randomHotelRating(stars: Int): HotelRating {
@@ -63,20 +66,21 @@ private val photoUrls = listOf(
 )
 
 
-fun randomHotelPrice(stars: Int) = Random.nextInt(from = 35 + stars * 20, until = stars * 150)
+fun randomHotelPrice(stars: Int) =
+    Random.nextDouble(from = 35.00 + stars * 20, until = stars * 150.00)
 
 fun randomHotelPhoneNumber() = Random.nextLong(from = 10000000000, until = 9999999999999).toString()
 
-fun randomHotelOffers(stars: Int): List<HotelOffer> {
+fun randomHotelOffers(stars: Int, countryCode: String): List<HotelOffer> {
     val numberOfBedrooms = Random.nextInt(from = 1, until = 5)
     val numberOfBathrooms = Random.nextInt(from = 1, until = numberOfBedrooms + 1)
     val squareMeters = Random.nextInt(from = numberOfBedrooms * 20, until = numberOfBedrooms * 40)
     return listOf(
         HotelOffer(
             id = "79GKO6QRK2",
-            price = Price(
-                amount = randomHotelPrice(stars).toString(),
-                currencyCode = "GBP"
+            price = HotelPrice(
+                amount = randomHotelPrice(stars),
+                currencyCode = CurrencyUtils().getCurrencyCodeByCountryCode(countryCode)
             ),
             checkInDate = "2025-06-19",
             checkOutDate = "2025-08-20",

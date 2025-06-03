@@ -12,7 +12,6 @@ import com.projectlab.core.data.remote.hotels.HotelsApiService
 import com.projectlab.core.domain.model.Hotel
 import com.projectlab.core.domain.model.HotelLocation
 import com.projectlab.core.domain.repository.HotelsRepository
-import com.projectlab.core.domain.repository.TokenProvider
 import com.projectlab.core.domain.util.DataError
 import com.projectlab.core.domain.util.Result
 import kotlinx.coroutines.tasks.await
@@ -20,7 +19,6 @@ import javax.inject.Inject
 
 class HotelsRepositoryImpl @Inject constructor(
     private val apiService: HotelsApiService,
-    private val tokenProvider: TokenProvider,
     private val usersRef: CollectionReference
 ) : HotelsRepository {
 
@@ -36,7 +34,8 @@ class HotelsRepositoryImpl @Inject constructor(
                 apiService.getHotelsByCity(cityCode, ratings = ratingQuery)
 
             val hotelsResponse = response.data.map { it ->
-                val hotelOffers = randomHotelOffers(it.stars)
+                val hotelOffers =
+                    randomHotelOffers(stars = it.stars, countryCode = it.address.countryCode)
                 val minHotelOffer = hotelOffers.minOf { it.price.amount }
                 Hotel(
                     id = it.hotelId,
@@ -50,7 +49,7 @@ class HotelsRepositoryImpl @Inject constructor(
                         address = "Plaza Parade, London NW6 5RP,",
                     ),
                     rating = randomHotelRating(it.stars),
-                    displayPrice = minHotelOffer,
+                    displayPrice = minHotelOffer.toString(),
                     isFavourite = false,
                     displayImageUrl = randomHotelDisplayImageUrl(),
                     hotelOffers = hotelOffers,

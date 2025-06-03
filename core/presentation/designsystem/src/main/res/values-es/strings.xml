@@ -43,4 +43,10 @@
     <string name="pricePerPerson">$%1$s/persona</string>
     <string name="bookNow">Book Now</string>
     <string name="addToItinerary">Añadir al Itinerario</string>
+
+    <!--    Hotels-->
+    <string name="price_per_night">desde %1$s /por noche</string>
+    <string name="favorite_hotel">Guardar hotel  %1$s en favoritos</string>
+    <string name="unfavorite_hotel">Borrar hotel  %1$s desde favoritos</string>
+
 </resources>
