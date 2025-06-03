@@ -60,21 +60,23 @@ jobs:
       - name: Enforce minimum coverage
         run: |
           MODULES=$(find "$GITHUB_WORKSPACE" -maxdepth 1 -type d | grep -vE '(gradle|build|build-logic|navigation|^.\/\.\w+|\.$)$')
+          echo "MODULES: MODULES"
 
           LOC_COVERED=0
           LOC_MISSED=0
 
           for MODULE in $MODULES; do
-            REPORTS=$(find "$MODULE" -maxdepth 7 -type f | grep -E '.*DebugCombinedCoverageReport.csv$')
+            echo "MODULE: $MODULE"
             REPORTS=$(find "$MODULE" -maxdepth 8 -type f -name "*DebugCombinedCoverageReport.csv")
+            echo "REPORTS: REPORTS"
             BRANCH_COVERED=0
             BRANCH_MISSED=0
 
             for REPORT in $REPORTS; do
               echo "Analysing report: $REPORT"
-              BRANCH_COVERED=$( awk -F ',' 'BEGIN { sum_branch_covered=0; } { sum_branch_covered += $7; } END { print sum_branch_covered }' $REPORT )
-
-              BRANCH_MISSED=$( awk -F ',' 'BEGIN { sum_branch_missed=0; } { sum_branch_missed += $6; } END { print sum_branch_missed }' $REPORT )
+              BRANCH_COVERED=$( awk -F ',' 'BEGIN { sum_branch_covered=0; } { sum_branch_covered += $7; } END { print sum_branch_covered }' "$REPORT" )
+              BRANCH_MISSED=$( awk -F ',' 'BEGIN { sum_branch_missed=0; } { sum_branch_missed += $6; } END { print sum_branch_missed }' "$REPORT" )
+              echo "Analysed report: $REPORT"
             done
 
             LOC_COVERED=$(( LOC_COVERED + BRANCH_COVERED ))
