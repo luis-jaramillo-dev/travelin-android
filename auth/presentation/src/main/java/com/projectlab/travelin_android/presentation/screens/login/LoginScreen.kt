@@ -6,7 +6,6 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -19,47 +18,56 @@ import com.projectlab.travelin_android.presentation.screens.login.components.Log
 fun LoginScreen(
     viewModel: LoginViewModel,
     onRegisterClick: () -> Unit,
-    onProfileClick: () -> Unit
+    onLoggedIn: () -> Unit,
 ) {
-    Scaffold(
-        content = {
-            LoginContent(
-                paddingValues = it,
-                viewModel = viewModel,
-            )
-        },
-        bottomBar = { LoginBottomBar(onRegisterClick = onRegisterClick) }
-    )
-
     val loginFlow = viewModel.loginFlow.collectAsState()
 
     loginFlow.value.let {
         when (it) {
+            // wasn't logged in
+            null -> {
+                Scaffold(
+                    bottomBar = { LoginBottomBar(onRegisterClick = onRegisterClick) },
+                ) {
+                    LoginContent(
+                        paddingValues = it,
+                        viewModel = viewModel,
+                    )
+                }
+            }
+
             Response.Loading -> {
                 Box(
                     modifier = Modifier.fillMaxSize(),
-                    contentAlignment = Alignment.Center
+                    contentAlignment = Alignment.Center,
                 ) { CircularProgressIndicator() }
             }
 
             is Response.Failure -> {
+                Scaffold(
+                    bottomBar = { LoginBottomBar(onRegisterClick = onRegisterClick) },
+                ) {
+                    LoginContent(
+                        paddingValues = it,
+                        viewModel = viewModel,
+                    )
+                }
+
                 Toast.makeText(
-                    LocalContext.current, "User fail ${it.exception?.message} ",
-                    Toast.LENGTH_LONG
+                    LocalContext.current,
+                    "User fail ${it.exception?.message}",
+                    Toast.LENGTH_LONG,
                 ).show()
             }
 
             is Response.Success -> {
-                LaunchedEffect(Unit) {
-                    onProfileClick()
-                }
+                onLoggedIn()
                 Toast.makeText(
-                    LocalContext.current, "User logged ",
-                    Toast.LENGTH_LONG
+                    LocalContext.current,
+                    "User logged",
+                    Toast.LENGTH_LONG,
                 ).show()
             }
-
-            null -> {}
         }
     }
 }

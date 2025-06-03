@@ -2,6 +2,8 @@ package com.projectlab.travelin_android.presentation.screens.profile
 
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
+import androidx.hilt.navigation.compose.hiltViewModel
+import com.projectlab.core.presentation.designsystem.component.BottomNavRoute
 import com.projectlab.core.presentation.designsystem.component.BottomNavigationBar
 import com.projectlab.travelin_android.presentation.screens.profile.components.ProfileContent
 
@@ -9,18 +11,25 @@ import com.projectlab.travelin_android.presentation.screens.profile.components.P
 fun ProfileScreen(
     viewModel: ProfileViewModel,
     onLogoutClick: () -> Unit,
-    onHomeClick: () -> Unit
-
+    onHomeClick: () -> Unit,
+    onFavoritesClick: () -> Unit,
+    onTripsClick: () -> Unit,
 ) {
     Scaffold(
-        topBar = { },
-        content = {
-            ProfileContent(
-                paddingValues = it,
-                viewModel = viewModel,
-                onLogoutClick = onLogoutClick
+        bottomBar = {
+            BottomNavigationBar(
+                BottomNavRoute.PROFILE,
+                onHomeClick,
+                onFavoritesClick,
+                onTripsClick,
+                onProfileClick = {},
             )
         },
-        bottomBar = { BottomNavigationBar("profile", onHomeClick) }
-    )
+    ) {
+        ProfileContent(
+            paddingValues = it,
+            viewModel = viewModel,
+            onLogoutClick = onLogoutClick,
+        )
+    }
 }

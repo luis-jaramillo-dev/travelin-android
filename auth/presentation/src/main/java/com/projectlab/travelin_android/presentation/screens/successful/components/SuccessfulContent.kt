@@ -18,7 +18,7 @@ import com.projectlab.core.presentation.designsystem.theme.spacing
 @Composable
 fun SuccessfulContent(
     paddingValues: PaddingValues,
-    onProfileClick: () -> Unit
+    onNextClick: () -> Unit
 ) {
     Column(
         modifier = Modifier
@@ -30,6 +30,6 @@ fun SuccessfulContent(
     ) {
         Spacer(modifier = Modifier.height(MaterialTheme.spacing.BigSpacing))
         SuccessfulHeader()
-        SuccessfulBottom(onProfileClick = onProfileClick)
+        SuccessfulBottom(onNextClick = onNextClick)
     }
 }

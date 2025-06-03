@@ -4,9 +4,11 @@ import android.Manifest
 import android.util.Log
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
@@ -14,6 +16,7 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -28,6 +31,7 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.navigation.NavController
 import androidx.navigation.compose.currentBackStackEntryAsState
+import com.projectlab.core.data.model.ActivityDto
 import com.projectlab.core.domain.model.Location
 import com.projectlab.core.presentation.designsystem.R
 import com.projectlab.core.presentation.designsystem.component.BackIconButton
@@ -115,6 +119,10 @@ fun SearchActivityScreen(
         }
     }
 
+    val onFavoriteClick: (ActivityDto, Boolean) -> Unit = { activity, isFavorite ->
+        searchActivityViewModel.setFavorite(activity, isFavorite)
+    }
+
     Column(
         modifier = modifier
             .statusBarsPadding()
@@ -155,6 +163,7 @@ fun SearchActivityScreen(
             uiState = uiState,
             onShowAllResults = { searchActivityViewModel.showAllResults() },
             navController = navController,
+            onFavoriteClick = onFavoriteClick,
             reverseGeocode = { location -> locationViewModel.reverseGeocodeLocation(location) }
         )
     }
@@ -165,7 +174,8 @@ fun SearchActivityResultsComponent(
     uiState: SearchActivityUiState,
     onShowAllResults: () -> Unit,
     navController: NavController,
-    reverseGeocode: suspend (Location) -> String
+    onFavoriteClick: (ActivityDto, Boolean) -> Unit,
+    reverseGeocode: suspend (Location) -> String,
 ) {
     val activities = uiState.activities
     val showAll = uiState.showAllResults
@@ -183,6 +193,17 @@ fun SearchActivityResultsComponent(
                 cityMap[activity.id] = city
             }
         }
+    }
+
+    if (uiState.isLoading) {
+        Box(
+            modifier = Modifier.fillMaxSize(),
+            contentAlignment = Alignment.Center,
+        ) {
+            CircularProgressIndicator()
+        }
+
+        return
     }
 
     if (activities.isNotEmpty()) {
@@ -207,7 +228,10 @@ fun SearchActivityResultsComponent(
                     city = city,
                     onPress = {
                         navController.navigate("activityDetail/${activity.id}")
-                    }
+                    },
+                    onFavoritePress = { isFavorite ->
+                        onFavoriteClick(activity, isFavorite)
+                    },
                 )
 
                 Spacer(modifier = Modifier.height(MaterialTheme.spacing.medium))

@@ -16,6 +16,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -31,6 +32,8 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
+import com.projectlab.core.presentation.designsystem.component.BottomNavRoute
+import com.projectlab.core.presentation.designsystem.component.BottomNavigationBar
 import com.projectlab.booking.presentation.R as BookingR
 import com.projectlab.core.presentation.designsystem.R as DesignSystemR
 import com.projectlab.core.presentation.designsystem.component.ButtonHotel
@@ -45,6 +48,9 @@ fun HomeScreen(
     locationViewModel: LocationViewModel,
     homeViewModel: HomeViewModel,
     navController: NavController,
+    onFavoritesClick: () -> Unit,
+    onTripsClick: () -> Unit,
+    onProfileClick: () -> Unit,
     onClickSearchHotel: () -> Unit
 ) {
     val context = LocalContext.current
@@ -79,17 +85,30 @@ fun HomeScreen(
         homeViewModel.fetchSearchHistory()
     }
 
-    HomeScreenComponent(
-        modifier = modifier,
-        uiState = uiState,
-        onQueryChange = homeViewModel::onQueryChange,
-        onQuerySubmitted = {
-            homeViewModel.onSearchPressed()
-            homeViewModel.onSearchSubmitted()
+    Scaffold(
+        bottomBar = {
+            BottomNavigationBar(
+                BottomNavRoute.HOME,
+                onHomeClick = {},
+                onFavoritesClick,
+                onTripsClick,
+                onProfileClick,
+            )
         },
-        onDeleteHistoryEntry = homeViewModel::onDeleteHistoryEntry,
-        onClickSearchHotel = { onClickSearchHotel() }
-    )
+    ) { paddingValues ->
+        HomeScreenComponent(
+            modifier = modifier.padding(paddingValues),
+            uiState = uiState,
+            onQueryChange = homeViewModel::onQueryChange,
+            onQuerySubmitted = {
+                homeViewModel.onSearchPressed()
+                homeViewModel.onSearchSubmitted()
+            },
+            onDeleteHistoryEntry = homeViewModel::onDeleteHistoryEntry,
+            onClickSearchHotel = { onClickSearchHotel() }
+        )
+    }
+
 }
 
 
@@ -177,7 +196,7 @@ fun HomeSearchComponent(
             ) {
                 ButtonHotel(
                     modifier = Modifier,
-                    onClick = { onClickSearchHotel() },
+                    onClick = {},
                 )
                 ButtonOversea(
                     modifier = Modifier,

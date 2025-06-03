@@ -6,20 +6,22 @@ import androidx.datastore.dataStore
 import com.projectlab.core.data.config.AmadeusTokenSerializer
 import com.projectlab.core.data.config.OnboardingFlagSerializer
 import com.projectlab.core.data.config.SearchHistorySerializer
+import com.projectlab.core.data.config.UserSessionSerializer
 import com.projectlab.core.data.network.AmadeusClientFactory
+import com.projectlab.core.data.network.AmadeusTokenAuthenticator
 import com.projectlab.core.data.network.AuthInterceptor
 import com.projectlab.core.data.network.HttpClientFactory
-import com.projectlab.core.data.network.AmadeusTokenAuthenticator
-import com.projectlab.core.data.remote.ActivitiesApiService
 import com.projectlab.core.data.remote.ActivityApiService
 import com.projectlab.core.data.remote.AmadeusApiService
 import com.projectlab.core.data.remote.hotels.HotelsApiService
 import com.projectlab.core.data.repository.AmadeusTokenProviderImpl
 import com.projectlab.core.data.repository.OnboardingFlagProviderImpl
 import com.projectlab.core.data.repository.SearchHistoryProviderImpl
+import com.projectlab.core.data.repository.UserSessionProviderImpl
 import com.projectlab.core.domain.proto.AmadeusToken
 import com.projectlab.core.domain.proto.OnboardingFlag
 import com.projectlab.core.domain.proto.SearchHistory
+import com.projectlab.core.domain.proto.UserSession
 import com.projectlab.core.domain.repository.TokenProvider
 import dagger.Module
 import dagger.Provides
@@ -56,6 +58,11 @@ object NetworkModule {
     private val Context.searchHistoryStore: DataStore<SearchHistory> by dataStore<SearchHistory>(
         fileName = "search_history.pb",
         serializer = SearchHistorySerializer,
+    )
+
+    private val Context.userSessionStore: DataStore<UserSession> by dataStore<UserSession>(
+        fileName = "user_session.pb",
+        serializer = UserSessionSerializer,
     )
 
     /**
@@ -99,6 +106,20 @@ object NetworkModule {
         @ApplicationContext context: Context,
     ): DataStore<SearchHistory> {
         return context.searchHistoryStore
+    }
+
+    /**
+     * Provides a singleton instance of UserSession DataStore.
+     *
+     * @param context The application context.
+     * @return A DataStore instance.
+     */
+    @Provides
+    @Singleton
+    fun provideUserSessionStore(
+        @ApplicationContext context: Context,
+    ): DataStore<UserSession> {
+        return context.userSessionStore
     }
 
     /**
@@ -153,7 +174,7 @@ object NetworkModule {
     @Provides
     @Singleton
     fun provideTokenProvider(
-        amadeusTokenStore: DataStore<AmadeusToken>
+        amadeusTokenStore: DataStore<AmadeusToken>,
     ): AmadeusTokenProviderImpl {
         return AmadeusTokenProviderImpl(amadeusTokenStore)
     }
@@ -173,6 +194,20 @@ object NetworkModule {
     }
 
     /**
+     * Provides a singleton instance of UserSessionProvider.
+     *
+     * @param userSessionStore The UserSession DataStore instance.
+     * @return A UserSessionProvider instance.
+     */
+    @Provides
+    @Singleton
+    fun provideUserSessionProvider(
+        userSessionStore: DataStore<UserSession>,
+    ): UserSessionProviderImpl {
+        return UserSessionProviderImpl(userSessionStore)
+    }
+
+    /**
      * Provides a singleton instance of AuthInterceptor.
      *
      * @param tokenProvider The TokenProvider instance.
@@ -184,14 +219,14 @@ object NetworkModule {
         return AuthInterceptor(tokenProvider)
     }
 
-    @Provides @Singleton
+    @Provides
+    @Singleton
     fun provideTokenAuthenticator(
         tokenProvider: TokenProvider,
         amadeusApiService: AmadeusApiService,
-        amadeusTokenStore: DataStore<AmadeusToken>
-    ): Authenticator = AmadeusTokenAuthenticator(tokenProvider, amadeusApiService, amadeusTokenStore)
-
-
+        amadeusTokenStore: DataStore<AmadeusToken>,
+    ): Authenticator =
+        AmadeusTokenAuthenticator(tokenProvider, amadeusApiService, amadeusTokenStore)
 
     /**
      * Provides OkHttpClient using the factory injected.
@@ -207,23 +242,12 @@ object NetworkModule {
     ): OkHttpClient = factory.createClient()
 
     /**
-     * Provides ActivitiesApiService targeting BASE_URL using OkHttpClient
+     * Provides ActivityApiService targeting BASE_URL using OkHttpClient
      * with auth and logging.
      *
      * @param okHttpClient The OkHttpClient instance.
-     * @return An ActivitiesApiService instance.
+     * @return An ActivityApiService instance.
      */
-    @Provides
-    @Singleton
-    fun provideActivitiesApiService(okHttpClient: OkHttpClient): ActivitiesApiService {
-        return Retrofit.Builder()
-            .baseUrl(BASE_URL)
-            .addConverterFactory(GsonConverterFactory.create())
-            .client(okHttpClient)
-            .build()
-            .create(ActivitiesApiService::class.java)
-    }
-
     @Provides
     @Singleton
     fun provideActivityApiService(okHttpClient: OkHttpClient): ActivityApiService {

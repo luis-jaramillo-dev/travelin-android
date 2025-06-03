@@ -9,6 +9,9 @@ import com.google.firebase.auth.FirebaseUser
 import com.projectlab.auth.domain.use_cases.AuthUseCases
 import com.projectlab.core.domain.model.Response
 import com.projectlab.core.domain.model.User
+import com.projectlab.core.domain.entity.UserEntity
+import com.projectlab.core.domain.model.Response
+import com.projectlab.core.domain.repository.UserSessionProvider
 import com.projectlab.core.domain.use_cases.users.UsersUseCases
 import com.projectlab.travelin_android.presentation.validation.AuthValidator
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -20,9 +23,9 @@ import javax.inject.Inject
 @HiltViewModel
 class RegisterViewModel @Inject constructor(
     private val usersUseCases: UsersUseCases,
-    private val authUseCases: AuthUseCases
+    private val authUseCases: AuthUseCases,
+    private val userSessionProvider: UserSessionProvider,
 ) : ViewModel() {
-
     val firstName: MutableState<String> = mutableStateOf("")
     val lastName: MutableState<String> = mutableStateOf("")
     val countryCode: MutableState<String> = mutableStateOf("+56")
@@ -32,25 +35,40 @@ class RegisterViewModel @Inject constructor(
     val password: MutableState<String> = mutableStateOf("")
     val termsAndConditions: MutableState<Boolean> = mutableStateOf(false)
 
-
     val isAgeValid = derivedStateOf { AuthValidator.isAgeValid(age.value) }
     val ageError = derivedStateOf {
-        if (age.value.isNotEmpty() && !isAgeValid.value) "Enter a valid age" else null
+        if (age.value.isNotEmpty() && !isAgeValid.value) {
+            "Enter a valid age"
+        } else {
+            null
+        }
     }
 
     val isEmailValid = derivedStateOf { AuthValidator.isEmailValid(email.value) }
     val emailError = derivedStateOf {
-        if (email.value.isNotEmpty() && !isEmailValid.value) "Enter a valid email" else null
+        if (email.value.isNotEmpty() && !isEmailValid.value) {
+            "Enter a valid email"
+        } else {
+            null
+        }
     }
 
     val isPasswordValid = derivedStateOf { AuthValidator.isPasswordValid(password.value) }
     val passwordError = derivedStateOf {
-        if (password.value.isNotEmpty() && !isPasswordValid.value) "Password must be at least 6 characters, include an uppercase and a number" else null
+        if (password.value.isNotEmpty() && !isPasswordValid.value) {
+            "Password must be at least 6 characters, include an uppercase and a number"
+        } else {
+            null
+        }
     }
 
     val isTermsAccepted = derivedStateOf { AuthValidator.isTermsAccepted(termsAndConditions.value) }
     val termsError = derivedStateOf {
-        if (!termsAndConditions.value) "You must accept the terms and conditions" else null
+        if (!termsAndConditions.value) {
+            "You must accept the terms and conditions"
+        } else {
+            null
+        }
     }
 
     val isFormValid = derivedStateOf {
@@ -60,9 +78,9 @@ class RegisterViewModel @Inject constructor(
             passwordError.value,
             termsError.value
         ).all { it == null } &&
-                firstName.value.isNotBlank() &&
-                lastName.value.isNotBlank() &&
-                phoneNumber.value.isNotBlank()
+            firstName.value.isNotBlank() &&
+            lastName.value.isNotBlank() &&
+            phoneNumber.value.isNotBlank()
     }
 
     private val _registerFlow = MutableStateFlow<Response<FirebaseUser>?>(value = null)
@@ -87,6 +105,11 @@ class RegisterViewModel @Inject constructor(
 
         val newUser = User(
             id = currentUser!!.uid,
+        userSessionProvider.setUserSessionId(currentUser!!.uid)
+
+        val newUserEntity = UserEntity(
+            // id = EntityId(currentUser!!.uid), TODO: check if we use EntityId or not
+            id = currentUser.uid,
             email = email.value,
             age = age.value,
             firstName = firstName.value,
@@ -95,5 +118,7 @@ class RegisterViewModel @Inject constructor(
             phoneNumber = phoneNumber.value
         )
         usersUseCases.createUser(newUser)
+
+        usersUseCases.createUser(newUserEntity)
     }
 }
