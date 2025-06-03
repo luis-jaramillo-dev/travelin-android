@@ -63,5 +63,10 @@ gradlePlugin {
             id = libs.plugins.travelinandroid.android.hilt.get().pluginId
             implementationClass = "HiltConventionPlugin"
         }
+
+        register("jacocoLibrary") {
+            id = libs.plugins.travelinandroid.android.library.jacoco.get().pluginId
+            implementationClass = "JacocoAndroidLibraryConventionPlugin"
+        }
     }
 }

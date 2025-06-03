@@ -2,16 +2,8 @@ import java.util.Properties
 
 plugins {
     alias(libs.plugins.travelinandroid.android.library)
-        // Dagger Hilt
-    //alias(libs.plugins.dagger.hilt.android)
-
-    // Ksp
-    //alias(libs.plugins.devtools.ksp)
-
-    // Google Services
-//    alias(libs.plugins.google.services)
-
     alias(libs.plugins.travelinandroid.android.hilt)
+    alias(libs.plugins.travelinandroid.android.library.jacoco)
 }
 
 val localProperties = Properties().apply {
