@@ -20,10 +20,11 @@ import javax.inject.Inject
 
 /**
  * ActivityRepositoryImpl is a concrete implementation of the ActivityRepository interface.
- * It provides methods to interact with activities in Firestore and external APIs.
+ * It provides methods to interact with activities in Data Bases and external APIs.
  *
  * @param firestore The FirebaseFirestore instance used to interact with Firestore.
- * @param activityApiService The ActivityApiService instance used to fetch activities from an external API.
+ * @param activityApiService The ActivityApiService instance used to fetch
+ * activities from an external API.
  */
 
 class ActivityRepositoryImpl @Inject constructor(
