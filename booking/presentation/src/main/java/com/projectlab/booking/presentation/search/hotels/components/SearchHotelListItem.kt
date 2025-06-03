@@ -37,7 +37,7 @@ import com.projectlab.core.presentation.designsystem.R
 import com.projectlab.core.presentation.designsystem.theme.spacing
 
 @Composable
-fun HotelListItem(
+fun SearchHotelListItem(
     hotelUi: HotelUi,
     onClickDetail: () -> Unit,
     onClickFavorite: () -> Unit,

@@ -18,7 +18,7 @@ import com.projectlab.core.presentation.designsystem.component.ButtonVariant
 import com.projectlab.core.presentation.designsystem.theme.spacing
 
 @Composable
-fun HotelDetailsBottomBar(
+fun DetailHotelBottomBar(
     modifier: Modifier = Modifier,
     hotel: Hotel
 ) {

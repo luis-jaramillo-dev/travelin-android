@@ -11,7 +11,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import com.projectlab.booking.presentation.screens.HotelsViewModel
-import com.projectlab.booking.presentation.screens.hotels.search.HotelSearchUiState
+import com.projectlab.booking.presentation.screens.hotels.search.SearchHotelState
 import com.projectlab.core.presentation.designsystem.component.IconBack
 import com.projectlab.core.presentation.designsystem.theme.spacing
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -29,9 +29,9 @@ import com.projectlab.core.presentation.designsystem.component.IconSearch
 import com.projectlab.core.presentation.designsystem.component.TravelinIconButton
 
 @Composable
-fun HotelSearchHeader(
+fun SearchHotelHeader(
     modifier: Modifier = Modifier,
-    uiState: HotelSearchUiState,
+    uiState: SearchHotelState,
     viewModel: HotelsViewModel
 ) {
 

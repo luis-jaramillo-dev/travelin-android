@@ -14,17 +14,17 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
 import com.projectlab.booking.models.toHotelUi
 import com.projectlab.booking.presentation.screens.HotelsViewModel
-import com.projectlab.booking.presentation.screens.hotels.search.HotelSearchUiState
-import com.projectlab.booking.presentation.search.hotels.components.HotelListItem
+import com.projectlab.booking.presentation.screens.hotels.search.SearchHotelState
+import com.projectlab.booking.presentation.search.hotels.components.SearchHotelListItem
 import com.projectlab.core.presentation.designsystem.R
 import com.projectlab.core.presentation.designsystem.component.ButtonComponent
 import com.projectlab.core.presentation.designsystem.component.ButtonVariant
 import com.projectlab.core.presentation.designsystem.theme.spacing
 
 @Composable
-fun HotelSearchContent(
+fun SearchHotelContent(
     modifier: Modifier = Modifier,
-    uiState: HotelSearchUiState,
+    uiState: SearchHotelState,
     viewModel: HotelsViewModel,
     navController: NavHostController
 ) {
@@ -39,7 +39,7 @@ fun HotelSearchContent(
 @Composable
 fun SearchHotelsResultsComponent(
     modifier: Modifier = Modifier,
-    uiState: HotelSearchUiState,
+    uiState: SearchHotelState,
     onShowAllResults: () -> Unit,
     navController: NavHostController,
     viewModel: HotelsViewModel
@@ -56,7 +56,7 @@ fun SearchHotelsResultsComponent(
         LazyColumn {
             items(itemsToShow) {
 
-                HotelListItem(
+                SearchHotelListItem(
                     modifier = Modifier.fillMaxWidth(),
                     hotelUi = it.toHotelUi(),
                     onClickDetail = { navController.navigate("hotelDetail/${it.id}") },

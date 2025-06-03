@@ -51,7 +51,7 @@ import com.projectlab.core.presentation.designsystem.R
 import com.projectlab.core.presentation.designsystem.theme.spacing
 
 @Composable
-fun HotelDetailsContent(
+fun DetailHotelContent(
     modifier: Modifier = Modifier,
     paddingValues: PaddingValues,
     hotel: Hotel

@@ -5,10 +5,9 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.projectlab.booking.presentation.screens.hotels.details.HotelDetailsUiState
-import com.projectlab.booking.presentation.screens.hotels.search.HotelSearchUiState
+import com.projectlab.booking.presentation.screens.hotels.details.DetailHotelState
+import com.projectlab.booking.presentation.screens.hotels.search.SearchHotelState
 import com.projectlab.core.domain.model.Hotel
-import com.projectlab.core.domain.model.Response
 import com.projectlab.core.domain.model.User
 import com.projectlab.core.domain.use_cases.hotels.HotelsUseCases
 import com.projectlab.core.domain.use_cases.users.UsersUseCases
@@ -27,11 +26,20 @@ class HotelsViewModel @Inject constructor(
     private val usersUseCases: UsersUseCases
 ) : ViewModel() {
 
-    private val _uiStateHotelSearch = MutableStateFlow(HotelSearchUiState())
-    val uiStateHotelSearch: StateFlow<HotelSearchUiState> = _uiStateHotelSearch.asStateFlow()
+    private val _uiStateHotelSearch = MutableStateFlow(SearchHotelState())
+    val uiStateHotelSearch: StateFlow<SearchHotelState> = _uiStateHotelSearch.asStateFlow()
 
-    private val _uiStateHotelDetails = MutableStateFlow(HotelDetailsUiState())
-    val uiStateHotelDetails: StateFlow<HotelDetailsUiState> = _uiStateHotelDetails.asStateFlow()
+    private val _uiStateHotelDetails = MutableStateFlow(DetailHotelState())
+    val uiStateHotelDetails: StateFlow<DetailHotelState> = _uiStateHotelDetails.asStateFlow()
+
+    // TODO: CHANGE FOR PROTO IMPL
+    val userId = "7wmWegYUANOFv8ZvKZN1GzHoqvV2"
+
+    var detailHotelState by mutableStateOf(DetailHotelState())
+        private set
+
+    var searchHotelState by mutableStateOf(SearchHotelState())
+        private set
 
     private var user by mutableStateOf(
         User()
@@ -43,7 +51,7 @@ class HotelsViewModel @Inject constructor(
     }
 
     private fun getUserById() = viewModelScope.launch {
-        usersUseCases.getUserById("7wmWegYUANOFv8ZvKZN1GzHoqvV2").collect() {
+        usersUseCases.getUserById(userId).collect() {
             user = it
         }
     }
@@ -95,7 +103,7 @@ class HotelsViewModel @Inject constructor(
     fun favoriteHotel(hotelId: String) {
         viewModelScope.launch {
             try {
-                when (hotelsUseCases.favoriteHotel("7wmWegYUANOFv8ZvKZN1GzHoqvV2", hotelId)) {
+                when (hotelsUseCases.favoriteHotel(userId, hotelId)) {
                     is Result.Success -> {
 
                         val updatedHotels = _uiStateHotelSearch.value.hotels.map {
@@ -127,7 +135,7 @@ class HotelsViewModel @Inject constructor(
     fun unfavoriteHotel(hotelId: String) {
         viewModelScope.launch {
             try {
-                when (hotelsUseCases.unfavoriteHotel("7wmWegYUANOFv8ZvKZN1GzHoqvV2", hotelId)) {
+                when (hotelsUseCases.unfavoriteHotel(userId, hotelId)) {
                     is Result.Success -> {
 
                         val updatedHotels = _uiStateHotelSearch.value.hotels.map {
@@ -143,10 +151,7 @@ class HotelsViewModel @Inject constructor(
                     is Result.Error -> {
                         _uiStateHotelSearch.update { it.copy(error = "Unknown error") }
                     }
-
                 }
-
-
             } catch (e: Exception) {
                 println(e)
 
@@ -170,6 +175,4 @@ class HotelsViewModel @Inject constructor(
 
         return hotelsList.sortedBy { it.isFavourite }.reversed() as MutableList<Hotel>
     }
-
-
 }

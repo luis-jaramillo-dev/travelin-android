@@ -3,7 +3,7 @@ package com.projectlab.booking.presentation.screens.hotels.search
 import com.projectlab.core.domain.model.Hotel
 
 
-data class HotelSearchUiState(
+data class SearchHotelState(
     val query: String = "",
     val hotels: List<Hotel> = emptyList(),
     val isLoading: Boolean = false,

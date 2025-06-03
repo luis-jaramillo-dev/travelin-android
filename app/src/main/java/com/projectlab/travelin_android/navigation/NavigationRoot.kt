@@ -17,8 +17,8 @@ import com.projectlab.booking.presentation.detail.activities.ActivityDetailScree
 import com.projectlab.booking.presentation.detail.activities.ActivityDetailViewModel
 import com.projectlab.booking.presentation.home.HomeScreen
 import com.projectlab.booking.presentation.screens.HotelsViewModel
-import com.projectlab.booking.presentation.screens.hotels.details.HotelDetailsScreen
-import com.projectlab.booking.presentation.screens.hotels.search.HotelSearchScreen
+import com.projectlab.booking.presentation.screens.hotels.details.DetailHotelScreen
+import com.projectlab.booking.presentation.screens.hotels.search.SearchHotelScreen
 import com.projectlab.booking.presentation.search.activities.SearchActivityViewModel
 import com.projectlab.core.data.di.LocationUtilsEntryPoint
 import com.projectlab.core.presentation.ui.viewmodel.LocationViewModel
@@ -141,7 +141,7 @@ private fun NavGraphBuilder.searchGraph(navController: NavHostController) {
     }
 
     composable(route = SearchScreens.Hotels.route) {
-        HotelSearchScreen(
+        SearchHotelScreen(
             viewModel = hiltViewModel<HotelsViewModel>(),
             navController = navController
         )
@@ -175,7 +175,7 @@ fun NavGraphBuilder.detailGraph(navController: NavHostController) {
             navController.getBackStackEntry(SearchScreens.Hotels.route)
         }
 
-        HotelDetailsScreen(
+        DetailHotelScreen(
             viewModel = hiltViewModel<HotelsViewModel>(parentEntry),
             onClickBack = { navController.popBackStack() },
             hotelId = hotelId

@@ -7,15 +7,13 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
-import androidx.navigation.NavHostController
 import com.projectlab.booking.presentation.screens.HotelsViewModel
-import com.projectlab.booking.presentation.screens.hotels.details.components.HotelDetailsBottomBar
-import com.projectlab.booking.presentation.screens.hotels.details.components.HotelDetailsContent
-import com.projectlab.booking.presentation.screens.hotels.details.components.HotelDetailsHeader
+import com.projectlab.booking.presentation.screens.hotels.details.components.DetailHotelBottomBar
+import com.projectlab.booking.presentation.screens.hotels.details.components.DetailHotelContent
 import com.projectlab.core.presentation.designsystem.component.HeaderWithBack
 
 @Composable
-fun HotelDetailsScreen(
+fun DetailHotelScreen(
     modifier: Modifier = Modifier,
     viewModel: HotelsViewModel,
     hotelId: String,
@@ -23,7 +21,6 @@ fun HotelDetailsScreen(
 
 ) {
     val state by viewModel.uiStateHotelDetails.collectAsState()
-
 
     LaunchedEffect(Unit) {
         viewModel.getHotelDetails(hotelId)
@@ -36,16 +33,12 @@ fun HotelDetailsScreen(
             modifier = Modifier.fillMaxSize(),
             topBar = { HeaderWithBack(onClickBack = onClickBack) },
             content = {
-                HotelDetailsContent(
+                DetailHotelContent(
                     paddingValues = it,
                     hotel = currentHotel
                 )
             },
-            bottomBar = {
-                HotelDetailsBottomBar(
-                    hotel = currentHotel
-                )
-            }
+            bottomBar = { DetailHotelBottomBar(hotel = currentHotel) }
         )
     }
 }
