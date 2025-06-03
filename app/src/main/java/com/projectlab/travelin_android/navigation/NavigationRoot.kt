@@ -185,7 +185,7 @@ private fun NavGraphBuilder.homeGraph(navController: NavHostController) {
             locationViewModel = hiltViewModel(),
             homeViewModel = hiltViewModel(),
             navController = navController,
-            onClickSearchHotel = { navController.navigate(SearchScreens.Hotels.route) }
+            onClickSearchHotel = { navController.navigate(SearchScreens.Hotels.route) },
             onFavoritesClick = { navController.navigate(FavoritesScreens.Favorites.route) },
             onTripsClick = {},
             onProfileClick = { navController.navigate(AuthScreens.Profile.route) },

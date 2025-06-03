@@ -2,7 +2,6 @@ package com.projectlab.travelin_android.presentation.screens.profile
 
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
-import androidx.hilt.navigation.compose.hiltViewModel
 import com.projectlab.core.presentation.designsystem.component.BottomNavRoute
 import com.projectlab.core.presentation.designsystem.component.BottomNavigationBar
 import com.projectlab.travelin_android.presentation.screens.profile.components.ProfileContent

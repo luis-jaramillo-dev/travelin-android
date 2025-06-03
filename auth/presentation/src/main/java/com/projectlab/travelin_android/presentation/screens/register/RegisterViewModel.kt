@@ -9,8 +9,6 @@ import com.google.firebase.auth.FirebaseUser
 import com.projectlab.auth.domain.use_cases.AuthUseCases
 import com.projectlab.core.domain.model.Response
 import com.projectlab.core.domain.model.User
-import com.projectlab.core.domain.entity.UserEntity
-import com.projectlab.core.domain.model.Response
 import com.projectlab.core.domain.repository.UserSessionProvider
 import com.projectlab.core.domain.use_cases.users.UsersUseCases
 import com.projectlab.travelin_android.presentation.validation.AuthValidator
@@ -78,9 +76,9 @@ class RegisterViewModel @Inject constructor(
             passwordError.value,
             termsError.value
         ).all { it == null } &&
-            firstName.value.isNotBlank() &&
-            lastName.value.isNotBlank() &&
-            phoneNumber.value.isNotBlank()
+                firstName.value.isNotBlank() &&
+                lastName.value.isNotBlank() &&
+                phoneNumber.value.isNotBlank()
     }
 
     private val _registerFlow = MutableStateFlow<Response<FirebaseUser>?>(value = null)
@@ -102,14 +100,9 @@ class RegisterViewModel @Inject constructor(
 
     fun createUser() = viewModelScope.launch {
         val currentUser = authUseCases.getCurrentUser()
-
+        userSessionProvider.setUserSessionId(currentUser!!.uid)
         val newUser = User(
             id = currentUser!!.uid,
-        userSessionProvider.setUserSessionId(currentUser!!.uid)
-
-        val newUserEntity = UserEntity(
-            // id = EntityId(currentUser!!.uid), TODO: check if we use EntityId or not
-            id = currentUser.uid,
             email = email.value,
             age = age.value,
             firstName = firstName.value,
@@ -118,7 +111,5 @@ class RegisterViewModel @Inject constructor(
             phoneNumber = phoneNumber.value
         )
         usersUseCases.createUser(newUser)
-
-        usersUseCases.createUser(newUserEntity)
     }
 }

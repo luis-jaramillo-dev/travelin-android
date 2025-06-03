@@ -196,7 +196,7 @@ fun HomeSearchComponent(
             ) {
                 ButtonHotel(
                     modifier = Modifier,
-                    onClick = {},
+                    onClick = { onClickSearchHotel() },
                 )
                 ButtonOversea(
                     modifier = Modifier,

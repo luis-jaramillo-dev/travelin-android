@@ -57,7 +57,6 @@ fun ProfileSettings(
         ButtonSimple(
             text = "Logout",
             onClick = {
-                viewModel.logout()
                 onLogoutClick()
             },
             modifier = Modifier.fillMaxWidth(),
