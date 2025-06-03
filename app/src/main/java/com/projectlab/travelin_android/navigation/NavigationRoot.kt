@@ -177,7 +177,7 @@ fun NavGraphBuilder.detailGraph(navController: NavHostController) {
 
         HotelDetailsScreen(
             viewModel = hiltViewModel<HotelsViewModel>(parentEntry),
-            navController = navController,
+            onClickBack = { navController.popBackStack() },
             hotelId = hotelId
         )
     }

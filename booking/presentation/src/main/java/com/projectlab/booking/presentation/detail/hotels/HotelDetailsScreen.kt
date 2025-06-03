@@ -12,13 +12,15 @@ import com.projectlab.booking.presentation.screens.HotelsViewModel
 import com.projectlab.booking.presentation.screens.hotels.details.components.HotelDetailsBottomBar
 import com.projectlab.booking.presentation.screens.hotels.details.components.HotelDetailsContent
 import com.projectlab.booking.presentation.screens.hotels.details.components.HotelDetailsHeader
+import com.projectlab.core.presentation.designsystem.component.HeaderWithBack
 
 @Composable
 fun HotelDetailsScreen(
     modifier: Modifier = Modifier,
     viewModel: HotelsViewModel,
-    navController: NavHostController,
     hotelId: String,
+    onClickBack: () -> Unit
+
 ) {
     val state by viewModel.uiStateHotelDetails.collectAsState()
 
@@ -32,12 +34,7 @@ fun HotelDetailsScreen(
         val currentHotel = state.currentHotel!!
         Scaffold(
             modifier = Modifier.fillMaxSize(),
-            topBar = {
-                HotelDetailsHeader(
-                    onNavigationClick = {},
-                    hotel = currentHotel
-                )
-            },
+            topBar = { HeaderWithBack(onClickBack = onClickBack) },
             content = {
                 HotelDetailsContent(
                     paddingValues = it,
