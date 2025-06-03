@@ -1,4 +1,4 @@
-package com.projectlab.core.domain.repository
+package com.projectlab.core.database.services
 
 import com.projectlab.core.domain.entity.UserEntity
 import com.projectlab.core.domain.model.EntityId

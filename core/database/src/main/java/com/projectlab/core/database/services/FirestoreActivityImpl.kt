@@ -1,4 +1,4 @@
-package com.projectlab.core.data.repository
+package com.projectlab.core.database.services
 
 import android.os.Build
 import androidx.annotation.RequiresApi
@@ -6,15 +6,13 @@ import com.google.firebase.firestore.FirebaseFirestore
 import com.projectlab.core.data.model.dto.FirestoreActivityDTO
 import com.projectlab.core.domain.entity.ActivityEntity
 import com.projectlab.core.domain.model.EntityId
-import com.projectlab.core.domain.repository.ActivityRepository
-import com.projectlab.core.domain.repository.FirestoreActivity
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.tasks.await
 import javax.inject.Inject
 
 /**
- * FirestoreActivityImpl is a concrete implementation of the ActivityRepository interface.
+ * FirestoreActivityImpl is a concrete implementation of the FirestoreActivity interface.
  * It provides methods to interact with activities in Firestore and external APIs.
  *
  * @param firestore The FirebaseFirestore instance used to interact with Firestore.
@@ -25,7 +23,7 @@ class FirestoreActivityImpl @Inject constructor (
 ) : FirestoreActivity {
 
     @RequiresApi(Build.VERSION_CODES.O)
-    override suspend fun createActivity(activity: ActivityEntity): kotlin.Result<EntityId> =
+    override suspend fun createActivity(activity: ActivityEntity): Result<EntityId> =
         runCatching {
             var userDoc = firestore
                 .collection("Users")
@@ -108,7 +106,7 @@ class FirestoreActivityImpl @Inject constructor (
     }
 
     @RequiresApi(Build.VERSION_CODES.O)
-    override suspend fun updateActivity(activity: ActivityEntity): kotlin.Result<Unit> = runCatching {
+    override suspend fun updateActivity(activity: ActivityEntity): Result<Unit> = runCatching {
         // We retrieve the user and itinerary references from the object reference
         val userId = activity.userRef?.value
             ?: throw IllegalArgumentException("userRef is null")
@@ -139,7 +137,7 @@ class FirestoreActivityImpl @Inject constructor (
         userId: String,
         itinId: String,
         activityId: String
-    ): kotlin.Result<Unit> = runCatching {
+    ): Result<Unit> = runCatching {
         firestore.collection("Users").document(userId)
             .collection("Itineraries").document(itinId)
             .collection("Activities").document(activityId)

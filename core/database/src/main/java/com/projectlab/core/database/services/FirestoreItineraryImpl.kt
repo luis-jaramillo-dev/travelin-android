@@ -1,11 +1,10 @@
-package com.projectlab.core.data.repository
+package com.projectlab.core.database.services
 
 import android.os.Build
 import androidx.annotation.RequiresApi
 import com.google.firebase.firestore.FirebaseFirestore
 import com.projectlab.core.domain.model.EntityId
 import com.projectlab.core.domain.entity.ItineraryEntity
-import com.projectlab.core.domain.repository.FirestoreItinerary
 import com.projectlab.core.data.model.dto.FirestoreItineraryDTO
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow

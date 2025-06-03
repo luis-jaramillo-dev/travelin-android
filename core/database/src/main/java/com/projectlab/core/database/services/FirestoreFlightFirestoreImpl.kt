@@ -1,4 +1,4 @@
-package com.projectlab.core.data.repository
+package com.projectlab.core.database.services
 
 import android.os.Build
 import androidx.annotation.RequiresApi
@@ -10,7 +10,6 @@ import com.projectlab.core.data.model.dto.FirestoreFlightSegmentDTO
 import com.projectlab.core.domain.model.EntityId
 import com.projectlab.core.domain.entity.FlightEntity
 import com.projectlab.core.domain.entity.FlightSegmentEntity
-import com.projectlab.core.domain.repository.FirestoreFlight
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 

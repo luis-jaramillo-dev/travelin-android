@@ -1,4 +1,4 @@
-package com.projectlab.core.data.repository
+package com.projectlab.core.database.services
 
 import android.os.Build
 import androidx.annotation.RequiresApi
@@ -6,7 +6,6 @@ import com.google.firebase.firestore.FirebaseFirestore
 import com.projectlab.core.data.model.dto.FirestoreHotelDTO
 import com.projectlab.core.domain.entity.HotelEntity
 import com.projectlab.core.domain.model.EntityId
-import com.projectlab.core.domain.repository.FirestoreHotel
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.tasks.await

@@ -1,4 +1,4 @@
-package com.projectlab.core.domain.repository
+package com.projectlab.core.database.services
 
 import com.projectlab.core.domain.entity.FlightEntity
 import com.projectlab.core.domain.entity.FlightSegmentEntity
