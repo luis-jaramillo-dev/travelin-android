@@ -1,10 +1,9 @@
 package com.projectlab.booking.presentation.screens.hotels.details
 
-import com.projectlab.core.domain.model.Hotel
-
+import com.projectlab.booking.models.HotelUi
 
 data class DetailHotelState(
     val isLoading: Boolean = false,
     val error: String? = null,
-    val currentHotel: Hotel? = null
+    val hotelUi: HotelUi? = null
 )

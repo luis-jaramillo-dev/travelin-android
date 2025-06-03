@@ -5,6 +5,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.projectlab.booking.models.toHotelUi
 import com.projectlab.booking.presentation.screens.hotels.details.DetailHotelState
 import com.projectlab.booking.presentation.screens.hotels.search.SearchHotelState
 import com.projectlab.core.domain.model.Hotel
@@ -97,7 +98,7 @@ class HotelsViewModel @Inject constructor(
 
     fun getHotelDetails(hotelId: String) {
         val hotelFound = _uiStateHotelSearch.value.hotels.find { it.id == hotelId }
-        _uiStateHotelDetails.update { it.copy(currentHotel = hotelFound) }
+        _uiStateHotelDetails.update { it.copy(hotelUi = hotelFound!!.toHotelUi()) }
     }
 
     fun favoriteHotel(hotelId: String) {

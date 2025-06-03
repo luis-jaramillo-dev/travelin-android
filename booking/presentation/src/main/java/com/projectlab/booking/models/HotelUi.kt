@@ -2,7 +2,9 @@ package com.projectlab.booking.models
 
 import com.projectlab.core.data.utils.CurrencyUtils
 import com.projectlab.core.domain.model.Hotel
+import com.projectlab.core.domain.model.HotelOffer
 import com.projectlab.core.domain.model.HotelPrice
+import okhttp3.Address
 import java.text.NumberFormat
 import java.util.Locale
 
@@ -13,7 +15,12 @@ data class HotelUi(
     val isFavorite: Boolean,
     val displayImageUrl: String,
     val photoUrls: List<String>,
-    val price: DisplayablePrice
+    val price: DisplayablePrice,
+    val hotelOffers: List<HotelOffer>?,
+    val address: String,
+    val city: String,
+    val country: String,
+    val amenities: List<String>?
 )
 
 data class DisplayablePrice(
@@ -29,7 +36,12 @@ fun Hotel.toHotelUi(): HotelUi {
         isFavorite = isFavourite,
         displayImageUrl = photoUrls[0],
         photoUrls = photoUrls,
-        price = hotelOffers!![0].price.toDisplayablePrice()
+        price = hotelOffers!![0].price.toDisplayablePrice(),
+        hotelOffers = hotelOffers,
+        address = location.address,
+        city = location.city,
+        country = location.country,
+        amenities = amenities
     )
 }
 

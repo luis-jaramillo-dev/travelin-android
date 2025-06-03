@@ -6,7 +6,6 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
@@ -44,24 +43,21 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil.compose.AsyncImage
-import com.projectlab.core.domain.model.Hotel
+import com.projectlab.booking.models.HotelUi
 import com.projectlab.core.domain.model.HotelOffer
-
 import com.projectlab.core.presentation.designsystem.R
 import com.projectlab.core.presentation.designsystem.theme.spacing
 
 @Composable
 fun DetailHotelContent(
     modifier: Modifier = Modifier,
-    paddingValues: PaddingValues,
-    hotel: Hotel
+    hotelUi: HotelUi
 ) {
     val scrollState = rememberScrollState()
     var imageHeight by remember { mutableIntStateOf(0) }
 
     Box(
         modifier = modifier
-            .padding(paddingValues)
             .padding(
                 bottom =
                     MaterialTheme.spacing.ScreenVerticalSpacing
@@ -79,7 +75,7 @@ fun DetailHotelContent(
                     modifier = Modifier
                         .fillMaxWidth()
                         .onSizeChanged { imageHeight = it.height },
-                    images = hotel.photoUrls
+                    images = hotelUi.photoUrls
                 )
 
                 NameAndAddress(
@@ -87,17 +83,17 @@ fun DetailHotelContent(
                         .fillMaxWidth()
                         .padding(horizontal = 24.dp)
                         .padding(top = 24.dp),
-                    name = hotel.name,
-                    address = hotel.location.address
+                    name = hotelUi.name,
+                    address = hotelUi.address
                 )
 
-                if (hotel.hotelOffers != emptyList<HotelOffer>()) {
+                if (hotelUi.hotelOffers != emptyList<HotelOffer>()) {
                     Details(
                         modifier = Modifier
                             .fillMaxWidth()
                             .padding(top = 32.dp)
                             .padding(horizontal = 24.dp),
-                        hotelOffer = hotel.hotelOffers!![0]
+                        hotelOffer = hotelUi.hotelOffers!![0]
 
                     )
                 }
@@ -107,11 +103,11 @@ fun DetailHotelContent(
                         .fillMaxWidth()
                         .padding(top = 32.dp)
                         .padding(horizontal = 24.dp),
-                    text = hotel.hotelOffers?.get(0)!!.room.description
+                    text = hotelUi.hotelOffers?.get(0)!!.room.description
                 )
 
                 Amenities(
-                    amenities = hotel.amenities!!,
+                    amenities = hotelUi.amenities!!,
                     modifier = Modifier
                         .fillMaxWidth()
                         .padding(top = 32.dp)
@@ -136,34 +132,25 @@ private fun Amenities(
         Text(
             text = "Amenities",
         )
-
         amenities.splitByRow().forEach { facilities ->
-
             Row(
                 modifier = Modifier.fillMaxWidth(),
                 horizontalArrangement = Arrangement.spacedBy(8.dp)
             ) {
                 amenities?.forEach { amenity ->
-
-
                     LabeledIcon(
                         modifier = Modifier.weight(1f),
                         iconRes = getAmenityIcon(amenity),
                         text = amenity
                     )
-
                 }
-
-
                 val emptyColumns = column - amenities.size
                 repeat(emptyColumns) {
                     Spacer(modifier = Modifier.weight(1f))
                 }
             }
-
         }
     }
-
 }
 
 private fun List<String>.splitByRow(columns: Int = 4): List<List<String>> {
@@ -181,7 +168,6 @@ private fun List<String>.splitByRow(columns: Int = 4): List<List<String>> {
 
 
 fun getAmenityIcon(amenity: String): Int {
-
     return when (amenity) {
         "SWIMMING_POOL" -> R.drawable.ic_swimming_pool
         "WI_FI" -> R.drawable.ic_wi_fi
@@ -191,13 +177,9 @@ fun getAmenityIcon(amenity: String): Int {
         "ELEVATOR" -> R.drawable.ic_elevator
         "FITNESS_CENTER" -> R.drawable.ic_fitness_center
         "DAY_AND_NIGHT_OPEN" -> R.drawable.ic_24_7
-
         else -> R.drawable.ic_elevator
-
     }
-
 }
-
 
 @Composable
 private fun Description(
@@ -225,8 +207,6 @@ private fun Details(
     hotelOffer: HotelOffer,
     modifier: Modifier = Modifier
 ) {
-
-
     Column(
         modifier = modifier,
         verticalArrangement = Arrangement.spacedBy(20.dp)
@@ -240,8 +220,6 @@ private fun Details(
             modifier = Modifier.fillMaxWidth(),
             horizontalArrangement = Arrangement.spacedBy(8.dp)
         ) {
-
-
             LabeledIcon(
                 modifier = Modifier.weight(1f),
                 iconRes = R.drawable.ic_hotel,

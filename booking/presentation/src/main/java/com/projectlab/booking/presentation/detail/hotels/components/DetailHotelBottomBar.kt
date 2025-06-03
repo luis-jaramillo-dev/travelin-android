@@ -12,7 +12,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.sp
-import com.projectlab.core.domain.model.Hotel
+import com.projectlab.booking.models.HotelUi
 import com.projectlab.core.presentation.designsystem.component.ButtonComponent
 import com.projectlab.core.presentation.designsystem.component.ButtonVariant
 import com.projectlab.core.presentation.designsystem.theme.spacing
@@ -20,9 +20,8 @@ import com.projectlab.core.presentation.designsystem.theme.spacing
 @Composable
 fun DetailHotelBottomBar(
     modifier: Modifier = Modifier,
-    hotel: Hotel
+    hotelUi: HotelUi
 ) {
-
     Row(
         modifier = Modifier
             .fillMaxWidth()
@@ -35,7 +34,7 @@ fun DetailHotelBottomBar(
         verticalAlignment = Alignment.CenterVertically
     ) {
         Text(
-            text = "£ ${hotel.displayPrice} /per night",
+            text = "${hotelUi.price.formatted} /per night",
             fontSize = 18.sp,
             fontWeight = FontWeight.W600,
             color = MaterialTheme.colorScheme.primary

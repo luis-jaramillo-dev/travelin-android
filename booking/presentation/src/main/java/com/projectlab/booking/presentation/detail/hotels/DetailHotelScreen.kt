@@ -1,6 +1,7 @@
 package com.projectlab.booking.presentation.screens.hotels.details
 
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -26,19 +27,17 @@ fun DetailHotelScreen(
         viewModel.getHotelDetails(hotelId)
     }
 
-    if (state.currentHotel != null) {
-
-        val currentHotel = state.currentHotel!!
+    if (state.hotelUi != null) {
         Scaffold(
             modifier = Modifier.fillMaxSize(),
             topBar = { HeaderWithBack(onClickBack = onClickBack) },
             content = {
                 DetailHotelContent(
-                    paddingValues = it,
-                    hotel = currentHotel
+                    modifier = modifier.padding(it),
+                    hotelUi = state.hotelUi!!
                 )
             },
-            bottomBar = { DetailHotelBottomBar(hotel = currentHotel) }
+            bottomBar = { DetailHotelBottomBar(hotelUi = state.hotelUi!!) }
         )
     }
 }
