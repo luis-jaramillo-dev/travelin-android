@@ -42,7 +42,6 @@ fun ProfileContent(
         ProfileSettings(
             viewModel = viewModel,
             onLogoutClick = {
-                viewModel.logout()
                 onLogoutClick()
             }
         )
