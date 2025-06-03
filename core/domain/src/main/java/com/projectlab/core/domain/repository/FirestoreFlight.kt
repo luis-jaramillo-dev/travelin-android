@@ -6,7 +6,7 @@ import com.projectlab.core.domain.model.EntityId
 import kotlinx.coroutines.flow.Flow
 
 /**
- * FlightRepository interface for flight-related operations.
+ * FirestoreFlight interface for flight-related operations.
  *
  * This interface defines the contract for flight-related data operations, including creating a flight
  * and retrieving a flight by its ID.
@@ -14,7 +14,7 @@ import kotlinx.coroutines.flow.Flow
  * @author ricardoceadev
  */
 
-interface FlightRepository {
+interface FirestoreFlight {
     suspend fun createFlight(flight: FlightEntity): Result<EntityId>
     suspend fun getFlightById(userId: String, itinId: String, flightId: String): Flow<FlightEntity?>
     suspend fun getAllFlightsForItinerary(userId: String, itinId: String): Flow<List<FlightEntity>>

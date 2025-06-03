@@ -5,7 +5,7 @@ import com.projectlab.core.domain.model.EntityId
 import kotlinx.coroutines.flow.Flow
 
 /**
- * HotelRepository interface for hotel-related operations.
+ * FirestoreHotel interface for hotel-related operations.
  *
  * This interface defines the contract for hotel-related data operations, including creating a hotel
  * and retrieving a hotel by its ID.
@@ -13,7 +13,7 @@ import kotlinx.coroutines.flow.Flow
  * @author ricardoceadev
  */
 
-interface HotelRepository {
+interface FirestoreHotel {
     suspend fun createHotel(hotel: HotelEntity): Result<EntityId>
     suspend fun getHotelsById(userId: String, itinId: String, hotelId: String): Flow<HotelEntity?>
     suspend fun getAllHotelsForItinerary(userId: String, itinId: String): Flow<List<HotelEntity>>

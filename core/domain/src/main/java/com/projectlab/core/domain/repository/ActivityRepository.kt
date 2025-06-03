@@ -11,18 +11,6 @@ import kotlinx.coroutines.flow.Flow
 interface ActivityRepository {
     suspend fun getAPIActivityById(id: String): Result<Activity, DataError.Network>
 
-    suspend fun createActivity(activity: ActivityEntity): kotlin.Result<EntityId>
-    suspend fun getActivityById(
-        userId: String, itinId: String, activityId: String
-    ): Flow<ActivityEntity?>
-    suspend fun getAllActivitiesForItinerary(
-        userId: String, itinId: String
-    ): Flow<List<ActivityEntity>>
-    suspend fun updateActivity(activity: ActivityEntity): kotlin.Result<Unit>
-    suspend fun deleteActivity(
-        userId: String, itinId: String, activityId: String
-    ): kotlin.Result<Unit>
-
     fun queryFavoriteActivities(
         userId: String,
         nameQuery: String? = null,

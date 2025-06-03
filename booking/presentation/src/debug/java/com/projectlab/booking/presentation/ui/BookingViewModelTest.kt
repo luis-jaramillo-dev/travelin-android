@@ -12,11 +12,10 @@ import com.projectlab.core.domain.entity.HotelEntity
 import com.projectlab.core.domain.entity.ItineraryEntity
 import com.projectlab.core.domain.entity.UserEntity
 import com.projectlab.core.domain.model.EntityId
-import com.projectlab.core.domain.repository.ActivityRepository
-import com.projectlab.core.domain.repository.FlightRepository
-import com.projectlab.core.domain.repository.HotelRepository
-import com.projectlab.core.domain.repository.ItineraryRepository
-import com.projectlab.core.domain.repository.UserRepository
+import com.projectlab.core.domain.repository.FirestoreFlight
+import com.projectlab.core.domain.repository.FirestoreHotel
+import com.projectlab.core.domain.repository.FirestoreItinerary
+import com.projectlab.core.domain.repository.FirestoreUser
 import dagger.hilt.android.lifecycle.HiltViewModel
 import jakarta.inject.Inject
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -25,6 +24,7 @@ import kotlinx.coroutines.launch
 import java.time.Instant
 import java.util.Date
 import android.util.Log
+import com.projectlab.core.domain.repository.FirestoreActivity
 
 /**
  * ViewModel for testing purposes, to create test data in Firestore.
@@ -36,11 +36,11 @@ import android.util.Log
 
 @HiltViewModel
 class BookingViewModelTest @Inject constructor(
-    private val userRepo: UserRepository,
-    private val itineraryRepo: ItineraryRepository,
-    private val flightRepo: FlightRepository,
-    private val hotelRepo: HotelRepository,
-    private val activityRepo: ActivityRepository,
+    private val userRepo: FirestoreUser,
+    private val itineraryRepo: FirestoreItinerary,
+    private val flightRepo: FirestoreFlight,
+    private val hotelRepo: FirestoreHotel,
+    private val activityRepo: FirestoreActivity,
     // TODO : add other repositories as needed: flight, hotel, etc.
 ) : ViewModel() {
 
@@ -62,10 +62,10 @@ class BookingViewModelTest @Inject constructor(
         // 1) We create a user and get the domain ID
         // Hardcode user data
         val user = UserEntity(
-            firstName = "SHEEV",
-            lastName = "PALPATINE FROM NABOO",
+            firstName = "SHEEV - THE EMPERATOR",
+            lastName = "rey",
             countryCode = "66",
-            phoneNumber = "000000000",
+            phoneNumber = "777777",
             email = "THEREVENGEOFTHESITH@gmail.com",
             age = "80"
         )
@@ -83,7 +83,7 @@ class BookingViewModelTest @Inject constructor(
         // 2) We create a Itinerary:
         val itinerary = ItineraryEntity(
             //id                  = null,
-            title = "Trip to the empire...",
+            title = "Trip to the last empire...",
             startDate = Instant.now(),
             endDate = Instant.now().plusSeconds(2592000),
             totalItineraryPrice = 9000.0,

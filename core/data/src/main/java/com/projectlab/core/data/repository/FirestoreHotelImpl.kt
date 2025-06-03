@@ -6,22 +6,22 @@ import com.google.firebase.firestore.FirebaseFirestore
 import com.projectlab.core.data.model.dto.FirestoreHotelDTO
 import com.projectlab.core.domain.entity.HotelEntity
 import com.projectlab.core.domain.model.EntityId
-import com.projectlab.core.domain.repository.HotelRepository
+import com.projectlab.core.domain.repository.FirestoreHotel
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.tasks.await
 import javax.inject.Inject
 
 /**
- * HotelRepositoryImpl is a concrete implementation of the HotelRepository interface.
+ * FirestoreHotelImpl is a concrete implementation of the FirestoreHotel interface.
  * It uses Firebase Firestore to perform CRUD operations on hotel data.
  *
  * @param firestore The FirebaseFirestore instance used to interact with Firestore.
  */
 
-class HotelRepositoryImpl @Inject constructor (
+class FirestoreHotelImpl @Inject constructor (
     private val firestore : FirebaseFirestore
-) : HotelRepository {
+) : FirestoreHotel {
 
     @RequiresApi(Build.VERSION_CODES.O)
     override suspend fun createHotel(hotel: HotelEntity): Result<EntityId> = runCatching {

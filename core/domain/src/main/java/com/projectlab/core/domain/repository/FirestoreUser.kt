@@ -5,7 +5,7 @@ import com.projectlab.core.domain.model.EntityId
 import kotlinx.coroutines.flow.Flow
 
 /**
- * UserRepository interface for user-related operations.
+ * FirestoreUser interface for user-related operations.
  *
  * This interface defines the contract for user-related data operations, including creating a user
  * and retrieving a user by their ID.
@@ -14,7 +14,7 @@ import kotlinx.coroutines.flow.Flow
  */
 
 
-interface UserRepository {
+interface FirestoreUser {
     suspend fun createUser(user: UserEntity): Result<EntityId>
     suspend fun getUserById(id: String): Flow<UserEntity?>
     suspend fun getAllUsers(): Flow<List<UserEntity>>

@@ -8,21 +8,21 @@ import javax.inject.Inject
 import com.google.firebase.firestore.FirebaseFirestore
 import com.projectlab.core.domain.model.EntityId
 import com.projectlab.core.domain.entity.UserEntity
-import com.projectlab.core.domain.repository.UserRepository
+import com.projectlab.core.domain.repository.FirestoreUser
 import com.projectlab.core.data.model.dto.FirestoreUserDTO
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 
 /**
- * UserRepositoryImpl is a concrete implementation of the UserRepository interface.
+ * FirestoreUserImpl is a concrete implementation of the FirestoreUser interface.
  * It uses Firebase Firestore to perform CRUD operations on user data.
  *
  * @param firestore The FirebaseFirestore instance used to interact with Firestore.
  */
 
-class UserRepositoryImpl @Inject constructor(
+class FirestoreUserImpl @Inject constructor(
     private val firestore: FirebaseFirestore
-) : UserRepository {
+) : FirestoreUser {
 
     private var userCol = firestore.collection("Users")
 

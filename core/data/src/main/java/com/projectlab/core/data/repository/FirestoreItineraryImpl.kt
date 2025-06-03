@@ -5,7 +5,7 @@ import androidx.annotation.RequiresApi
 import com.google.firebase.firestore.FirebaseFirestore
 import com.projectlab.core.domain.model.EntityId
 import com.projectlab.core.domain.entity.ItineraryEntity
-import com.projectlab.core.domain.repository.ItineraryRepository
+import com.projectlab.core.domain.repository.FirestoreItinerary
 import com.projectlab.core.data.model.dto.FirestoreItineraryDTO
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
@@ -13,15 +13,15 @@ import kotlinx.coroutines.tasks.await
 import javax.inject.Inject
 
 /**
- * ItineraryRepositoryImpl is a concrete implementation of the ItineraryRepository interface.
+ * FirestoreItineraryImpl is a concrete implementation of the FirestoreItinerary interface.
  * It uses Firebase Firestore to perform CRUD operations on itinerary data.
  *
  * @param firestore The FirebaseFirestore instance used to interact with Firestore.
  */
 
-class ItineraryRepositoryImpl @Inject constructor (
+class FirestoreItineraryImpl @Inject constructor (
     private val firestore: FirebaseFirestore
-) : ItineraryRepository {
+) : FirestoreItinerary {
     private val usersCol = firestore.collection("Users")
 
     @RequiresApi(Build.VERSION_CODES.O)

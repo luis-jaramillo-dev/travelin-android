@@ -10,20 +10,20 @@ import com.projectlab.core.data.model.dto.FirestoreFlightSegmentDTO
 import com.projectlab.core.domain.model.EntityId
 import com.projectlab.core.domain.entity.FlightEntity
 import com.projectlab.core.domain.entity.FlightSegmentEntity
-import com.projectlab.core.domain.repository.FlightRepository
+import com.projectlab.core.domain.repository.FirestoreFlight
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 
 /**
- * FlightRepositoryImpl is a concrete implementation of the FlightRepository interface.
+ * FirestoreFlightFirestoreImpl is a concrete implementation of the FirestoreFlight interface.
  * It uses Firestore to perform CRUD operations on flight data.
  *
  * @param firestore The FirebaseFirestore instance used to interact with Firestore.
  */
 
-class FlightRepositoryImpl @Inject constructor (
+class FirestoreFlightFirestoreImpl @Inject constructor (
     private val firestore: FirebaseFirestore
-) : FlightRepository {
+) : FirestoreFlight {
 
     @RequiresApi(Build.VERSION_CODES.O)
     override suspend fun createFlight(flight: FlightEntity): Result<EntityId> = runCatching {

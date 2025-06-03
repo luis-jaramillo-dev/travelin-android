@@ -6,7 +6,7 @@ import kotlinx.coroutines.flow.Flow
 import kotlin.Unit;
 
 /**
- * ItineraryRepository interface for itinerary-related operations.
+ * FirestoreItinerary interface for itinerary-related operations.
  *
  * This interface defines the contract for itinerary-related data operations, including creating an
  * itinerary and retrieving an itinerary by its ID.
@@ -14,7 +14,7 @@ import kotlin.Unit;
  * @author ricardoceadev
  */
 
-interface ItineraryRepository {
+interface FirestoreItinerary {
     suspend fun createItinerary(itinerary: ItineraryEntity): Result<EntityId>
     suspend fun getItinerariesById(userId: String, itineraryId: String): Flow<ItineraryEntity?>
     suspend fun getAllItinerariesForUser(userId: String): Flow<List<ItineraryEntity>>

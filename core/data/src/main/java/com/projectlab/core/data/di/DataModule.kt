@@ -5,22 +5,26 @@ import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 import com.projectlab.core.data.Constants.REFERENCE_USERS
+import com.projectlab.core.data.repository.ActivityRepositoryImpl
 import com.projectlab.core.data.repository.AmadeusTokenProviderImpl
-import com.projectlab.core.data.repository.FlightRepositoryImpl
-import com.projectlab.core.data.repository.HotelRepositoryImpl
-import com.projectlab.core.data.repository.ItineraryRepositoryImpl
-import com.projectlab.core.data.repository.UserRepositoryImpl
+import com.projectlab.core.data.repository.FirestoreActivityImpl
+import com.projectlab.core.data.repository.FirestoreFlightFirestoreImpl
+import com.projectlab.core.data.repository.FirestoreHotelImpl
+import com.projectlab.core.data.repository.FirestoreItineraryImpl
+import com.projectlab.core.data.repository.FirestoreUserImpl
 import com.projectlab.core.data.repository.OnboardingFlagProviderImpl
 import com.projectlab.core.data.repository.SearchHistoryProviderImpl
 import com.projectlab.core.data.repository.UserSessionProviderImpl
 import com.projectlab.core.data.repository.UsersRepositoryImpl
-import com.projectlab.core.domain.repository.FlightRepository
-import com.projectlab.core.domain.repository.HotelRepository
-import com.projectlab.core.domain.repository.ItineraryRepository
+import com.projectlab.core.domain.repository.ActivityRepository
+import com.projectlab.core.domain.repository.FirestoreActivity
+import com.projectlab.core.domain.repository.FirestoreFlight
+import com.projectlab.core.domain.repository.FirestoreHotel
+import com.projectlab.core.domain.repository.FirestoreItinerary
 import com.projectlab.core.domain.repository.OnboardingFlagProvider
 import com.projectlab.core.domain.repository.SearchHistoryProvider
 import com.projectlab.core.domain.repository.TokenProvider
-import com.projectlab.core.domain.repository.UserRepository
+import com.projectlab.core.domain.repository.FirestoreUser
 import com.projectlab.core.domain.repository.UserSessionProvider
 import com.projectlab.core.domain.repository.UsersRepository
 import dagger.Binds
@@ -66,28 +70,40 @@ abstract class DataModule {
         searchUserSessionImpl: UserSessionProviderImpl,
     ): UserSessionProvider
 
+    // Firestore bindings:
     @Binds
-    abstract fun bindUserRepository(
-        impl: UserRepositoryImpl,
-    ): UserRepository
-
-    @Binds
-    abstract fun bindItineraryRepository(
-        impl: ItineraryRepositoryImpl,
-    ): ItineraryRepository
+    abstract fun bindFirestoreUser(
+        impl: FirestoreUserImpl,
+    ): FirestoreUser
 
     @Binds
-    abstract fun bindFlightRepository(
-        impl: FlightRepositoryImpl,
-    ): FlightRepository
+    abstract fun bindFirestoreItinerary(
+        impl: FirestoreItineraryImpl,
+    ): FirestoreItinerary
+
+    @Binds
+    abstract fun bindFirestoreFlight(
+        impl: FirestoreFlightFirestoreImpl,
+    ): FirestoreFlight
 
 
     @Binds
-    abstract fun bindHotelRepository(
-        impl: HotelRepositoryImpl,
-    ): HotelRepository
+    abstract fun bindFirestoreHotel(
+        impl: FirestoreHotelImpl,
+    ): FirestoreHotel
 
-    // TODO: implement: bind ItineraryRepository, FlightRepository, etc.
+    @Binds
+    abstract fun bindFirestoreActivity(
+        impl: FirestoreActivityImpl,
+    ) : FirestoreActivity
+
+    // Repositories :
+//    @Binds
+//    abstract fun bindActivityRepository(
+//        impl: ActivityRepositoryImpl,
+//    ): ActivityRepository
+
+    // TODO: implement: bind FirestoreItinerary, FirestoreFlight, etc.
 
     companion object {
         @Provides
