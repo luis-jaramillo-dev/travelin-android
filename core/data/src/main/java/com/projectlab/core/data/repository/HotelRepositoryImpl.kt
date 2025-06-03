@@ -13,7 +13,7 @@ import kotlinx.coroutines.tasks.await
 import javax.inject.Inject
 
 /**
- * FirestoreHotelRepositoryImpl is a concrete implementation of the HotelRepository interface.
+ * HotelRepositoryImpl is a concrete implementation of the HotelRepository interface.
  * It uses Firebase Firestore to perform CRUD operations on hotel data.
  *
  * @param firestore The FirebaseFirestore instance used to interact with Firestore.

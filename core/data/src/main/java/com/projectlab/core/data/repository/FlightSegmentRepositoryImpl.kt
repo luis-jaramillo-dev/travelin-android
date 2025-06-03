@@ -13,7 +13,7 @@ import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.tasks.await
 
 /**
- * FirestoreFlightSegmentRepositoryImpl is a concrete implementation of the FlightSegmentRepository interface.
+ * FlightSegmentRepositoryImpl is a concrete implementation of the FlightSegmentRepository interface.
  * It uses Firebase Firestore to perform CRUD operations on flight segment data.
  *
  * @param firestore The FirebaseFirestore instance used to interact with Firestore.

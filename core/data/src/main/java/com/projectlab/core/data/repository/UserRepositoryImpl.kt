@@ -14,7 +14,7 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 
 /**
- * FirestoreUserRepositoryImpl is a concrete implementation of the UserRepository interface.
+ * UserRepositoryImpl is a concrete implementation of the UserRepository interface.
  * It uses Firebase Firestore to perform CRUD operations on user data.
  *
  * @param firestore The FirebaseFirestore instance used to interact with Firestore.

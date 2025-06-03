@@ -13,7 +13,7 @@ import kotlinx.coroutines.tasks.await
 import javax.inject.Inject
 
 /**
- * FirestoreItineraryRepositoryImpl is a concrete implementation of the ItineraryRepository interface.
+ * ItineraryRepositoryImpl is a concrete implementation of the ItineraryRepository interface.
  * It uses Firebase Firestore to perform CRUD operations on itinerary data.
  *
  * @param firestore The FirebaseFirestore instance used to interact with Firestore.
