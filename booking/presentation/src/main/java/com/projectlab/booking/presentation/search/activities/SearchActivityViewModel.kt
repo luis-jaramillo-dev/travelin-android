@@ -36,7 +36,6 @@ class SearchActivityViewModel @Inject constructor(
     private val getActivitiesUseCase: GetActivitiesUseCase,
     private val activitiesRepository: ActivityRepository,
     private val userSessionProvider: UserSessionProvider,
-    private val locationUtils: LocationUtils,
     private val getCoordinatesFromCityUseCase: GetCoordinatesFromCityUseCase,
     private val getCityFromCoordinatesUseCase: GetCityFromCoordinatesUseCase,
     private val errorMapper: ErrorMapper,
@@ -66,7 +65,7 @@ class SearchActivityViewModel @Inject constructor(
     fun searchWithInitialQuery(query: String) {
         if (query == uiState.value.query && uiState.value.activities.isNotEmpty()) return
         _uiState.update { it.copy(query = query) }
-        onSearchSubmitted()
+        onSearchSubmitted(true)
     }
 
     fun onSearchSubmitted() {
@@ -77,13 +76,17 @@ class SearchActivityViewModel @Inject constructor(
         viewModelScope.launch {
             _uiState.update { it.copy(isLoading = true, error = null) }
             try {
-                val addressString = getCityFromCoordinatesUseCase(location.latitude, location.longitude)
+                val addressString = getCityFromCoordinatesUseCase(
+                    location.latitude,
+                    location.longitude,
+                )
                 _uiState.update { it.copy(address = addressString, query = addressString) }
 
                 when (val result = getActivitiesUseCase(location.latitude, location.longitude)) {
                     is Result.Success -> {
                         _uiState.update { it.copy(activities = result.data.toDtoList()) }
                     }
+
                     is Result.Error -> {
                         _uiState.update { it.copy(error = errorMapper.map(result.error)) }
                     }
@@ -122,11 +125,9 @@ class SearchActivityViewModel @Inject constructor(
                     return@launch
                 }
 
-                val location = locationUtils.reverseGeocodeLocation(
-                    Location(
-                        latitude = activity.geoCode.latitude,
-                        longitude = activity.geoCode.longitude,
-                    )
+                val location = getCityFromCoordinatesUseCase(
+                    activity.geoCode.latitude,
+                    activity.geoCode.longitude,
                 )
 
                 val favoriteActivity = FavoriteActivityEntity(

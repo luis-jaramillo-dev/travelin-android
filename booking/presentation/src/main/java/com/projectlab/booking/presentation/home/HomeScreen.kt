@@ -48,7 +48,6 @@ fun HomeScreen(
     locationViewModel: LocationViewModel,
     homeViewModel: HomeViewModel,
     navController: NavController,
-    locationUtils: LocationUtils,
     onFavoritesClick: () -> Unit,
     onTripsClick: () -> Unit,
     onProfileClick: () -> Unit,
@@ -97,7 +96,7 @@ fun HomeScreen(
         },
     ) { paddingValues ->
         HomeScreenComponent(
-            modifier = modifier,
+            modifier = modifier.padding(paddingValues),
             uiState = uiState,
             onQueryChange = homeViewModel::onQueryChange,
             onQuerySubmitted = {

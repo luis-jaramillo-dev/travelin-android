@@ -104,12 +104,6 @@ private fun NavGraphBuilder.searchGraph(navController: NavHostController) {
     ) { backStackEntry ->
 
         val query = backStackEntry.arguments?.getString("query") ?: ""
-        val context = LocalContext.current
-        val locationUtils = remember {
-            EntryPointAccessors
-                .fromApplication(context.applicationContext, LocationUtilsEntryPoint::class.java)
-                .locationUtils()
-        }
 
         val locationViewModel: LocationViewModel = hiltViewModel()
         val searchActivityViewModel: SearchActivityViewModel = hiltViewModel()
@@ -148,18 +142,10 @@ private fun NavGraphBuilder.detailGraph(navController: NavHostController) {
 
 private fun NavGraphBuilder.homeGraph(navController: NavHostController) {
     composable(route = HomeScreens.Home.route) {
-        val context = LocalContext.current
-        val locationUtils = remember {
-            EntryPointAccessors
-                .fromApplication(context.applicationContext, LocationUtilsEntryPoint::class.java)
-                .locationUtils()
-        }
-
         HomeScreen(
             locationViewModel = hiltViewModel(),
             homeViewModel = hiltViewModel(),
             navController = navController,
-            locationUtils = locationUtils,
             onFavoritesClick = { navController.navigate(FavoritesScreens.Favorites.route) },
             onTripsClick = {},
             onProfileClick = { navController.navigate(AuthScreens.Profile.route) },
