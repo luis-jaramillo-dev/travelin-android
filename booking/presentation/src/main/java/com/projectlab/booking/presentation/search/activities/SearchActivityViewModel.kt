@@ -4,11 +4,11 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.projectlab.core.data.mapper.toDtoList
 import com.projectlab.core.data.model.ActivityDto
-import com.projectlab.core.data.usecase.GetActivitiesUseCase
 import com.projectlab.core.domain.entity.FavoriteActivityEntity
 import com.projectlab.core.domain.model.Location
 import com.projectlab.core.domain.proto.SearchHistory.HistoryType
 import com.projectlab.core.domain.repository.SearchHistoryProvider
+import com.projectlab.core.domain.use_cases.activities.GetActivitiesUseCase
 import com.projectlab.core.domain.use_cases.activities.RemoveFavoriteActivityByIdUseCase
 import com.projectlab.core.domain.use_cases.activities.SaveFavoriteActivityUseCase
 import com.projectlab.core.domain.use_cases.error.ErrorMapper
@@ -27,7 +27,6 @@ import javax.inject.Inject
  * ViewModel for the SearchActivity screen.
  * It handles the logic for searching activities based on user input and location.
  *
- * @param activitiesApiService API service for fetching activities.
  * @param getActivitiesUseCase Use case for getting activities.
  * @param errorMapper Mapper for converting errors to user-friendly messages.
  */
