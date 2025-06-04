@@ -65,13 +65,13 @@ class BookingViewModelTest @Inject constructor(
         // 1) We create a user and get the domain ID
         // Hardcode user data
         val user = User(
-            id = randomUserId, // This should be a unique ID, could be generated or hardcoded for testing
-            firstName = "SHEEV - THE EMPERATOR",
-            lastName = "rey",
+            id = randomUserId, // unique ID, could be generated or hardcoded for testing
+            firstName = "SHEEV",
+            lastName = "PALPATINE SIDIUS",
             countryCode = "66",
-            phoneNumber = "777777",
+            phoneNumber = "141515151514",
             email = "THEREVENGEOFTHESITH@gmail.com",
-            age = "80"
+            age = "81"
         )
 
         // We create the user in Firestore through the repository
