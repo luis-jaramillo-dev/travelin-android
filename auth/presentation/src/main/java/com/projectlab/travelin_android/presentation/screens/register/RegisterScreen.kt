@@ -3,6 +3,7 @@ package com.projectlab.travelin_android.presentation.screens.register
 import android.widget.Toast
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
@@ -20,12 +21,10 @@ fun RegisterScreen(
     viewModel: RegisterViewModel,
     onLoginClick: () -> Unit,
     onSuccessfulClick: () -> Unit,
-
-    ) {
+) {
     Scaffold(
-        topBar = { },
         content = { RegisterContent(paddingValues = it, viewModel = viewModel) },
-        bottomBar = { RegisterBottomBar(onLoginClick) }
+        bottomBar = { RegisterBottomBar(onLoginClick = onLoginClick) },
     )
 
     val registerFlow = viewModel.registerFlow.collectAsState()
