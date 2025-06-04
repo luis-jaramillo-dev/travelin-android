@@ -2,11 +2,15 @@ package com.projectlab.booking.presentation.home
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.projectlab.core.data.mapper.toDto
 import com.projectlab.core.data.usecase.GetActivitiesUseCase
+import com.projectlab.core.domain.model.Location
 import com.projectlab.core.domain.proto.SearchHistory.HistoryType
 import com.projectlab.core.domain.repository.LocationRepository
 import com.projectlab.core.domain.repository.SearchHistoryProvider
+import com.projectlab.core.domain.use_cases.location.GetCoordinatesFromCityUseCase
 import com.projectlab.core.presentation.ui.utils.ErrorMapper
+import com.projectlab.core.domain.util.Result
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -23,6 +27,7 @@ class HomeViewModel @Inject constructor(
     private val locationRepository: LocationRepository,
     private val errorMapper: ErrorMapper,
     private val historyProvider: SearchHistoryProvider,
+    private val getCoordinatesFromCityUseCase: GetCoordinatesFromCityUseCase
     ) : ViewModel() {
 
     private val _uiState = MutableStateFlow(HomeUiState())
@@ -71,4 +76,27 @@ class HomeViewModel @Inject constructor(
         _uiState.update { it.copy(query = "") }
     }
 
+    fun fetchRecommendedActivities(location: Location?) {
+        viewModelScope.launch {
+            _uiState.update { it.copy(isLoading = true) }
+
+            val (lat, lon) = location?.let { it.latitude to it.longitude }
+                ?: getCoordinatesFromCityUseCase("Paris") ?: (48.8566 to 2.3522)
+
+            when (val result = getActivitiesUseCase(lat, lon)) {
+                is Result.Success -> {
+                    val filtered = result.data
+                        .filter { it.rating > 4.0 }
+                        .take(10)
+                        .map { it.toDto() }
+                    _uiState.update { it.copy(recommendedActivities = filtered) }
+                }
+                is Result.Error -> {
+                    _uiState.update { it.copy(error = errorMapper.map(result.error)) }
+                }
+            }
+
+            _uiState.update { it.copy(isLoading = false) }
+        }
+    }
 }

@@ -88,6 +88,11 @@ object Spacing {
     val favoriteImageHeight: Dp = 200.dp
     val favoriteButtonSize: Dp = 40.dp
     val favoriteButtonPadding: Dp = 16.dp
+
+    // Home
+    val recommendedCardHeight: Dp = 320.dp
+    val recommendedCardWidth: Dp = 230.dp
+    val recommendedComponentHeight: Dp = 367.dp
 }
 
 val LocalSpacing = staticCompositionLocalOf { Spacing }

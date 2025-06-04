@@ -189,6 +189,9 @@ private fun NavGraphBuilder.homeGraph(navController: NavHostController) {
             onFavoritesClick = { navController.navigate(FavoritesScreens.Favorites.route) },
             onTripsClick = {},
             onProfileClick = { navController.navigate(AuthScreens.Profile.route) },
+            onItemClick = { activityId ->
+                navController.navigate(DetailScreens.ActivityDetail.createRoute(activityId))
+            },
         )
     }
 }
