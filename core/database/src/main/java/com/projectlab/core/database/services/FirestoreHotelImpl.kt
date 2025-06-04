@@ -3,7 +3,7 @@ package com.projectlab.core.database.services
 import android.os.Build
 import androidx.annotation.RequiresApi
 import com.google.firebase.firestore.FirebaseFirestore
-import com.projectlab.core.data.model.dto.FirestoreHotelDTO
+import com.projectlab.core.database.dto.FirestoreHotelDTO
 import com.projectlab.core.domain.entity.HotelEntity
 import com.projectlab.core.domain.model.EntityId
 import kotlinx.coroutines.flow.Flow

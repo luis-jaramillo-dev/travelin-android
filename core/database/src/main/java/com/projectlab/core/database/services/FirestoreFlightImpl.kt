@@ -5,8 +5,8 @@ import androidx.annotation.RequiresApi
 import kotlinx.coroutines.tasks.await
 import javax.inject.Inject
 import com.google.firebase.firestore.FirebaseFirestore
-import com.projectlab.core.data.model.dto.FirestoreFlightDTO
-import com.projectlab.core.data.model.dto.FirestoreFlightSegmentDTO
+import com.projectlab.core.database.dto.FirestoreFlightDTO
+import com.projectlab.core.database.dto.FirestoreFlightSegmentDTO
 import com.projectlab.core.domain.model.EntityId
 import com.projectlab.core.domain.entity.FlightEntity
 import com.projectlab.core.domain.entity.FlightSegmentEntity

@@ -1,4 +1,4 @@
-package com.projectlab.core.data.model.dto
+package com.projectlab.core.database.dto
 
 import android.os.Build
 import androidx.annotation.RequiresApi

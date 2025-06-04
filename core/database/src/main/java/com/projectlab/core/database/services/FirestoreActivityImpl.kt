@@ -3,7 +3,7 @@ package com.projectlab.core.database.services
 import android.os.Build
 import androidx.annotation.RequiresApi
 import com.google.firebase.firestore.FirebaseFirestore
-import com.projectlab.core.data.model.dto.FirestoreActivityDTO
+import com.projectlab.core.database.dto.FirestoreActivityDTO
 import com.projectlab.core.domain.entity.ActivityEntity
 import com.projectlab.core.domain.model.EntityId
 import kotlinx.coroutines.flow.Flow

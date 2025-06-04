@@ -6,9 +6,9 @@ import kotlinx.coroutines.tasks.await
 import javax.inject.Inject
 
 import com.google.firebase.firestore.FirebaseFirestore
+import com.projectlab.core.database.dto.FirestoreUserDTO
 import com.projectlab.core.domain.model.EntityId
 import com.projectlab.core.domain.entity.UserEntity
-import com.projectlab.core.data.model.dto.FirestoreUserDTO
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 

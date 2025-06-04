@@ -1,10 +1,7 @@
 package com.projectlab.core.data.repository
 
-import android.os.Build
-import androidx.annotation.RequiresApi
 import com.google.firebase.firestore.FirebaseFirestore
 import com.projectlab.core.data.mapper.toDomain
-import com.projectlab.core.data.model.dto.FirestoreActivityDTO
 import com.projectlab.core.data.remote.ActivityApiService
 import com.projectlab.core.database.services.FirestoreActivity
 import com.projectlab.core.domain.entity.ActivityEntity

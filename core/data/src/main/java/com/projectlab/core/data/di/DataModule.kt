@@ -105,11 +105,11 @@ abstract class DataModule {
 
     // Repositories :
 
-    @Binds
-    @Singleton
-    abstract fun bindUserRepository(
-        impl: UsersRepositoryImpl
-    ): UsersRepository
+//    @Binds
+//    @Singleton
+//    abstract fun bindUserRepository(
+//        impl: UsersRepositoryImpl
+//    ): UsersRepository
 
     @Binds
     @Singleton
@@ -123,17 +123,17 @@ abstract class DataModule {
         impl: FlightRepositoryImpl
     ): FlightRepository
 
-    @Binds
-    @Singleton
-    abstract fun bindHotelRepository(
-        impl: HotelsRepositoryImpl
-    ): HotelsRepository
+//    @Binds
+//    @Singleton
+//    abstract fun bindHotelRepository(
+//        impl: HotelsRepositoryImpl
+//    ): HotelsRepository
 
-    @Binds
-    @Singleton
-    abstract fun bindActivityRepository(
-        impl: ActivityRepositoryImpl
-    ): ActivityRepository
+//    @Binds
+//    @Singleton
+//    abstract fun bindActivityRepository(
+//        impl: ActivityRepositoryImpl
+//    ): ActivityRepository
 
 
 
