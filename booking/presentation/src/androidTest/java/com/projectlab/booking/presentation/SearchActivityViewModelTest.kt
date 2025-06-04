@@ -1,5 +1,6 @@
 package com.projectlab.booking.presentation
 
+import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.projectlab.booking.presentation.search.activities.SearchActivityViewModel
 import com.projectlab.core.domain.repository.SearchHistoryProvider
 import com.projectlab.core.domain.use_cases.activities.GetActivitiesUseCase
@@ -10,9 +11,12 @@ import com.projectlab.core.domain.use_cases.location.GetCityFromCoordinatesUseCa
 import com.projectlab.core.domain.use_cases.location.GetCoordinatesFromCityUseCase
 import kotlinx.coroutines.test.runTest
 import org.junit.Assert.assertEquals
-import org.mockito.kotlin.mock
-import org.junit.Test
+import org.mockito.Mockito.mock
 
+import org.junit.Test
+import org.junit.runner.RunWith
+
+@RunWith(AndroidJUnit4::class)
 class SearchActivityViewModelTest {
 
     private val getActivitiesUseCase = mock<GetActivitiesUseCase>()
