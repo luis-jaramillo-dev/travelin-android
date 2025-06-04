@@ -6,6 +6,7 @@ import com.google.firebase.firestore.FirebaseFirestore
 import com.projectlab.core.data.mapper.toDomain
 import com.projectlab.core.data.model.dto.FirestoreActivityDTO
 import com.projectlab.core.data.remote.ActivityApiService
+import com.projectlab.core.database.services.FirestoreActivity
 import com.projectlab.core.domain.entity.ActivityEntity
 import com.projectlab.core.domain.entity.FavoriteActivityEntity
 import com.projectlab.core.domain.model.Activity
@@ -28,9 +29,41 @@ import javax.inject.Inject
  */
 
 class ActivityRepositoryImpl @Inject constructor(
+    private val firestoreActivity: FirestoreActivity,
     private val firestore: FirebaseFirestore,
     private val activityApiService: ActivityApiService,
 ) : ActivityRepository {
+    override suspend fun createActivity(activity: ActivityEntity): kotlin.Result<EntityId> {
+        return firestoreActivity.createActivity(activity)
+    }
+
+    override suspend fun getActivityById(
+        userId: String,
+        itinId: String,
+        activityId: String
+    ): Flow<ActivityEntity?> {
+        return firestoreActivity.getActivityById(userId, itinId, activityId)
+    }
+
+    override suspend fun getAllActivities(
+        userId: String,
+        itinId: String
+    ): Flow<List<ActivityEntity>> {
+        return firestoreActivity.getAllActivitiesForItinerary(userId, itinId)
+    }
+
+    override suspend fun updateActivity(activity: ActivityEntity): kotlin.Result<Unit> {
+        return firestoreActivity.updateActivity(activity)
+    }
+
+    override suspend fun deleteActivity(
+        userId: String,
+        itinId: String,
+        activityId: String
+    ): kotlin.Result<Unit> {
+        return firestoreActivity.deleteActivity(userId, itinId, activityId)
+    }
+
     override suspend fun getAPIActivityById(
         id: String,
     ): Result<Activity, DataError.Network> {
