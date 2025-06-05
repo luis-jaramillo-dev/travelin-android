@@ -38,7 +38,10 @@ fun ProfileScreen(
                 modifier = modifier
                     .fillMaxSize()
                     .padding(it),
-                onLogoutClick = onLogoutClick,
+                onLogoutClick = {
+                    viewModel.logout()
+                    onLogoutClick()
+                },
                 userUi = state.userUi!!
             )
         }

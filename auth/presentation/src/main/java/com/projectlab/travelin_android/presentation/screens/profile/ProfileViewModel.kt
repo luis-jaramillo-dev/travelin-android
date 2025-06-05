@@ -41,8 +41,6 @@ class ProfileViewModel @Inject constructor(
         _state.update { it.copy(isLoading = true) }
         val currentUser = authUseCase.getCurrentUser()
         usersUseCases.getUserById(currentUser!!.uid).collect { user ->
-            println(currentUser.uid)
-            println(user)
             _state.update { it.copy(userUi = user.toUserUi()) }
         }
         _state.update { it.copy(isLoading = false) }
