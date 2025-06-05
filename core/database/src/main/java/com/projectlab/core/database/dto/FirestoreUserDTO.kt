@@ -1,4 +1,6 @@
-package com.projectlab.core.data.model.dto
+package com.projectlab.core.database.dto
+
+import com.projectlab.core.domain.entity.UserEntity
 
 /**
  *
@@ -24,7 +26,7 @@ data class FirestoreUserDTO (
 ) {
 
     companion object {
-        fun fromDomain(user: com.projectlab.core.domain.entity.UserEntity): FirestoreUserDTO =
+        fun fromDomain(user: UserEntity): FirestoreUserDTO =
             FirestoreUserDTO (
                 firstName = user.firstName,
                 lastName = user.lastName,
@@ -34,8 +36,8 @@ data class FirestoreUserDTO (
                 age = user.age
             )
     }
-    fun toDomain(id : String): com.projectlab.core.domain.entity.UserEntity =
-        com.projectlab.core.domain.entity.UserEntity(
+    fun toDomain(id : String): UserEntity =
+        UserEntity(
             id = id,
             firstName = firstName,
             lastName = lastName,

@@ -2,6 +2,7 @@ package com.projectlab.core.data.repository
 
 import com.google.firebase.firestore.CollectionReference
 import com.google.firebase.firestore.FieldValue
+import com.projectlab.core.database.services.FirestoreUser
 import com.projectlab.core.domain.model.Response
 import com.projectlab.core.domain.entity.UserEntity
 import com.projectlab.core.domain.model.User
@@ -12,8 +13,17 @@ import kotlinx.coroutines.flow.callbackFlow
 import kotlinx.coroutines.tasks.await
 import javax.inject.Inject
 
-class UsersRepositoryImpl @Inject constructor(private val usersRef: CollectionReference) :
-    UsersRepository {
+/** * UsersRepositoryImpl is a concrete implementation of the UsersRepository interface.
+ * It performs operations on user data.
+ *
+ * @param usersRef The Firestore collection reference for users.
+ * @param firestoreUser The FirestoreUserImpl instance used for user-related operations.
+ */
+
+class UsersRepositoryImpl @Inject constructor(
+    private val usersRef: CollectionReference,
+    private val firestoreUser: FirestoreUser,
+) : UsersRepository {
 
     override suspend fun createUser(user: User): Response<Boolean> {
         return try {
@@ -43,6 +53,18 @@ class UsersRepositoryImpl @Inject constructor(private val usersRef: CollectionRe
         awaitClose {
             snapshotListener.remove()
         }
+    }
+
+    override suspend fun getAllUsers(): Flow<List<UserEntity>> {
+        return firestoreUser.getAllUsers()
+    }
+
+    override suspend fun updateUser(user: UserEntity): Result<Unit> {
+        return firestoreUser.updateUser(user)
+    }
+
+    override suspend fun deleteUser(id: String): Result<Unit> {
+        return firestoreUser.deleteUser(id)
     }
 
 

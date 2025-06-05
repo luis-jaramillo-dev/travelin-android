@@ -7,6 +7,7 @@ import com.projectlab.core.data.usecase.IsFavoriteActivityUseCaseImpl
 import com.projectlab.core.data.usecase.QueryFavoriteActivitiesUseCaseImpl
 import com.projectlab.core.data.usecase.RemoveFavoriteActivityByIdUseCaseImpl
 import com.projectlab.core.data.usecase.SaveFavoriteActivityUseCaseImpl
+import com.projectlab.core.database.services.FirestoreActivity
 import com.projectlab.core.domain.repository.ActivityRepository
 import com.projectlab.core.domain.use_cases.activities.IsFavoriteActivityUseCase
 import com.projectlab.core.domain.use_cases.activities.QueryFavoriteActivitiesUseCase
@@ -22,10 +23,11 @@ import dagger.hilt.components.SingletonComponent
 object ActivitiesModule {
     @Provides
     fun provideActivitiesRepository(
+        firestoreActivity: FirestoreActivity,
         firestore: FirebaseFirestore,
         apiService: ActivityApiService,
     ): ActivityRepository {
-        return ActivityRepositoryImpl(firestore, apiService)
+        return ActivityRepositoryImpl(firestoreActivity, firestore, apiService)
     }
 
     @Provides
