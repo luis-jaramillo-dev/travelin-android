@@ -20,13 +20,13 @@ fun ProfileContent(
     modifier: Modifier = Modifier,
     paddingValues: PaddingValues,
     viewModel: ProfileViewModel,
-    onLogoutClick: () -> Unit
+    onLogoutClick: () -> Unit,
 ) {
     Column(
-        modifier = Modifier
+        modifier = modifier
             .fillMaxSize()
             .padding(paddingValues),
-        horizontalAlignment = Alignment.CenterHorizontally
+        horizontalAlignment = Alignment.CenterHorizontally,
     ) {
         Spacer(modifier = Modifier.height(MaterialTheme.spacing.BigSpacing))
         ProfileUser(viewModel = viewModel)
@@ -36,14 +36,15 @@ fun ProfileContent(
                 .fillMaxWidth()
                 .height(MaterialTheme.spacing.Spacer)
                 .padding(horizontal = MaterialTheme.spacing.ScreenHorizontalPadding)
-                .background(MaterialTheme.colorScheme.surfaceDim)
+                .background(MaterialTheme.colorScheme.surfaceDim),
         )
         Spacer(modifier = Modifier.height(MaterialTheme.spacing.ScreenHorizontalPadding))
         ProfileSettings(
             viewModel = viewModel,
             onLogoutClick = {
+                viewModel.logout()
                 onLogoutClick()
-            }
+            },
         )
     }
 }
