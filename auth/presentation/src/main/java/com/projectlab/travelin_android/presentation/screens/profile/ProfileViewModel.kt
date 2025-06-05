@@ -38,16 +38,16 @@ class ProfileViewModel @Inject constructor(
         getUserById()
     }
 
+    fun logout() {
+        viewModelScope.launch {
+            userSessionProvider.deleteUserSession()
+        }
+        authUseCase.logout()
+    }
+
     private fun getUserById() = viewModelScope.launch {
         usersUseCases.getUserById(currentUser!!.uid).collect {
             user = it
-
-        }
-        fun logout() {
-            viewModelScope.launch {
-                userSessionProvider.deleteUserSession()
-            }
-            authUseCase.logout()
         }
     }
 }
