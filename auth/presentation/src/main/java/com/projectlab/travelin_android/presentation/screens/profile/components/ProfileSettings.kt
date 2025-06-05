@@ -18,13 +18,11 @@ import androidx.compose.ui.text.font.FontWeight
 import com.projectlab.core.presentation.designsystem.theme.spacing
 import com.projectlab.travelin_android.presentation.components.ButtonSimple
 import com.projectlab.travelin_android.presentation.components.OutlinedButtonWithIcons
-import com.projectlab.travelin_android.presentation.screens.profile.ProfileViewModel
 
 @Composable
 fun ProfileSettings(
-    modifier: Modifier = Modifier,
-    viewModel: ProfileViewModel,
-    onLogoutClick: () -> Unit
+    onLogoutClick: () -> Unit,
+    modifier: Modifier = Modifier
 ) {
     Column(
         modifier = Modifier
