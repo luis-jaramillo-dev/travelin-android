@@ -36,5 +36,4 @@ dependencies {
     // Proto DataStore
     implementation(libs.androidx.datastore)
     implementation(libs.protobuf.javalite)
-
 }
