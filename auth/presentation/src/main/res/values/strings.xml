@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="no_account">Don\'t have an account on Discover?</string>
+    <string name="create_account">Create account</string>
+    <string name="filled_discover_logo">Filled Discover Logo</string>
+    <string name="welcome_to_discover">Welcome to Discover</string>
+    <string name="please_choose_your_login_option_below">Please choose your login option below</string>
+    <string name="email">Email</string>
+    <string name="enter_your_email_address">Enter your email address</string>
+    <string name="password">Password</string>
+    <string name="enter_your_password">Enter your password</string>
+    <string name="login">Login</string>
+    <string name="hide_password">Hide password</string>
+    <string name="show_password">Show password</string>
+    <string name="logged_in">Logged in</string>
+    <string name="failed_to_login">Failed to login: %1$s</string>
+    <string name="unknown_error">Unknown error</string>
+</resources>

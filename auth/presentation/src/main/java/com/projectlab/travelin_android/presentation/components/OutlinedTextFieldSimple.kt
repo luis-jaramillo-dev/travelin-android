@@ -1,19 +1,19 @@
 package com.projectlab.travelin_android.presentation.components
 
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
+import androidx.compose.material3.OutlinedTextFieldDefaults
 import androidx.compose.material3.Text
-import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.MutableState
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.unit.dp
+import com.projectlab.core.presentation.designsystem.theme.spacing
 
 @Composable
 fun OutlinedTextFieldSimple(
@@ -25,10 +25,16 @@ fun OutlinedTextFieldSimple(
     isError: Boolean = false,
     errorMessage: String? = null,
     singleLine: Boolean = true,
-    keyboardOptions: KeyboardOptions = KeyboardOptions.Default
+    keyboardOptions: KeyboardOptions = KeyboardOptions.Default,
 ) {
+    Text(
+        text = label,
+        style = MaterialTheme.typography.labelMedium.copy(
+            color = MaterialTheme.colorScheme.onSurfaceVariant,
+        ),
+    )
 
-    Text(text = label, style = MaterialTheme.typography.labelMedium.copy(color = MaterialTheme.colorScheme.onSurfaceVariant))
+    Spacer(modifier = Modifier.height(MaterialTheme.spacing.tiny))
 
     OutlinedTextField(
         value = value.value,
@@ -36,38 +42,49 @@ fun OutlinedTextFieldSimple(
             value.value = it
             onValueChange?.invoke(it)
         },
-        placeholder = { Text(
-            text = placeholderText,
-            style = MaterialTheme.typography.bodyMedium.copy(color = MaterialTheme.colorScheme.onSurfaceVariant))
+        placeholder = {
+            Text(
+                text = placeholderText,
+                style = MaterialTheme.typography.bodySmall.copy(
+                    color = MaterialTheme.colorScheme.onSurfaceVariant,
+                ),
+            )
         },
         modifier = modifier
-            .then(Modifier
-                .fillMaxWidth()
-                .height(56.dp)
-            ),
-        shape = RoundedCornerShape(20.dp),
+            .fillMaxWidth()
+            .height(MaterialTheme.spacing.FieldHeight),
+        shape = MaterialTheme.shapes.large,
         singleLine = singleLine,
         keyboardOptions = keyboardOptions,
         isError = isError,
-        colors = TextFieldDefaults.colors(
-            focusedContainerColor = Color.Transparent,
-            unfocusedContainerColor = Color.Transparent,
-            focusedIndicatorColor = if (isError) MaterialTheme.colorScheme.error else MaterialTheme.colorScheme.primary,
-            unfocusedIndicatorColor = if (isError) MaterialTheme.colorScheme.error else MaterialTheme.colorScheme.outline,
-            cursorColor = MaterialTheme.colorScheme.primary,
+        colors = OutlinedTextFieldDefaults.colors(
             focusedTextColor = MaterialTheme.colorScheme.onSurface,
             unfocusedTextColor = MaterialTheme.colorScheme.onSurface,
             disabledTextColor = MaterialTheme.colorScheme.onSurfaceVariant,
+            focusedContainerColor = Color.Transparent,
+            unfocusedContainerColor = Color.Transparent,
+            cursorColor = MaterialTheme.colorScheme.primary,
             focusedPlaceholderColor = MaterialTheme.colorScheme.onSurfaceVariant,
-            unfocusedPlaceholderColor = MaterialTheme.colorScheme.onSurfaceVariant
-        )
+            unfocusedPlaceholderColor = MaterialTheme.colorScheme.onSurfaceVariant,
+            focusedBorderColor = if (isError) {
+                MaterialTheme.colorScheme.error
+            } else {
+                MaterialTheme.colorScheme.primary
+            },
+            unfocusedBorderColor = if (isError) {
+                MaterialTheme.colorScheme.error
+            } else {
+                MaterialTheme.colorScheme.outline.copy(alpha = 0.15f)
+            },
+        ),
     )
+
     if (isError && !errorMessage.isNullOrEmpty()) {
         Text(
             text = errorMessage,
             color = MaterialTheme.colorScheme.error,
             style = MaterialTheme.typography.labelSmall,
-            modifier = Modifier.padding(top = 4.dp)
+            modifier = Modifier.padding(top = MaterialTheme.spacing.extraSmall),
         )
     }
 }

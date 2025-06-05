@@ -31,8 +31,8 @@ fun SuccessfulHeader(modifier: Modifier = Modifier) {
             painter = painterResource(R.drawable.white_logo_travelin),
             contentDescription = "Traveling logo in white",
             modifier = Modifier
-                .width(MaterialTheme.spacing.LogoWidth)
-                .height(MaterialTheme.spacing.LogoHeight),
+                .width(MaterialTheme.spacing.RegisteredLogoWidth)
+                .height(MaterialTheme.spacing.RegisteredLogoHeight),
         )
         Spacer(modifier = Modifier.height(MaterialTheme.spacing.SmallSpacing))
 

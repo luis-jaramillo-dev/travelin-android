@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="no_account">No tienes una cuenta en Discover?</string>
+    <string name="create_account">Crear cuenta</string>
+    <string name="filled_discover_logo">Logo Discover Rellenado</string>
+    <string name="welcome_to_discover">Bienvenido a Discover</string>
+    <string name="please_choose_your_login_option_below">Por favor elija su opción de inicio de sesión abajo</string>
+    <string name="email">Correo electrónico</string>
+    <string name="enter_your_email_address">Ingrese su correo electrónico</string>
+    <string name="password">Contraseña</string>
+    <string name="enter_your_password">Ingrese su contraseña</string>
+    <string name="login">Iniciar sesión</string>
+    <string name="hide_password">Ocultar contraseña</string>
+    <string name="show_password">Mostrar contraseña</string>
+    <string name="logged_in">Sesión iniciada</string>
+    <string name="failed_to_login">Error al iniciar sesión: %1$s</string>
+    <string name="unknown_error">Error desconocido</string>
+</resources>

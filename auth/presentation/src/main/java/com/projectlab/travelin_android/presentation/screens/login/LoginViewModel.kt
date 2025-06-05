@@ -36,18 +36,7 @@ class LoginViewModel @Inject constructor(
         }
     }
 
-    val isPasswordValid = derivedStateOf { AuthValidator.isPasswordValid(password.value) }
-    val passwordError = derivedStateOf {
-        if (password.value.isNotEmpty() && !isPasswordValid.value) {
-            "Password must be at least 6 characters, include an uppercase and a number"
-        } else {
-            null
-        }
-    }
-
-    val isFormValid = derivedStateOf {
-        isEmailValid.value && isPasswordValid.value
-    }
+    val isFormValid = derivedStateOf { isEmailValid.value }
 
     val currentUser = authUseCase.getCurrentUser()
 

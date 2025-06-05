@@ -12,8 +12,9 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.unit.dp
+import com.projectlab.auth.presentation.R
 import com.projectlab.core.presentation.designsystem.theme.spacing
 
 @Composable
@@ -24,13 +25,13 @@ fun LoginBottomBar(
     Row(
         modifier = modifier
             .fillMaxWidth()
-            .padding(bottom = MaterialTheme.spacing.regular)
+            .padding(bottom = MaterialTheme.spacing.large)
             .navigationBarsPadding()
             .clickable { onRegisterClick() },
         horizontalArrangement = Arrangement.Center,
     ) {
         Text(
-            text = "Doesn’t have account on discover?",
+            text = stringResource(R.string.no_account),
             style = MaterialTheme.typography.labelSmall.copy(
                 color = MaterialTheme.colorScheme.onSurfaceVariant,
             ),
@@ -39,7 +40,7 @@ fun LoginBottomBar(
         Spacer(modifier = Modifier.width(MaterialTheme.spacing.extraSmall))
 
         Text(
-            text = "Create Account",
+            text = stringResource(R.string.create_account),
             style = MaterialTheme.typography.labelSmall.copy(
                 fontWeight = FontWeight.Bold,
                 color = MaterialTheme.colorScheme.onBackground,
