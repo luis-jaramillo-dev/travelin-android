@@ -15,7 +15,6 @@ import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.OutlinedTextFieldDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -33,9 +32,9 @@ import com.projectlab.core.presentation.designsystem.theme.spacing
 fun OutlinedTextFieldPassword(
     label: String,
     placeholderText: String,
-    value: MutableState<String>,
+    value: String,
+    onValueChange: (String) -> Unit,
     modifier: Modifier = Modifier,
-    onValueChange: ((String) -> Unit)? = null,
     isError: Boolean = false,
     errorMessage: String? = null,
     singleLine: Boolean = true,
@@ -53,11 +52,8 @@ fun OutlinedTextFieldPassword(
     Spacer(modifier = Modifier.height(MaterialTheme.spacing.tiny))
 
     OutlinedTextField(
-        value = value.value,
-        onValueChange = {
-            value.value = it
-            onValueChange?.invoke(it)
-        },
+        value = value,
+        onValueChange = onValueChange,
         placeholder = {
             Text(
                 text = placeholderText,

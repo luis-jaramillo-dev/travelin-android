@@ -7,17 +7,14 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.collectAsState
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import com.projectlab.auth.presentation.R
-import com.projectlab.core.domain.model.Response
 import com.projectlab.core.presentation.designsystem.theme.TravelinTheme
 import com.projectlab.travelin_android.presentation.screens.login.components.LoginBottomBar
 import com.projectlab.travelin_android.presentation.screens.login.components.LoginContent
@@ -28,61 +25,48 @@ fun LoginScreen(
     onRegisterClick: () -> Unit,
     onLoggedIn: () -> Unit,
 ) {
-    val loginFlow = viewModel.loginFlow.collectAsState()
+    val state by viewModel.state.collectAsState()
 
-    loginFlow.value.let {
-        when (it) {
-            // wasn't logged in
-            null -> {
-                LoginScreenScaffold(
-                    email = viewModel.email,
-                    isEmailValid = viewModel.isEmailValid.value,
-                    password = viewModel.password,
-                    isFormValid = viewModel.isFormValid.value,
-                    onLogin = {
-                        viewModel.login()
-                    },
-                    onRegisterClick = onRegisterClick,
-                )
+    when {
+        state.loading -> {
+            Box(
+                modifier = Modifier.fillMaxSize(),
+                contentAlignment = Alignment.Center,
+            ) {
+                CircularProgressIndicator()
             }
+        }
 
-            Response.Loading -> {
-                Box(
-                    modifier = Modifier.fillMaxSize(),
-                    contentAlignment = Alignment.Center,
-                ) {
-                    CircularProgressIndicator()
-                }
-            }
+        state.success -> {
+            onLoggedIn()
 
-            is Response.Failure -> {
-                LoginScreenScaffold(
-                    email = viewModel.email,
-                    isEmailValid = viewModel.isEmailValid.value,
-                    password = viewModel.password,
-                    isFormValid = viewModel.isFormValid.value,
-                    onLogin = {
-                        viewModel.login()
-                    },
-                    onRegisterClick = onRegisterClick,
-                )
+            Toast.makeText(
+                LocalContext.current,
+                stringResource(R.string.logged_in),
+                Toast.LENGTH_SHORT,
+            ).show()
+        }
 
+        // either not logged in, or an error while logging in
+        else -> {
+            LoginScreenScaffold(
+                email = state.email,
+                isEmailValid = state.isEmailValid,
+                password = state.password,
+                onEmailChange = viewModel::onEmailChange,
+                onPasswordChange = viewModel::onPasswordChange,
+                onLogin = { viewModel.login() },
+                onRegisterClick = onRegisterClick,
+            )
+
+            if (state.isError) {
                 Toast.makeText(
                     LocalContext.current,
                     stringResource(
                         R.string.failed_to_login,
-                        it.exception?.message ?: stringResource(R.string.unknown_error),
+                        state.error ?: stringResource(R.string.unknown_error),
                     ),
                     Toast.LENGTH_LONG,
-                ).show()
-            }
-
-            is Response.Success -> {
-                onLoggedIn()
-                Toast.makeText(
-                    LocalContext.current,
-                    stringResource(R.string.logged_in),
-                    Toast.LENGTH_SHORT,
                 ).show()
             }
         }
@@ -92,10 +76,11 @@ fun LoginScreen(
 @Composable
 fun LoginScreenScaffold(
     modifier: Modifier = Modifier,
-    email: MutableState<String>,
+    email: String,
     isEmailValid: Boolean,
-    password: MutableState<String>,
-    isFormValid: Boolean,
+    password: String,
+    onEmailChange: (String) -> Unit,
+    onPasswordChange: (String) -> Unit,
     onLogin: () -> Unit,
     onRegisterClick: () -> Unit,
 ) {
@@ -107,7 +92,8 @@ fun LoginScreenScaffold(
             email = email,
             isEmailValid = isEmailValid,
             password = password,
-            isFormValid = isFormValid,
+            onEmailChange = onEmailChange,
+            onPasswordChange = onPasswordChange,
             onLogin = onLogin,
         )
     }
@@ -118,10 +104,11 @@ fun LoginScreenScaffold(
 fun LoginScreenScaffoldPreview() {
     TravelinTheme {
         LoginScreenScaffold(
-            email = remember { mutableStateOf("my@email.com") },
+            email = "my@email.com",
             isEmailValid = false,
-            password = remember { mutableStateOf("Password123") },
-            isFormValid = true,
+            password = "Password123",
+            onEmailChange = {},
+            onPasswordChange = {},
             onLogin = {},
             onRegisterClick = {},
         )

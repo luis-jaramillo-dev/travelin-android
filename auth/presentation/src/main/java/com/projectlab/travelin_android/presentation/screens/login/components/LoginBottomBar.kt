@@ -25,7 +25,7 @@ fun LoginBottomBar(
     Row(
         modifier = modifier
             .fillMaxWidth()
-            .padding(bottom = MaterialTheme.spacing.large)
+            .padding(bottom = MaterialTheme.spacing.semiHuge)
             .navigationBarsPadding()
             .clickable { onRegisterClick() },
         horizontalArrangement = Arrangement.Center,

@@ -6,7 +6,6 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.MutableState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import com.projectlab.core.presentation.designsystem.theme.spacing
@@ -14,10 +13,11 @@ import com.projectlab.core.presentation.designsystem.theme.spacing
 @Composable
 fun LoginContent(
     modifier: Modifier = Modifier,
-    email: MutableState<String>,
+    email: String,
     isEmailValid: Boolean,
-    password: MutableState<String>,
-    isFormValid: Boolean,
+    password: String,
+    onEmailChange: (String) -> Unit,
+    onPasswordChange: (String) -> Unit,
     onLogin: () -> Unit,
 ) {
     Column(
@@ -35,7 +35,8 @@ fun LoginContent(
             email = email,
             isEmailValid = isEmailValid,
             password = password,
-            isFormValid = isFormValid,
+            onEmailChange = onEmailChange,
+            onPasswordChange = onPasswordChange,
             onLogin = onLogin,
         )
     }

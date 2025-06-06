@@ -55,14 +55,16 @@ fun RegisterForm(
         OutlinedTextFieldSimple(
             label = "First name",
             placeholderText = "Enter your first name",
-            value = viewModel.firstName,
+            value = viewModel.firstName.value,
+            onValueChange = { value -> viewModel.firstName.value = value },
         )
         Spacer(modifier = Modifier.height(20.dp))
 
         OutlinedTextFieldSimple(
             label = "Last name",
             placeholderText = "Enter your last name",
-            value = viewModel.lastName,
+            value = viewModel.lastName.value,
+            onValueChange = { value -> viewModel.lastName.value = value },
         )
         Spacer(modifier = Modifier.height(20.dp))
 
@@ -88,7 +90,8 @@ fun RegisterForm(
             OutlinedTextFieldSimple(
                 label = "",
                 placeholderText = "Enter your phone number",
-                value = viewModel.phoneNumber,
+                value = viewModel.phoneNumber.value,
+                onValueChange = { value -> viewModel.phoneNumber.value = value },
                 keyboardOptions = KeyboardOptions.Default.copy(keyboardType = KeyboardType.Number),
                 modifier = Modifier.weight(0.62f)
             )
@@ -98,7 +101,8 @@ fun RegisterForm(
         OutlinedTextFieldSimple(
             label = "Age",
             placeholderText = "Enter your age",
-            value = viewModel.age,
+            value = viewModel.age.value,
+            onValueChange = { value -> viewModel.age.value = value },
             isError = viewModel.ageError.value != null,
             errorMessage = viewModel.ageError.value,
             keyboardOptions = KeyboardOptions.Default.copy(keyboardType = KeyboardType.Number),
@@ -109,7 +113,8 @@ fun RegisterForm(
         OutlinedTextFieldSimple(
             label = "Email",
             placeholderText = "Enter your email address",
-            value = viewModel.email,
+            value = viewModel.email.value,
+            onValueChange = { value -> viewModel.email.value = value },
             isError = viewModel.emailError.value != null,
             errorMessage = viewModel.emailError.value,
             keyboardOptions = KeyboardOptions.Default.copy(keyboardType = KeyboardType.Email),
@@ -120,7 +125,8 @@ fun RegisterForm(
         OutlinedTextFieldPassword(
             label = "Password",
             placeholderText = "Enter your password",
-            value = viewModel.password,
+            value = viewModel.password.value,
+            onValueChange = { value -> viewModel.password.value = value },
             isError = viewModel.passwordError.value != null,
             errorMessage = viewModel.passwordError.value,
             keyboardOptions = KeyboardOptions.Default.copy(keyboardType = KeyboardType.Password),

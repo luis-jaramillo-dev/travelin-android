@@ -8,11 +8,9 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.MutableState
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.KeyboardType
-import androidx.compose.ui.unit.dp
 import com.projectlab.auth.presentation.R
 import com.projectlab.core.presentation.designsystem.theme.spacing
 import com.projectlab.travelin_android.presentation.components.ButtonSimple
@@ -22,10 +20,11 @@ import com.projectlab.travelin_android.presentation.components.OutlinedTextField
 @Composable
 fun LoginForm(
     modifier: Modifier = Modifier,
-    email: MutableState<String>,
+    email: String,
     isEmailValid: Boolean,
-    password: MutableState<String>,
-    isFormValid: Boolean,
+    password: String,
+    onEmailChange: (String) -> Unit,
+    onPasswordChange: (String) -> Unit,
     onLogin: () -> Unit,
 ) {
     Column(
@@ -36,7 +35,8 @@ fun LoginForm(
             placeholderText = stringResource(R.string.enter_your_email_address),
             keyboardOptions = KeyboardOptions.Default.copy(keyboardType = KeyboardType.Email),
             value = email,
-            isError = email.value.isNotEmpty() && !isEmailValid,
+            onValueChange = onEmailChange,
+            isError = email.isNotEmpty() && !isEmailValid,
             errorMessage = stringResource(R.string.enter_a_valid_email),
         )
 
@@ -46,6 +46,7 @@ fun LoginForm(
             label = stringResource(R.string.password),
             placeholderText = stringResource(R.string.enter_your_password),
             value = password,
+            onValueChange = onPasswordChange,
             keyboardOptions = KeyboardOptions.Default.copy(keyboardType = KeyboardType.Password),
             // do not validate password on login
             isError = false,
@@ -58,7 +59,7 @@ fun LoginForm(
             text = stringResource(R.string.login),
             onClick = { onLogin() },
             modifier = Modifier.fillMaxWidth(),
-            enabled = isFormValid,
+            enabled = isEmailValid,
         )
     }
 }

@@ -10,7 +10,6 @@ import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.OutlinedTextFieldDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.MutableState
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import com.projectlab.core.presentation.designsystem.theme.spacing
@@ -19,9 +18,9 @@ import com.projectlab.core.presentation.designsystem.theme.spacing
 fun OutlinedTextFieldSimple(
     label: String,
     placeholderText: String,
-    value: MutableState<String>,
+    value: String,
+    onValueChange: (String) -> Unit,
     modifier: Modifier = Modifier,
-    onValueChange: ((String) -> Unit)? = null,
     isError: Boolean = false,
     errorMessage: String? = null,
     singleLine: Boolean = true,
@@ -37,11 +36,8 @@ fun OutlinedTextFieldSimple(
     Spacer(modifier = Modifier.height(MaterialTheme.spacing.tiny))
 
     OutlinedTextField(
-        value = value.value,
-        onValueChange = {
-            value.value = it
-            onValueChange?.invoke(it)
-        },
+        value = value,
+        onValueChange = onValueChange,
         placeholder = {
             Text(
                 text = placeholderText,
