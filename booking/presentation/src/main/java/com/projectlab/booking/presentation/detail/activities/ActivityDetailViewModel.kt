@@ -3,14 +3,14 @@ package com.projectlab.booking.presentation.detail.activities
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.projectlab.core.data.mapper.toDto
-import com.projectlab.core.data.usecase.GetActivityUseCase
+import com.projectlab.core.domain.use_cases.error.ErrorMapper
 import com.projectlab.core.domain.entity.FavoriteActivityEntity
+import com.projectlab.core.domain.use_cases.activities.GetActivityUseCase
 import com.projectlab.core.domain.use_cases.activities.IsFavoriteActivityUseCase
 import com.projectlab.core.domain.use_cases.activities.RemoveFavoriteActivityByIdUseCase
 import com.projectlab.core.domain.use_cases.activities.SaveFavoriteActivityUseCase
 import com.projectlab.core.domain.use_cases.location.GetCityFromCoordinatesUseCase
 import com.projectlab.core.domain.util.Result
-import com.projectlab.core.presentation.ui.utils.ErrorMapper
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow

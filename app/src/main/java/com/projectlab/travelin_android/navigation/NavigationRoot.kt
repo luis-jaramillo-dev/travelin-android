@@ -3,7 +3,6 @@ package com.projectlab.travelin_android.navigation
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.remember
-import androidx.compose.ui.platform.LocalContext
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavHostController
@@ -21,7 +20,6 @@ import com.projectlab.booking.presentation.screens.hotels.details.DetailHotelScr
 import com.projectlab.booking.presentation.screens.hotels.search.SearchHotelScreen
 import com.projectlab.booking.presentation.search.activities.SearchActivityScreen
 import com.projectlab.booking.presentation.search.activities.SearchActivityViewModel
-import com.projectlab.core.data.di.LocationUtilsEntryPoint
 import com.projectlab.core.presentation.ui.viewmodel.LocationViewModel
 import com.projectlab.feature.onboarding.presentation.ui.OnboardingScreenRoot
 import com.projectlab.travelin_android.presentation.screens.login.LoginScreen
@@ -31,7 +29,6 @@ import com.projectlab.travelin_android.presentation.screens.profile.ProfileViewM
 import com.projectlab.travelin_android.presentation.screens.register.RegisterScreen
 import com.projectlab.travelin_android.presentation.screens.register.RegisterViewModel
 import com.projectlab.travelin_android.presentation.screens.successful.SuccessfulScreen
-import dagger.hilt.android.EntryPointAccessors
 
 @Composable
 fun NavigationRoot(

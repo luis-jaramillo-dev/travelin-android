@@ -60,6 +60,15 @@ class LocationUtilsTest {
 
     @Test
     fun convertsAddressToCoordinates() = runBlocking {
+
+        val fakeAddress = mock(Address::class.java).apply {
+            Mockito.`when`(this.latitude).thenReturn(-33.43778)
+            Mockito.`when`(this.longitude).thenReturn(-70.65028)
+        }
+        val fakeAddressList = mutableListOf(fakeAddress)
+        Mockito.`when`(geocoderService.getFromLocationName("Santiago, Chile", 1))
+            .thenReturn(fakeAddressList)
+
         val location = locationUtils.getCoordinatesFromLocation("Santiago, Chile")
         assertEquals(-33.43778, location?.latitude)
         assertEquals(-70.65028, location?.longitude)
