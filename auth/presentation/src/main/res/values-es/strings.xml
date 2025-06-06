@@ -31,4 +31,6 @@
     <string name="enter_your_age">Ingresa tu edad</string>
     <string name="i_accept_the_terms_and_conditions">Acepto los términos y condiciones</string>
     <string name="dropdown">Menú Desplegable</string>
+    <string name="enter_a_valid_password">Contraseña debe tener al menos 6 carácteres, incluyendo una mayúscula y un número</string>
+    <string name="enter_a_valid_age">Ingresa una edad válida</string>
 </resources>

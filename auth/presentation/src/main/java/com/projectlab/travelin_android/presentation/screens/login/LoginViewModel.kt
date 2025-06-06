@@ -70,7 +70,7 @@ class LoginViewModel @Inject constructor(
                     }
                 }
 
-                else -> {}
+                is Response.Loading -> {}
             }
         }
     }

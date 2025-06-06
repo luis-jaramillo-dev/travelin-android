@@ -16,7 +16,6 @@ import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.OutlinedTextFieldDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -32,7 +31,8 @@ fun DropdownOutlinedButton(
     label: String,
     placeholder: String,
     options: List<String>,
-    selectedOption: MutableState<String>,
+    selectedOption: String,
+    onSelectedOption: (String) -> Unit,
     modifier: Modifier = Modifier,
 ) {
     var expanded by remember { mutableStateOf(false) }
@@ -49,7 +49,7 @@ fun DropdownOutlinedButton(
             Spacer(modifier = Modifier.height(MaterialTheme.spacing.tiny))
 
             OutlinedTextField(
-                value = selectedOption.value,
+                value = selectedOption,
                 onValueChange = {},
                 placeholder = {
                     Text(
@@ -100,7 +100,7 @@ fun DropdownOutlinedButton(
                         )
                     },
                     onClick = {
-                        selectedOption.value = option
+                        onSelectedOption(option)
                         expanded = false
                     },
                 )

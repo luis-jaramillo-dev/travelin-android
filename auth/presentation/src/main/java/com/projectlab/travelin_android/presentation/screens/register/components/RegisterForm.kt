@@ -49,7 +49,25 @@ private val phoneCountryCodes = listOf(
 @Composable
 fun RegisterForm(
     modifier: Modifier = Modifier,
-    viewModel: RegisterViewModel,
+    firstName: String,
+    lastName: String,
+    countryCode: String,
+    phoneNumber: String,
+    age: String,
+    email: String,
+    password: String,
+    acceptedTOS: Boolean,
+    isAgeValid: Boolean,
+    isEmailValid: Boolean,
+    isPasswordValid: Boolean,
+    onFirstNameChange: (String) -> Unit,
+    onLastNameChange: (String) -> Unit,
+    onCountryCodeChange: (String) -> Unit,
+    onPhoneNumberChange: (String) -> Unit,
+    onAgeChange: (String) -> Unit,
+    onEmailChange: (String) -> Unit,
+    onPasswordChange: (String) -> Unit,
+    onAcceptedTOSChange: (Boolean) -> Unit,
 ) {
     Column(
         modifier = modifier,
@@ -58,15 +76,15 @@ fun RegisterForm(
         OutlinedTextFieldSimple(
             label = stringResource(R.string.first_name),
             placeholderText = stringResource(R.string.enter_your_first_name),
-            value = viewModel.firstName.value,
-            onValueChange = { value -> viewModel.firstName.value = value },
+            value = firstName,
+            onValueChange = onFirstNameChange,
         )
 
         OutlinedTextFieldSimple(
             label = stringResource(R.string.last_name),
             placeholderText = stringResource(R.string.enter_your_last_name),
-            value = viewModel.lastName.value,
-            onValueChange = { value -> viewModel.lastName.value = value },
+            value = lastName,
+            onValueChange = onLastNameChange,
         )
 
         Row(
@@ -77,7 +95,8 @@ fun RegisterForm(
                 label = stringResource(R.string.phone),
                 placeholder = "+56",
                 options = phoneCountryCodes,
-                selectedOption = viewModel.countryCode,
+                selectedOption = countryCode,
+                onSelectedOption = onCountryCodeChange,
                 modifier = Modifier.weight(0.30f),
             )
 
@@ -86,8 +105,8 @@ fun RegisterForm(
             OutlinedTextFieldSimple(
                 label = "",
                 placeholderText = stringResource(R.string.enter_your_phone_number),
-                value = viewModel.phoneNumber.value,
-                onValueChange = { value -> viewModel.phoneNumber.value = value },
+                value = phoneNumber,
+                onValueChange = onPhoneNumberChange,
                 keyboardOptions = KeyboardOptions.Default.copy(keyboardType = KeyboardType.Number),
                 modifier = Modifier.weight(0.70f),
             )
@@ -96,30 +115,30 @@ fun RegisterForm(
         OutlinedTextFieldSimple(
             label = stringResource(R.string.age),
             placeholderText = stringResource(R.string.enter_your_age),
-            value = viewModel.age.value,
-            onValueChange = { value -> viewModel.age.value = value },
-            isError = viewModel.ageError.value != null,
-            errorMessage = viewModel.ageError.value,
+            value = age,
+            onValueChange = onAgeChange,
+            isError = age.isNotEmpty() && !isAgeValid,
+            errorMessage = stringResource(R.string.enter_a_valid_age),
             keyboardOptions = KeyboardOptions.Default.copy(keyboardType = KeyboardType.Number),
         )
 
         OutlinedTextFieldSimple(
             label = stringResource(R.string.email),
             placeholderText = stringResource(R.string.enter_your_email_address),
-            value = viewModel.email.value,
-            onValueChange = { value -> viewModel.email.value = value },
-            isError = viewModel.emailError.value != null,
-            errorMessage = viewModel.emailError.value,
+            value = email,
+            onValueChange = onEmailChange,
+            isError = email.isNotEmpty() && !isEmailValid,
+            errorMessage = stringResource(R.string.enter_a_valid_email),
             keyboardOptions = KeyboardOptions.Default.copy(keyboardType = KeyboardType.Email),
         )
 
         OutlinedTextFieldPassword(
             label = stringResource(R.string.password),
             placeholderText = stringResource(R.string.enter_your_password),
-            value = viewModel.password.value,
-            onValueChange = { value -> viewModel.password.value = value },
-            isError = viewModel.passwordError.value != null,
-            errorMessage = viewModel.passwordError.value,
+            value = password,
+            onValueChange = onPasswordChange,
+            isError = password.isNotEmpty() && !isPasswordValid,
+            errorMessage = stringResource(R.string.enter_a_valid_password),
             keyboardOptions = KeyboardOptions.Default.copy(keyboardType = KeyboardType.Password),
         )
 
@@ -127,8 +146,8 @@ fun RegisterForm(
             verticalAlignment = Alignment.CenterVertically,
         ) {
             Checkbox(
-                checked = viewModel.termsAndConditions.value,
-                onCheckedChange = { viewModel.termsAndConditions.value = it },
+                checked = acceptedTOS,
+                onCheckedChange = onAcceptedTOSChange,
                 colors = CheckboxDefaults.colors(
                     uncheckedColor = MaterialTheme.colorScheme.outline,
                     checkmarkColor = MaterialTheme.colorScheme.primary,

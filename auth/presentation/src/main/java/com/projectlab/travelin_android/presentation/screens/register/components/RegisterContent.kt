@@ -15,12 +15,29 @@ import androidx.compose.ui.res.stringResource
 import com.projectlab.auth.presentation.R
 import com.projectlab.core.presentation.designsystem.theme.spacing
 import com.projectlab.travelin_android.presentation.components.ButtonSimple
-import com.projectlab.travelin_android.presentation.screens.register.RegisterViewModel
 
 @Composable
 fun RegisterContent(
     modifier: Modifier = Modifier,
-    viewModel: RegisterViewModel,
+    firstName: String,
+    lastName: String,
+    countryCode: String,
+    phoneNumber: String,
+    age: String,
+    email: String,
+    password: String,
+    acceptedTOS: Boolean,
+    isAgeValid: Boolean,
+    isEmailValid: Boolean,
+    isPasswordValid: Boolean,
+    onFirstNameChange: (String) -> Unit,
+    onLastNameChange: (String) -> Unit,
+    onCountryCodeChange: (String) -> Unit,
+    onPhoneNumberChange: (String) -> Unit,
+    onAgeChange: (String) -> Unit,
+    onEmailChange: (String) -> Unit,
+    onPasswordChange: (String) -> Unit,
+    onAcceptedTOSChange: (Boolean) -> Unit,
     onLoginClick: () -> Unit,
     onRegisterClick: () -> Unit,
 ) {
@@ -36,14 +53,44 @@ fun RegisterContent(
 
         Spacer(modifier = Modifier.height(MaterialTheme.spacing.ScreenVerticalSpacing))
 
-        RegisterForm(viewModel = viewModel)
+        RegisterForm(
+            firstName = firstName,
+            lastName = lastName,
+            countryCode = countryCode,
+            phoneNumber = phoneNumber,
+            age = age,
+            email = email,
+            password = password,
+            acceptedTOS = acceptedTOS,
+            isAgeValid = isAgeValid,
+            isEmailValid = isEmailValid,
+            isPasswordValid = isPasswordValid,
+            onFirstNameChange = onFirstNameChange,
+            onLastNameChange = onLastNameChange,
+            onCountryCodeChange = onCountryCodeChange,
+            onPhoneNumberChange = onPhoneNumberChange,
+            onAgeChange = onAgeChange,
+            onEmailChange = onEmailChange,
+            onPasswordChange = onPasswordChange,
+            onAcceptedTOSChange = onAcceptedTOSChange,
+        )
 
         Spacer(modifier = Modifier.height(MaterialTheme.spacing.medium))
 
         ButtonSimple(
             text = stringResource(R.string.create_account_button),
             onClick = onRegisterClick,
-            enabled = viewModel.isFormValid.value,
+            enabled = firstName.isNotEmpty()
+                && lastName.isNotEmpty()
+                && countryCode.isNotEmpty()
+                && phoneNumber.isNotEmpty()
+                && age.isNotEmpty()
+                && email.isNotEmpty()
+                && password.isNotEmpty()
+                && acceptedTOS
+                && isAgeValid
+                && isEmailValid
+                && isPasswordValid,
         )
     }
 }

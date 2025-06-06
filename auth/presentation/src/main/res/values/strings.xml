@@ -31,4 +31,6 @@
     <string name="enter_your_age">Enter your age</string>
     <string name="i_accept_the_terms_and_conditions">I accept the terms and conditions</string>
     <string name="dropdown">Dropdown</string>
+    <string name="enter_a_valid_password">Password must be at least 6 characters, include an uppercase and a number</string>
+    <string name="enter_a_valid_age">Enter a valid age</string>
 </resources>
