@@ -29,7 +29,7 @@ fun LoginForm(
     onLogin: () -> Unit,
 ) {
     Column(
-        modifier = modifier.padding(horizontal = 30.dp)
+        modifier = modifier.padding(horizontal = MaterialTheme.spacing.ScreenHorizontalPadding),
     ) {
         OutlinedTextFieldSimple(
             label = stringResource(R.string.email),
