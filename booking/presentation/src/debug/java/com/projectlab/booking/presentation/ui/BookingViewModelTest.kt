@@ -20,6 +20,7 @@ import kotlinx.coroutines.launch
 import java.time.Instant
 import java.util.Date
 import android.util.Log
+import coil.util.CoilUtils.result
 import com.projectlab.core.domain.model.User
 import com.projectlab.core.domain.repository.ActivityRepository
 import com.projectlab.core.domain.repository.FlightRepository
@@ -213,44 +214,53 @@ class BookingViewModelTest @Inject constructor(
     
     // Launches the collection of all itineraries for a user:
     fun fetchAllItineraries(userId: String) = viewModelScope.launch {
-        try {
-            itineraryRepo.getAllItineraries(userId)
-                .collect { list ->
-                    _itineraries.value = list
-                    if (list.isEmpty()) {
-                        Log.d(TAG, "❌ No itineraries found for user: $userId")
-                    } else {
-                        Log.d(TAG, "✔ Fetched ${list.size} itineraries for user: $userId")
-                    }
-                }
+        // We call to the repository to get all itineraries for the user
+        val result = itineraryRepo.getAllItineraries(userId)
 
-        } catch (e: Exception) {
-            _seedResult.value = Result.failure(e) // indicate failure
+        if (result.isSuccess) {
+            // If it was successful, we extract the list (it can be null, so we use ?: emptyList())
+            val listOfItins: List<ItineraryEntity> = result.getOrThrow() ?: emptyList()
+            _itineraries.value = listOfItins // update the state with the list of itineraries
+
+            if (listOfItins.isEmpty()) {
+                Log.d(TAG, "❌ No itineraries found for user: $userId")
+            } else {
+                Log.d(TAG, "✔ Fetched ${listOfItins.size} itineraries for user: $userId")
+            }
+        } else {
+            // If the result is a failure, we log the error and update the state
+            val ex = result.exceptionOrNull() ?: RuntimeException(
+                "❓ Unknown error fetching itineraries."
+            )
+            _seedResult.value = Result.failure(ex) // indicate failure
             // log the error
-            e.printStackTrace()
-            Log.e(TAG, "🚨 Error fetching itineraries for user: $userId", e)
-
+            Log.e(TAG, "🚨 Error fetching itineraries for user: $userId", ex)
         }
     }
 
     // Launches the collection of a single itinerary by ID:
     fun fetchItineraryById(userId: String, itinId: String) = viewModelScope.launch {
-        try {
-            itineraryRepo.getItineraryById(userId, itinId)
-                .collect { entity ->
-                    _itinerary.value = entity
-                    if (entity == null) {
-                        Log.d(TAG, "❌ No itinerary found for user: $userId with ID: $itinId")
-                    } else {
-                        Log.d(TAG, "✔ Fetched itinerary for user: $userId with ID: $itinId")
-                    }
-                }
+        val result = itineraryRepo.getItineraryById(userId, itinId)
 
-        } catch (e: Exception) {
-            _seedResult.value = Result.failure(e) // indicate failure
+        if (result.isSuccess) {
+            // It can be null if not exists
+            val entity: ItineraryEntity? = result.getOrNull()
+            _itinerary.value = entity
+
+            if(entity == null) {
+                Log.d(TAG, "❌ No itinerary found for user: $userId with ID: $itinId")
+            } else {
+                Log.d(TAG, "✔ Fetched itinerary for user: $userId with ID: $itinId")
+            }
+        }
+        else {
+            // If the result is a failure, we log the error and update the state
+            val ex = result.exceptionOrNull() ?: RuntimeException(
+                "❓ Unknown error fetching itinerary by ID."
+            )
+            _seedResult.value = Result.failure(ex) // indicate failure
             // log the error
-            e.printStackTrace()
-            Log.e(TAG, "🚨 Error fetching itinerary for user: $userId with ID: $itinId", e)
+            Log.e(TAG, "🚨 Error fetching itinerary for user: $userId with ID: $itinId", ex)
         }
     }
 }

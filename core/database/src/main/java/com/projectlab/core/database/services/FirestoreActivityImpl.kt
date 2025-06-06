@@ -59,7 +59,7 @@ class FirestoreActivityImpl @Inject constructor (
         userId: String,
         itinId: String,
         activityId: String
-    ): Flow<ActivityEntity?> = flow {
+    ): Result<ActivityEntity?> = runCatching {
         // Get the document reference for the activity
         val docRef = firestore
             .collection("Users").document(userId)
@@ -71,7 +71,7 @@ class FirestoreActivityImpl @Inject constructor (
         val snap = docRef.get().await()
         if (snap.exists()) {
             val dto = snap.toObject(FirestoreActivityDTO::class.java)
-            emit(
+            (
                 dto?.toDomain(
                     docId = snap.id,
                     userRef = EntityId(userId),
@@ -79,14 +79,14 @@ class FirestoreActivityImpl @Inject constructor (
                 )
             )
         } else {
-            emit(null)
+            (null)
         }
     }
 
     override suspend fun getAllActivitiesForItinerary(
         userId: String,
         itinId: String
-    ): Flow<List<ActivityEntity>> = flow {
+    ): Result<List<ActivityEntity>> = runCatching {
         // Route to the Activities collection for the given user and itinerary
         val snaps = firestore
             .collection("Users").document(userId)
@@ -102,7 +102,7 @@ class FirestoreActivityImpl @Inject constructor (
                     itineraryRef = EntityId(itinId)
                 )
         }
-        emit(list)
+        (list)
     }
 
     @RequiresApi(Build.VERSION_CODES.O)
