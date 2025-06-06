@@ -37,9 +37,4 @@ dependencies {
     implementation(libs.androidx.datastore)
     implementation(libs.protobuf.javalite)
 
-    // Testing
-    implementation(libs.androidx.junit.ktx)
-    testImplementation(libs.mockito.core)
-    testImplementation(libs.mockito.kotlin)
-    testImplementation(libs.kotlinx.coroutines.test)
 }

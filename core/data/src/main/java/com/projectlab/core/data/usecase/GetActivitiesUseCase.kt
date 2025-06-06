@@ -2,7 +2,7 @@ package com.projectlab.core.data.usecase
 
 import android.util.Log
 import com.projectlab.core.data.mapper.toDomain
-import com.projectlab.core.data.remote.ActivitiesApiService
+import com.projectlab.core.data.remote.ActivityApiService
 import com.projectlab.core.domain.model.Activity
 import com.projectlab.core.domain.repository.TokenProvider
 import com.projectlab.core.domain.util.DataError
@@ -17,12 +17,10 @@ import javax.inject.Inject
  * @property api The API service to fetch activities.
  * @property tokenProvider The token provider for API authentication.
  */
-
-open class GetActivitiesUseCase @Inject constructor(
-    private val api: ActivitiesApiService,
-    private val tokenProvider: TokenProvider
+class GetActivitiesUseCase @Inject constructor(
+    private val api: ActivityApiService,
+    private val tokenProvider: TokenProvider,
 ) {
-
     /**
      * Fetches activities based on the provided latitude and longitude.
      *
@@ -30,10 +28,9 @@ open class GetActivitiesUseCase @Inject constructor(
      * @param longitude The longitude of the location.
      * @return A Result containing a list of activities or an error.
      */
-
-    open suspend operator fun invoke(
+    suspend operator fun invoke(
         latitude: Double,
-        longitude: Double
+        longitude: Double,
     ): Result<List<Activity>, DataError.Network> {
         return try {
             val response = api.getActivitiesByLocation(latitude, longitude)
@@ -51,6 +48,7 @@ open class GetActivitiesUseCase @Inject constructor(
                         else -> DataError.Network.UNKNOWN
                     }
                 }
+
                 else -> DataError.Network.UNKNOWN
             }
             Result.Error(networkError)

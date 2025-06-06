@@ -10,7 +10,7 @@ import com.projectlab.core.domain.use_cases.activities.RemoveFavoriteActivityByI
 import com.projectlab.core.domain.use_cases.activities.SaveFavoriteActivityUseCase
 import com.projectlab.core.domain.use_cases.location.GetCityFromCoordinatesUseCase
 import com.projectlab.core.domain.util.Result
-import com.projectlab.core.domain.use_cases.error.ErrorMapper
+import com.projectlab.core.presentation.ui.utils.ErrorMapper
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
