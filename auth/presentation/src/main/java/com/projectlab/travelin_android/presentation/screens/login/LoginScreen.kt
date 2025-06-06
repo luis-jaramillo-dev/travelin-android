@@ -55,7 +55,7 @@ fun LoginScreen(
 
                 Toast.makeText(
                     LocalContext.current,
-                    "User fail ${it.exception?.message}",
+                    "Failed to login: ${it.exception?.message}",
                     Toast.LENGTH_LONG,
                 ).show()
             }
@@ -64,7 +64,7 @@ fun LoginScreen(
                 onLoggedIn()
                 Toast.makeText(
                     LocalContext.current,
-                    "User logged",
+                    "Logged in",
                     Toast.LENGTH_LONG,
                 ).show()
             }

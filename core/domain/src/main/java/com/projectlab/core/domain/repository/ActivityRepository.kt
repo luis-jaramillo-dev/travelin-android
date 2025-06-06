@@ -8,12 +8,35 @@ import com.projectlab.core.domain.util.DataError
 import com.projectlab.core.domain.util.Result
 import kotlinx.coroutines.flow.Flow
 
+/**
+ * ActivityRepository interface for activity-related operations.
+ *
+ * This interface defines the contract for activity-related data operations,
+ * including creating an activity, retrieving activities by various criteria,
+ * updating and deleting activities, and managing favorite activities.
+ */
+
 interface ActivityRepository {
-    suspend fun getAPIActivityById(id: String): Result<Activity, DataError.Network>
 
+    // DataBase
     suspend fun createActivity(activity: ActivityEntity): kotlin.Result<EntityId>
+    suspend fun getActivityById(
+        userId: String,
+        itinId: String,
+        activityId: String,
+    ): Flow<ActivityEntity?>
+    suspend fun getAllActivities(
+        userId: String,
+        itinId: String,
+    ): Flow<List<ActivityEntity>>
+    suspend fun updateActivity(activity: ActivityEntity): kotlin.Result<Unit>
+    suspend fun deleteActivity(
+        userId: String,
+        itinId: String,
+        activityId: String,
+    ): kotlin.Result<Unit>
 
-    suspend fun getActivityById(id: String): Flow<ActivityEntity?>
+    suspend fun getAPIActivityById(id: String): Result<Activity, DataError.Network>
 
     fun queryFavoriteActivities(
         userId: String,

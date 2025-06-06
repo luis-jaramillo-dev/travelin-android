@@ -16,17 +16,20 @@ import com.projectlab.travelin_android.presentation.screens.login.LoginViewModel
 fun LoginContent(
     modifier: Modifier = Modifier,
     paddingValues: PaddingValues,
-    viewModel: LoginViewModel
+    viewModel: LoginViewModel,
 ) {
     Column(
-        modifier = Modifier
+        modifier = modifier
             .fillMaxSize()
             .padding(paddingValues),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         Spacer(modifier = Modifier.height(70.dp))
+
         LoginHeader()
+
         Spacer(modifier = Modifier.height(20.dp))
+
         LoginForm(viewModel = viewModel)
     }
 }
