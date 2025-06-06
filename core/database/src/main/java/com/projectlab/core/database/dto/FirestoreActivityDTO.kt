@@ -61,10 +61,11 @@ data class FirestoreActivityDTO (
         latitude      = latitude,
         longitude     = longitude,
         activityDate  = Instant.ofEpochMilli(activityDate.toDate().time),
+        //activityDate  = activityDate.toDate().
         description   = description,
         amount        = amount,
         currencyCode  = currencyCode,
-        userRef       = userRef,
-        itineraryRef  = itineraryRef
+//        userRef       = userRef,
+//        itineraryRef  = itineraryRef
     )
 }

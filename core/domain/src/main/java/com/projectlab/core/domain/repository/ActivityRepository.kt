@@ -19,19 +19,22 @@ import kotlinx.coroutines.flow.Flow
 interface ActivityRepository {
 
     // DataBase
-    suspend fun createActivity(activity: ActivityEntity): kotlin.Result<EntityId>
+    suspend fun createActivity(
+        itinId: String,
+        activity: ActivityEntity
+    ): kotlin.Result<EntityId>
     suspend fun getActivityById(
-        userId: String,
         itinId: String,
         activityId: String,
     ): kotlin.Result<ActivityEntity?>
     suspend fun getAllActivities(
-        userId: String,
         itinId: String,
     ): kotlin.Result<List<ActivityEntity>>
-    suspend fun updateActivity(activity: ActivityEntity): kotlin.Result<Unit>
+    suspend fun updateActivity(
+        itinId: String,
+        activity: ActivityEntity,
+    ): kotlin.Result<Unit>
     suspend fun deleteActivity(
-        userId: String,
         itinId: String,
         activityId: String,
     ): kotlin.Result<Unit>
@@ -39,18 +42,18 @@ interface ActivityRepository {
     suspend fun getAPIActivityById(id: String): Result<Activity, DataError.Network>
 
     fun queryFavoriteActivities(
-        userId: String,
+        
         nameQuery: String? = null,
     ): Flow<FavoriteActivityEntity>
 
-    suspend fun isFavoriteActivity(userId: String, activityId: String): kotlin.Result<Boolean>
+    suspend fun isFavoriteActivity( activityId: String): kotlin.Result<Boolean>
 
     suspend fun saveFavoriteActivity(
-        userId: String,
+        
         activity: FavoriteActivityEntity,
     ): kotlin.Result<Unit>
 
-    suspend fun removeFavoriteActivityById(userId: String, activityId: String): kotlin.Result<Unit>
+    suspend fun removeFavoriteActivityById( activityId: String): kotlin.Result<Unit>
 
     suspend fun getActivitiesByCoordinates(
         latitude: Double,

@@ -8,15 +8,8 @@ import javax.inject.Inject
 
 class SaveFavoriteActivityUseCaseImpl @Inject constructor(
     private val activitiesRepository: ActivityRepository,
-    private val userSessionProvider: UserSessionProvider,
 ) : SaveFavoriteActivityUseCase {
-    override suspend fun invoke(activity: FavoriteActivityEntity): Result<Unit> = runCatching {
-        val userId = userSessionProvider.getUserSessionId()
+    override suspend fun invoke(activity: FavoriteActivityEntity): Result<Unit> =
+        activitiesRepository.saveFavoriteActivity(activity)
 
-        if (userId == null) {
-            return Result.failure(NullPointerException("userId is null"))
-        }
-
-        activitiesRepository.saveFavoriteActivity(userId, activity)
-    }
 }

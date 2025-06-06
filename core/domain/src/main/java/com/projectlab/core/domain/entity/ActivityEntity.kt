@@ -29,6 +29,6 @@ data class ActivityEntity(
     val description : String = "",
     val amount : String = "",
     val currencyCode : String = "",
-    val userRef : EntityId? = null,
-    val itineraryRef : EntityId? = null
+//    val userRef : EntityId? = null,
+//    val itineraryRef : EntityId? = null
 )

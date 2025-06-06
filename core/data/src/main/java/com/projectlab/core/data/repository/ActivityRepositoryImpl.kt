@@ -9,6 +9,7 @@ import com.projectlab.core.domain.entity.FavoriteActivityEntity
 import com.projectlab.core.domain.model.Activity
 import com.projectlab.core.domain.model.EntityId
 import com.projectlab.core.domain.repository.ActivityRepository
+import com.projectlab.core.domain.repository.UserSessionProvider
 import com.projectlab.core.domain.util.DataError
 import com.projectlab.core.domain.util.Result
 import kotlinx.coroutines.flow.Flow
@@ -29,36 +30,40 @@ class ActivityRepositoryImpl @Inject constructor(
     private val firestoreActivity: FirestoreActivity,
     private val firestore: FirebaseFirestore,
     private val activityApiService: ActivityApiService,
+    private val userSessionProvider: UserSessionProvider,
 ) : ActivityRepository {
-    override suspend fun createActivity(activity: ActivityEntity): kotlin.Result<EntityId> {
-        return firestoreActivity.createActivity(activity)
+    override suspend fun createActivity(
+        itinId: String,
+        activity: ActivityEntity
+    ): kotlin.Result<EntityId> {
+        return firestoreActivity.createActivity(itinId, activity)
     }
 
     override suspend fun getActivityById(
-        userId: String,
         itinId: String,
         activityId: String
     ): kotlin.Result<ActivityEntity?> {
-        return firestoreActivity.getActivityById(userId, itinId, activityId)
+        return firestoreActivity.getActivityById(itinId, activityId)
     }
 
     override suspend fun getAllActivities(
-        userId: String,
         itinId: String
     ): kotlin.Result<List<ActivityEntity>> {
-        return firestoreActivity.getAllActivitiesForItinerary(userId, itinId)
+        return firestoreActivity.getAllActivitiesForItinerary(itinId)
     }
 
-    override suspend fun updateActivity(activity: ActivityEntity): kotlin.Result<Unit> {
-        return firestoreActivity.updateActivity(activity)
+    override suspend fun updateActivity(
+        itinId: String,
+        activity: ActivityEntity
+    ): kotlin.Result<Unit> {
+        return firestoreActivity.updateActivity(itinId, activity)
     }
 
     override suspend fun deleteActivity(
-        userId: String,
         itinId: String,
         activityId: String
     ): kotlin.Result<Unit> {
-        return firestoreActivity.deleteActivity(userId, itinId, activityId)
+        return firestoreActivity.deleteActivity(itinId, activityId)
     }
 
     override suspend fun getAPIActivityById(
@@ -76,9 +81,13 @@ class ActivityRepositoryImpl @Inject constructor(
 
 
     override fun queryFavoriteActivities(
-        userId: String,
+        
         nameQuery: String?,
     ): Flow<FavoriteActivityEntity> = flow {
+
+        val userId = userSessionProvider.getUserSessionId()
+            ?: throw NullPointerException("userId is null")
+
         val userDoc = firestore
             .collection("Users")
             .document(userId)
@@ -102,9 +111,13 @@ class ActivityRepositoryImpl @Inject constructor(
     }
 
     override suspend fun isFavoriteActivity(
-        userId: String,
+        
         activityId: String,
     ): kotlin.Result<Boolean> = runCatching {
+
+        val userId = userSessionProvider.getUserSessionId()
+            ?: throw NullPointerException("userId is null")
+
         val userDoc = firestore
             .collection("Users")
             .document(userId)
@@ -119,9 +132,13 @@ class ActivityRepositoryImpl @Inject constructor(
     }
 
     override suspend fun saveFavoriteActivity(
-        userId: String,
+        
         activity: FavoriteActivityEntity,
     ): kotlin.Result<Unit> = runCatching {
+
+        val userId = userSessionProvider.getUserSessionId()
+            ?: throw NullPointerException("userId is null")
+
         val userDoc = firestore
             .collection("Users")
             .document(userId)
@@ -132,9 +149,13 @@ class ActivityRepositoryImpl @Inject constructor(
     }
 
     override suspend fun removeFavoriteActivityById(
-        userId: String,
+        
         activityId: String,
     ): kotlin.Result<Unit> = runCatching {
+
+        val userId = userSessionProvider.getUserSessionId()
+            ?: throw NullPointerException("userId is null")
+
         val userDoc = firestore
             .collection("Users")
             .document(userId)
