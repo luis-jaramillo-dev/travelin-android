@@ -60,7 +60,7 @@ class RegisterViewModel @Inject constructor(
         }
     }
 
-    val isTermsAccepted = derivedStateOf { AuthValidator.isTermsAccepted(termsAndConditions.value) }
+    val isTermsAccepted = derivedStateOf { termsAndConditions.value }
     val termsError = derivedStateOf {
         if (!termsAndConditions.value) {
             "You must accept the terms and conditions"

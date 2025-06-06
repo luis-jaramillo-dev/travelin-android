@@ -15,4 +15,5 @@
     <string name="logged_in">Sesión iniciada</string>
     <string name="failed_to_login">Error al iniciar sesión: %1$s</string>
     <string name="unknown_error">Error desconocido</string>
+    <string name="enter_a_valid_email">Ingrese un correo electrónico válido</string>
 </resources>

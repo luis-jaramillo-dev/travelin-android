@@ -15,7 +15,7 @@ import com.projectlab.core.presentation.designsystem.theme.spacing
 fun LoginContent(
     modifier: Modifier = Modifier,
     email: MutableState<String>,
-    emailErrorMessage: String?,
+    isEmailValid: Boolean,
     password: MutableState<String>,
     isFormValid: Boolean,
     onLogin: () -> Unit,
@@ -33,7 +33,7 @@ fun LoginContent(
 
         LoginForm(
             email = email,
-            emailErrorMessage = emailErrorMessage,
+            isEmailValid = isEmailValid,
             password = password,
             isFormValid = isFormValid,
             onLogin = onLogin,

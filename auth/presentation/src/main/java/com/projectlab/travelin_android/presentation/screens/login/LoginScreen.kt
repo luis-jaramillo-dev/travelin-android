@@ -9,12 +9,16 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.tooling.preview.Preview
 import com.projectlab.auth.presentation.R
 import com.projectlab.core.domain.model.Response
+import com.projectlab.core.presentation.designsystem.theme.TravelinTheme
 import com.projectlab.travelin_android.presentation.screens.login.components.LoginBottomBar
 import com.projectlab.travelin_android.presentation.screens.login.components.LoginContent
 
@@ -32,7 +36,7 @@ fun LoginScreen(
             null -> {
                 LoginScreenScaffold(
                     email = viewModel.email,
-                    emailErrorMessage = viewModel.emailError.value,
+                    isEmailValid = viewModel.isEmailValid.value,
                     password = viewModel.password,
                     isFormValid = viewModel.isFormValid.value,
                     onLogin = {
@@ -54,7 +58,7 @@ fun LoginScreen(
             is Response.Failure -> {
                 LoginScreenScaffold(
                     email = viewModel.email,
-                    emailErrorMessage = viewModel.emailError.value,
+                    isEmailValid = viewModel.isEmailValid.value,
                     password = viewModel.password,
                     isFormValid = viewModel.isFormValid.value,
                     onLogin = {
@@ -89,7 +93,7 @@ fun LoginScreen(
 fun LoginScreenScaffold(
     modifier: Modifier = Modifier,
     email: MutableState<String>,
-    emailErrorMessage: String?,
+    isEmailValid: Boolean,
     password: MutableState<String>,
     isFormValid: Boolean,
     onLogin: () -> Unit,
@@ -101,10 +105,25 @@ fun LoginScreenScaffold(
         LoginContent(
             modifier = modifier.padding(paddingValues),
             email = email,
-            emailErrorMessage = emailErrorMessage,
+            isEmailValid = isEmailValid,
             password = password,
             isFormValid = isFormValid,
             onLogin = onLogin,
+        )
+    }
+}
+
+@Preview(showBackground = true)
+@Composable
+fun LoginScreenScaffoldPreview() {
+    TravelinTheme {
+        LoginScreenScaffold(
+            email = remember { mutableStateOf("my@email.com") },
+            isEmailValid = false,
+            password = remember { mutableStateOf("Password123") },
+            isFormValid = true,
+            onLogin = {},
+            onRegisterClick = {},
         )
     }
 }

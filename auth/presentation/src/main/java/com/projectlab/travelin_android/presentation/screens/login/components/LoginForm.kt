@@ -23,7 +23,7 @@ import com.projectlab.travelin_android.presentation.components.OutlinedTextField
 fun LoginForm(
     modifier: Modifier = Modifier,
     email: MutableState<String>,
-    emailErrorMessage: String?,
+    isEmailValid: Boolean,
     password: MutableState<String>,
     isFormValid: Boolean,
     onLogin: () -> Unit,
@@ -36,8 +36,8 @@ fun LoginForm(
             placeholderText = stringResource(R.string.enter_your_email_address),
             keyboardOptions = KeyboardOptions.Default.copy(keyboardType = KeyboardType.Email),
             value = email,
-            isError = emailErrorMessage != null,
-            errorMessage = emailErrorMessage,
+            isError = email.value.isNotEmpty() && !isEmailValid,
+            errorMessage = stringResource(R.string.enter_a_valid_email),
         )
 
         Spacer(modifier = Modifier.height(MaterialTheme.spacing.ScreenVerticalSpacing))

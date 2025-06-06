@@ -28,14 +28,6 @@ class LoginViewModel @Inject constructor(
     val password: MutableState<String> = mutableStateOf("")
 
     val isEmailValid = derivedStateOf { AuthValidator.isEmailValid(email.value) }
-    val emailError = derivedStateOf {
-        if (email.value.isNotEmpty() && !isEmailValid.value) {
-            "Enter a valid email"
-        } else {
-            null
-        }
-    }
-
     val isFormValid = derivedStateOf { isEmailValid.value }
 
     val currentUser = authUseCase.getCurrentUser()
