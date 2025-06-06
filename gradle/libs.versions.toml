@@ -27,8 +27,8 @@ firebase = "33.13.0"
 navigationCompose = "2.8.9"
 hiltNavigationCompose = "1.2.0"
 coroutinesCore = "1.10.2"
-retrofit = "2.9.0"
-okhttp = "4.10.0"
+retrofit = "3.0.0"
+okhttp = "4.12.0"
 gson = "2.10"
 firebaseDatabaseKtx = "21.0.0"
 uiTooling = "1.8.0"
@@ -44,7 +44,7 @@ androidxTest = "1.6.1"
 jacoco = "0.8.12" # check newer version
 junitKtx = "1.2.1"
 mockito = "5.2.0"
-mockito-kotlin = "4.0.0"
+mockito-kotlin = "4.1.0"
 compose-ui-test = "1.6.1"
 
 [libraries]
@@ -104,7 +104,8 @@ protobuf-protoc = { group = "com.google.protobuf", name = "protoc", version.ref 
 compose-ui-test = { module = "androidx.compose.ui:ui-test-junit4", version.ref = "compose-ui-test" }
 compose-ui-test-manifest = { module = "androidx.compose.ui:ui-test-manifest", version.ref = "compose-ui-test" }
 mockito-android = { module = "org.mockito:mockito-android", version.ref = "mockito"}
-mockito-kotlin = { module = "org.mockito:mockito-kotlin", version.ref = "mockito-kotlin"}
+mockito-kotlin = { module = "org.mockito.kotlin:mockito-kotlin", version.ref = "mockito-kotlin"}
+mockito-core = { module = "org.mockito:mockito-core", version.ref = "mockito"}
 
 # Convention PLugins Dependencies
 android-gradlePlugin = { group = "com.android.tools.build", name = "gradle", version.ref = "androidGradlePlugin" }
