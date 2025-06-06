@@ -38,14 +38,11 @@ class FirestoreActivityImpl @Inject constructor (
                         ?: throw IllegalArgumentException("itineraryRef is null")
                 )
 
-            var locationDoc = firestore
-                .collection("Locations")
-                .document(
-                    activity.locationRef?.value
-                        ?: throw IllegalArgumentException("locationRef is null")
-                )
-
-            val dto = FirestoreActivityDTO.fromDomain(activity, userDoc, itineraryDoc, locationDoc)
+            val dto = FirestoreActivityDTO.fromDomain(
+                domain = activity,
+                userDoc = userDoc,
+                itineraryDoc = itineraryDoc,
+            )
             val activityCol = itineraryDoc.collection("Activities")
             val docRef = activityCol.document()
             docRef.set(dto).await()
@@ -122,8 +119,6 @@ class FirestoreActivityImpl @Inject constructor (
             domain = activity,
             userDoc = userDoc,
             itineraryDoc = itinDoc,
-            locationDoc = firestore.collection("Locations")
-                .document(activity.locationRef?.value ?: throw IllegalArgumentException("locationRef is null"))
         )
 
         // Overwrite, set() the specific activity document:
