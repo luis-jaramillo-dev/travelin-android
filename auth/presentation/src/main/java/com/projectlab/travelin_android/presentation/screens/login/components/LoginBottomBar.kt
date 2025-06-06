@@ -26,25 +26,26 @@ fun LoginBottomBar(
         modifier = modifier
             .fillMaxWidth()
             .padding(bottom = MaterialTheme.spacing.semiHuge)
-            .navigationBarsPadding()
-            .clickable { onRegisterClick() },
+            .navigationBarsPadding(),
         horizontalArrangement = Arrangement.Center,
     ) {
-        Text(
-            text = stringResource(R.string.no_account),
-            style = MaterialTheme.typography.labelSmall.copy(
-                color = MaterialTheme.colorScheme.onSurfaceVariant,
-            ),
-        )
+        Row(modifier = Modifier.clickable { onRegisterClick() }) {
+            Text(
+                text = stringResource(R.string.no_account),
+                style = MaterialTheme.typography.labelSmall.copy(
+                    color = MaterialTheme.colorScheme.onSurfaceVariant,
+                ),
+            )
 
-        Spacer(modifier = Modifier.width(MaterialTheme.spacing.extraSmall))
+            Spacer(modifier = Modifier.width(MaterialTheme.spacing.extraSmall))
 
-        Text(
-            text = stringResource(R.string.create_account),
-            style = MaterialTheme.typography.labelSmall.copy(
-                fontWeight = FontWeight.Bold,
-                color = MaterialTheme.colorScheme.onBackground,
-            ),
-        )
+            Text(
+                text = stringResource(R.string.create_account),
+                style = MaterialTheme.typography.labelSmall.copy(
+                    fontWeight = FontWeight.Bold,
+                    color = MaterialTheme.colorScheme.onBackground,
+                ),
+            )
+        }
     }
 }

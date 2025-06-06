@@ -26,7 +26,7 @@ class LoginViewModel @Inject constructor(
         val currentUser = authUseCase.getCurrentUser()
 
         if (currentUser != null) {
-            resetState()
+            setAsLoading()
 
             viewModelScope.launch {
                 userSessionProvider.setUserSessionId(currentUser.uid)
@@ -49,8 +49,9 @@ class LoginViewModel @Inject constructor(
     }
 
     fun login() {
+        setAsLoading()
+
         viewModelScope.launch {
-            resetState()
             val result = authUseCase.login(state.value.email, state.value.password)
 
             when (result) {
@@ -74,7 +75,7 @@ class LoginViewModel @Inject constructor(
         }
     }
 
-    private fun resetState() {
+    private fun setAsLoading() {
         _state.update {
             it.copy(
                 loading = true,

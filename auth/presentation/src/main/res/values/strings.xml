@@ -16,4 +16,19 @@
     <string name="failed_to_login">Failed to login: %1$s</string>
     <string name="unknown_error">Unknown error</string>
     <string name="enter_a_valid_email">Enter a valid email</string>
+    <string name="already_have_an_account">Already have an account?</string>
+    <string name="go_back">Go back</string>
+    <string name="get_the_best_out_of_discover_by_creating_an_account">Get the best out of Discover by creating an account</string>
+    <string name="create_account_header">Create account</string>
+    <string name="create_account_button">Create Account</string>
+    <string name="first_name">First name</string>
+    <string name="last_name">Last name</string>
+    <string name="enter_your_first_name">Enter your first name</string>
+    <string name="enter_your_last_name">Enter your last name</string>
+    <string name="phone">Phone</string>
+    <string name="enter_your_phone_number">Enter your phone number</string>
+    <string name="age">Age</string>
+    <string name="enter_your_age">Enter your age</string>
+    <string name="i_accept_the_terms_and_conditions">I accept the terms and conditions</string>
+    <string name="dropdown">Dropdown</string>
 </resources>
