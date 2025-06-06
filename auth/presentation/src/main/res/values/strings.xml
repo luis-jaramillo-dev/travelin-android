@@ -33,4 +33,5 @@
     <string name="dropdown">Dropdown</string>
     <string name="enter_a_valid_password">Password must be at least 6 characters, include an uppercase and a number</string>
     <string name="enter_a_valid_age">Enter a valid age</string>
+    <string name="failed_to_register">Failed to register: %1$s</string>
 </resources>

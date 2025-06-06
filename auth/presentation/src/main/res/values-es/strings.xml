@@ -33,4 +33,5 @@
     <string name="dropdown">Menú Desplegable</string>
     <string name="enter_a_valid_password">Contraseña debe tener al menos 6 carácteres, incluyendo una mayúscula y un número</string>
     <string name="enter_a_valid_age">Ingresa una edad válida</string>
+    <string name="failed_to_register">Error al registrarse: %1$s</string>
 </resources>

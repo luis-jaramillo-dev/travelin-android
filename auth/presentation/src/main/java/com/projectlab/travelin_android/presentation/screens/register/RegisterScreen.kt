@@ -13,6 +13,8 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.stringResource
+import com.projectlab.auth.presentation.R
 import com.projectlab.travelin_android.presentation.screens.register.components.RegisterBottomBar
 import com.projectlab.travelin_android.presentation.screens.register.components.RegisterContent
 
@@ -42,8 +44,9 @@ fun RegisterScreen(
             }
 
             Toast.makeText(
-                LocalContext.current, "User logged ",
-                Toast.LENGTH_LONG
+                LocalContext.current,
+                stringResource(R.string.logged_in),
+                Toast.LENGTH_SHORT,
             ).show()
         }
 
@@ -74,7 +77,11 @@ fun RegisterScreen(
 
             if (state.isError) {
                 Toast.makeText(
-                    LocalContext.current, "User fail ${state.error} ",
+                    LocalContext.current,
+                    stringResource(
+                        R.string.failed_to_register,
+                        state.error ?: stringResource(R.string.unknown_error),
+                    ),
                     Toast.LENGTH_LONG
                 ).show()
             }
