@@ -22,7 +22,6 @@ import com.projectlab.core.presentation.designsystem.theme.spacing
 import com.projectlab.travelin_android.presentation.components.DropdownOutlinedButton
 import com.projectlab.travelin_android.presentation.components.OutlinedTextFieldPassword
 import com.projectlab.travelin_android.presentation.components.OutlinedTextFieldSimple
-import com.projectlab.travelin_android.presentation.screens.register.RegisterViewModel
 
 private val phoneCountryCodes = listOf(
     "+1",

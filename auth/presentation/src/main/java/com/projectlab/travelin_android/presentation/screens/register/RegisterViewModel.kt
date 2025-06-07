@@ -88,6 +88,8 @@ class RegisterViewModel @Inject constructor(
 
             when (result) {
                 is Response.Success -> {
+                    createUser()
+
                     _state.update { it.copy(loading = false, success = true) }
                 }
 
@@ -106,23 +108,21 @@ class RegisterViewModel @Inject constructor(
         }
     }
 
-    fun createUser() {
-        viewModelScope.launch {
-            val currentUser = authUseCases.getCurrentUser()
-            userSessionProvider.setUserSessionId(currentUser!!.uid)
+    private suspend fun createUser() {
+        val currentUser = authUseCases.getCurrentUser()
+        userSessionProvider.setUserSessionId(currentUser!!.uid)
 
-            val newUser = User(
-                id = currentUser.uid,
-                email = state.value.email,
-                age = state.value.age,
-                firstName = state.value.firstName,
-                lastName = state.value.lastName,
-                countryCode = state.value.countryCode,
-                phoneNumber = state.value.phoneNumber
-            )
+        val newUser = User(
+            id = currentUser.uid,
+            email = state.value.email,
+            age = state.value.age,
+            firstName = state.value.firstName,
+            lastName = state.value.lastName,
+            countryCode = state.value.countryCode,
+            phoneNumber = state.value.phoneNumber
+        )
 
-            usersUseCases.createUser(newUser)
-        }
+        usersUseCases.createUser(newUser)
     }
 
     private fun setAsLoading() {
