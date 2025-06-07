@@ -34,4 +34,8 @@
     <string name="enter_a_valid_password">Contraseña debe tener al menos 6 carácteres, incluyendo una mayúscula y un número</string>
     <string name="enter_a_valid_age">Ingresa una edad válida</string>
     <string name="failed_to_register">Error al registrarse: %1$s</string>
+    <string name="discover_logo">Logo Discover Contorno</string>
+    <string name="successfully_created_an_account">Cuenta creada exitósamente</string>
+    <string name="after_this_you_can_explore_any_place_you_want_enjoy_it">Después de esto puedes explorar cualquier lugar que quieras y disfrutarlo!</string>
+    <string name="lets_explore">Vamos a Explorar</string>
 </resources>

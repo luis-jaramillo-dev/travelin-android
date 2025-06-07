@@ -34,4 +34,8 @@
     <string name="enter_a_valid_password">Password must be at least 6 characters, include an uppercase and a number</string>
     <string name="enter_a_valid_age">Enter a valid age</string>
     <string name="failed_to_register">Failed to register: %1$s</string>
+    <string name="discover_logo">Discover Logo</string>
+    <string name="successfully_created_an_account">Successfully created an account</string>
+    <string name="after_this_you_can_explore_any_place_you_want_enjoy_it">After this you can explore any place you want enjoy it!</string>
+    <string name="lets_explore">Let\'s Explore</string>
 </resources>
