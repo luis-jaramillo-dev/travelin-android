@@ -2,9 +2,7 @@ package com.projectlab.travelin_android.presentation.screens.profile.components
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
@@ -13,23 +11,20 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import com.projectlab.core.presentation.designsystem.theme.spacing
-import com.projectlab.travelin_android.presentation.screens.profile.ProfileViewModel
+import com.projectlab.travelin_android.models.UserUi
 
 @Composable
 fun ProfileContent(
-    modifier: Modifier = Modifier,
-    paddingValues: PaddingValues,
-    viewModel: ProfileViewModel,
+    userUi: UserUi,
     onLogoutClick: () -> Unit,
+    modifier: Modifier = Modifier,
 ) {
     Column(
-        modifier = modifier
-            .fillMaxSize()
-            .padding(paddingValues),
+        modifier = modifier,
         horizontalAlignment = Alignment.CenterHorizontally,
     ) {
         Spacer(modifier = Modifier.height(MaterialTheme.spacing.BigSpacing))
-        ProfileUser(viewModel = viewModel)
+        ProfileUser(userUi = userUi)
         Spacer(modifier = Modifier.height(MaterialTheme.spacing.SectionSpacing))
         Spacer(
             modifier = Modifier
@@ -39,12 +34,6 @@ fun ProfileContent(
                 .background(MaterialTheme.colorScheme.surfaceDim),
         )
         Spacer(modifier = Modifier.height(MaterialTheme.spacing.ScreenHorizontalPadding))
-        ProfileSettings(
-            viewModel = viewModel,
-            onLogoutClick = {
-                viewModel.logout()
-                onLogoutClick()
-            },
-        )
+        ProfileSettings(onLogoutClick = onLogoutClick)
     }
 }

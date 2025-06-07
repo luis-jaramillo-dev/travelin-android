@@ -12,37 +12,40 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
+import com.projectlab.auth.presentation.R
 import com.projectlab.core.presentation.designsystem.theme.spacing
 
 @Composable
 fun RegisterBottomBar(
-    onLoginClick: () -> Unit,
     modifier: Modifier = Modifier,
+    onLoginClick: () -> Unit,
 ) {
     Row(
         modifier = modifier
             .fillMaxWidth()
-            .padding(bottom = MaterialTheme.spacing.regular)
-            .navigationBarsPadding()
-            .clickable { onLoginClick() },
+            .padding(bottom = MaterialTheme.spacing.semiHuge)
+            .navigationBarsPadding(),
         horizontalArrangement = Arrangement.Center,
     ) {
-        Text(
-            text = "Already have an account?",
-            style = MaterialTheme.typography.labelMedium.copy(
-                color = MaterialTheme.colorScheme.onSurfaceVariant,
-            ),
-        )
+        Row(modifier = Modifier.clickable { onLoginClick() }) {
+            Text(
+                text = stringResource(R.string.already_have_an_account),
+                style = MaterialTheme.typography.labelSmall.copy(
+                    color = MaterialTheme.colorScheme.onSurfaceVariant,
+                ),
+            )
 
-        Spacer(modifier = Modifier.width(MaterialTheme.spacing.extraSmall))
+            Spacer(modifier = Modifier.width(MaterialTheme.spacing.extraSmall))
 
-        Text(
-            text = "Go back",
-            style = MaterialTheme.typography.labelMedium.copy(
-                fontWeight = FontWeight.Bold,
-                color = MaterialTheme.colorScheme.onSurfaceVariant,
-            ),
-        )
+            Text(
+                text = stringResource(R.string.go_back),
+                style = MaterialTheme.typography.labelSmall.copy(
+                    fontWeight = FontWeight.Bold,
+                    color = MaterialTheme.colorScheme.onBackground,
+                ),
+            )
+        }
     }
 }

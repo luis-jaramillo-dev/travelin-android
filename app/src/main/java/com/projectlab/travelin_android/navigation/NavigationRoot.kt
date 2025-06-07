@@ -65,7 +65,7 @@ private fun NavGraphBuilder.authGraph(navController: NavHostController) {
             LoginScreen(
                 viewModel = hiltViewModel<LoginViewModel>(),
                 onRegisterClick = { navController.navigate(AuthScreens.Register.route) },
-                onLoggedIn = { navController.navigate(HomeScreens.Home.route) },
+                onLoggedIn = { navController.navigate(HomeScreens.Home.route) }
             )
         }
 
@@ -83,7 +83,7 @@ private fun NavGraphBuilder.authGraph(navController: NavHostController) {
                 onLogoutClick = { navController.navigate(AuthScreens.Login.route) },
                 onHomeClick = { navController.navigate(HomeScreens.Home.route) },
                 onFavoritesClick = { navController.navigate(FavoritesScreens.Favorites.route) },
-                onTripsClick = {},
+                onTripsClick = {}
             )
         }
 

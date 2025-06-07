@@ -46,6 +46,18 @@
     <string name="remove_favorite">Remove Favorite</string>
     <string name="image_of">Image of %1$s</string>
 
+    <!--    Auth-->
+    <string name="home">Home</string>
+    <string name="favorites">Favorites</string>
+    <string name="trips">Trips</string>
+    <string name="profile">Profile</string>
+    <string name="account_setting">Account Setting</string>
+    <string name="edit_profile">Edit profile</string>
+    <string name="color_mode">Color mode</string>
+    <string name="logout">Logout</string>
+    <string name="version">Version %1$s</string>
+    <string name="profile_photo">Profile Photo</string>
+
     <!--    Hotels-->
     <string name="price_per_night">from %1$s /per night</string>
     <string name="favorite_hotel">Save hotel  %1$s on favorites</string>

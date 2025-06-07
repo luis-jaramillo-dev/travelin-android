@@ -1,8 +1,8 @@
 package com.projectlab.travelin_android.presentation.screens.successful
 
 import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
@@ -14,24 +14,24 @@ import com.projectlab.travelin_android.presentation.screens.successful.component
 
 @Composable
 fun SuccessfulScreen(
-    onNextClick: () -> Unit
+    onNextClick: () -> Unit,
 ) {
-    Box(
+    Scaffold(
+        containerColor = Color.Transparent,
         modifier = Modifier
             .fillMaxSize()
             .background(
                 brush = Brush.verticalGradient(
                     colors = listOf(
                         primaryLight,
-                        inversePrimaryLight
-                    )
-                )
+                        inversePrimaryLight,
+                    ),
+                ),
             )
-    ) {
-        Scaffold(
-            containerColor = Color.Transparent,
-            topBar = { },
-            content = { SuccessfulContent(it, onNextClick = onNextClick) },
+    ) { paddingValues ->
+        SuccessfulContent(
+            modifier = Modifier.padding(paddingValues),
+            onNextClick = onNextClick,
         )
     }
 }

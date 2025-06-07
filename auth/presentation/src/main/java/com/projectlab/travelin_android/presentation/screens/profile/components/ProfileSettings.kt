@@ -14,17 +14,17 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
+import com.projectlab.core.presentation.designsystem.R
 import com.projectlab.core.presentation.designsystem.theme.spacing
 import com.projectlab.travelin_android.presentation.components.ButtonSimple
 import com.projectlab.travelin_android.presentation.components.OutlinedButtonWithIcons
-import com.projectlab.travelin_android.presentation.screens.profile.ProfileViewModel
 
 @Composable
 fun ProfileSettings(
-    modifier: Modifier = Modifier,
-    viewModel: ProfileViewModel,
-    onLogoutClick: () -> Unit
+    onLogoutClick: () -> Unit,
+    modifier: Modifier = Modifier
 ) {
     Column(
         modifier = Modifier
@@ -32,7 +32,7 @@ fun ProfileSettings(
             .padding(horizontal = MaterialTheme.spacing.ScreenHorizontalPadding)
     ) {
         Text(
-            text = "Account Setting",
+            text = stringResource(R.string.account_setting),
             style = MaterialTheme.typography.titleMedium.copy(
                 fontWeight = FontWeight.Bold,
                 color = MaterialTheme.colorScheme.onBackground
@@ -42,20 +42,20 @@ fun ProfileSettings(
 
         OutlinedButtonWithIcons(
             icon = Icons.Default.AccountCircle,
-            title = "Edit profile",
+            title = stringResource(R.string.edit_profile),
             onClick = { }
         )
         Spacer(modifier = Modifier.height(MaterialTheme.spacing.ElementSpacing))
 
         OutlinedButtonWithIcons(
             icon = Icons.Default.DarkMode,
-            title = "Color mode",
+            title = stringResource(R.string.color_mode),
             onClick = { }
         )
         Spacer(modifier = Modifier.height(MaterialTheme.spacing.BigSpacing))
 
         ButtonSimple(
-            text = "Logout",
+            text = stringResource(R.string.logout),
             onClick = {
                 onLogoutClick()
             },
@@ -68,7 +68,7 @@ fun ProfileSettings(
         Spacer(modifier = Modifier.height(MaterialTheme.spacing.ElementSpacing))
 
         Text(
-            text = "Version 3.0.0",
+            text = stringResource(R.string.version),
             style = MaterialTheme.typography.labelSmall.copy(
                 color = MaterialTheme.colorScheme.onSurfaceVariant
             ),
