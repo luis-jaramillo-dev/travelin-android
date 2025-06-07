@@ -24,6 +24,7 @@ import com.projectlab.core.domain.repository.ActivityRepository
 import com.projectlab.core.domain.repository.FlightRepository
 import com.projectlab.core.domain.repository.HotelsRepository
 import com.projectlab.core.domain.repository.ItineraryRepository
+import com.projectlab.core.domain.repository.UserSessionProvider
 import com.projectlab.core.domain.repository.UsersRepository
 import java.util.UUID
 
@@ -42,7 +43,7 @@ class BookingViewModelTest @Inject constructor(
     private val flightRepo: FlightRepository,
     private val hotelRepo: HotelsRepository,
     private val activityRepo: ActivityRepository,
-    // TODO : add other repositories as needed: flight, hotel, etc.
+    private val userSessionProvider: UserSessionProvider
 ) : ViewModel() {
 
     // we define a state in order to inform the UI about the data was successfully loaded or not
@@ -65,10 +66,10 @@ class BookingViewModelTest @Inject constructor(
         // Hardcode user data
         val user = User(
             id = randomUserId, // unique ID, could be generated or hardcoded for testing
-            firstName = "SHEEV PALPATINE XX",
-            lastName = "PALPATINE",
+            firstName = "SHEEV PALPATINE 300",
+            lastName = "PALPATINE 300",
             countryCode = "66",
-            phoneNumber = "66336633",
+            phoneNumber = "505050",
             email = "THESITH@gmail.com",
             age = "81"
         )
@@ -83,13 +84,17 @@ class BookingViewModelTest @Inject constructor(
             return@launch
         }
 
+        // We store the user ID in the session provider
+        userSessionProvider.setUserSessionId(randomUserId)
+
+
         // We get the user ID from the result
         val userId = EntityId(randomUserId)
 
         // 2) We create a Itinerary:
         val itinerary = ItineraryEntity(
             id                  = "",
-            title = "Trip to the last empire...",
+            title = "Trip to saturn, earth and the sun :)",
             startDate = Instant.now(),
             endDate = Instant.now().plusSeconds(2592000),
             totalItineraryPrice = 9000.0,
@@ -196,12 +201,10 @@ class BookingViewModelTest @Inject constructor(
             description = "Discover the history of the empire and its most powerful weapon.",
             amount = "1000.0",
             currencyCode = "USD",
-            userRef = userId,
-            itineraryRef = itineraryId
         )
 
         // We create the activity in Firestore through the repository
-        val activityRes = activityRepo.createActivity(activity)
+        val activityRes = activityRepo.createActivity(itineraryId.value, activity)
         if (activityRes.isFailure) {
             _seedResult.value = Result.failure(activityRes.exceptionOrNull()!!)
             return@launch

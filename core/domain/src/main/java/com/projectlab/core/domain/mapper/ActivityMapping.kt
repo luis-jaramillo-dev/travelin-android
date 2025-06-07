@@ -15,8 +15,8 @@ import java.time.Instant
  */
 
 fun Activity.toEntity (
-    userId: String,
-    itineraryId: String,
+//    userId: String,
+//    itineraryId: String,
 ) : ActivityEntity {
     return ActivityEntity(
         id = "",
@@ -27,7 +27,7 @@ fun Activity.toEntity (
         description = this.description,
         amount = this.price,
         currencyCode = this.currency,
-        userRef = EntityId(userId),
-        itineraryRef = EntityId(itineraryId)
+//        userRef = EntityId(userId),
+//        itineraryRef = EntityId(itineraryId)
     )
 }
