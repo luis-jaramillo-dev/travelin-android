@@ -66,10 +66,10 @@ class BookingViewModelTest @Inject constructor(
         // Hardcode user data
         val user = User(
             id = randomUserId, // unique ID, could be generated or hardcoded for testing
-            firstName = "SHEEV PALPATINE 6100",
-            lastName = "PALPATINE the 6000",
+            firstName = "SHEEV PALPATINE 9500",
+            lastName = "PALPATINE the 9000",
             countryCode = "66",
-            phoneNumber = "505050",
+            phoneNumber = "807080",
             email = "THESITH@gmail.com",
             age = "81"
         )
@@ -101,7 +101,6 @@ class BookingViewModelTest @Inject constructor(
             startDate = Instant.now(),
             endDate = Instant.now().plusSeconds(2592000),
             totalItineraryPrice = 9000.0,
-            userRef = userId
         )
 
         // We create the itinerary in Firestore through the repository
@@ -216,7 +215,10 @@ class BookingViewModelTest @Inject constructor(
     }
     
     // Launches the collection of all itineraries for a user:
-    fun fetchAllItineraries(userId: String) = viewModelScope.launch {
+    fun fetchAllItineraries() = viewModelScope.launch {
+        // Get the userId from the session provider
+        val userId = userSessionProvider.getUserSessionId()
+            ?: throw NullPointerException("userId is null")
         // We call to the repository to get all itineraries for the user
         val result = itineraryRepo.getAllItineraries(userId)
 
@@ -242,9 +244,12 @@ class BookingViewModelTest @Inject constructor(
     }
 
     // Launches the collection of a single itinerary by ID:
-    fun fetchItineraryById(userId: String, itinId: String) = viewModelScope.launch {
-        val result = itineraryRepo.getItineraryById(userId, itinId)
-
+    fun fetchItineraryById(itinId: String) = viewModelScope.launch {
+        // Get the userId from the session provider
+        val userId = userSessionProvider.getUserSessionId()
+            ?: throw NullPointerException("userId is null")
+        // We call to the repository to get the itinerary by ID
+        val result = itineraryRepo.getItineraryById(itinId)
         if (result.isSuccess) {
             // It can be null if not exists
             val entity: ItineraryEntity? = result.getOrNull()

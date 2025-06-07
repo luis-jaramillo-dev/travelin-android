@@ -22,10 +22,9 @@ class ItineraryRepositoryImpl  @Inject constructor(
     }
 
     override suspend fun getItineraryById(
-        userId: String,
         itineraryId: String
     ): Result<ItineraryEntity?> {
-        return firestoreItinerary.getItinerariesById(userId, itineraryId)
+        return firestoreItinerary.getItinerariesById(itineraryId)
     }
 
     override suspend fun getAllItineraries(userId: String): Result<List<ItineraryEntity>> {
@@ -37,9 +36,8 @@ class ItineraryRepositoryImpl  @Inject constructor(
     }
 
     override suspend fun deleteItinerary(
-        userId: String,
         itineraryId: String
     ): Result<Unit> {
-        return firestoreItinerary.deleteItinerary(userId, itineraryId)
+        return firestoreItinerary.deleteItinerary(itineraryId)
     }
 }
