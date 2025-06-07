@@ -66,8 +66,8 @@ class BookingViewModelTest @Inject constructor(
         // Hardcode user data
         val user = User(
             id = randomUserId, // unique ID, could be generated or hardcoded for testing
-            firstName = "SHEEV PALPATINE 5000",
-            lastName = "PALPATINE 5000",
+            firstName = "SHEEV PALPATINE 6100",
+            lastName = "PALPATINE the 6000",
             countryCode = "66",
             phoneNumber = "505050",
             email = "THESITH@gmail.com",
@@ -86,6 +86,9 @@ class BookingViewModelTest @Inject constructor(
 
         // We store the user ID in the session provider
         userSessionProvider.setUserSessionId(randomUserId)
+
+        // We show the user ID in the logs
+        Log.d(TAG, "✔ User created with ID: $randomUserId")
 
 
         // We get the user ID from the result
@@ -113,9 +116,9 @@ class BookingViewModelTest @Inject constructor(
 
         // 3) We create a flight:
         val flight = FlightEntity(
-            airline = "quatar airways",
+            airline = "space airline",
             flightNumber = "600",
-            flightClass = "premium",
+            flightClass = "super premium",
             departureAirport = mapOf(
                 "airportCodeRef" to "CHI", // TODO: Add id form firestore
                 "time" to Timestamp(Date(System.currentTimeMillis()))
@@ -131,12 +134,10 @@ class BookingViewModelTest @Inject constructor(
                 "babiesInArmsNumber" to 1
             ),
             price = 4000.0,
-            userRef = userId,
-            itineraryRef = itineraryId
         )
 
         // We create the flight in Firestore through the repository
-        val flightRes = flightRepo.createFlight(flight)
+        val flightRes = flightRepo.createFlight(itineraryId.value, flight)
         if (flightRes.isFailure) {
             _seedResult.value = Result.failure(flightRes.exceptionOrNull()!!)
             return@launch
@@ -147,8 +148,8 @@ class BookingViewModelTest @Inject constructor(
 
         // 4) We create a FlightSegment:
         val flightSegment = FlightSegmentEntity(
-            departureAirportCodeRef = EntityId("MEX"), // TODO: Add id form firestore
-            arrivalAirportCodeRef = EntityId("USA"), // TODO: Add id form firestore
+            departureAirportCodeRef = EntityId("MMM"), // TODO: Add id form firestore
+            arrivalAirportCodeRef = EntityId("GEM"), // TODO: Add id form firestore
             departureTime = Instant.now(),
             arrivalTime = Instant.now().plusSeconds(7200),
             requiresPlaneChange = false,
@@ -157,13 +158,14 @@ class BookingViewModelTest @Inject constructor(
                 "nextFlightNumber" to "500",
                 "connectionGate" to "A1"
             ),
-            userRef = userId,
-            itineraryRef = itineraryId,
-            flightRef = flightId
         )
 
         // We create the flight segment in Firestore through the repository
-        val flightSegmentRes = flightRepo.createFlightSegment(flightSegment)
+        val flightSegmentRes = flightRepo.createFlightSegment(
+            itineraryId.value,
+            flightId.value,
+            flightSegment,
+        )
         if (flightSegmentRes.isFailure) {
             _seedResult.value = Result.failure(flightSegmentRes.exceptionOrNull()!!)
             return@launch

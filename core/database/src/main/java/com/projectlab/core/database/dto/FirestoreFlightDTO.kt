@@ -81,7 +81,5 @@ data class FirestoreFlightDTO @RequiresApi(Build.VERSION_CODES.O) constructor(
             arrivalAirport = arrivalAirport,
             passengerNumber = passengerNumber,
             price = price,
-            userRef = userRef,
-            itineraryRef = itineraryRef
         )
 }

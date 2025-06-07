@@ -14,11 +14,6 @@ import java.time.Instant
  * or stopover).
  * @property connectionInfo Information about the connection, including next airline, flight number,
  * and connection gate.
- * @property userRef Reference to the user associated with the itinerary, that is associated with
- * the flight, that is associated with the flight segment.
- * @property itineraryRef Reference to the itinerary associated with the flight, that is associated
- * with the flight segment.
- * @property flightRef Reference to the flight associated with the flight segment.
  *
  * @author ricardoceadev
  *
@@ -36,8 +31,5 @@ data class FlightSegmentEntity (
         "nextAirline" to "",
         "nextFlightNumber" to "",
         "connectionGate" to ""
-    ),
-    val userRef : EntityId? = null,
-    val itineraryRef : EntityId? = null,
-    val flightRef : EntityId? = null
+    )
 )

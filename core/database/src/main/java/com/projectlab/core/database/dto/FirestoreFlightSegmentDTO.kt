@@ -72,8 +72,5 @@ data class FirestoreFlightSegmentDTO (
         arrivalTime = Instant.ofEpochMilli(arrivalTime.toDate().time),
         requiresPlaneChange = requiresPlaneChange,
         connectionInfo = connectionInfo,
-        userRef = userRef,
-        itineraryRef = itineraryRef,
-        flightRef = flightRef
     )
 }

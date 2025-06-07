@@ -16,28 +16,33 @@ import kotlinx.coroutines.flow.Flow
 
 interface FlightRepository {
     // English: Operations on the main flight
-    suspend fun createFlight(flight: FlightEntity): Result<EntityId>
-    suspend fun getFlightById(userId: String, itinId: String, flightId: String): Result<FlightEntity?>
-    suspend fun getAllFlights(userId: String, itinId: String): Result<List<FlightEntity>>
-    suspend fun updateFlight(flight: FlightEntity): Result<Unit>
-    suspend fun deleteFlight(userId: String, itinId: String, flightId: String): Result<Unit>
+    suspend fun createFlight(itinId: String, flight: FlightEntity): Result<EntityId>
+    suspend fun getFlightById(itinId: String, flightId: String): Result<FlightEntity?>
+    suspend fun getAllFlights(itinId: String): Result<List<FlightEntity>>
+    suspend fun updateFlight(itinId: String, flight: FlightEntity): Result<Unit>
+    suspend fun deleteFlight(itinId: String, flightId: String): Result<Unit>
 
     // English: Operations on flight segments (located within a flight)
-    suspend fun createFlightSegment(segment: FlightSegmentEntity): Result<EntityId>
+    suspend fun createFlightSegment(
+        itinId: String,
+        flightId: String,
+        segment: FlightSegmentEntity
+    ): Result<EntityId>
     suspend fun getFlightSegmentById(
-        userId: String,
         itinId: String,
         flightId: String,
         segmentId: String,
     ): Result<FlightSegmentEntity?>
     suspend fun getAllFlightSegments(
-        userId: String,
         itinId: String,
         flightId: String,
     ): Result<List<FlightSegmentEntity>>
-    suspend fun updateFlightSegment(segment: FlightSegmentEntity): Result<Unit>
+    suspend fun updateFlightSegment(
+        itinId: String,
+        flightId: String,
+        segment: FlightSegmentEntity
+    ): Result<Unit>
     suspend fun deleteFlightSegment(
-        userId: String,
         itinId: String,
         flightId: String,
         segmentId: String,
