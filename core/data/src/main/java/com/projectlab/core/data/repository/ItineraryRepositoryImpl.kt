@@ -11,7 +11,7 @@ import javax.inject.Inject
  * ItineraryRepositoryImpl is the implementation of the ItineraryRepository interface.
  * It performs operations on itineraries using services.
  *
- * @param firestoreItinerary The FirestoreItinerary service used for database operations.
+ * @param firestoreItinerary The FirestoreItinerary instance used for Firestore operations.
  */
 
 class ItineraryRepositoryImpl  @Inject constructor(

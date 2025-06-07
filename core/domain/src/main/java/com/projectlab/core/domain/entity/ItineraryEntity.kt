@@ -2,7 +2,7 @@ package com.projectlab.core.domain.entity
 import com.projectlab.core.domain.model.EntityId
 import java.time.Instant
  /**
- * ItineraryEntity represents a travel itinerary in the system.
+ * ItineraryEntity represents a travel itinerary in the database system inside the app.
  * @property id Unique identifier for the itinerary.
  * @property title Title of the itinerary.
  * @property startDate Start date of the itinerary.

@@ -17,6 +17,10 @@ import javax.inject.Inject
  * It provides methods to interact with activities in Firestore and external APIs.
  *
  * @param firestore The FirebaseFirestore instance used to interact with Firestore.
+ * @param userSessionProvider The UserSessionProvider instance
+ * used to get the current user's session ID.
+ *
+ * @author ricardoceadev
  */
 
 class FirestoreActivityImpl @Inject constructor(

@@ -13,9 +13,6 @@ import java.time.Instant
  * @property description Details about the activity.
  * @property amount Amount of the activity, typically a price.
  * @property currencyCode Currency code for the amount, e.g., USD, EUR.
- * @property userRef Reference to the user associated with the itinerary, that is associated with
- * the activity.
- * @property itineraryRef Reference to the itinerary associated with the activity.
  *
  * @author ricardoceadev
  */
@@ -29,6 +26,4 @@ data class ActivityEntity(
     val description : String = "",
     val amount : String = "",
     val currencyCode : String = "",
-//    val userRef : EntityId? = null,
-//    val itineraryRef : EntityId? = null
 )

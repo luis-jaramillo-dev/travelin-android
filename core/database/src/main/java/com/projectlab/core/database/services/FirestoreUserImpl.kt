@@ -17,6 +17,8 @@ import kotlinx.coroutines.flow.flow
  * It uses Firebase Firestore to perform CRUD operations on user data.
  *
  * @param firestore The FirebaseFirestore instance used to interact with Firestore.
+ *
+ * @author ricardoceadev
  */
 
 class FirestoreUserImpl @Inject constructor(

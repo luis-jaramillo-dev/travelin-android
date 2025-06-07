@@ -26,9 +26,10 @@ import javax.inject.Inject
  * HotelsRepositoryImpl is the implementation of the HotelsRepository interface.
  * It performs operations on hotels using services.
  *
- * @param firestoreHotel The FirestoreHotel service used for database operations.
+ * @param firestoreHotel The FirestoreHotel instance used for Firestore operations.
  * @param apiService The HotelsApiService used for network operations.
  * @param usersRef The Firestore collection reference for users.
+ * @param userSessionProvider The UserSessionProvider used to manage user sessions.
  */
 
 class HotelsRepositoryImpl @Inject constructor(

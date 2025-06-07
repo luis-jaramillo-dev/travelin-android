@@ -4,7 +4,7 @@ import com.projectlab.core.domain.model.EntityId
 import java.time.Instant
 
 /**
- * HotelEntity represents a hotel booking in the system.
+ * HotelEntity represents a hotel booking in the database system inside the app.
  * @property id Unique identifier for the hotel booking.
  * @property hotelName Name of the hotel.
  * @property hotelRoomNumber Number of the room booked.

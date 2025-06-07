@@ -13,7 +13,7 @@ import javax.inject.Inject
  * FlightRepositoryImpl is the implementation of the FlightRepository interface.
  * It performs operations on flights using services.
  *
- * @param firestoreFlight The FirestoreFlight service used for database operations.
+ * @param firestoreFlight The FirestoreFlight instance used for Firestore operations.
  */
 
 class FlightRepositoryImpl @Inject constructor (

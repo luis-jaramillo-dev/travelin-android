@@ -19,6 +19,10 @@ import kotlinx.coroutines.flow.flow
  * It uses Firestore to perform CRUD operations on flight data.
  *
  * @param firestore The FirebaseFirestore instance used to interact with Firestore.
+ * @param userSessionProvider The UserSessionProvider instance
+ * used to get the current user's session ID.
+ *
+ * @author ricardoceadev
  */
 
 class FirestoreFlightImpl @Inject constructor (

@@ -4,7 +4,7 @@ import com.projectlab.core.domain.model.EntityId
 import java.time.Instant
 
 /**
- * FlightEntity represents a flight in the system.
+ * FlightEntity represents a flight in the database system inside the app.
  * @property id Unique identifier for the flight.
  * @property airline Airline operating the flight.
  * @property flightNumber Flight number.

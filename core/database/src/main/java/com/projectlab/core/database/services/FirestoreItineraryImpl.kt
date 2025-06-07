@@ -17,6 +17,10 @@ import javax.inject.Inject
  * It uses Firebase Firestore to perform CRUD operations on itinerary data.
  *
  * @param firestore The FirebaseFirestore instance used to interact with Firestore.
+ * @param userSessionProvider The UserSessionProvider instance used
+ * to get the current user's session ID.
+ *
+ * @author ricardoceadev
  */
 
 class FirestoreItineraryImpl @Inject constructor (
