@@ -15,6 +15,7 @@ import com.projectlab.core.domain.model.EntityId
 import com.projectlab.core.domain.model.Hotel
 import com.projectlab.core.domain.model.HotelLocation
 import com.projectlab.core.domain.repository.HotelsRepository
+import com.projectlab.core.domain.repository.UserSessionProvider
 import com.projectlab.core.domain.util.DataError
 import com.projectlab.core.domain.util.Result
 import kotlinx.coroutines.flow.Flow
@@ -33,38 +34,42 @@ import javax.inject.Inject
 class HotelsRepositoryImpl @Inject constructor(
     private val firestoreHotel: FirestoreHotel,
     private val apiService: HotelsApiService,
-    private val usersRef: CollectionReference
+    private val usersRef: CollectionReference,
+    private val userSessionProvider: UserSessionProvider,
 ) : HotelsRepository {
 
-    override suspend fun createHotel(hotel: HotelEntity): kotlin.Result<EntityId> {
-        return firestoreHotel.createHotel(hotel)
+    override suspend fun createHotel(
+        itinId: String,
+        hotel: HotelEntity
+    ): kotlin.Result<EntityId> {
+        return firestoreHotel.createHotel(itinId, hotel)
     }
 
     override suspend fun getHotelById(
-        userId: String,
         itinId: String,
         hotelId: String,
     ): kotlin.Result<HotelEntity?> {
-        return firestoreHotel.getHotelsById(userId, itinId, hotelId)
+        return firestoreHotel.getHotelsById(itinId, hotelId)
     }
 
     override suspend fun getAllHotels(
-        userId: String,
         itinId: String,
     ): kotlin.Result<List<HotelEntity>> {
-        return firestoreHotel.getAllHotelsForItinerary(userId, itinId)
+        return firestoreHotel.getAllHotelsForItinerary(itinId)
     }
 
-    override suspend fun updateHotel(hotel: HotelEntity): kotlin.Result<Unit> {
-        return firestoreHotel.updateHotel(hotel)
+    override suspend fun updateHotel(
+        itinId: String,
+        hotel: HotelEntity
+    ): kotlin.Result<Unit> {
+        return firestoreHotel.updateHotel(itinId, hotel)
     }
 
     override suspend fun deleteHotel(
-        userId: String,
         itinId: String,
         hotelId: String,
     ): kotlin.Result<Unit> {
-        return firestoreHotel.deleteHotel(userId, itinId, hotelId)
+        return firestoreHotel.deleteHotel(itinId, hotelId)
     }
 
     override suspend fun getHotelsByCity(
@@ -111,8 +116,11 @@ class HotelsRepositoryImpl @Inject constructor(
     }
 
     override suspend fun favoriteHotel(
-        userId: String, hotelId: String
+        hotelId: String
     ): Result<Boolean, DataError.Network> {
+        // Get the user ID from the session provider
+        val userId = userSessionProvider.getUserSessionId()
+            ?: throw NullPointerException("userId is null")
         return try {
             usersRef.document(userId).update("favoritesHotels", FieldValue.arrayUnion(hotelId))
                 .await()
@@ -124,9 +132,11 @@ class HotelsRepositoryImpl @Inject constructor(
     }
 
     override suspend fun unfavoriteHotel(
-        userId: String,
         hotelId: String
     ): Result<Boolean, DataError.Network> {
+        // Get the user ID from the session provider
+        val userId = userSessionProvider.getUserSessionId()
+            ?: throw NullPointerException("userId is null")
         return try {
             usersRef.document(userId).update("favoritesHotels", FieldValue.arrayRemove(hotelId))
                 .await()
