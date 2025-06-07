@@ -3,15 +3,14 @@ package com.projectlab.booking.presentation.home
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.projectlab.core.data.mapper.toDto
-import com.projectlab.core.data.usecase.GetActivitiesUseCase
 import com.projectlab.core.domain.model.Location
 import com.projectlab.core.domain.proto.SearchHistory.HistoryType
 import com.projectlab.core.domain.repository.ActivityRepository
-import com.projectlab.core.domain.repository.LocationRepository
 import com.projectlab.core.domain.repository.SearchHistoryProvider
 import com.projectlab.core.domain.repository.UserSessionProvider
+import com.projectlab.core.domain.use_cases.activities.GetActivitiesUseCase
+import com.projectlab.core.domain.use_cases.error.ErrorMapper
 import com.projectlab.core.domain.use_cases.location.GetCoordinatesFromCityUseCase
-import com.projectlab.core.presentation.ui.utils.ErrorMapper
 import com.projectlab.core.domain.util.Result
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableSharedFlow
