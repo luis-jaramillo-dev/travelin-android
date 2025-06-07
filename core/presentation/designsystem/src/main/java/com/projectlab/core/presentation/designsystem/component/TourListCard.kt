@@ -33,8 +33,9 @@ fun TourListCard(
     modifier: Modifier = Modifier,
     activity: ActivityDto,
     city: String?,
+    isFavorite: Boolean,
     onPress: () -> Unit,
-    onFavoritePress: (Boolean) -> Unit,
+    onFavoriteToggle: () -> Unit,
 ) {
     val imageUrl = if (activity.pictures.isNotEmpty()) activity.pictures[0] else null
     val priceText = if (activity.price.amount != "" && activity.price.currencyCode != "") {
@@ -48,13 +49,15 @@ fun TourListCard(
             ImageCardWithFavorite(
                 modifier = Modifier,
                 image = imageUrl,
-                onFavoritePress = onFavoritePress,
+                isFavorite = isFavorite,
+                onFavoriteToggle = onFavoriteToggle
             )
         } else {
             ImageCardWithFavorite(
                 modifier = Modifier,
                 image = painterResource(R.drawable.tourimageplaceholder).toString(),
-                onFavoritePress = onFavoritePress,
+                isFavorite = isFavorite,
+                onFavoriteToggle = onFavoriteToggle,
             )
         }
 

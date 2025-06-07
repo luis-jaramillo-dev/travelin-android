@@ -6,8 +6,10 @@ import com.projectlab.core.data.mapper.toDto
 import com.projectlab.core.data.usecase.GetActivitiesUseCase
 import com.projectlab.core.domain.model.Location
 import com.projectlab.core.domain.proto.SearchHistory.HistoryType
+import com.projectlab.core.domain.repository.ActivityRepository
 import com.projectlab.core.domain.repository.LocationRepository
 import com.projectlab.core.domain.repository.SearchHistoryProvider
+import com.projectlab.core.domain.repository.UserSessionProvider
 import com.projectlab.core.domain.use_cases.location.GetCoordinatesFromCityUseCase
 import com.projectlab.core.presentation.ui.utils.ErrorMapper
 import com.projectlab.core.domain.util.Result
@@ -24,11 +26,12 @@ import javax.inject.Inject
 @HiltViewModel
 class HomeViewModel @Inject constructor(
     private val getActivitiesUseCase: GetActivitiesUseCase,
-    private val locationRepository: LocationRepository,
     private val errorMapper: ErrorMapper,
     private val historyProvider: SearchHistoryProvider,
-    private val getCoordinatesFromCityUseCase: GetCoordinatesFromCityUseCase
-    ) : ViewModel() {
+    private val getCoordinatesFromCityUseCase: GetCoordinatesFromCityUseCase,
+    private val activityRepository: ActivityRepository,
+    private val userSessionProvider: UserSessionProvider
+) : ViewModel() {
 
     private val _uiState = MutableStateFlow(HomeUiState())
     val uiState: StateFlow<HomeUiState> = _uiState.asStateFlow()
@@ -78,25 +81,49 @@ class HomeViewModel @Inject constructor(
 
     fun fetchRecommendedActivities(location: Location?) {
         viewModelScope.launch {
+            if (uiState.value.hasLoadedRecommendations && location == null) return@launch
+
             _uiState.update { it.copy(isLoading = true) }
 
-            val (lat, lon) = location?.let { it.latitude to it.longitude }
-                ?: getCoordinatesFromCityUseCase("Paris") ?: (48.8566 to 2.3522)
+            val (lat, lon) = location?.let {
+                it.latitude to it.longitude
+            } ?: getCoordinatesFromCityUseCase("Paris") ?: (48.8566 to 2.3522)
 
             when (val result = getActivitiesUseCase(lat, lon)) {
                 is Result.Success -> {
                     val filtered = result.data
-                        .filter { it.rating > 4.0 }
+                        .filter { it.pictures.isNotEmpty() }
                         .take(10)
                         .map { it.toDto() }
-                    _uiState.update { it.copy(recommendedActivities = filtered) }
+                    _uiState.update {
+                        it.copy(
+                            recommendedActivities = filtered,
+                            hasLoadedRecommendations = true
+                        )
+                    }
+
+                    fetchFavoriteActivities()
                 }
+
                 is Result.Error -> {
                     _uiState.update { it.copy(error = errorMapper.map(result.error)) }
                 }
             }
 
             _uiState.update { it.copy(isLoading = false) }
+        }
+    }
+
+    fun fetchFavoriteActivities() {
+        viewModelScope.launch {
+            val userId = userSessionProvider.getUserSessionId()
+            if (userId != null) {
+                activityRepository.getFavoriteActivities(userId).collect { favorites ->
+                    _uiState.update { it.copy(favoriteActivities = favorites) }
+                }
+            } else {
+                _uiState.update { it.copy(favoriteActivities = emptyList()) }
+            }
         }
     }
 }

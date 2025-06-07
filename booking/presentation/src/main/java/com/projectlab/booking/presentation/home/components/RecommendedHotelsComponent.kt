@@ -22,7 +22,7 @@ import com.projectlab.core.presentation.designsystem.component.VerticalFavoriteC
 import com.projectlab.core.presentation.designsystem.theme.spacing
 
 @Composable
-fun RecommendedActivitiesComponent(
+fun RecommendedHotelsComponent(
     modifier: Modifier = Modifier,
     uiState: HomeUiState,
     location: String,
@@ -36,35 +36,36 @@ fun RecommendedActivitiesComponent(
             verticalArrangement = Arrangement.spacedBy(MaterialTheme.spacing.ElementSpacing)
         ) {
             Text(
-                text = stringResource(R.string.recommended_activities_near_you),
+                text = stringResource(R.string.recommended_hotels_near_you),
                 fontSize = 18.sp,
                 fontWeight = FontWeight.W600,
-                color = MaterialTheme.colorScheme.onBackground
+                color = MaterialTheme.colorScheme.onBackground,
             )
             Spacer(modifier = Modifier.height(MaterialTheme.spacing.small))
-            LazyRow(
-                horizontalArrangement = Arrangement.spacedBy(MaterialTheme.spacing.ElementSpacing),
-            ) {
-                items(uiState.recommendedActivities) { activity ->
-                    val isFavorite = favoriteIds.contains(activity.id)
-                    VerticalFavoriteCard(
-                        name = activity.name,
-                        description = if (activity.description.isNotEmpty()) {
-                            activity.description
-                        } else {
-                            stringResource(R.string.no_description)
-                        },
-                        location = location,
-                        rating = activity.rating,
-                        pictureUrl = activity.pictures.firstOrNull() ?: "",
-                        onFavoriteClick = { onFavoriteClick(activity) },
-                        isFavorite = isFavorite,
-                        onClick = { onItemClick(activity.id) },
-                        modifier = Modifier.width(MaterialTheme.spacing.recommendedCardWidth)
-                    )
+            if (uiState.recommendedActivities.isNotEmpty()) {
+                LazyRow(
+                    horizontalArrangement = Arrangement.spacedBy(MaterialTheme.spacing.ElementSpacing),
+                ) {
+                    items(uiState.recommendedActivities) { activity ->
+                        val isFavorite = favoriteIds.contains(activity.id)
+                        VerticalFavoriteCard(
+                            name = activity.name,
+                            description = if (activity.description.isNotEmpty()) {
+                                activity.description
+                            } else {
+                                stringResource(R.string.no_description)
+                            },
+                            location = location,
+                            rating = activity.rating,
+                            pictureUrl = activity.pictures.firstOrNull() ?: "",
+                            onFavoriteClick = { onFavoriteClick(activity) },
+                            isFavorite = isFavorite,
+                            onClick = { onItemClick(activity.id) },
+                            modifier = Modifier.width(MaterialTheme.spacing.recommendedCardWidth)
+                        )
+                    }
                 }
             }
         }
     }
 }
-

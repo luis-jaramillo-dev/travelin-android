@@ -15,6 +15,7 @@ import androidx.navigation.navArgument
 import com.projectlab.booking.presentation.detail.activities.ActivityDetailScreen
 import com.projectlab.booking.presentation.detail.activities.ActivityDetailViewModel
 import com.projectlab.booking.presentation.favorites.FavoritesScreen
+import com.projectlab.booking.presentation.favorites.FavoritesViewModel
 import com.projectlab.booking.presentation.home.HomeScreen
 import com.projectlab.booking.presentation.screens.HotelsViewModel
 import com.projectlab.booking.presentation.screens.hotels.details.DetailHotelScreen
@@ -101,10 +102,11 @@ private fun NavGraphBuilder.searchGraph(navController: NavHostController) {
         SearchActivityScreen(
             locationViewModel = hiltViewModel(),
             searchActivityViewModel = hiltViewModel(),
+            favoritesViewModel = hiltViewModel(),
             navController = navController,
             onActivityClick = { activityId ->
                 navController.navigate(DetailScreens.ActivityDetail.createRoute(activityId))
-            },
+            }
         )
 
 
@@ -119,6 +121,7 @@ private fun NavGraphBuilder.searchGraph(navController: NavHostController) {
 
         val locationViewModel: LocationViewModel = hiltViewModel()
         val searchActivityViewModel: SearchActivityViewModel = hiltViewModel()
+        val favoritesViewModel: FavoritesViewModel = hiltViewModel()
 
         LaunchedEffect(query) {
             searchActivityViewModel.searchWithInitialQuery(query)
@@ -127,6 +130,7 @@ private fun NavGraphBuilder.searchGraph(navController: NavHostController) {
         SearchActivityScreen(
             locationViewModel = locationViewModel,
             searchActivityViewModel = searchActivityViewModel,
+            favoritesViewModel = favoritesViewModel,
             navController = navController,
             onActivityClick = { activityId ->
                 navController.navigate(DetailScreens.ActivityDetail.createRoute(activityId))
@@ -156,6 +160,7 @@ private fun NavGraphBuilder.detailGraph(navController: NavHostController) {
             activityDetailViewModel = hiltViewModel<ActivityDetailViewModel>(),
             activityId = activityId,
             navController = navController,
+            favoritesViewModel = hiltViewModel()
         )
     }
 
@@ -192,6 +197,7 @@ private fun NavGraphBuilder.homeGraph(navController: NavHostController) {
             onItemClick = { activityId ->
                 navController.navigate(DetailScreens.ActivityDetail.createRoute(activityId))
             },
+            favoritesViewModel = hiltViewModel()
         )
     }
 }
