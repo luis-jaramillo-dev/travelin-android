@@ -66,8 +66,8 @@ class BookingViewModelTest @Inject constructor(
         // Hardcode user data
         val user = User(
             id = randomUserId, // unique ID, could be generated or hardcoded for testing
-            firstName = "SHEEV PALPATINE 300",
-            lastName = "PALPATINE 300",
+            firstName = "SHEEV PALPATINE 5000",
+            lastName = "PALPATINE 5000",
             countryCode = "66",
             phoneNumber = "505050",
             email = "THESITH@gmail.com",
@@ -171,7 +171,7 @@ class BookingViewModelTest @Inject constructor(
 
         // 5) We create a Hotel:
         val hotel = HotelEntity(
-            hotelName = "Hotel of the Dark Side",
+            hotelName = "Hotel in the death star",
             hotelRoomNumber = 30,
             hotelPhone = 2222,
             locationRef = EntityId("location459"), // TODO: Add id form firestore
@@ -181,12 +181,10 @@ class BookingViewModelTest @Inject constructor(
             checkInDate = Instant.now(),
             checkOutDate = Instant.now().plusSeconds(86400),
             hotelPrice = 1500.0,
-            userRef = userId,
-            itineraryRef = itineraryId
         )
 
         // We create the hotel in Firestore through the repository
-        val hotelRes = hotelRepo.createHotel(hotel)
+        val hotelRes = hotelRepo.createHotel(itineraryId.value, hotel)
         if (hotelRes.isFailure) {
             _seedResult.value = Result.failure(hotelRes.exceptionOrNull()!!)
             return@launch

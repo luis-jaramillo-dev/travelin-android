@@ -14,9 +14,15 @@ import kotlinx.coroutines.flow.Flow
  */
 
 interface FirestoreHotel {
-    suspend fun createHotel(hotel: HotelEntity): Result<EntityId>
-    suspend fun getHotelsById(userId: String, itinId: String, hotelId: String): Result<HotelEntity?>
-    suspend fun getAllHotelsForItinerary(userId: String, itinId: String): Result<List<HotelEntity>>
-    suspend fun updateHotel(hotel: HotelEntity): Result<Unit>
-    suspend fun deleteHotel(userId: String, itinId: String, hotelId: String): Result<Unit>
+    suspend fun createHotel(
+        itinId: String,
+        hotel: HotelEntity,
+    ): Result<EntityId>
+    suspend fun getHotelsById(itinId: String, hotelId: String): Result<HotelEntity?>
+    suspend fun getAllHotelsForItinerary(itinId: String): Result<List<HotelEntity>>
+    suspend fun updateHotel(
+        itinId: String,
+        hotel: HotelEntity,
+    ): Result<Unit>
+    suspend fun deleteHotel( itinId: String, hotelId: String): Result<Unit>
 }

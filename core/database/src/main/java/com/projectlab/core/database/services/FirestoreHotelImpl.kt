@@ -6,6 +6,7 @@ import com.google.firebase.firestore.FirebaseFirestore
 import com.projectlab.core.database.dto.FirestoreHotelDTO
 import com.projectlab.core.domain.entity.HotelEntity
 import com.projectlab.core.domain.model.EntityId
+import com.projectlab.core.domain.repository.UserSessionProvider
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.tasks.await
@@ -19,19 +20,26 @@ import javax.inject.Inject
  */
 
 class FirestoreHotelImpl @Inject constructor (
-    private val firestore : FirebaseFirestore
+    private val firestore : FirebaseFirestore,
+    private val userSessionProvider: UserSessionProvider,
 ) : FirestoreHotel {
 
     @RequiresApi(Build.VERSION_CODES.O)
-    override suspend fun createHotel(hotel: HotelEntity): Result<EntityId> = runCatching {
+    override suspend fun createHotel(
+        itinId: String,
+        hotel: HotelEntity
+    ): Result<EntityId> = runCatching {
+        // Get the user ID from the session provider
+        val userId = userSessionProvider.getUserSessionId()
+            ?: throw NullPointerException("userId is null")
         // user reference:
         var userDoc = firestore
             .collection("Users")
-            .document(hotel.userRef?.value ?: throw IllegalArgumentException("userRef is null"))
+            .document(userId)
         // itinerary reference:
         var itinDoc = userDoc
             .collection("Itineraries")
-            .document(hotel.itineraryRef?.value ?: throw IllegalArgumentException("itineraryRef is null"))
+            .document(itinId)
         // Location reference:
         var locationDoc = firestore
             .collection("Locations")
@@ -47,10 +55,12 @@ class FirestoreHotelImpl @Inject constructor (
     }
 
     override suspend fun getHotelsById(
-        userId: String,
         itinId: String,
         hotelId: String
     ): Result<HotelEntity?> = runCatching {
+        // Get the user ID from the session provider
+        val userId = userSessionProvider.getUserSessionId()
+            ?: throw NullPointerException("userId is null")
         // Get the document reference for the hotel
         val docRef = firestore
             .collection("Users").document(userId)
@@ -75,9 +85,11 @@ class FirestoreHotelImpl @Inject constructor (
     }
 
     override suspend fun getAllHotelsForItinerary(
-        userId: String,
         itinId: String
     ): Result<List<HotelEntity>> = runCatching {
+        // Get the user ID from the session provider
+        val userId = userSessionProvider.getUserSessionId()
+            ?: throw NullPointerException("userId is null")
         // Route to the Hotels collection for the given user and itinerary
         val snaps = firestore
             .collection("Users").document(userId)
@@ -97,13 +109,13 @@ class FirestoreHotelImpl @Inject constructor (
     }
 
     @RequiresApi(Build.VERSION_CODES.O)
-    override suspend fun updateHotel(hotel: HotelEntity): Result<Unit> = runCatching {
-        // We retrieve the user and itinerary references from the object reference
-        val userId = hotel.userRef?.value
-            ?: throw IllegalArgumentException("userRef is null")
-        val itinId = hotel.itineraryRef?.value
-            ?: throw IllegalArgumentException("itineraryRef is null")
-
+    override suspend fun updateHotel(
+        itinId: String,
+        hotel: HotelEntity
+    ): Result<Unit> = runCatching {
+        // Get the user ID from the session provider
+        val userId = userSessionProvider.getUserSessionId()
+            ?: throw NullPointerException("userId is null")
         // Reconstruct the document routes/references:
         val userDoc = firestore.collection("Users").document(userId)
         val itinDoc = userDoc.collection("Itineraries").document(itinId)
@@ -118,17 +130,19 @@ class FirestoreHotelImpl @Inject constructor (
         )
 
         // Overwrite, set() the specific hotel document. TODO: handle errors.
-        firestore.collection("Users").document(userId)
-            .collection("Itineraries").document(itinId)
-            .collection("Hotels").document(hotel.id)
+//        firestore.collection("Users").document(userId)
+//            .collection("Itineraries").document(itinId)
+        itinDoc.collection("Hotels").document(hotel.id)
             .set(dto).await()
     }
 
     override suspend fun deleteHotel(
-        userId: String,
         itinId: String,
         hotelId: String
     ): Result<Unit> = runCatching {
+        // Get the user ID from the session provider
+        val userId = userSessionProvider.getUserSessionId()
+            ?: throw NullPointerException("userId is null")
         firestore.collection("Users").document(userId)
             .collection("Itineraries").document(itinId)
             .collection("Hotels").document(hotelId)
