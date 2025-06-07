@@ -7,6 +7,14 @@ object AuthValidator {
     private val UPPERCASE = Regex("[A-Z]")
     private val DIGIT = Regex("\\d")
 
+    fun isPhoneNumberValid(age: String): Boolean {
+        return age.toIntOrNull()?.let { it > 0 } == true
+    }
+
+    fun isAgeValid(age: String): Boolean {
+        return age.toIntOrNull()?.let { it in 1..120 } == true
+    }
+
     fun isEmailValid(email: String): Boolean {
         return email.trim().matches(Patterns.EMAIL_ADDRESS.toRegex())
     }
@@ -16,9 +24,5 @@ object AuthValidator {
             && password.contains(LOWERCASE)
             && password.contains(UPPERCASE)
             && password.contains(DIGIT)
-    }
-
-    fun isAgeValid(age: String): Boolean {
-        return age.toIntOrNull()?.let { it in 1..120 } == true
     }
 }

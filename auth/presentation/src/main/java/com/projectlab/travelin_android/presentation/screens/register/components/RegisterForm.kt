@@ -56,6 +56,7 @@ fun RegisterForm(
     email: String,
     password: String,
     acceptedTOS: Boolean,
+    isPhoneNumberValid: Boolean,
     isAgeValid: Boolean,
     isEmailValid: Boolean,
     isPasswordValid: Boolean,
@@ -106,6 +107,8 @@ fun RegisterForm(
                 placeholderText = stringResource(R.string.enter_your_phone_number),
                 value = phoneNumber,
                 onValueChange = onPhoneNumberChange,
+                isError = phoneNumber.isNotEmpty() && !isPhoneNumberValid,
+                errorMessage = stringResource(R.string.enter_a_valid_phone_number),
                 keyboardOptions = KeyboardOptions.Default.copy(keyboardType = KeyboardType.Number),
                 modifier = Modifier.weight(0.70f),
             )

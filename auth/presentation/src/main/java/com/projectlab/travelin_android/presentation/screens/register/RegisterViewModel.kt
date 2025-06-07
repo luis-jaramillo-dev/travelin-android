@@ -46,7 +46,12 @@ class RegisterViewModel @Inject constructor(
     }
 
     fun onPhoneNumberChange(value: String) {
-        _state.update { it.copy(phoneNumber = value) }
+        _state.update {
+            it.copy(
+                phoneNumber = value,
+                isPhoneNumberValid = AuthValidator.isPhoneNumberValid(value),
+            )
+        }
     }
 
     fun onAgeChange(value: String) {

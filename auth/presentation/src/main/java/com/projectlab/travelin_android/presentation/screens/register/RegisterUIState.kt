@@ -8,6 +8,7 @@ data class RegisterUIState(
     val age: String = "",
     val email: String = "",
     val password: String = "",
+    val isPhoneNumberValid: Boolean = false,
     val isAgeValid: Boolean = false,
     val isEmailValid: Boolean = false,
     val isPasswordValid: Boolean = false,

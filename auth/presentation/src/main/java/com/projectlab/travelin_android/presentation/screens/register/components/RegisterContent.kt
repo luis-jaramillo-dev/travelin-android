@@ -27,6 +27,7 @@ fun RegisterContent(
     email: String,
     password: String,
     acceptedTOS: Boolean,
+    isPhoneNumberValid: Boolean,
     isAgeValid: Boolean,
     isEmailValid: Boolean,
     isPasswordValid: Boolean,
@@ -62,6 +63,7 @@ fun RegisterContent(
             email = email,
             password = password,
             acceptedTOS = acceptedTOS,
+            isPhoneNumberValid = isPhoneNumberValid,
             isAgeValid = isAgeValid,
             isEmailValid = isEmailValid,
             isPasswordValid = isPasswordValid,
@@ -88,6 +90,7 @@ fun RegisterContent(
                 && email.isNotEmpty()
                 && password.isNotEmpty()
                 && acceptedTOS
+                && isPhoneNumberValid
                 && isAgeValid
                 && isEmailValid
                 && isPasswordValid,

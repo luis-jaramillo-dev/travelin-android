@@ -26,7 +26,7 @@
     <string name="enter_your_first_name">Ingresa tu nombre</string>
     <string name="enter_your_last_name">Ingresa tu apellido</string>
     <string name="phone">Número</string>
-    <string name="enter_your_phone_number">Ingresa tu número telefónico</string>
+    <string name="enter_your_phone_number">Ingresa tu número de teléfono</string>
     <string name="age">Edad</string>
     <string name="enter_your_age">Ingresa tu edad</string>
     <string name="i_accept_the_terms_and_conditions">Acepto los términos y condiciones</string>
@@ -38,4 +38,5 @@
     <string name="successfully_created_an_account">Cuenta creada exitósamente</string>
     <string name="after_this_you_can_explore_any_place_you_want_enjoy_it">Después de esto puedes explorar cualquier lugar que quieras y disfrutarlo!</string>
     <string name="lets_explore">Vamos a Explorar</string>
+    <string name="enter_a_valid_phone_number">Ingresa un número de teléfono válido</string>
 </resources>
