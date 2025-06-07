@@ -9,17 +9,10 @@ import javax.inject.Inject
 
 class QueryFavoriteActivitiesUseCaseImpl @Inject constructor(
     private val activitiesRepository: ActivityRepository,
-    private val userSessionProvider: UserSessionProvider,
 ) : QueryFavoriteActivitiesUseCase {
     override suspend fun invoke(
         nameQuery: String?,
     ): Result<Flow<FavoriteActivityEntity>> = runCatching {
-        val userId = userSessionProvider.getUserSessionId()
-
-        if (userId == null) {
-            return Result.failure(NullPointerException("userId is null"))
-        }
-
-        activitiesRepository.queryFavoriteActivities(userId, nameQuery)
+        activitiesRepository.queryFavoriteActivities(nameQuery)
     }
 }

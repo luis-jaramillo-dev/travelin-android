@@ -78,8 +78,8 @@ data class FirestoreHotelDTO (
         checkInDate = Instant.ofEpochMilli(checkInDate.toDate().time),
         checkOutDate = Instant.ofEpochMilli(checkOutDate.toDate().time),
         hotelPrice = hotelPrice,
-        userRef = userRef,
-        itineraryRef = itineraryRef
+//        userRef = userRef,
+//        itineraryRef = itineraryRef
     )
 
 

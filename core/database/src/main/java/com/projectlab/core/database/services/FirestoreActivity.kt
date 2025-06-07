@@ -6,15 +6,22 @@ import kotlinx.coroutines.flow.Flow
 
 interface FirestoreActivity {
 
-    suspend fun createActivity(activity: ActivityEntity): Result<EntityId>
+    suspend fun createActivity(
+        itinId: String,
+        activity: ActivityEntity
+    ): Result<EntityId>
     suspend fun getActivityById(
-        userId: String, itinId: String, activityId: String
-    ): Flow<ActivityEntity?>
+        itinId: String,
+        activityId: String
+    ): Result<ActivityEntity?>
     suspend fun getAllActivitiesForItinerary(
-        userId: String, itinId: String
-    ): Flow<List<ActivityEntity>>
-    suspend fun updateActivity(activity: ActivityEntity): Result<Unit>
+         itinId: String
+    ): Result<List<ActivityEntity>>
+    suspend fun updateActivity(
+        itinId: String,
+        activity: ActivityEntity
+    ): Result<Unit>
     suspend fun deleteActivity(
-        userId: String, itinId: String, activityId: String
+         itinId: String, activityId: String
     ): Result<Unit>
 }

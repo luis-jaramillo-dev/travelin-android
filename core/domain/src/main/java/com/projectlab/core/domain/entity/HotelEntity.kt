@@ -36,6 +36,6 @@ data class HotelEntity(
     val checkInDate : Instant,
     val checkOutDate : Instant,
     val hotelPrice : Double = 0.0,
-    val userRef : EntityId? = null,
-    val itineraryRef : EntityId? = null
+//    val userRef : EntityId? = null,
+//    val itineraryRef : EntityId? = null
 )
