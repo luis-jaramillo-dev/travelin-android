@@ -1,5 +1,6 @@
 package com.projectlab.booking.presentation.screens.hotels.search.components
 
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -32,7 +33,8 @@ import com.projectlab.core.presentation.designsystem.component.TravelinIconButto
 fun SearchHotelHeader(
     modifier: Modifier = Modifier,
     uiState: SearchHotelState,
-    viewModel: HotelsViewModel
+    viewModel: HotelsViewModel,
+    onBackPressed: () -> Unit
 ) {
 
     Column(
@@ -41,7 +43,7 @@ fun SearchHotelHeader(
             .padding(MaterialTheme.spacing.SectionSpacing)
     ) {
         Row(verticalAlignment = Alignment.CenterVertically) {
-            IconBack(modifier = Modifier, size = 40)
+            IconBack(modifier = modifier.clickable(onClick = onBackPressed), size = 40)
             SearchBarComponent(
                 query = uiState.query,
                 onEnter = {

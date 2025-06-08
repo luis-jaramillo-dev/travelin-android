@@ -19,6 +19,7 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import coil.compose.rememberAsyncImagePainter
+import com.projectlab.core.data.model.ActivityDto
 import com.projectlab.core.presentation.designsystem.R
 
 //Icons to be replaced by the final icons
@@ -27,11 +28,11 @@ import com.projectlab.core.presentation.designsystem.R
 fun ImageCardWithFavorite(
     modifier: Modifier = Modifier,
     image: String?,
-    onFavoritePress: (Boolean) -> Unit,
+    isFavorite: Boolean,
+    onFavoriteToggle: () -> Unit,
 ) {
-    var isSaved by remember { mutableStateOf(false) }
 
-    val icon = if (isSaved) {
+    val icon = if (isFavorite) {
         painterResource(R.drawable.saved_product)
     } else {
         painterResource(R.drawable.unsaved_product)
@@ -64,8 +65,7 @@ fun ImageCardWithFavorite(
                 .align(Alignment.TopEnd)
                 .padding(5.dp)
                 .clickable {
-                    isSaved = !isSaved
-                    onFavoritePress(isSaved)
+                    onFavoriteToggle()
                 },
         )
     }

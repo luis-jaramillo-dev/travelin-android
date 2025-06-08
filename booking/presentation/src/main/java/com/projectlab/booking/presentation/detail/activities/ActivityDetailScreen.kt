@@ -23,6 +23,8 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.navigation.NavController
+import com.projectlab.booking.presentation.favorites.FavoritesViewModel
+import com.projectlab.core.data.mapper.toFavoriteActivityEntity
 import com.projectlab.core.presentation.designsystem.component.BottomBookBar
 import com.projectlab.core.presentation.designsystem.component.DescriptionBox
 import com.projectlab.core.presentation.designsystem.component.GalleryDialog
@@ -34,6 +36,7 @@ import com.projectlab.core.presentation.designsystem.theme.spacing
 fun ActivityDetailScreen(
     modifier: Modifier = Modifier,
     activityDetailViewModel: ActivityDetailViewModel,
+    favoritesViewModel: FavoritesViewModel,
     activityId: String,
     navController: NavController,
 ) {
@@ -43,8 +46,13 @@ fun ActivityDetailScreen(
 
     val uiState by activityDetailViewModel.uiState.collectAsState()
 
+    val favoriteIds by favoritesViewModel.favoriteActivityIds.collectAsState()
+    val isFavorite = favoriteIds.contains(activityId)
+
     val onFavoriteClick: () -> Unit = {
-        activityDetailViewModel.updateFavorite()
+        uiState.activity?.let { activity ->
+            favoritesViewModel.toggleFavorite(activity.toFavoriteActivityEntity())
+        }
     }
 
     if (uiState.isLoading) {
@@ -61,6 +69,7 @@ fun ActivityDetailScreen(
             uiState = uiState,
             navController = navController,
             onFavoriteClick = onFavoriteClick,
+            isFavorite = isFavorite,
         )
     }
 }
@@ -70,6 +79,7 @@ fun ActivityDetailScreenComponent(
     modifier: Modifier = Modifier,
     uiState: ActivityDetailUiState,
     navController: NavController,
+    isFavorite: Boolean,
     onFavoriteClick: () -> Unit,
 ) {
     val activity = uiState.activity
@@ -94,19 +104,17 @@ fun ActivityDetailScreenComponent(
                     modifier = Modifier,
                     activity = it,
                     navController = navController,
-                    isFavorite = uiState.isFavorite,
-                    isFavoriteLoading = uiState.isFavoriteLoading,
+                    isFavorite = isFavorite,
                     onFavoriteClick = onFavoriteClick,
                 )
 
                 Spacer(modifier = Modifier.height(MaterialTheme.spacing.ScreenVerticalSpacing))
 
-                if (activity.description.isNotEmpty()) {
-                    DescriptionBox(
-                        modifier = Modifier,
-                        activity = it,
-                    )
-                }
+                DescriptionBox(
+                    modifier = Modifier,
+                    activity = it,
+                )
+
 
                 Spacer(modifier = Modifier.height(MaterialTheme.spacing.ScreenVerticalSpacing))
 

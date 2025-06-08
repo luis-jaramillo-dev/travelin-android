@@ -2,6 +2,11 @@ package com.projectlab.booking.presentation.search.activities
 
 import com.projectlab.core.data.model.ActivityDto
 
+enum class SearchOrigin {
+    QUERY,
+    LOCATION
+}
+
 data class SearchActivityUiState(
     val query: String = "",
     val activities: List<ActivityDto> = emptyList(),
@@ -10,4 +15,5 @@ data class SearchActivityUiState(
     val showAllResults: Boolean = false,
     val address: String? = null,
     val history: List<String> = emptyList(),
+    val searchOrigin: SearchOrigin = SearchOrigin.QUERY
 )

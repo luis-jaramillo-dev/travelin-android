@@ -1,6 +1,7 @@
 package com.projectlab.core.presentation.ui.utils
 
 import android.content.Context
+import com.projectlab.core.domain.use_cases.error.ErrorMapper
 import com.projectlab.core.domain.util.DataError
 import com.projectlab.core.presentation.designsystem.R
 import dagger.hilt.android.qualifiers.ApplicationContext
@@ -8,10 +9,10 @@ import javax.inject.Inject
 import javax.inject.Singleton
 
 @Singleton
-class ErrorMapper @Inject constructor(
+open class ErrorMapperImpl @Inject constructor(
     @ApplicationContext private val context: Context
-) {
-    fun map(error: DataError.Network): String {
+) : ErrorMapper {
+    override fun map(error: DataError.Network): String {
         return when (error) {
             DataError.Network.NO_INTERNET -> context.getString(R.string.error_no_internet)
             DataError.Network.UNAUTHORIZED -> context.getString(R.string.error_unauthorized)
