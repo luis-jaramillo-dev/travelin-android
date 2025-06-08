@@ -10,7 +10,6 @@ import com.projectlab.core.domain.entity.FlightEntity
 import com.projectlab.core.domain.entity.FlightSegmentEntity
 import com.projectlab.core.domain.entity.HotelEntity
 import com.projectlab.core.domain.entity.ItineraryEntity
-import com.projectlab.core.domain.entity.UserEntity
 import com.projectlab.core.domain.model.EntityId
 import dagger.hilt.android.lifecycle.HiltViewModel
 import jakarta.inject.Inject
@@ -25,6 +24,7 @@ import com.projectlab.core.domain.repository.ActivityRepository
 import com.projectlab.core.domain.repository.FlightRepository
 import com.projectlab.core.domain.repository.HotelsRepository
 import com.projectlab.core.domain.repository.ItineraryRepository
+import com.projectlab.core.domain.repository.UserSessionProvider
 import com.projectlab.core.domain.repository.UsersRepository
 import java.util.UUID
 
@@ -43,7 +43,7 @@ class BookingViewModelTest @Inject constructor(
     private val flightRepo: FlightRepository,
     private val hotelRepo: HotelsRepository,
     private val activityRepo: ActivityRepository,
-    // TODO : add other repositories as needed: flight, hotel, etc.
+    private val userSessionProvider: UserSessionProvider
 ) : ViewModel() {
 
     // we define a state in order to inform the UI about the data was successfully loaded or not
@@ -66,11 +66,11 @@ class BookingViewModelTest @Inject constructor(
         // Hardcode user data
         val user = User(
             id = randomUserId, // unique ID, could be generated or hardcoded for testing
-            firstName = "SHEEV",
-            lastName = "PALPATINE SIDIUS",
+            firstName = "SHEEV PALPATINE 9500",
+            lastName = "PALPATINE the 9000",
             countryCode = "66",
-            phoneNumber = "141515151514",
-            email = "THEREVENGEOFTHESITH@gmail.com",
+            phoneNumber = "807080",
+            email = "THESITH@gmail.com",
             age = "81"
         )
 
@@ -84,17 +84,23 @@ class BookingViewModelTest @Inject constructor(
             return@launch
         }
 
+        // We store the user ID in the session provider
+        userSessionProvider.setUserSessionId(randomUserId)
+
+        // We show the user ID in the logs
+        Log.d(TAG, "✔ User created with ID: $randomUserId")
+
+
         // We get the user ID from the result
         val userId = EntityId(randomUserId)
 
         // 2) We create a Itinerary:
         val itinerary = ItineraryEntity(
             id                  = "",
-            title = "Trip to the last empire...",
+            title = "Trip to saturn, earth and the sun :)",
             startDate = Instant.now(),
             endDate = Instant.now().plusSeconds(2592000),
             totalItineraryPrice = 9000.0,
-            userRef = userId
         )
 
         // We create the itinerary in Firestore through the repository
@@ -109,9 +115,9 @@ class BookingViewModelTest @Inject constructor(
 
         // 3) We create a flight:
         val flight = FlightEntity(
-            airline = "quatar airways",
+            airline = "space airline",
             flightNumber = "600",
-            flightClass = "premium",
+            flightClass = "super premium",
             departureAirport = mapOf(
                 "airportCodeRef" to "CHI", // TODO: Add id form firestore
                 "time" to Timestamp(Date(System.currentTimeMillis()))
@@ -127,12 +133,10 @@ class BookingViewModelTest @Inject constructor(
                 "babiesInArmsNumber" to 1
             ),
             price = 4000.0,
-            userRef = userId,
-            itineraryRef = itineraryId
         )
 
         // We create the flight in Firestore through the repository
-        val flightRes = flightRepo.createFlight(flight)
+        val flightRes = flightRepo.createFlight(itineraryId.value, flight)
         if (flightRes.isFailure) {
             _seedResult.value = Result.failure(flightRes.exceptionOrNull()!!)
             return@launch
@@ -143,8 +147,8 @@ class BookingViewModelTest @Inject constructor(
 
         // 4) We create a FlightSegment:
         val flightSegment = FlightSegmentEntity(
-            departureAirportCodeRef = EntityId("MEX"), // TODO: Add id form firestore
-            arrivalAirportCodeRef = EntityId("USA"), // TODO: Add id form firestore
+            departureAirportCodeRef = EntityId("MMM"), // TODO: Add id form firestore
+            arrivalAirportCodeRef = EntityId("GEM"), // TODO: Add id form firestore
             departureTime = Instant.now(),
             arrivalTime = Instant.now().plusSeconds(7200),
             requiresPlaneChange = false,
@@ -153,13 +157,14 @@ class BookingViewModelTest @Inject constructor(
                 "nextFlightNumber" to "500",
                 "connectionGate" to "A1"
             ),
-            userRef = userId,
-            itineraryRef = itineraryId,
-            flightRef = flightId
         )
 
         // We create the flight segment in Firestore through the repository
-        val flightSegmentRes = flightRepo.createFlightSegment(flightSegment)
+        val flightSegmentRes = flightRepo.createFlightSegment(
+            itineraryId.value,
+            flightId.value,
+            flightSegment,
+        )
         if (flightSegmentRes.isFailure) {
             _seedResult.value = Result.failure(flightSegmentRes.exceptionOrNull()!!)
             return@launch
@@ -167,7 +172,7 @@ class BookingViewModelTest @Inject constructor(
 
         // 5) We create a Hotel:
         val hotel = HotelEntity(
-            hotelName = "Hotel of the Dark Side",
+            hotelName = "Hotel in the death star",
             hotelRoomNumber = 30,
             hotelPhone = 2222,
             locationRef = EntityId("location459"), // TODO: Add id form firestore
@@ -177,12 +182,10 @@ class BookingViewModelTest @Inject constructor(
             checkInDate = Instant.now(),
             checkOutDate = Instant.now().plusSeconds(86400),
             hotelPrice = 1500.0,
-            userRef = userId,
-            itineraryRef = itineraryId
         )
 
         // We create the hotel in Firestore through the repository
-        val hotelRes = hotelRepo.createHotel(hotel)
+        val hotelRes = hotelRepo.createHotel(itineraryId.value, hotel)
         if (hotelRes.isFailure) {
             _seedResult.value = Result.failure(hotelRes.exceptionOrNull()!!)
             return@launch
@@ -191,16 +194,16 @@ class BookingViewModelTest @Inject constructor(
         // 6) We create an Activity:
         val activity = ActivityEntity(
             name = "Visit to the death star",
-            locationRef = EntityId("location789"), // TODO: Add id form firestore
+            latitude = 10.0,
+            longitude = 400.0,
             activityDate = Instant.now(),
-            details = "Discover the history of the empire and its most powerful weapon.",
-            activityPrice = 40.0,
-            userRef = userId,
-            itineraryRef = itineraryId
+            description = "Discover the history of the empire and its most powerful weapon.",
+            amount = "1000.0",
+            currencyCode = "USD",
         )
 
         // We create the activity in Firestore through the repository
-        val activityRes = activityRepo.createActivity(activity)
+        val activityRes = activityRepo.createActivity(itineraryId.value, activity)
         if (activityRes.isFailure) {
             _seedResult.value = Result.failure(activityRes.exceptionOrNull()!!)
             return@launch
@@ -212,45 +215,60 @@ class BookingViewModelTest @Inject constructor(
     }
     
     // Launches the collection of all itineraries for a user:
-    fun fetchAllItineraries(userId: String) = viewModelScope.launch {
-        try {
-            itineraryRepo.getAllItineraries(userId)
-                .collect { list ->
-                    _itineraries.value = list
-                    if (list.isEmpty()) {
-                        Log.d(TAG, "❌ No itineraries found for user: $userId")
-                    } else {
-                        Log.d(TAG, "✔ Fetched ${list.size} itineraries for user: $userId")
-                    }
-                }
+    fun fetchAllItineraries() = viewModelScope.launch {
+        // Get the userId from the session provider
+        val userId = userSessionProvider.getUserSessionId()
+            ?: throw NullPointerException("userId is null")
+        // We call to the repository to get all itineraries for the user
+        val result = itineraryRepo.getAllItineraries(userId)
 
-        } catch (e: Exception) {
-            _seedResult.value = Result.failure(e) // indicate failure
+        if (result.isSuccess) {
+            // If it was successful, we extract the list (it can be null, so we use ?: emptyList())
+            val listOfItins: List<ItineraryEntity> = result.getOrThrow() ?: emptyList()
+            _itineraries.value = listOfItins // update the state with the list of itineraries
+
+            if (listOfItins.isEmpty()) {
+                Log.d(TAG, "❌ No itineraries found for user: $userId")
+            } else {
+                Log.d(TAG, "✔ Fetched ${listOfItins.size} itineraries for user: $userId")
+            }
+        } else {
+            // If the result is a failure, we log the error and update the state
+            val ex = result.exceptionOrNull() ?: RuntimeException(
+                "❓ Unknown error fetching itineraries."
+            )
+            _seedResult.value = Result.failure(ex) // indicate failure
             // log the error
-            e.printStackTrace()
-            Log.e(TAG, "🚨 Error fetching itineraries for user: $userId", e)
-
+            Log.e(TAG, "🚨 Error fetching itineraries for user: $userId", ex)
         }
     }
 
     // Launches the collection of a single itinerary by ID:
-    fun fetchItineraryById(userId: String, itinId: String) = viewModelScope.launch {
-        try {
-            itineraryRepo.getItineraryById(userId, itinId)
-                .collect { entity ->
-                    _itinerary.value = entity
-                    if (entity == null) {
-                        Log.d(TAG, "❌ No itinerary found for user: $userId with ID: $itinId")
-                    } else {
-                        Log.d(TAG, "✔ Fetched itinerary for user: $userId with ID: $itinId")
-                    }
-                }
+    fun fetchItineraryById(itinId: String) = viewModelScope.launch {
+        // Get the userId from the session provider
+        val userId = userSessionProvider.getUserSessionId()
+            ?: throw NullPointerException("userId is null")
+        // We call to the repository to get the itinerary by ID
+        val result = itineraryRepo.getItineraryById(itinId)
+        if (result.isSuccess) {
+            // It can be null if not exists
+            val entity: ItineraryEntity? = result.getOrNull()
+            _itinerary.value = entity
 
-        } catch (e: Exception) {
-            _seedResult.value = Result.failure(e) // indicate failure
+            if(entity == null) {
+                Log.d(TAG, "❌ No itinerary found for user: $userId with ID: $itinId")
+            } else {
+                Log.d(TAG, "✔ Fetched itinerary for user: $userId with ID: $itinId")
+            }
+        }
+        else {
+            // If the result is a failure, we log the error and update the state
+            val ex = result.exceptionOrNull() ?: RuntimeException(
+                "❓ Unknown error fetching itinerary by ID."
+            )
+            _seedResult.value = Result.failure(ex) // indicate failure
             // log the error
-            e.printStackTrace()
-            Log.e(TAG, "🚨 Error fetching itinerary for user: $userId with ID: $itinId", e)
+            Log.e(TAG, "🚨 Error fetching itinerary for user: $userId with ID: $itinId", ex)
         }
     }
 }

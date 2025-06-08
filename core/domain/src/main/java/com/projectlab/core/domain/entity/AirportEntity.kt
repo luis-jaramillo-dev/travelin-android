@@ -10,5 +10,5 @@ data class AirportEntity(
     val city : String = "",
     val country : String = "",
     val timeZone : String = "",
-    val locationRef : EntityId
+    // val locationRef : EntityId
 )

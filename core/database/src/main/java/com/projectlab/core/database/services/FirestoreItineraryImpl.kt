@@ -6,6 +6,7 @@ import com.google.firebase.firestore.FirebaseFirestore
 import com.projectlab.core.database.dto.FirestoreItineraryDTO
 import com.projectlab.core.domain.model.EntityId
 import com.projectlab.core.domain.entity.ItineraryEntity
+import com.projectlab.core.domain.repository.UserSessionProvider
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.tasks.await
@@ -16,18 +17,27 @@ import javax.inject.Inject
  * It uses Firebase Firestore to perform CRUD operations on itinerary data.
  *
  * @param firestore The FirebaseFirestore instance used to interact with Firestore.
+ * @param userSessionProvider The UserSessionProvider instance used
+ * to get the current user's session ID.
+ *
+ * @author ricardoceadev
  */
 
 class FirestoreItineraryImpl @Inject constructor (
-    private val firestore: FirebaseFirestore
+    private val firestore: FirebaseFirestore,
+    private val userSessionProvider: UserSessionProvider,
 ) : FirestoreItinerary {
     private val usersCol = firestore.collection("Users")
 
     @RequiresApi(Build.VERSION_CODES.O)
-    override suspend fun createItinerary(itinerary: ItineraryEntity): Result<EntityId> = runCatching {
+    override suspend fun createItinerary(
+        itinerary: ItineraryEntity
+    ): Result<EntityId> = runCatching {
+        // Get the userId from the session provider
+        val userId = userSessionProvider.getUserSessionId()
+            ?: throw NullPointerException("userId is null")
         // user reference:
-        var userDocRef = usersCol.document(itinerary.userRef?.value
-            ?: throw IllegalArgumentException("userRef is null"))
+        var userDocRef = usersCol.document(userId)
         // create dto:
         val dto = FirestoreItineraryDTO.fromDomain(itinerary)
         // add to firestore:
@@ -39,9 +49,11 @@ class FirestoreItineraryImpl @Inject constructor (
     }
 
     override suspend fun getItinerariesById(
-        userId: String,
-        itineraryId: String
-    ): Flow<ItineraryEntity?> = flow {
+        itineraryId: String,
+    ): Result<ItineraryEntity?> = runCatching {
+        // Get the userId from the session provider
+        val userId = userSessionProvider.getUserSessionId()
+            ?: throw NullPointerException("userId is null")
         // we get the snapshot and map it to the DTO
         // If the snapshot exists, we map to domain, convert it to a ItineraryEntity and emit
         // Otherwise, we emit null
@@ -50,16 +62,21 @@ class FirestoreItineraryImpl @Inject constructor (
             .get().await()
         if (snap.exists()) {
             val dto = snap.toObject(FirestoreItineraryDTO::class.java)
-            emit(dto?.toDomain(
+            (dto?.toDomain(
                 docId = snap.id,
                 userRef =  EntityId(userId))
             )
         } else {
-            emit(null)
+            (null)
         }
     }
 
-    override suspend fun getAllItinerariesForUser(userId: String): Flow<List<ItineraryEntity>> = flow {
+    override suspend fun getAllItinerariesForUser(
+        userId: String
+    ): Result<List<ItineraryEntity>> = runCatching {
+        // Get the userId from the session provider
+        val userId = userSessionProvider.getUserSessionId()
+            ?: throw NullPointerException("userId is null")
         // Fetch all itineraries for a user
         // Route to the itineraries collection of the user
         val snaps = usersCol.document(userId)
@@ -73,14 +90,16 @@ class FirestoreItineraryImpl @Inject constructor (
                     userRef = EntityId(userId)
                 )
         }
-        emit(list)
+        (list)
     }
 
     @RequiresApi(Build.VERSION_CODES.O)
-    override suspend fun updateItinerary(itinerary: ItineraryEntity): Result<Unit> = runCatching {
-        // We retrieve the userId from the object reference
-        val userId = itinerary.userRef?.value
-            ?: throw IllegalArgumentException("userRef is null")
+    override suspend fun updateItinerary(
+        itinerary: ItineraryEntity,
+    ): Result<Unit> = runCatching {
+        // Get the userId from the session provider
+        val userId = userSessionProvider.getUserSessionId()
+            ?: throw NullPointerException("userId is null")
 
         // Reconstruct the document routes/references:
         val userDocRef = usersCol.document(userId) // we don't used it still
@@ -91,15 +110,19 @@ class FirestoreItineraryImpl @Inject constructor (
         )
 
         // Overwrite, set() the specific itinerary document. TODO: handle errors.
-        usersCol.document(userId)
+        // usersCol.document(userId)
+        userDocRef
             .collection("Itineraries").document(itinerary.id)
             .set(dto).await()
     }
 
     override suspend fun deleteItinerary(
-        userId: String,
         itineraryId: String
     ): Result<Unit> = runCatching {
+        // Get the userId from the session provider
+        val userId = userSessionProvider.getUserSessionId()
+            ?: throw NullPointerException("userId is null")
+        // Delete the itinerary document for the user
         usersCol.document(userId)
             .collection("Itineraries").document(itineraryId)
             .delete().await()

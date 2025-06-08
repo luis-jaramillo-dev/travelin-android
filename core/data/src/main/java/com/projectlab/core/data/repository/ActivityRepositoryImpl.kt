@@ -9,6 +9,7 @@ import com.projectlab.core.domain.entity.FavoriteActivityEntity
 import com.projectlab.core.domain.model.Activity
 import com.projectlab.core.domain.model.EntityId
 import com.projectlab.core.domain.repository.ActivityRepository
+import com.projectlab.core.domain.repository.UserSessionProvider
 import com.projectlab.core.domain.util.DataError
 import com.projectlab.core.domain.util.Result
 import kotlinx.coroutines.flow.Flow
@@ -20,45 +21,52 @@ import javax.inject.Inject
  * ActivityRepositoryImpl is a concrete implementation of the ActivityRepository interface.
  * It provides methods to interact with activities in Data Bases and external APIs.
  *
+ * @param firestoreActivity The FirestoreActivity instance used for Firestore operations.
  * @param firestore The FirebaseFirestore instance used to interact with Firestore.
  * @param activityApiService The ActivityApiService instance used to fetch
  * activities from an external API.
+ * @param userSessionProvider The UserSessionProvider instance used to manage user sessions.
+ *
  */
 
 class ActivityRepositoryImpl @Inject constructor(
     private val firestoreActivity: FirestoreActivity,
     private val firestore: FirebaseFirestore,
     private val activityApiService: ActivityApiService,
+    private val userSessionProvider: UserSessionProvider,
 ) : ActivityRepository {
-    override suspend fun createActivity(activity: ActivityEntity): kotlin.Result<EntityId> {
-        return firestoreActivity.createActivity(activity)
+    override suspend fun createActivity(
+        itinId: String,
+        activity: ActivityEntity
+    ): kotlin.Result<EntityId> {
+        return firestoreActivity.createActivity(itinId, activity)
     }
 
     override suspend fun getActivityById(
-        userId: String,
         itinId: String,
         activityId: String
-    ): Flow<ActivityEntity?> {
-        return firestoreActivity.getActivityById(userId, itinId, activityId)
+    ): kotlin.Result<ActivityEntity?> {
+        return firestoreActivity.getActivityById(itinId, activityId)
     }
 
     override suspend fun getAllActivities(
-        userId: String,
         itinId: String
-    ): Flow<List<ActivityEntity>> {
-        return firestoreActivity.getAllActivitiesForItinerary(userId, itinId)
+    ): kotlin.Result<List<ActivityEntity>> {
+        return firestoreActivity.getAllActivitiesForItinerary(itinId)
     }
 
-    override suspend fun updateActivity(activity: ActivityEntity): kotlin.Result<Unit> {
-        return firestoreActivity.updateActivity(activity)
+    override suspend fun updateActivity(
+        itinId: String,
+        activity: ActivityEntity
+    ): kotlin.Result<Unit> {
+        return firestoreActivity.updateActivity(itinId, activity)
     }
 
     override suspend fun deleteActivity(
-        userId: String,
         itinId: String,
         activityId: String
     ): kotlin.Result<Unit> {
-        return firestoreActivity.deleteActivity(userId, itinId, activityId)
+        return firestoreActivity.deleteActivity(itinId, activityId)
     }
 
     override suspend fun getAPIActivityById(
@@ -76,9 +84,12 @@ class ActivityRepositoryImpl @Inject constructor(
 
 
     override fun queryFavoriteActivities(
-        userId: String,
         nameQuery: String?,
     ): Flow<FavoriteActivityEntity> = flow {
+
+        val userId = userSessionProvider.getUserSessionId()
+            ?: throw NullPointerException("userId is null")
+
         val userDoc = firestore
             .collection("Users")
             .document(userId)
@@ -104,6 +115,11 @@ class ActivityRepositoryImpl @Inject constructor(
     override fun getFavoriteActivities(
         userId: String
     ): Flow<List<FavoriteActivityEntity>> = flow {
+
+        // TODO: We should collect the userId from the session provider
+/*        val userId = userSessionProvider.getUserSessionId()
+            ?: throw NullPointerException("userId is null")*/
+
         val userDoc = firestore
             .collection("Users")
             .document(userId)
@@ -121,9 +137,12 @@ class ActivityRepositoryImpl @Inject constructor(
     }
 
     override suspend fun isFavoriteActivity(
-        userId: String,
         activityId: String,
     ): kotlin.Result<Boolean> = runCatching {
+        // We collect the userId from the session provider
+        val userId = userSessionProvider.getUserSessionId()
+            ?: throw NullPointerException("userId is null")
+
         val userDoc = firestore
             .collection("Users")
             .document(userId)
@@ -138,9 +157,12 @@ class ActivityRepositoryImpl @Inject constructor(
     }
 
     override suspend fun saveFavoriteActivity(
-        userId: String,
         activity: FavoriteActivityEntity,
     ): kotlin.Result<Unit> = runCatching {
+
+        val userId = userSessionProvider.getUserSessionId()
+            ?: throw NullPointerException("userId is null")
+
         val userDoc = firestore
             .collection("Users")
             .document(userId)
@@ -151,9 +173,12 @@ class ActivityRepositoryImpl @Inject constructor(
     }
 
     override suspend fun removeFavoriteActivityById(
-        userId: String,
         activityId: String,
     ): kotlin.Result<Unit> = runCatching {
+
+        val userId = userSessionProvider.getUserSessionId()
+            ?: throw NullPointerException("userId is null")
+
         val userDoc = firestore
             .collection("Users")
             .document(userId)

@@ -13,75 +13,77 @@ import javax.inject.Inject
  * FlightRepositoryImpl is the implementation of the FlightRepository interface.
  * It performs operations on flights using services.
  *
- * @param firestoreFlight The FirestoreFlight service used for database operations.
+ * @param firestoreFlight The FirestoreFlight instance used for Firestore operations.
  */
 
 class FlightRepositoryImpl @Inject constructor (
     private val firestoreFlight: FirestoreFlight
 ) : FlightRepository {
-    override suspend fun createFlight(flight: FlightEntity): Result<EntityId> {
-        return firestoreFlight.createFlight(flight)
+    override suspend fun createFlight(itinId: String, flight: FlightEntity): Result<EntityId> {
+        return firestoreFlight.createFlight(itinId, flight)
     }
 
     override suspend fun getFlightById(
-        userId: String,
         itinId: String,
         flightId: String
-    ): Flow<FlightEntity?> {
-        return firestoreFlight.getFlightById(userId, itinId, flightId)
+    ): Result<FlightEntity?> {
+        return firestoreFlight.getFlightById(itinId, flightId)
     }
 
     override suspend fun getAllFlights(
-        userId: String,
         itinId: String
-    ): Flow<List<FlightEntity>> {
-        return firestoreFlight.getAllFlightsForItinerary(userId, itinId)
+    ): Result<List<FlightEntity>> {
+        return firestoreFlight.getAllFlightsForItinerary(itinId)
     }
 
-    override suspend fun updateFlight(flight: FlightEntity): Result<Unit> {
-        return firestoreFlight.updateFlight(flight)
+    override suspend fun updateFlight(itinId: String, flight: FlightEntity): Result<Unit> {
+        return firestoreFlight.updateFlight(itinId, flight)
     }
 
     override suspend fun deleteFlight(
-        userId: String,
         itinId: String,
         flightId: String
     ): Result<Unit> {
-        return firestoreFlight.deleteFlight(userId, itinId, flightId)
+        return firestoreFlight.deleteFlight(itinId, flightId)
     }
 
-    override suspend fun createFlightSegment(segment: FlightSegmentEntity): Result<EntityId> {
-        return firestoreFlight.createFlightSegment(segment)
+    override suspend fun createFlightSegment(
+        itinId: String,
+        flightId: String,
+        segment: FlightSegmentEntity
+    ): Result<EntityId> {
+        return firestoreFlight.createFlightSegment(itinId, flightId, segment)
     }
 
     override suspend fun getFlightSegmentById(
-        userId: String,
         itinId: String,
         flightId: String,
         segmentId: String
-    ): Flow<FlightSegmentEntity?> {
-        return firestoreFlight.getFlightSegmentById(userId, itinId, flightId, segmentId)
+    ): Result<FlightSegmentEntity?> {
+        return firestoreFlight.getFlightSegmentById(itinId, flightId, segmentId)
     }
 
     override suspend fun getAllFlightSegments(
-        userId: String,
         itinId: String,
         flightId: String
-    ): Flow<List<FlightSegmentEntity>> {
-        return firestoreFlight.getAllFlightSegmentsForFlight(userId, itinId, flightId)
+    ): Result<List<FlightSegmentEntity>> {
+        return firestoreFlight.getAllFlightSegmentsForFlight(itinId, flightId)
     }
 
-    override suspend fun updateFlightSegment(segment: FlightSegmentEntity): Result<Unit> {
-        return firestoreFlight.updateFlightSegment(segment)
+    override suspend fun updateFlightSegment(
+        itinId: String,
+        flightId: String,
+        segment: FlightSegmentEntity
+    ): Result<Unit> {
+        return firestoreFlight.updateFlightSegment(itinId, flightId,segment)
     }
 
     override suspend fun deleteFlightSegment(
-        userId: String,
         itinId: String,
         flightId: String,
         segmentId: String
     ): Result<Unit> {
-        return firestoreFlight.deleteFlightSegment(userId, itinId, flightId, segmentId)
+        return firestoreFlight.deleteFlightSegment(itinId, flightId, segmentId)
     }
 
 }

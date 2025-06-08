@@ -4,7 +4,7 @@ import com.projectlab.core.domain.model.EntityId
 import java.time.Instant
 
 /**
- * FlightEntity represents a flight in the system.
+ * FlightEntity represents a flight in the database system inside the app.
  * @property id Unique identifier for the flight.
  * @property airline Airline operating the flight.
  * @property flightNumber Flight number.
@@ -15,9 +15,6 @@ import java.time.Instant
  * this include "airportCodeRef" for the airport reference and "time" for time arrival.
  * @property passengerNumber Number of passengers (adults, kids, babies with sit, babies in arms).
  * @property price Price of the flight.
- * @property userRef Reference to the user associated with the itinerary, that is associated with
- * the flight.
- * @property itineraryRef Reference to the itinerary associated with the flight.
  *
  * @author ricardoceadev
  */
@@ -42,7 +39,5 @@ data class FlightEntity(
         "babiesWithSitNumber" to 0,
         "babiesInArmsNumber" to 0
     ),
-    val price: Double = 0.0,
-    val userRef: EntityId? = null,
-    val itineraryRef: EntityId? = null
+    val price: Double = 0.0
 )

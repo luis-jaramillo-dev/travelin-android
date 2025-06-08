@@ -7,15 +7,7 @@ import javax.inject.Inject
 
 class RemoveFavoriteActivityByIdUseCaseImpl @Inject constructor(
     private val activitiesRepository: ActivityRepository,
-    private val userSessionProvider: UserSessionProvider,
 ) : RemoveFavoriteActivityByIdUseCase {
-    override suspend fun invoke(activityId: String): Result<Unit> = runCatching {
-        val userId = userSessionProvider.getUserSessionId()
-
-        if (userId == null) {
-            return Result.failure(NullPointerException("userId is null"))
-        }
-
-        activitiesRepository.removeFavoriteActivityById(userId, activityId)
-    }
+    override suspend fun invoke(activityId: String): Result<Unit> =
+        activitiesRepository.removeFavoriteActivityById(activityId)
 }

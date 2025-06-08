@@ -7,15 +7,8 @@ import javax.inject.Inject
 
 class IsFavoriteActivityUseCaseImpl @Inject constructor(
     private val activitiesRepository: ActivityRepository,
-    private val userSessionProvider: UserSessionProvider,
 ) : IsFavoriteActivityUseCase {
-    override suspend fun invoke(activityId: String): Result<Boolean> = runCatching {
-        val userId = userSessionProvider.getUserSessionId()
+    override suspend fun invoke(activityId: String): Result<Boolean> =
+        activitiesRepository.isFavoriteActivity(activityId)
 
-        if (userId == null) {
-            return Result.failure(NullPointerException("userId is null"))
-        }
-
-        activitiesRepository.isFavoriteActivity(userId, activityId).getOrThrow()
-    }
 }

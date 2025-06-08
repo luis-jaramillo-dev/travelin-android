@@ -10,6 +10,7 @@ import com.projectlab.core.database.dto.FirestoreFlightSegmentDTO
 import com.projectlab.core.domain.model.EntityId
 import com.projectlab.core.domain.entity.FlightEntity
 import com.projectlab.core.domain.entity.FlightSegmentEntity
+import com.projectlab.core.domain.repository.UserSessionProvider
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 
@@ -18,22 +19,33 @@ import kotlinx.coroutines.flow.flow
  * It uses Firestore to perform CRUD operations on flight data.
  *
  * @param firestore The FirebaseFirestore instance used to interact with Firestore.
+ * @param userSessionProvider The UserSessionProvider instance
+ * used to get the current user's session ID.
+ *
+ * @author ricardoceadev
  */
 
 class FirestoreFlightImpl @Inject constructor (
-    private val firestore: FirebaseFirestore
+    private val firestore: FirebaseFirestore,
+    private val userSessionProvider: UserSessionProvider,
 ) : FirestoreFlight {
 
     @RequiresApi(Build.VERSION_CODES.O)
-    override suspend fun createFlight(flight: FlightEntity): Result<EntityId> = runCatching {
+    override suspend fun createFlight(
+        itinId: String,
+        flight: FlightEntity
+    ): Result<EntityId> = runCatching {
+        // Get the user ID from the session provider
+        val userId = userSessionProvider.getUserSessionId()
+            ?: throw NullPointerException("userId is null")
         // user reference:
         var userDocRef = firestore
             .collection("Users")
-            .document(flight.userRef?.value ?: throw IllegalArgumentException("userRef is null"))
+            .document(userId)
         // itinerary reference:
         var itineraryDocRef = userDocRef
             .collection("Itineraries")
-            .document(flight.itineraryRef?.value ?: throw IllegalArgumentException("itineraryRef is null"))
+            .document(itinId)
         // departure airport reference:
         var airportDepartureDocRef = firestore
             .collection("Airports")
@@ -62,10 +74,12 @@ class FirestoreFlightImpl @Inject constructor (
     }
 
     override suspend fun getFlightById(
-        userId: String,
         itinId: String,
         flightId: String
-    ): Flow<FlightEntity?> = flow {
+    ): Result<FlightEntity?> = runCatching {
+        // Get the user ID from the session provider
+        val userId = userSessionProvider.getUserSessionId()
+            ?: throw NullPointerException("userId is null")
         // Get the document reference for the flight
         val docRef = firestore
             .collection("Users").document(userId)
@@ -77,7 +91,7 @@ class FirestoreFlightImpl @Inject constructor (
         val snap = docRef.get().await()
         if (snap.exists()) {
             val dto = snap.toObject(FirestoreFlightDTO::class.java)
-            emit(
+            (
                 dto?.toDomain(
                     docId = snap.id,
                     userRef = EntityId(userId),
@@ -85,14 +99,16 @@ class FirestoreFlightImpl @Inject constructor (
                 )
             )
         } else {
-            emit(null)
+            (null)
         }
     }
 
     override suspend fun getAllFlightsForItinerary(
-        userId: String,
         itinId: String
-    ): Flow<List<FlightEntity>> = flow {
+    ): Result<List<FlightEntity>> = runCatching {
+        // Get the user ID from the session provider
+        val userId = userSessionProvider.getUserSessionId()
+            ?: throw NullPointerException("userId is null")
         // route to the Flights collection for the given user and itinerary
         val snaps = firestore
             .collection("Users").document(userId)
@@ -108,20 +124,20 @@ class FirestoreFlightImpl @Inject constructor (
                     itineraryRef = EntityId(itinId)
                 )
         }
-        emit(list)
+        (list)
     }
 
     @RequiresApi(Build.VERSION_CODES.O)
-    override suspend fun updateFlight(flight: FlightEntity): Result<Unit> = runCatching {
-        // We retrieve the userId and itineraryId from the object reference
-        val userId = flight.userRef?.value
-            ?: throw IllegalArgumentException("userRef is null")
-        val itineraryId = flight.itineraryRef?.value
-            ?: throw IllegalArgumentException("itineraryRef is null")
-
+    override suspend fun updateFlight(
+        itinId: String,
+        flight: FlightEntity
+    ): Result<Unit> = runCatching {
+        // Get the user ID from the session provider
+        val userId = userSessionProvider.getUserSessionId()
+            ?: throw NullPointerException("userId is null")
         // Reconstruct the document routes:
         val userDocRef = firestore.collection("Users").document(userId)
-        val itineraryDocRef = userDocRef.collection("Itineraries").document(itineraryId)
+        val itineraryDocRef = userDocRef.collection("Itineraries").document(itinId)
 
         // Convert to DTO:
         val dto = FirestoreFlightDTO.fromDomain(
@@ -137,18 +153,22 @@ class FirestoreFlightImpl @Inject constructor (
         )
 
         // Overwrite, set() the specific flight document. TODO: handle errors.
-        firestore.collection("Users").document(userId)
-            .collection("Itineraries").document(itineraryId)
+//        firestore.collection("Users").document(userId)
+//            .collection("Itineraries").document(itinId)
+        itineraryDocRef
             .collection("Flights").document(flight.id)
             .set(dto).await()
 
     }
 
     override suspend fun deleteFlight(
-        userId: String,
         itinId: String,
         flightId: String
     ): Result<Unit> = runCatching {
+        // Get the user ID from the session provider
+        val userId = userSessionProvider.getUserSessionId()
+            ?: throw NullPointerException("userId is null")
+        // Delete the flight document by ID:
         firestore.collection("Users").document(userId)
             .collection("Itineraries").document(itinId)
             .collection("Flights").document(flightId)
@@ -156,23 +176,26 @@ class FirestoreFlightImpl @Inject constructor (
     }
 
     @RequiresApi(Build.VERSION_CODES.O)
-    override suspend fun createFlightSegment(flightSegment: FlightSegmentEntity
+    override suspend fun createFlightSegment(
+        itinId: String,
+        flightId: String,
+        flightSegment: FlightSegmentEntity
     ): Result<EntityId> = runCatching {
+        // Get the user ID from the session provider
+        val userId = userSessionProvider.getUserSessionId()
+            ?: throw NullPointerException("userId is null")
         // user reference:
         var userDocRef = firestore
             .collection("Users")
-            .document(flightSegment.userRef?.value ?:
-            throw IllegalArgumentException("userRef is null"))
+            .document(userId)
         // itinerary reference:
         var itineraryDocRef = userDocRef
             .collection("Itineraries")
-            .document(flightSegment.itineraryRef?.value ?:
-            throw IllegalArgumentException("itineraryRef is null"))
+            .document(itinId)
         // flight reference:
         var flightDocRef = itineraryDocRef
             .collection("Flights")
-            .document(flightSegment.flightRef?.value ?:
-            throw IllegalArgumentException("flightRef is null"))
+            .document(flightId)
         // departure airport reference:
         var airportDepartureDocRef = firestore
             .collection("Airports")
@@ -201,11 +224,13 @@ class FirestoreFlightImpl @Inject constructor (
     }
 
     override suspend fun getFlightSegmentById(
-        userId: String,
         itinId: String,
         flightId: String,
         segmentId: String
-    ): Flow<FlightSegmentEntity?> = flow {
+    ): Result<FlightSegmentEntity?> = runCatching {
+        // Get the user ID from the session provider
+        val userId = userSessionProvider.getUserSessionId()
+            ?: throw NullPointerException("userId is null")
         // Get the document reference for the flight segment
         val docRef = firestore
             .collection("Users").document(userId)
@@ -219,7 +244,7 @@ class FirestoreFlightImpl @Inject constructor (
         val snap = docRef.get().await()
         if (snap.exists()) {
             val dto = snap.toObject(FirestoreFlightSegmentDTO::class.java)
-            emit(
+            (
                 dto?.toDomain(
                     docId = snap.id,
                     userRef = EntityId(userId),
@@ -228,15 +253,17 @@ class FirestoreFlightImpl @Inject constructor (
                 )
             )
         } else {
-            emit(null)
+            (null)
         }
     }
 
     override suspend fun getAllFlightSegmentsForFlight(
-        userId: String,
         itinId: String,
         flightId: String
-    ): Flow<List<FlightSegmentEntity>> = flow {
+    ): Result<List<FlightSegmentEntity>> = runCatching {
+        // Get the user ID from the session provider
+        val userId = userSessionProvider.getUserSessionId()
+            ?: throw NullPointerException("userId is null")
         // Route to the FlightSegments collection for the given user, itinerary and flight
         val snaps = firestore
             .collection("Users").document(userId)
@@ -254,24 +281,21 @@ class FirestoreFlightImpl @Inject constructor (
                     flightRef = EntityId(flightId)
                 )
         }
-        emit(list)
+        (list)
     }
 
     @RequiresApi(Build.VERSION_CODES.O)
     override suspend fun updateFlightSegment(
+        itinId: String,
+        flightId: String,
         flightSegment: FlightSegmentEntity
     ): Result<Unit> = runCatching {
-        // We retrieve the userId, itineraryId and flightId from the object reference
-        val userId = flightSegment.userRef?.value
-            ?: throw IllegalArgumentException("userRef is null")
-        val itineraryId = flightSegment.itineraryRef?.value
-            ?: throw IllegalArgumentException("itineraryRef is null")
-        val flightId = flightSegment.flightRef?.value
-            ?: throw IllegalArgumentException("flightRef is null")
-
+        // Get the user ID from the session provider
+        val userId = userSessionProvider.getUserSessionId()
+            ?: throw NullPointerException("userId is null")
         // Reconstruct the document routes/references:
         val userDocRef = firestore.collection("Users").document(userId)
-        val itineraryDocRef = userDocRef.collection("Itineraries").document(itineraryId)
+        val itineraryDocRef = userDocRef.collection("Itineraries").document(itinId)
         val flightDocRef = itineraryDocRef.collection("Flights").document(flightId)
 
         // Convert to DTO:
@@ -289,19 +313,23 @@ class FirestoreFlightImpl @Inject constructor (
         )
 
         // Overwrite, set() the specific flight segment document. TODO: handle errors.
-        firestore.collection("Users").document(userId)
-            .collection("Itineraries").document(itineraryId)
-            .collection("Flights").document(flightId)
+//        firestore.collection("Users").document(userId)
+//            .collection("Itineraries").document(itinId)
+//            .collection("Flights").document(flightId)
+        flightDocRef
             .collection("FlightSegments").document(flightSegment.id)
             .set(dto).await()
     }
 
     override suspend fun deleteFlightSegment(
-        userId: String,
         itinId: String,
         flightId: String,
         segmentId: String
     ): Result<Unit> = runCatching {
+        // Get the user ID from the session provider
+        val userId = userSessionProvider.getUserSessionId()
+            ?: throw NullPointerException("userId is null")
+        // Delete the flight segment document by ID:
         firestore.collection("Users").document(userId)
             .collection("Itineraries").document(itinId)
             .collection("Flights").document(flightId)

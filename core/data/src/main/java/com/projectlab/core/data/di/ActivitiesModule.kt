@@ -9,6 +9,7 @@ import com.projectlab.core.data.usecase.RemoveFavoriteActivityByIdUseCaseImpl
 import com.projectlab.core.data.usecase.SaveFavoriteActivityUseCaseImpl
 import com.projectlab.core.database.services.FirestoreActivity
 import com.projectlab.core.domain.repository.ActivityRepository
+import com.projectlab.core.domain.repository.UserSessionProvider
 import com.projectlab.core.domain.use_cases.activities.IsFavoriteActivityUseCase
 import com.projectlab.core.domain.use_cases.activities.QueryFavoriteActivitiesUseCase
 import com.projectlab.core.domain.use_cases.activities.RemoveFavoriteActivityByIdUseCase
@@ -26,8 +27,9 @@ object ActivitiesModule {
         firestoreActivity: FirestoreActivity,
         firestore: FirebaseFirestore,
         apiService: ActivityApiService,
+        userSessionProvider: UserSessionProvider,
     ): ActivityRepository {
-        return ActivityRepositoryImpl(firestoreActivity, firestore, apiService)
+        return ActivityRepositoryImpl(firestoreActivity, firestore, apiService, userSessionProvider)
     }
 
     @Provides

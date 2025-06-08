@@ -50,7 +50,6 @@ data class FirestoreItineraryDTO (
             startDate = Instant.ofEpochMilli(startDate.toDate().time),
             endDate = Instant.ofEpochMilli(endDate.toDate().time),
             totalItineraryPrice = totalItineraryPrice,
-            userRef = userRef
         )
 
 }
