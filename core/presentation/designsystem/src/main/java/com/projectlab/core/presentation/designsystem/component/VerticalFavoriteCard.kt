@@ -39,6 +39,7 @@ fun VerticalFavoriteCard(
     location: String,
     rating: Float,
     pictureUrl: String?,
+    isFavorite: Boolean,
     onFavoriteClick: () -> Unit,
     onClick: () -> Unit,
     modifier: Modifier = Modifier,
@@ -49,6 +50,13 @@ fun VerticalFavoriteCard(
     val interactionSource = remember { MutableInteractionSource() }
 
     val placeholder = painterResource(R.drawable.tourimageplaceholder)
+
+    val favoriteIcon = if (isFavorite) {
+        painterResource(R.drawable.saved_product)
+    } else {
+        painterResource(R.drawable.unsaved_product)
+    }
+
 
     val painter = rememberAsyncImagePainter(
         model = pictureUrl ?: placeholder.toString(),
@@ -91,7 +99,7 @@ fun VerticalFavoriteCard(
             )
 
             Image(
-                painter = painterResource(R.drawable.saved_product),
+                painter = favoriteIcon,
                 contentDescription = stringResource(R.string.remove_favorite),
                 modifier = Modifier
                     .size(favoriteButtonSize + favoriteButtonPadding * 2)
@@ -155,6 +163,7 @@ fun VerticalFavoriteCard(
                     color = MaterialTheme.colorScheme.onSurfaceVariant,
                 ),
                 overflow = TextOverflow.Ellipsis,
+                maxLines = 2
             )
         }
     }

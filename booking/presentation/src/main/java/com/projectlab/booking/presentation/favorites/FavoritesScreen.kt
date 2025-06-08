@@ -20,6 +20,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -49,6 +50,10 @@ fun FavoritesScreen(
     onProfileClick: () -> Unit,
     onActivityClick: (id: String) -> Unit,
 ) {
+    LaunchedEffect(Unit) {
+        viewModel.queryFavoriteActivities()
+    }
+
     Scaffold(
         bottomBar = {
             BottomNavigationBar(
@@ -172,11 +177,12 @@ private fun FavoritesScreenComponent(
                                 location = favorite.location,
                                 rating = favorite.rating,
                                 pictureUrl = favorite.pictures.getOrElse(0) { null },
+                                isFavorite = true,
                                 onFavoriteClick = { viewModel.removeFavoriteActivity(favorite.id) },
                                 onClick = { onActivityClick(favorite.id) },
                                 modifier = Modifier
                                     .height(MaterialTheme.spacing.favoriteCardHeight)
-                                    .weight(1f),
+                                    .weight(1f)
                             )
                         }
                     }

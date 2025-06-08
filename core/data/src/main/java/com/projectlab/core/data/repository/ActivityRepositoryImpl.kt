@@ -101,6 +101,25 @@ class ActivityRepositoryImpl @Inject constructor(
         }
     }
 
+    override fun getFavoriteActivities(
+        userId: String
+    ): Flow<List<FavoriteActivityEntity>> = flow {
+        val userDoc = firestore
+            .collection("Users")
+            .document(userId)
+
+        val documents = userDoc
+            .collection("FavoriteActivities")
+            .get()
+            .await()
+
+        val activities = documents.map { doc ->
+            doc.toObject(FavoriteActivityEntity::class.java)
+        }
+
+        emit(activities)
+    }
+
     override suspend fun isFavoriteActivity(
         userId: String,
         activityId: String,

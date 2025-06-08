@@ -1,7 +1,6 @@
 package com.projectlab.booking.presentation.search.activities
 
 import android.Manifest
-import android.util.Log
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.layout.Box
@@ -31,7 +30,10 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.navigation.NavController
 import androidx.navigation.compose.currentBackStackEntryAsState
+import com.projectlab.booking.presentation.favorites.FavoritesViewModel
+import com.projectlab.core.data.mapper.toFavoriteActivityEntity
 import com.projectlab.core.data.model.ActivityDto
+import com.projectlab.core.domain.entity.FavoriteActivityEntity
 import com.projectlab.core.domain.model.Location
 import com.projectlab.core.presentation.designsystem.R
 import com.projectlab.core.presentation.designsystem.component.BackIconButton
@@ -57,6 +59,7 @@ fun SearchActivityScreen(
     modifier: Modifier = Modifier,
     locationViewModel: LocationViewModel,
     searchActivityViewModel: SearchActivityViewModel,
+    favoritesViewModel: FavoritesViewModel,
     navController: NavController,
     onActivityClick: (String) -> Unit,
 ) {
@@ -64,6 +67,8 @@ fun SearchActivityScreen(
     val address by locationViewModel.address
     val currentLocation = locationViewModel.location.value
     val uiState by searchActivityViewModel.uiState.collectAsState()
+    val favoriteIds by favoritesViewModel.favoriteActivityIds.collectAsState()
+
     val backStackEntry by navController.currentBackStackEntryAsState()
     val initialQuery = backStackEntry
         ?.arguments
@@ -95,6 +100,10 @@ fun SearchActivityScreen(
         }
     }
 
+    LaunchedEffect(Unit) {
+        favoritesViewModel.queryFavoriteActivities()
+    }
+
     /**
      * @param onEnter: Callback function to handle the Enter key press event.
      */
@@ -119,8 +128,8 @@ fun SearchActivityScreen(
         }
     }
 
-    val onFavoriteClick: (ActivityDto, Boolean) -> Unit = { activity, isFavorite ->
-        searchActivityViewModel.setFavorite(activity, isFavorite)
+    val onFavoriteToggle: (ActivityDto) -> Unit = { activity ->
+        favoritesViewModel.toggleFavorite(activity.toFavoriteActivityEntity())
     }
 
     Column(
@@ -163,7 +172,8 @@ fun SearchActivityScreen(
             uiState = uiState,
             onShowAllResults = { searchActivityViewModel.showAllResults() },
             navController = navController,
-            onFavoriteClick = onFavoriteClick,
+            favoriteIds = favoriteIds,
+            onFavoriteToggle = onFavoriteToggle,
             reverseGeocode = { location -> locationViewModel.reverseGeocodeLocation(location) }
         )
     }
@@ -174,7 +184,8 @@ fun SearchActivityResultsComponent(
     uiState: SearchActivityUiState,
     onShowAllResults: () -> Unit,
     navController: NavController,
-    onFavoriteClick: (ActivityDto, Boolean) -> Unit,
+    favoriteIds: List<String>,
+    onFavoriteToggle: (ActivityDto) -> Unit,
     reverseGeocode: suspend (Location) -> String,
 ) {
     val activities = uiState.activities
@@ -221,6 +232,7 @@ fun SearchActivityResultsComponent(
         LazyColumn {
             items(itemsToShow) { activity ->
                 val city = cityMap[activity.id]
+                val isFavorite = favoriteIds.contains(activity.id)
 
                 TourListCard(
                     activity = activity,
@@ -229,9 +241,8 @@ fun SearchActivityResultsComponent(
                     onPress = {
                         navController.navigate("activityDetail/${activity.id}")
                     },
-                    onFavoritePress = { isFavorite ->
-                        onFavoriteClick(activity, isFavorite)
-                    },
+                    isFavorite = isFavorite,
+                    onFavoriteToggle = {onFavoriteToggle(activity)}
                 )
 
                 Spacer(modifier = Modifier.height(MaterialTheme.spacing.medium))

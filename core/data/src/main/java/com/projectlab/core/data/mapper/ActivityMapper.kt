@@ -4,6 +4,7 @@ import com.projectlab.core.data.model.ActivityDto
 import com.projectlab.core.domain.model.Activity
 import com.projectlab.core.data.model.LocationDataDto
 import com.projectlab.core.data.model.PriceDto
+import com.projectlab.core.domain.entity.FavoriteActivityEntity
 
 /**
  * Extension function to convert an ActivityDto to a domain model Activity.
@@ -56,4 +57,21 @@ fun Activity.toDto(): ActivityDto {
  */
 fun List<Activity>.toDtoList(): List<ActivityDto> {
     return map { it.toDto() }
+}
+
+fun ActivityDto.toFavoriteActivityEntity(): FavoriteActivityEntity {
+    return FavoriteActivityEntity(
+        id = id,
+        name = name,
+        description = description,
+        minimumDuration = minimumDuration,
+        price = price.amount,
+        currency = price.currencyCode,
+        rating = rating,
+        location = geoCode.toString(),
+        latitude = geoCode.latitude,
+        longitude = geoCode.longitude,
+        pictures = pictures
+
+    )
 }
