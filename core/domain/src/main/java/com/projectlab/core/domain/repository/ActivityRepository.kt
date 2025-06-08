@@ -48,9 +48,7 @@ interface ActivityRepository {
 
     fun getFavoriteActivities(userId: String): Flow<List<FavoriteActivityEntity>>
 
-    fun getFavoriteActivities(userId: String): Flow<List<FavoriteActivityEntity>>
-
-    suspend fun isFavoriteActivity(userId: String, activityId: String): kotlin.Result<Boolean>
+    suspend fun isFavoriteActivity(activityId: String): kotlin.Result<Boolean>
 
     suspend fun saveFavoriteActivity(
         

@@ -84,7 +84,6 @@ class ActivityRepositoryImpl @Inject constructor(
 
 
     override fun queryFavoriteActivities(
-        
         nameQuery: String?,
     ): Flow<FavoriteActivityEntity> = flow {
 
@@ -116,6 +115,11 @@ class ActivityRepositoryImpl @Inject constructor(
     override fun getFavoriteActivities(
         userId: String
     ): Flow<List<FavoriteActivityEntity>> = flow {
+
+        // TODO: We should collect the userId from the session provider
+/*        val userId = userSessionProvider.getUserSessionId()
+            ?: throw NullPointerException("userId is null")*/
+
         val userDoc = firestore
             .collection("Users")
             .document(userId)
@@ -133,10 +137,9 @@ class ActivityRepositoryImpl @Inject constructor(
     }
 
     override suspend fun isFavoriteActivity(
-        
         activityId: String,
     ): kotlin.Result<Boolean> = runCatching {
-
+        // We collect the userId from the session provider
         val userId = userSessionProvider.getUserSessionId()
             ?: throw NullPointerException("userId is null")
 
@@ -154,7 +157,6 @@ class ActivityRepositoryImpl @Inject constructor(
     }
 
     override suspend fun saveFavoriteActivity(
-        
         activity: FavoriteActivityEntity,
     ): kotlin.Result<Unit> = runCatching {
 
@@ -171,7 +173,6 @@ class ActivityRepositoryImpl @Inject constructor(
     }
 
     override suspend fun removeFavoriteActivityById(
-        
         activityId: String,
     ): kotlin.Result<Unit> = runCatching {
 
