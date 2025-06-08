@@ -124,6 +124,7 @@ class HomeViewModel @Inject constructor(
 
     fun fetchFavoriteActivities() {
         viewModelScope.launch {
+            // TODO: We most check if "userSessionProvider" is correct used here or we should use in reposoitory
             val userId = userSessionProvider.getUserSessionId()
             if (userId != null) {
                 activityRepository.getFavoriteActivities(userId).collect { favorites ->
