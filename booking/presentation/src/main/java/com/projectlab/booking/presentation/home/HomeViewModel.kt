@@ -13,6 +13,8 @@ import com.projectlab.core.domain.use_cases.error.ErrorMapper
 import com.projectlab.core.domain.use_cases.location.GetCoordinatesFromCityUseCase
 import com.projectlab.core.domain.util.Result
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.CoroutineDispatcher
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -29,7 +31,8 @@ class HomeViewModel @Inject constructor(
     private val historyProvider: SearchHistoryProvider,
     private val getCoordinatesFromCityUseCase: GetCoordinatesFromCityUseCase,
     private val activityRepository: ActivityRepository,
-    private val userSessionProvider: UserSessionProvider
+    private val userSessionProvider: UserSessionProvider,
+    private val dispatcher: CoroutineDispatcher = Dispatchers.Main
 ) : ViewModel() {
 
     private val _uiState = MutableStateFlow(HomeUiState())
@@ -39,7 +42,7 @@ class HomeViewModel @Inject constructor(
     val navigationEvent = _navigationEvent.asSharedFlow()
 
     fun fetchSearchHistory() {
-        viewModelScope.launch {
+        viewModelScope.launch (dispatcher){
             val list = historyProvider.getSearchHistory(HistoryType.ACTIVITY)
             _uiState.update { it.copy(history = list.reversed()) }
         }

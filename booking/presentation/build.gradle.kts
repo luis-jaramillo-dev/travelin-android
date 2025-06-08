@@ -39,7 +39,6 @@ dependencies {
 
     // Testing
     implementation(libs.androidx.junit.ktx)
-    testImplementation(libs.mockito.core)
     testImplementation(libs.mockito.kotlin)
     androidTestImplementation(libs.mockito.android)
     testImplementation(libs.kotlinx.coroutines.test)
