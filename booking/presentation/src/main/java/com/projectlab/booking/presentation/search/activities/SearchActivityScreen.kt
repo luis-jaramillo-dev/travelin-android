@@ -100,6 +100,10 @@ fun SearchActivityScreen(
         }
     }
 
+    LaunchedEffect(Unit) {
+        favoritesViewModel.queryFavoriteActivities()
+    }
+
     /**
      * @param onEnter: Callback function to handle the Enter key press event.
      */

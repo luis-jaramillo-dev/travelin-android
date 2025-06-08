@@ -103,6 +103,10 @@ fun HomeScreen(
         homeViewModel.fetchSearchHistory()
     }
 
+    LaunchedEffect(Unit) {
+        favoritesViewModel.queryFavoriteActivities()
+    }
+
     Scaffold(
         bottomBar = {
             BottomNavigationBar(

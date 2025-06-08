@@ -32,7 +32,7 @@ class HomeViewModel @Inject constructor(
     private val getCoordinatesFromCityUseCase: GetCoordinatesFromCityUseCase,
     private val activityRepository: ActivityRepository,
     private val userSessionProvider: UserSessionProvider,
-    private val dispatcher: CoroutineDispatcher = Dispatchers.Main
+    private val dispatcher: CoroutineDispatcher
 ) : ViewModel() {
 
     private val _uiState = MutableStateFlow(HomeUiState())
