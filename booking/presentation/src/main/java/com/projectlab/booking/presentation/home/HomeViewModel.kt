@@ -14,7 +14,6 @@ import com.projectlab.core.domain.use_cases.location.GetCoordinatesFromCityUseCa
 import com.projectlab.core.domain.util.Result
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.CoroutineDispatcher
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -83,20 +82,27 @@ class HomeViewModel @Inject constructor(
 
     fun fetchRecommendedActivities(location: Location?) {
         viewModelScope.launch {
-            if (uiState.value.hasLoadedRecommendations && location == null) return@launch
+            if (uiState.value.hasLoadedRecommendations) return@launch
 
             _uiState.update { it.copy(isLoading = true) }
 
-            val (lat, lon) = location?.let {
-                it.latitude to it.longitude
-            } ?: getCoordinatesFromCityUseCase("Paris") ?: (48.8566 to 2.3522)
+            val parisCoordinates = getCoordinatesFromCityUseCase("Paris") ?: (48.8566 to 2.3522)
 
-            when (val result = getActivitiesUseCase(lat, lon)) {
+            val initialCoordinates = location?.let { it.latitude to it.longitude } ?: parisCoordinates
+
+            var result = getActivitiesUseCase(initialCoordinates.first, initialCoordinates.second)
+
+            if (location != null && result is Result.Success && result.data.isEmpty()) {
+                result = getActivitiesUseCase(parisCoordinates.first, parisCoordinates.second)
+            }
+
+            when (result) {
                 is Result.Success -> {
                     val filtered = result.data
                         .filter { it.pictures.isNotEmpty() }
                         .take(10)
                         .map { it.toDto() }
+
                     _uiState.update {
                         it.copy(
                             recommendedActivities = filtered,
