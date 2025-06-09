@@ -115,6 +115,7 @@ class ActivityRepositoryImpl @Inject constructor(
     override fun getFavoriteActivities(
     ): Flow<List<FavoriteActivityEntity>> = flow {
 
+        // We collect the userId from the session provider
         val userId = userSessionProvider.getUserSessionId()
             ?: throw NullPointerException("userId is null")
 

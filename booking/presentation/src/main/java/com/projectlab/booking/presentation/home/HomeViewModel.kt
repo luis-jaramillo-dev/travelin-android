@@ -30,6 +30,7 @@ class HomeViewModel @Inject constructor(
     private val historyProvider: SearchHistoryProvider,
     private val getCoordinatesFromCityUseCase: GetCoordinatesFromCityUseCase,
     private val activityRepository: ActivityRepository,
+    private val userSessionProvider: UserSessionProvider,
     private val dispatcher: CoroutineDispatcher
 ) : ViewModel() {
 
