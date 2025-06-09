@@ -52,7 +52,6 @@ fun BottomNavigationBar(
         shadowElevation = MaterialTheme.spacing.SectionSpacing,
         color = Color.Transparent,
         modifier = Modifier
-            .navigationBarsPadding()
             .drawWithContent {
                 // clip left, right, and bottom
                 clipRect(

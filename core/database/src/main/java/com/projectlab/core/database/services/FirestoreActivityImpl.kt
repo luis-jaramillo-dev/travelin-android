@@ -6,6 +6,7 @@ import com.google.firebase.firestore.FirebaseFirestore
 import com.projectlab.core.database.dto.FirestoreActivityDTO
 import com.projectlab.core.domain.entity.ActivityEntity
 import com.projectlab.core.domain.model.EntityId
+import com.projectlab.core.domain.repository.UserSessionProvider
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.tasks.await
@@ -16,36 +17,41 @@ import javax.inject.Inject
  * It provides methods to interact with activities in Firestore and external APIs.
  *
  * @param firestore The FirebaseFirestore instance used to interact with Firestore.
+ * @param userSessionProvider The UserSessionProvider instance
+ * used to get the current user's session ID.
+ *
+ * @author ricardoceadev
  */
 
-class FirestoreActivityImpl @Inject constructor (
+class FirestoreActivityImpl @Inject constructor(
     private val firestore: FirebaseFirestore,
+    private val userSessionProvider: UserSessionProvider,
 ) : FirestoreActivity {
 
     @RequiresApi(Build.VERSION_CODES.O)
-    override suspend fun createActivity(activity: ActivityEntity): Result<EntityId> =
+    override suspend fun createActivity(
+        
+        itinId: String,
+        activity: ActivityEntity
+    ): Result<EntityId> =
         runCatching {
+
+            val userId = userSessionProvider.getUserSessionId()
+                ?: throw NullPointerException("userId is null")
+
             var userDoc = firestore
                 .collection("Users")
-                .document(
-                    activity.userRef?.value ?: throw IllegalArgumentException("userRef is null")
-                )
+                .document(userId)
 
             var itineraryDoc = userDoc
                 .collection("Itineraries")
-                .document(
-                    activity.itineraryRef?.value
-                        ?: throw IllegalArgumentException("itineraryRef is null")
-                )
+                .document(itinId)
 
-            var locationDoc = firestore
-                .collection("Locations")
-                .document(
-                    activity.locationRef?.value
-                        ?: throw IllegalArgumentException("locationRef is null")
-                )
-
-            val dto = FirestoreActivityDTO.fromDomain(activity, userDoc, itineraryDoc, locationDoc)
+            val dto = FirestoreActivityDTO.fromDomain(
+                domain = activity,
+                userDoc = userDoc,
+                itineraryDoc = itineraryDoc,
+            )
             val activityCol = itineraryDoc.collection("Activities")
             val docRef = activityCol.document()
             docRef.set(dto).await()
@@ -56,10 +62,14 @@ class FirestoreActivityImpl @Inject constructor (
 
     @RequiresApi(Build.VERSION_CODES.O)
     override suspend fun getActivityById(
-        userId: String,
+        
         itinId: String,
         activityId: String
-    ): Flow<ActivityEntity?> = flow {
+    ): Result<ActivityEntity?> = runCatching {
+
+
+        val userId = userSessionProvider.getUserSessionId()
+            ?: throw NullPointerException("userId is null")
         // Get the document reference for the activity
         val docRef = firestore
             .collection("Users").document(userId)
@@ -71,22 +81,25 @@ class FirestoreActivityImpl @Inject constructor (
         val snap = docRef.get().await()
         if (snap.exists()) {
             val dto = snap.toObject(FirestoreActivityDTO::class.java)
-            emit(
-                dto?.toDomain(
-                    docId = snap.id,
-                    userRef = EntityId(userId),
-                    itineraryRef = EntityId(itinId)
-                )
-            )
+            (
+                    dto?.toDomain(
+                        docId = snap.id,
+                        userRef = EntityId(userId),
+                        itineraryRef = EntityId(itinId)
+                    )
+                    )
         } else {
-            emit(null)
+            (null)
         }
     }
 
     override suspend fun getAllActivitiesForItinerary(
-        userId: String,
+        
         itinId: String
-    ): Flow<List<ActivityEntity>> = flow {
+    ): Result<List<ActivityEntity>> = runCatching {
+
+        val userId = userSessionProvider.getUserSessionId()
+            ?: throw NullPointerException("userId is null")
         // Route to the Activities collection for the given user and itinerary
         val snaps = firestore
             .collection("Users").document(userId)
@@ -102,16 +115,18 @@ class FirestoreActivityImpl @Inject constructor (
                     itineraryRef = EntityId(itinId)
                 )
         }
-        emit(list)
+        (list)
     }
 
     @RequiresApi(Build.VERSION_CODES.O)
-    override suspend fun updateActivity(activity: ActivityEntity): Result<Unit> = runCatching {
-        // We retrieve the user and itinerary references from the object reference
-        val userId = activity.userRef?.value
-            ?: throw IllegalArgumentException("userRef is null")
-        val itinId = activity.itineraryRef?.value
-            ?: throw IllegalArgumentException("itineraryRef is null")
+    override suspend fun updateActivity(
+        
+        itinId: String,
+        activity: ActivityEntity
+    ): Result<Unit> = runCatching {
+
+        val userId = userSessionProvider.getUserSessionId()
+            ?: throw NullPointerException("userId is null")
 
         // Recostruct the document routes/references:
         val userDoc = firestore.collection("Users").document(userId)
@@ -122,22 +137,24 @@ class FirestoreActivityImpl @Inject constructor (
             domain = activity,
             userDoc = userDoc,
             itineraryDoc = itinDoc,
-            locationDoc = firestore.collection("Locations")
-                .document(activity.locationRef?.value ?: throw IllegalArgumentException("locationRef is null"))
         )
 
         // Overwrite, set() the specific activity document:
-        firestore.collection("Users").document(userId)
-            .collection("Itineraries").document(itinId)
+//        firestore.collection("Users").document(userId)
+//            .collection("Itineraries").document(itinId)
+        itinDoc
             .collection("Activities").document(activity.id)
             .set(dto).await()
     }
 
     override suspend fun deleteActivity(
-        userId: String,
+        
         itinId: String,
         activityId: String
     ): Result<Unit> = runCatching {
+
+        val userId = userSessionProvider.getUserSessionId()
+            ?: throw NullPointerException("userId is null")
         firestore.collection("Users").document(userId)
             .collection("Itineraries").document(itinId)
             .collection("Activities").document(activityId)

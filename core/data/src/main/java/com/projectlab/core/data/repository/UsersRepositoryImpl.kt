@@ -17,7 +17,7 @@ import javax.inject.Inject
  * It performs operations on user data.
  *
  * @param usersRef The Firestore collection reference for users.
- * @param firestoreUser The FirestoreUserImpl instance used for user-related operations.
+ * @param firestoreUser The FirestoreUser instance used for Firestore user-related operations.
  */
 
 class UsersRepositoryImpl @Inject constructor(
@@ -55,7 +55,7 @@ class UsersRepositoryImpl @Inject constructor(
         }
     }
 
-    override suspend fun getAllUsers(): Flow<List<UserEntity>> {
+    override suspend fun getAllUsers(): Result<List<UserEntity>> {
         return firestoreUser.getAllUsers()
     }
 

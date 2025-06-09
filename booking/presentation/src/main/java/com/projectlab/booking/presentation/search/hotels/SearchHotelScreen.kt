@@ -25,7 +25,12 @@ fun SearchHotelScreen(
 
 
     Scaffold(
-        topBar = { SearchHotelHeader(uiState = uiState, viewModel = viewModel) },
+        topBar = {
+            SearchHotelHeader(
+                uiState = uiState,
+                viewModel = viewModel,
+                onBackPressed = { navController.popBackStack() })
+        },
         content = {
             Box(
                 modifier = Modifier

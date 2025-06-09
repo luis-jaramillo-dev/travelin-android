@@ -39,7 +39,6 @@ fun TourCardHeader(
     activity: ActivityDto,
     navController: NavController,
     isFavorite: Boolean,
-    isFavoriteLoading: Boolean,
     onFavoriteClick: () -> Unit,
 ) {
     val favoriteIcon = if (isFavorite) {
@@ -95,16 +94,9 @@ fun TourCardHeader(
                             .padding(5.dp),
                     )
 
-                    if (isFavoriteLoading) {
-                        CircularProgressIndicator(
-                            modifier = Modifier
-                                .size(50.dp)
-                                .padding(5.dp),
-                        )
-                    } else {
                         Image(
                             painter = favoriteIcon,
-                            contentDescription = "Back",
+                            contentDescription = "Favorite toggle",
                             modifier = Modifier
                                 .size(50.dp)
                                 .padding(5.dp)
@@ -112,7 +104,7 @@ fun TourCardHeader(
                                     onFavoriteClick()
                                 },
                         )
-                    }
+
                 }
             }
 

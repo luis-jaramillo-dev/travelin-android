@@ -3,7 +3,7 @@ package com.projectlab.core.domain.entity
 import com.projectlab.core.domain.model.EntityId
 
 /**
- * UserEntity represents a user in the system.
+ * UserEntity represents a user in the database system inside the app.
  * @property id Unique identifier for the user.
  * @property email Email address of the user.
  * @property age Age of the user.
