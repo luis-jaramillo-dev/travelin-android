@@ -5,10 +5,14 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import com.projectlab.booking.presentation.booking.hotels.components.BookingHotelContent
+import com.projectlab.booking.presentation.screens.HotelsViewModel
 
 @Composable
 fun BookingHotelScreen(
-    modifier: Modifier = Modifier
+    viewModel: HotelsViewModel,
+    onSuccessBooking: () -> Unit,
+    onClickBack: () -> Unit,
+    modifier: Modifier = Modifier,
 ) {
     Scaffold {
         BookingHotelContent(

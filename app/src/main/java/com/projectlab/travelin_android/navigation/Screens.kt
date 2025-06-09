@@ -88,3 +88,15 @@ sealed interface FavoritesScreens {
         override val route = "favorites"
     }
 }
+
+sealed interface BookingScreens {
+    val route: String
+
+    data object HotelBooking : BookingScreens {
+        override val route = "hotel_booking"
+    }
+
+    data object Successful : BookingScreens, Screens {
+        override val route = "successful"
+    }
+}
