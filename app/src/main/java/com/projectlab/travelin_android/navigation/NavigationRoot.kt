@@ -180,8 +180,9 @@ private fun NavGraphBuilder.detailGraph(navController: NavHostController) {
 
         DetailHotelScreen(
             viewModel = hiltViewModel<HotelsViewModel>(parentEntry),
+            hotelId = hotelId,
             onClickBack = { navController.popBackStack() },
-            hotelId = hotelId
+            onClickBookingHotel = { navController.navigate(BookingScreens.HotelBooking.route) }
         )
     }
 
