@@ -1,4 +1,4 @@
-package com.projectlab.booking.presentation.screens.hotels.details.components
+package com.projectlab.booking.presentation.booking.hotels.components
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Row
@@ -18,10 +18,10 @@ import com.projectlab.core.presentation.designsystem.component.ButtonVariant
 import com.projectlab.core.presentation.designsystem.theme.spacing
 
 @Composable
-fun DetailHotelBottomBar(
+fun BookingHotelFooter(
     modifier: Modifier = Modifier,
     hotelUi: HotelUi,
-    onClickBookingHotel: () -> Unit
+    confirmBooking: () -> Unit
 ) {
     Row(
         modifier = Modifier
@@ -42,7 +42,7 @@ fun DetailHotelBottomBar(
         )
         ButtonComponent(
             text = "Book now!",
-            onClick = { onClickBookingHotel() },
+            onClick = { confirmBooking() },
             variant = ButtonVariant.Primary,
         )
     }

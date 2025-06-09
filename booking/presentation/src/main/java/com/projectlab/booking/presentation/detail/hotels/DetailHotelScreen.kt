@@ -18,8 +18,8 @@ fun DetailHotelScreen(
     modifier: Modifier = Modifier,
     viewModel: HotelsViewModel,
     hotelId: String,
-    onClickBack: () -> Unit
-
+    onClickBack: () -> Unit,
+    onClickBookingHotel: () -> Unit
 ) {
     val state by viewModel.uiStateHotelDetails.collectAsState()
 
@@ -37,7 +37,12 @@ fun DetailHotelScreen(
                     hotelUi = state.hotelUi!!
                 )
             },
-            bottomBar = { DetailHotelBottomBar(hotelUi = state.hotelUi!!) }
+            bottomBar = {
+                DetailHotelBottomBar(
+                    hotelUi = state.hotelUi!!,
+                    onClickBookingHotel = { onClickBookingHotel() }
+                )
+            }
         )
     }
 }
