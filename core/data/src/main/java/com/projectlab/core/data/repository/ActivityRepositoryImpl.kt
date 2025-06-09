@@ -113,12 +113,10 @@ class ActivityRepositoryImpl @Inject constructor(
     }
 
     override fun getFavoriteActivities(
-        userId: String
     ): Flow<List<FavoriteActivityEntity>> = flow {
 
-        // TODO: We should collect the userId from the session provider
-/*        val userId = userSessionProvider.getUserSessionId()
-            ?: throw NullPointerException("userId is null")*/
+        val userId = userSessionProvider.getUserSessionId()
+            ?: throw NullPointerException("userId is null")
 
         val userDoc = firestore
             .collection("Users")
