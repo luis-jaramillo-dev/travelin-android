@@ -42,7 +42,6 @@ class HomeViewModelTest {
     private val historyProvider = mock<SearchHistoryProvider>()
     private val getCoordinatesFromCityUseCase = mock<GetCoordinatesFromCityUseCase>()
     private val activityRepository = mock<ActivityRepository>()
-    private val userSessionProvider = mock<UserSessionProvider>()
 
 
     private lateinit var homeViewModel: HomeViewModel
@@ -59,7 +58,6 @@ class HomeViewModelTest {
             historyProvider,
             getCoordinatesFromCityUseCase,
             activityRepository,
-            userSessionProvider,
             dispatcher
         )
     }
@@ -122,8 +120,7 @@ class HomeViewModelTest {
         val dtoActivities = fakeActivities.map { it.toDto() }
 
         Mockito.`when`(getActivitiesUseCase(10.500000, -66.916664)).thenReturn(Result.Success(fakeActivities))
-        Mockito.`when`(userSessionProvider.getUserSessionId()).thenReturn("user123")
-        Mockito.`when`(activityRepository.getFavoriteActivities("user123"))
+        Mockito.`when`(activityRepository.getFavoriteActivities())
             .thenReturn(flowOf(emptyList()))
 
         homeViewModel.fetchRecommendedActivities(location)
@@ -138,27 +135,14 @@ class HomeViewModelTest {
     @Test
     fun fetchFavoriteActivitiesWithValidUserIdUpdatesUiStateWithFavorites() = runTest(dispatcher) {
 
-        val userId = "user123"
         val favoriteActivities = listOf(fakeFavoriteActivities.first())
 
-        Mockito.`when`(userSessionProvider.getUserSessionId()).thenReturn(userId)
-        Mockito.`when`(activityRepository.getFavoriteActivities(userId)).thenReturn(flowOf(favoriteActivities))
+        Mockito.`when`(activityRepository.getFavoriteActivities()).thenReturn(flowOf(favoriteActivities))
 
         homeViewModel.fetchFavoriteActivities()
         advanceUntilIdle()
 
         val state = homeViewModel.uiState.value
         assertEquals(favoriteActivities, state.favoriteActivities)
-    }
-
-    @Test
-    fun fetchFavoriteActivitiesWithNullUserIdSetsFavoriteActivitiesEmpty() = runTest(dispatcher) {
-        Mockito.`when`(userSessionProvider.getUserSessionId()).thenReturn(null)
-
-        homeViewModel.fetchFavoriteActivities()
-        advanceUntilIdle()
-
-        val state = homeViewModel.uiState.value
-        assertTrue(state.favoriteActivities.isEmpty())
     }
 }

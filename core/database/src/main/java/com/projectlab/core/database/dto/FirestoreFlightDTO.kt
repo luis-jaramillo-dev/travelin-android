@@ -24,9 +24,6 @@ import java.util.Date
  * @author ricardoceadev
  */
 
-// Assuming you have a DocumentReference for the airport collection
-//val documentAirportId = "your_airport_document_id" // Replace with actual document ID
-//val docRefAirport = FirebaseFirestore.getInstance().collection("airport").document(documentAirportId)
 data class FirestoreFlightDTO @RequiresApi(Build.VERSION_CODES.O) constructor(
     val airline: String = "",
     val flightNumber: String = "",
