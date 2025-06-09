@@ -1,20 +1,16 @@
 package com.projectlab.booking.presentation.home
 
 import android.Manifest
-import android.widget.Space
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
-import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.requiredHeight
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.CircularProgressIndicator
@@ -50,7 +46,7 @@ fun HomeScreen(
     favoritesViewModel: FavoritesViewModel,
     navController: NavController,
     onFavoritesClick: () -> Unit,
-    onTripsClick: () -> Unit,
+    onItinsClick: () -> Unit,
     onProfileClick: () -> Unit,
     onClickSearchHotel: () -> Unit,
     onItemClick: (String) -> Unit,
@@ -113,7 +109,7 @@ fun HomeScreen(
                 BottomNavRoute.HOME,
                 onHomeClick = {},
                 onFavoritesClick,
-                onTripsClick,
+                onItinsClick,
                 onProfileClick,
             )
         },

@@ -3,6 +3,7 @@ package com.projectlab.travelin_android.navigation
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.remember
+import androidx.compose.ui.Modifier
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavHostController
@@ -16,6 +17,7 @@ import com.projectlab.booking.presentation.detail.activities.ActivityDetailViewM
 import com.projectlab.booking.presentation.favorites.FavoritesScreen
 import com.projectlab.booking.presentation.favorites.FavoritesViewModel
 import com.projectlab.booking.presentation.home.HomeScreen
+import com.projectlab.booking.presentation.itinerary.ItinerariesScreen
 import com.projectlab.booking.presentation.screens.HotelsViewModel
 import com.projectlab.booking.presentation.screens.hotels.details.DetailHotelScreen
 import com.projectlab.booking.presentation.screens.hotels.search.SearchHotelScreen
@@ -44,6 +46,7 @@ fun NavigationRoot(
         detailGraph(navController)
         homeGraph(navController)
         favoritesGraph(navController)
+        itinerariesGraph(navController)
     }
 }
 
@@ -81,7 +84,7 @@ private fun NavGraphBuilder.authGraph(navController: NavHostController) {
                 onLogoutClick = { navController.navigate(AuthScreens.Login.route) },
                 onHomeClick = { navController.navigate(HomeScreens.Home.route) },
                 onFavoritesClick = { navController.navigate(FavoritesScreens.Favorites.route) },
-                onTripsClick = {},
+                onItinsClick = { navController.navigate(ItinerariesScreens.Itineraries.route) },
             )
         }
 
@@ -189,7 +192,7 @@ private fun NavGraphBuilder.homeGraph(navController: NavHostController) {
             navController = navController,
             onClickSearchHotel = { navController.navigate(SearchScreens.Hotels.route) },
             onFavoritesClick = { navController.navigate(FavoritesScreens.Favorites.route) },
-            onTripsClick = {},
+            onItinsClick = {navController.navigate(ItinerariesScreens.Itineraries.route) },
             onProfileClick = { navController.navigate(AuthScreens.Profile.route) },
             onItemClick = { activityId ->
                 navController.navigate(DetailScreens.ActivityDetail.createRoute(activityId))
@@ -204,11 +207,23 @@ private fun NavGraphBuilder.favoritesGraph(navController: NavHostController) {
         FavoritesScreen(
             viewModel = hiltViewModel(),
             onHomeClick = { navController.navigate(HomeScreens.Home.route) },
-            onTripsClick = {},
+            onItinsClick = {navController.navigate(ItinerariesScreens.Itineraries.route) },
             onProfileClick = { navController.navigate(AuthScreens.Profile.route) },
             onActivityClick = { activityId ->
                 navController.navigate(DetailScreens.ActivityDetail.createRoute(activityId))
             }
+        )
+    }
+}
+
+private fun NavGraphBuilder.itinerariesGraph(navController: NavHostController) {
+    composable(route = ItinerariesScreens.Itineraries.route) {
+        ItinerariesScreen(
+            modifier = Modifier,
+            onHomeClick = { navController.navigate(HomeScreens.Home.route) },
+            onFavoritesClick = { navController.navigate(FavoritesScreens.Favorites.route) },
+            onItinsClick = {},
+            onProfileClick = { navController.navigate(AuthScreens.Profile.route) },
         )
     }
 }

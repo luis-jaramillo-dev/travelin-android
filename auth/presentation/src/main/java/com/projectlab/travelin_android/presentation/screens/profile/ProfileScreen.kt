@@ -12,7 +12,7 @@ fun ProfileScreen(
     onLogoutClick: () -> Unit,
     onHomeClick: () -> Unit,
     onFavoritesClick: () -> Unit,
-    onTripsClick: () -> Unit,
+    onItinsClick: () -> Unit,
 ) {
     Scaffold(
         bottomBar = {
@@ -20,7 +20,7 @@ fun ProfileScreen(
                 BottomNavRoute.PROFILE,
                 onHomeClick,
                 onFavoritesClick,
-                onTripsClick,
+                onItinsClick,
                 onProfileClick = {},
             )
         },

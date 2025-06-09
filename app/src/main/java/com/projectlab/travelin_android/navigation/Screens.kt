@@ -88,3 +88,11 @@ sealed interface FavoritesScreens {
         override val route = "favorites"
     }
 }
+
+sealed interface ItinerariesScreens {
+    val route: String
+
+    data object Itineraries : ItinerariesScreens {
+        override val route = "itineraries"
+    }
+}
