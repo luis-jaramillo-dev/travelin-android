@@ -1,9 +1,17 @@
 package com.projectlab.travelin_android.presentation.screens.register
 
 data class RegisterUIState(
+    val formState: FormState = FormState(),
+    val loading: Boolean = false,
+    val error: String? = null,
+    val isError: Boolean = false,
+    val success: Boolean = false,
+)
+
+data class FormState(
     val firstName: String = "",
     val lastName: String = "",
-    val countryCode: String = "+56",
+    val countryCode: String = "",
     val phoneNumber: String = "",
     val age: String = "",
     val email: String = "",
@@ -13,8 +21,4 @@ data class RegisterUIState(
     val isEmailValid: Boolean = false,
     val isPasswordValid: Boolean = false,
     val acceptedTOS: Boolean = false,
-    val loading: Boolean = false,
-    val error: String? = null,
-    val isError: Boolean = false,
-    val success: Boolean = false,
 )

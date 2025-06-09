@@ -22,6 +22,8 @@ import com.projectlab.core.presentation.designsystem.theme.spacing
 import com.projectlab.travelin_android.presentation.components.DropdownOutlinedButton
 import com.projectlab.travelin_android.presentation.components.OutlinedTextFieldPassword
 import com.projectlab.travelin_android.presentation.components.OutlinedTextFieldSimple
+import com.projectlab.travelin_android.presentation.screens.register.FormAction
+import com.projectlab.travelin_android.presentation.screens.register.FormState
 
 private val phoneCountryCodes = listOf(
     "+1",
@@ -48,26 +50,8 @@ private val phoneCountryCodes = listOf(
 @Composable
 fun RegisterForm(
     modifier: Modifier = Modifier,
-    firstName: String,
-    lastName: String,
-    countryCode: String,
-    phoneNumber: String,
-    age: String,
-    email: String,
-    password: String,
-    acceptedTOS: Boolean,
-    isPhoneNumberValid: Boolean,
-    isAgeValid: Boolean,
-    isEmailValid: Boolean,
-    isPasswordValid: Boolean,
-    onFirstNameChange: (String) -> Unit,
-    onLastNameChange: (String) -> Unit,
-    onCountryCodeChange: (String) -> Unit,
-    onPhoneNumberChange: (String) -> Unit,
-    onAgeChange: (String) -> Unit,
-    onEmailChange: (String) -> Unit,
-    onPasswordChange: (String) -> Unit,
-    onAcceptedTOSChange: (Boolean) -> Unit,
+    formState: FormState,
+    onFormAction: (FormAction) -> Unit,
 ) {
     Column(
         modifier = modifier,
@@ -76,15 +60,19 @@ fun RegisterForm(
         OutlinedTextFieldSimple(
             label = stringResource(R.string.first_name),
             placeholderText = stringResource(R.string.enter_your_first_name),
-            value = firstName,
-            onValueChange = onFirstNameChange,
+            value = formState.firstName,
+            onValueChange = { value ->
+                onFormAction(FormAction.OnFirstNameChange(value))
+            },
         )
 
         OutlinedTextFieldSimple(
             label = stringResource(R.string.last_name),
             placeholderText = stringResource(R.string.enter_your_last_name),
-            value = lastName,
-            onValueChange = onLastNameChange,
+            value = formState.lastName,
+            onValueChange = { value ->
+                onFormAction(FormAction.OnLastNameChange(value))
+            },
         )
 
         Row(
@@ -93,10 +81,12 @@ fun RegisterForm(
         ) {
             DropdownOutlinedButton(
                 label = stringResource(R.string.phone),
-                placeholder = "+56",
+                placeholder = "",
                 options = phoneCountryCodes,
-                selectedOption = countryCode,
-                onSelectedOption = onCountryCodeChange,
+                selectedOption = formState.countryCode,
+                onSelectedOption = { value ->
+                    onFormAction(FormAction.OnCountryCodeChange(value))
+                },
                 modifier = Modifier.weight(0.30f),
             )
 
@@ -105,9 +95,11 @@ fun RegisterForm(
             OutlinedTextFieldSimple(
                 label = "",
                 placeholderText = stringResource(R.string.enter_your_phone_number),
-                value = phoneNumber,
-                onValueChange = onPhoneNumberChange,
-                isError = phoneNumber.isNotEmpty() && !isPhoneNumberValid,
+                value = formState.phoneNumber,
+                onValueChange = { value ->
+                    onFormAction(FormAction.OnPhoneNumberChange(value))
+                },
+                isError = formState.phoneNumber.isNotEmpty() && !formState.isPhoneNumberValid,
                 errorMessage = stringResource(R.string.enter_a_valid_phone_number),
                 keyboardOptions = KeyboardOptions.Default.copy(keyboardType = KeyboardType.Number),
                 modifier = Modifier.weight(0.70f),
@@ -117,9 +109,11 @@ fun RegisterForm(
         OutlinedTextFieldSimple(
             label = stringResource(R.string.age),
             placeholderText = stringResource(R.string.enter_your_age),
-            value = age,
-            onValueChange = onAgeChange,
-            isError = age.isNotEmpty() && !isAgeValid,
+            value = formState.age,
+            onValueChange = { value ->
+                onFormAction(FormAction.OnAgeChange(value))
+            },
+            isError = formState.age.isNotEmpty() && !formState.isAgeValid,
             errorMessage = stringResource(R.string.enter_a_valid_age),
             keyboardOptions = KeyboardOptions.Default.copy(keyboardType = KeyboardType.Number),
         )
@@ -127,9 +121,11 @@ fun RegisterForm(
         OutlinedTextFieldSimple(
             label = stringResource(R.string.email),
             placeholderText = stringResource(R.string.enter_your_email_address),
-            value = email,
-            onValueChange = onEmailChange,
-            isError = email.isNotEmpty() && !isEmailValid,
+            value = formState.email,
+            onValueChange = { value ->
+                onFormAction(FormAction.OnEmailChange(value))
+            },
+            isError = formState.email.isNotEmpty() && !formState.isEmailValid,
             errorMessage = stringResource(R.string.enter_a_valid_email),
             keyboardOptions = KeyboardOptions.Default.copy(keyboardType = KeyboardType.Email),
         )
@@ -137,9 +133,11 @@ fun RegisterForm(
         OutlinedTextFieldPassword(
             label = stringResource(R.string.password),
             placeholderText = stringResource(R.string.enter_your_password),
-            value = password,
-            onValueChange = onPasswordChange,
-            isError = password.isNotEmpty() && !isPasswordValid,
+            value = formState.password,
+            onValueChange = { value ->
+                onFormAction(FormAction.OnPasswordChange(value))
+            },
+            isError = formState.password.isNotEmpty() && !formState.isPasswordValid,
             errorMessage = stringResource(R.string.enter_a_valid_password),
             keyboardOptions = KeyboardOptions.Default.copy(keyboardType = KeyboardType.Password),
         )
@@ -148,8 +146,10 @@ fun RegisterForm(
             verticalAlignment = Alignment.CenterVertically,
         ) {
             Checkbox(
-                checked = acceptedTOS,
-                onCheckedChange = onAcceptedTOSChange,
+                checked = formState.acceptedTOS,
+                onCheckedChange = { value ->
+                    onFormAction(FormAction.OnAcceptedTOSChange(value))
+                },
                 colors = CheckboxDefaults.colors(
                     uncheckedColor = MaterialTheme.colorScheme.outline,
                     checkmarkColor = MaterialTheme.colorScheme.primary,

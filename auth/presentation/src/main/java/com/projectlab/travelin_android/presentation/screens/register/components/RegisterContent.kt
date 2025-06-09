@@ -15,30 +15,14 @@ import androidx.compose.ui.res.stringResource
 import com.projectlab.auth.presentation.R
 import com.projectlab.core.presentation.designsystem.theme.spacing
 import com.projectlab.travelin_android.presentation.components.ButtonSimple
+import com.projectlab.travelin_android.presentation.screens.register.FormAction
+import com.projectlab.travelin_android.presentation.screens.register.FormState
 
 @Composable
 fun RegisterContent(
     modifier: Modifier = Modifier,
-    firstName: String,
-    lastName: String,
-    countryCode: String,
-    phoneNumber: String,
-    age: String,
-    email: String,
-    password: String,
-    acceptedTOS: Boolean,
-    isPhoneNumberValid: Boolean,
-    isAgeValid: Boolean,
-    isEmailValid: Boolean,
-    isPasswordValid: Boolean,
-    onFirstNameChange: (String) -> Unit,
-    onLastNameChange: (String) -> Unit,
-    onCountryCodeChange: (String) -> Unit,
-    onPhoneNumberChange: (String) -> Unit,
-    onAgeChange: (String) -> Unit,
-    onEmailChange: (String) -> Unit,
-    onPasswordChange: (String) -> Unit,
-    onAcceptedTOSChange: (Boolean) -> Unit,
+    formState: FormState,
+    onFormAction: (FormAction) -> Unit,
     onLoginClick: () -> Unit,
     onRegisterClick: () -> Unit,
 ) {
@@ -55,26 +39,8 @@ fun RegisterContent(
         Spacer(modifier = Modifier.height(MaterialTheme.spacing.ScreenVerticalSpacing))
 
         RegisterForm(
-            firstName = firstName,
-            lastName = lastName,
-            countryCode = countryCode,
-            phoneNumber = phoneNumber,
-            age = age,
-            email = email,
-            password = password,
-            acceptedTOS = acceptedTOS,
-            isPhoneNumberValid = isPhoneNumberValid,
-            isAgeValid = isAgeValid,
-            isEmailValid = isEmailValid,
-            isPasswordValid = isPasswordValid,
-            onFirstNameChange = onFirstNameChange,
-            onLastNameChange = onLastNameChange,
-            onCountryCodeChange = onCountryCodeChange,
-            onPhoneNumberChange = onPhoneNumberChange,
-            onAgeChange = onAgeChange,
-            onEmailChange = onEmailChange,
-            onPasswordChange = onPasswordChange,
-            onAcceptedTOSChange = onAcceptedTOSChange,
+            formState = formState,
+            onFormAction = onFormAction,
         )
 
         Spacer(modifier = Modifier.height(MaterialTheme.spacing.medium))
@@ -82,18 +48,18 @@ fun RegisterContent(
         ButtonSimple(
             text = stringResource(R.string.create_account_button),
             onClick = onRegisterClick,
-            enabled = firstName.isNotEmpty()
-                && lastName.isNotEmpty()
-                && countryCode.isNotEmpty()
-                && phoneNumber.isNotEmpty()
-                && age.isNotEmpty()
-                && email.isNotEmpty()
-                && password.isNotEmpty()
-                && acceptedTOS
-                && isPhoneNumberValid
-                && isAgeValid
-                && isEmailValid
-                && isPasswordValid,
+            enabled = formState.firstName.isNotEmpty()
+                && formState.lastName.isNotEmpty()
+                && formState.countryCode.isNotEmpty()
+                && formState.phoneNumber.isNotEmpty()
+                && formState.age.isNotEmpty()
+                && formState.email.isNotEmpty()
+                && formState.password.isNotEmpty()
+                && formState.acceptedTOS
+                && formState.isPhoneNumberValid
+                && formState.isAgeValid
+                && formState.isEmailValid
+                && formState.isPasswordValid,
         )
     }
 }

@@ -33,63 +33,84 @@ class RegisterViewModel @Inject constructor(
         }
     }
 
-    fun onFirstNameChange(value: String) {
-        _state.update { it.copy(firstName = value) }
-    }
+    fun onFormAction(action: FormAction) {
+        when (action) {
+            is FormAction.OnFirstNameChange -> {
+                _state.update {
+                    it.copy(formState = it.formState.copy(firstName = action.value))
+                }
+            }
 
-    fun onLastNameChange(value: String) {
-        _state.update { it.copy(lastName = value) }
-    }
+            is FormAction.OnLastNameChange -> {
+                _state.update {
+                    it.copy(formState = it.formState.copy(lastName = action.value))
+                }
+            }
 
-    fun onCountryCodeChange(value: String) {
-        _state.update { it.copy(countryCode = value) }
-    }
+            is FormAction.OnCountryCodeChange -> {
+                _state.update {
+                    it.copy(formState = it.formState.copy(countryCode = action.value))
+                }
+            }
 
-    fun onPhoneNumberChange(value: String) {
-        _state.update {
-            it.copy(
-                phoneNumber = value,
-                isPhoneNumberValid = AuthValidator.isPhoneNumberValid(value),
-            )
+            is FormAction.OnPhoneNumberChange -> {
+                _state.update {
+                    it.copy(
+                        formState = it.formState.copy(
+                            phoneNumber = action.value,
+                            isPhoneNumberValid = AuthValidator.isPhoneNumberValid(action.value),
+                        )
+                    )
+                }
+            }
+
+            is FormAction.OnAgeChange -> {
+                _state.update {
+                    it.copy(
+                        formState = it.formState.copy(
+                            age = action.value,
+                            isAgeValid = AuthValidator.isAgeValid(action.value),
+                        )
+                    )
+                }
+            }
+
+            is FormAction.OnEmailChange -> {
+                _state.update {
+                    it.copy(
+                        formState = it.formState.copy(
+                            email = action.value,
+                            isEmailValid = AuthValidator.isEmailValid(action.value),
+                        )
+                    )
+                }
+            }
+
+            is FormAction.OnPasswordChange -> {
+                _state.update {
+                    it.copy(
+                        formState = it.formState.copy(
+                            password = action.value,
+                            isPasswordValid = AuthValidator.isPasswordValid(action.value),
+                        )
+                    )
+                }
+            }
+
+            is FormAction.OnAcceptedTOSChange -> {
+                _state.update {
+                    it.copy(formState = it.formState.copy(acceptedTOS = action.value))
+                }
+            }
         }
-    }
-
-    fun onAgeChange(value: String) {
-        _state.update {
-            it.copy(
-                age = value,
-                isAgeValid = AuthValidator.isAgeValid(value),
-            )
-        }
-    }
-
-    fun onEmailChange(value: String) {
-        _state.update {
-            it.copy(
-                email = value,
-                isEmailValid = AuthValidator.isEmailValid(value),
-            )
-        }
-    }
-
-    fun onPasswordChange(value: String) {
-        _state.update {
-            it.copy(
-                password = value,
-                isPasswordValid = AuthValidator.isPasswordValid(value),
-            )
-        }
-    }
-
-    fun onAcceptedTOSChange(value: Boolean) {
-        _state.update { it.copy(acceptedTOS = value) }
     }
 
     fun register() {
         setAsLoading()
 
         viewModelScope.launch {
-            val result = authUseCases.register(state.value.email, state.value.password)
+            val formState = state.value.formState
+            val result = authUseCases.register(formState.email, formState.password)
 
             when (result) {
                 is Response.Success -> {
@@ -119,12 +140,12 @@ class RegisterViewModel @Inject constructor(
 
         val newUser = User(
             id = currentUser.uid,
-            email = state.value.email,
-            age = state.value.age,
-            firstName = state.value.firstName,
-            lastName = state.value.lastName,
-            countryCode = state.value.countryCode,
-            phoneNumber = state.value.phoneNumber
+            email = state.value.formState.email,
+            age = state.value.formState.age,
+            firstName = state.value.formState.firstName,
+            lastName = state.value.formState.lastName,
+            countryCode = state.value.formState.countryCode,
+            phoneNumber = state.value.formState.phoneNumber
         )
 
         usersUseCases.createUser(newUser)
