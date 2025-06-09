@@ -135,7 +135,6 @@ class HomeViewModelTest {
     @Test
     fun fetchFavoriteActivitiesWithValidUserIdUpdatesUiStateWithFavorites() = runTest(dispatcher) {
 
-        val userId = "user123"
         val favoriteActivities = listOf(fakeFavoriteActivities.first())
 
         Mockito.`when`(activityRepository.getFavoriteActivities()).thenReturn(flowOf(favoriteActivities))
