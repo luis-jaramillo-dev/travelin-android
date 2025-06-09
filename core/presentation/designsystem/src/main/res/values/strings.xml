@@ -53,6 +53,11 @@
     <string name="no_description">Dive into a unique experience and embrace the unexpected. While this activity doesn\'t currently have a detailed description, it has been carefully selected to offer you memorable moments. Get ready to explore, enjoy, and be surprised by what awaits. Whether you\'re looking for adventure, relaxation, or culture, this activity has the potential to become one of your favorites.</string>
     <string name="error_dates">Please, check the dates of your booking</string>
     <string name="go_home">Go Home</string>
+    <string name="amenities">Amenities</string>
+    <string name="description">Description</string>
+    <string name="details">Details</string>
+    <string name="hotel">Hotel</string>
+    <string name="sqm">%1$s sqm</string>
 
 
 

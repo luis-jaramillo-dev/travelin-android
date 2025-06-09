@@ -12,4 +12,10 @@
     <string name="recommended_hotels_near_you">Recommended hotels near you</string>
     <string name="successfully_booked">Successfully booked</string>
     <string name="travelin_logo_white">Travelin logo in white</string>
+    <string name="price_per_night">%1$s /per night</string>
+    <string name="book_now">Book now!</string>
+    <string name="amenities">Amenities</string>
+
+
+
 </resources>
