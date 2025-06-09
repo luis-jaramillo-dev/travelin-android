@@ -236,6 +236,8 @@ private fun NavGraphBuilder.bookingGraph(navController: NavHostController) {
     }
 
     composable(route = BookingScreens.Successful.route) {
-        BookingSuccessfulScreen()
+        BookingSuccessfulScreen(
+            onHomeClick = { navController.navigate(HomeScreens.Home.route) },
+        )
     }
 }

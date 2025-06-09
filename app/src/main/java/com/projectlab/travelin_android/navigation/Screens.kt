@@ -97,6 +97,6 @@ sealed interface BookingScreens {
     }
 
     data object Successful : BookingScreens, Screens {
-        override val route = "successful"
+        override val route = "successful_booking"
     }
 }
