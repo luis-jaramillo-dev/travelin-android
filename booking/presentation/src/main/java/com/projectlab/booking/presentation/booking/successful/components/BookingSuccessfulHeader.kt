@@ -22,7 +22,7 @@ import com.projectlab.core.presentation.designsystem.theme.spacing
 
 @Composable
 fun BookingSuccessfulHeader(
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
 ) {
     Column(
         modifier = modifier
@@ -34,9 +34,10 @@ fun BookingSuccessfulHeader(
             painter = painterResource(R.drawable.white_logo_travelin),
             contentDescription = stringResource(com.projectlab.booking.presentation.R.string.travelin_logo_white),
             modifier = Modifier
-                .width(MaterialTheme.spacing.LogoWidth)
-                .height(MaterialTheme.spacing.LogoHeight),
+                .width(MaterialTheme.spacing.BookingLogoWidth)
+                .height(MaterialTheme.spacing.BookingLogoHeight),
         )
+
         Spacer(modifier = Modifier.height(MaterialTheme.spacing.SmallSpacing))
 
         Text(
@@ -48,6 +49,5 @@ fun BookingSuccessfulHeader(
         )
 
         Spacer(modifier = Modifier.height(MaterialTheme.spacing.SmallSpacing))
-
     }
 }
