@@ -23,6 +23,8 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.navigation.NavController
+import com.projectlab.booking.presentation.favorites.FavoritesViewModel
+import com.projectlab.core.data.mapper.toFavoriteActivityEntity
 import com.projectlab.core.presentation.designsystem.component.BottomBookBar
 import com.projectlab.core.presentation.designsystem.component.DescriptionBox
 import com.projectlab.core.presentation.designsystem.component.GalleryDialog
@@ -34,6 +36,7 @@ import com.projectlab.core.presentation.designsystem.theme.spacing
 fun ActivityDetailScreen(
     modifier: Modifier = Modifier,
     activityDetailViewModel: ActivityDetailViewModel,
+    favoritesViewModel: FavoritesViewModel,
     activityId: String,
     navController: NavController,
 ) {
@@ -43,20 +46,30 @@ fun ActivityDetailScreen(
 
     val uiState by activityDetailViewModel.uiState.collectAsState()
 
+    val favoriteIds by favoritesViewModel.favoriteActivityIds.collectAsState()
+    val isFavorite = favoriteIds.contains(activityId)
+
+    val onFavoriteClick: () -> Unit = {
+        uiState.activity?.let { activity ->
+            favoritesViewModel.toggleFavorite(activity.toFavoriteActivityEntity())
+        }
+    }
+
     if (uiState.isLoading) {
         Box(
             modifier = Modifier
                 .fillMaxSize(),
-            contentAlignment = Alignment.Center
+            contentAlignment = Alignment.Center,
         ) {
             CircularProgressIndicator()
         }
     } else {
         ActivityDetailScreenComponent(
             modifier = modifier,
-            activityDetailViewModel = activityDetailViewModel,
             uiState = uiState,
-            navController = navController
+            navController = navController,
+            onFavoriteClick = onFavoriteClick,
+            isFavorite = isFavorite,
         )
     }
 }
@@ -64,9 +77,10 @@ fun ActivityDetailScreen(
 @Composable
 fun ActivityDetailScreenComponent(
     modifier: Modifier = Modifier,
-    activityDetailViewModel: ActivityDetailViewModel,
     uiState: ActivityDetailUiState,
     navController: NavController,
+    isFavorite: Boolean,
+    onFavoriteClick: () -> Unit,
 ) {
     val activity = uiState.activity
     val scrollState = rememberScrollState()
@@ -77,40 +91,42 @@ fun ActivityDetailScreenComponent(
             modifier = Modifier.fillMaxSize(),
             bottomBar = {
                 BottomBookBar(activity = activity)
-            }
+            },
         ) { innerPadding ->
             Column(
                 modifier = Modifier
                     .padding(innerPadding)
                     .verticalScroll(scrollState)
                     .padding(bottom = MaterialTheme.spacing.ScreenVerticalSpacing),
-                verticalArrangement = Arrangement.Top
+                verticalArrangement = Arrangement.Top,
             ) {
                 TourCardHeader(
                     modifier = Modifier,
                     activity = it,
                     navController = navController,
+                    isFavorite = isFavorite,
+                    onFavoriteClick = onFavoriteClick,
                 )
+
                 Spacer(modifier = Modifier.height(MaterialTheme.spacing.ScreenVerticalSpacing))
 
-                if (activity.description.isNotEmpty()) {
-                    DescriptionBox(
-                        modifier = Modifier,
-                        activity = it
-                    )
-                }
+                DescriptionBox(
+                    modifier = Modifier,
+                    activity = it,
+                )
+
 
                 Spacer(modifier = Modifier.height(MaterialTheme.spacing.ScreenVerticalSpacing))
 
                 if (activity.pictures.isNotEmpty()) {
                     Box(
                         modifier = Modifier.fillMaxWidth(),
-                        contentAlignment = Alignment.Center
+                        contentAlignment = Alignment.Center,
                     ) {
                         GallerySection(
                             modifier = modifier,
                             images = activity.pictures,
-                            onSeeAllClick = { showGalleryDialog = true }
+                            onSeeAllClick = { showGalleryDialog = true },
                         )
                     }
                 }
@@ -118,7 +134,7 @@ fun ActivityDetailScreenComponent(
                 if (showGalleryDialog) {
                     GalleryDialog(
                         images = activity.pictures,
-                        onDismissRequest = { showGalleryDialog = false }
+                        onDismissRequest = { showGalleryDialog = false },
                     )
                 }
             }

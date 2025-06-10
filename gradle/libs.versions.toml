@@ -27,8 +27,8 @@ firebase = "33.13.0"
 navigationCompose = "2.8.9"
 hiltNavigationCompose = "1.2.0"
 coroutinesCore = "1.10.2"
-retrofit = "2.9.0"
-okhttp = "4.10.0"
+retrofit = "3.0.0"
+okhttp = "4.12.0"
 gson = "2.10"
 firebaseDatabaseKtx = "21.0.0"
 uiTooling = "1.8.0"
@@ -41,6 +41,7 @@ protobufProtocVersion = "4.26.1"
 lifecycleKtx = "2.6.1"
 kotlinxCoroutinesTest = "1.10.2"
 androidxTest = "1.6.1"
+jacoco = "0.8.12" # check newer version
 junitKtx = "1.2.1"
 mockito = "5.2.0"
 mockito-kotlin = "5.2.0"
@@ -104,7 +105,7 @@ compose-ui-test = { module = "androidx.compose.ui:ui-test-junit4", version.ref =
 compose-ui-test-manifest = { module = "androidx.compose.ui:ui-test-manifest", version.ref = "compose-ui-test" }
 mockito-android = { module = "org.mockito:mockito-android", version.ref = "mockito"}
 mockito-kotlin = { module = "org.mockito.kotlin:mockito-kotlin", version.ref = "mockito-kotlin"}
-mockito-core = { module = "org.mockito:mockito-core", version = "5.18.0"}
+mockito-core = { module = "org.mockito:mockito-core", version.ref = "mockito"}
 
 # Convention PLugins Dependencies
 android-gradlePlugin = { group = "com.android.tools.build", name = "gradle", version.ref = "androidGradlePlugin" }
@@ -132,10 +133,12 @@ protobuf = { id = "com.google.protobuf", version.ref = "protobufVersion" }
 # Convention plugins
 travelinandroid-android-application = { id = "travelin.android.application" }
 travelinandroid-android-application-compose = { id = "travelin.android.application.compose" }
+travelinandroid-android-application-jacoco = { id = "travelin.android.application.jacoco" }
 travelinandroid-android-library = { id = "travelin.android.library" }
 travelinandroid-android-library-compose = { id = "travelin.android.library.compose" }
+travelinandroid-android-library-jacoco = { id = "travelin.android.library.jacoco" }
 travelinandroid-android-hilt = { id = "travelin.android.hilt" }
-travelinandroid-featyre-ui = { id = "travelin.feature.ui" }
+travelinandroid-feature-ui = { id = "travelin.feature.ui" }
 travelinandroid-jvm-library = { id = "travelin.jvm.library" }
 
 [bundles]

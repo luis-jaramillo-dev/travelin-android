@@ -43,4 +43,14 @@
     <string name="pricePerPerson">$%1$s/person</string>
     <string name="bookNow">Book Now</string>
     <string name="addToItinerary">Add to Itinerary</string>
+    <string name="remove_favorite">Remove Favorite</string>
+    <string name="image_of">Image of %1$s</string>
+
+    <!--    Hotels-->
+    <string name="price_per_night">from %1$s /per night</string>
+    <string name="favorite_hotel">Save hotel  %1$s on favorites</string>
+    <string name="unfavorite_hotel">Delete hotel  %1$s from favorites</string>
+    <string name="no_description">Dive into a unique experience and embrace the unexpected. While this activity doesn\'t currently have a detailed description, it has been carefully selected to offer you memorable moments. Get ready to explore, enjoy, and be surprised by what awaits. Whether you\'re looking for adventure, relaxation, or culture, this activity has the potential to become one of your favorites.</string>
+
+
 </resources>

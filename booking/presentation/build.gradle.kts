@@ -1,6 +1,7 @@
 plugins {
     alias(libs.plugins.travelinandroid.android.library.compose)
     alias(libs.plugins.travelinandroid.android.hilt)
+    alias(libs.plugins.travelinandroid.android.library.jacoco)
 }
 
 android {
@@ -35,4 +36,9 @@ dependencies {
     // Proto DataStore
     implementation(libs.androidx.datastore)
     implementation(libs.protobuf.javalite)
+    // Testing
+    implementation(libs.androidx.junit.ktx)
+    testImplementation(libs.mockito.kotlin)
+    androidTestImplementation(libs.mockito.android)
+    testImplementation(libs.kotlinx.coroutines.test)
 }

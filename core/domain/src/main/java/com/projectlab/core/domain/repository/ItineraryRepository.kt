@@ -1,9 +1,8 @@
-package com.projectlab.core.domain.repository;
+package com.projectlab.core.domain.repository
 
 import com.projectlab.core.domain.entity.ItineraryEntity
 import com.projectlab.core.domain.model.EntityId
 import kotlinx.coroutines.flow.Flow
-import kotlin.Unit;
 
 /**
  * ItineraryRepository interface for itinerary-related operations.
@@ -16,5 +15,8 @@ import kotlin.Unit;
 
 interface ItineraryRepository {
     suspend fun createItinerary(itinerary: ItineraryEntity): Result<EntityId>
-    suspend fun getItinerariesById(id: String): Flow<ItineraryEntity?>
+    suspend fun getItineraryById(itineraryId: String): Result<ItineraryEntity?>
+    suspend fun getAllItineraries(userId: String): Result<List<ItineraryEntity>>
+    suspend fun updateItinerary(itinerary: ItineraryEntity): Result<Unit>
+    suspend fun deleteItinerary(itineraryId: String): Result<Unit>
 }

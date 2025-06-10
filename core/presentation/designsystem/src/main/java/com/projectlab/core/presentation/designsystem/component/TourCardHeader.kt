@@ -2,6 +2,7 @@ package com.projectlab.core.presentation.designsystem.component
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -14,6 +15,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -35,62 +37,75 @@ import com.projectlab.core.presentation.designsystem.theme.spacing
 fun TourCardHeader(
     modifier: Modifier = Modifier,
     activity: ActivityDto,
-    navController: NavController
+    navController: NavController,
+    isFavorite: Boolean,
+    onFavoriteClick: () -> Unit,
 ) {
+    val favoriteIcon = if (isFavorite) {
+        painterResource(R.drawable.saved_product)
+    } else {
+        painterResource(R.drawable.unsaved_product)
+    }
+
     Box(
         modifier = Modifier
-            .height(MaterialTheme.spacing.TourCardHeaderSize)
+            .height(MaterialTheme.spacing.TourCardHeaderSize),
     ) {
-        if (activity.pictures.isNotEmpty()){
+        if (activity.pictures.isNotEmpty()) {
             AsyncImage(
                 model = activity.pictures[0],
                 contentDescription = "Header image",
                 contentScale = ContentScale.Crop,
-                modifier = modifier.fillMaxHeight())
-        }else{
+                modifier = modifier.fillMaxHeight(),
+            )
+        } else {
             Image(
                 painter = painterResource(R.drawable.tourimageplaceholder),
                 contentDescription = "Header image",
                 contentScale = ContentScale.Crop,
-                modifier = modifier.fillMaxHeight())
+                modifier = modifier.fillMaxHeight(),
+            )
         }
+
         Column(
             modifier = Modifier
                 .padding(24.dp)
                 .fillMaxHeight(),
-            verticalArrangement = Arrangement.SpaceBetween
+            verticalArrangement = Arrangement.SpaceBetween,
         ) {
             Row(
                 horizontalArrangement = Arrangement.SpaceBetween,
                 modifier = Modifier
-                    .fillMaxWidth()
-
+                    .fillMaxWidth(),
             ) {
                 BackArrowIconButton(
-                    onClick = {navController.popBackStack()},
+                    onClick = { navController.popBackStack() },
                     modifier = Modifier
                         .size(50.dp)
-                        .padding(5.dp)
+                        .padding(5.dp),
                 )
+
                 Row {
                     Image(
                         painter = painterResource(R.drawable.share),
                         contentDescription = "Back",
                         modifier = Modifier
                             .size(50.dp)
-                            .padding(5.dp)
+                            .padding(5.dp),
                     )
-                    Image(
-                        painter = painterResource(R.drawable.unsaved_product),
-                        contentDescription = "Back",
-                        modifier = Modifier
-                            .size(50.dp)
-                            .padding(5.dp)
-                    )
+
+                        Image(
+                            painter = favoriteIcon,
+                            contentDescription = "Favorite toggle",
+                            modifier = Modifier
+                                .size(50.dp)
+                                .padding(5.dp)
+                                .clickable {
+                                    onFavoriteClick()
+                                },
+                        )
 
                 }
-
-
             }
 
             Row(
@@ -98,7 +113,7 @@ fun TourCardHeader(
                     .clip(RoundedCornerShape(MaterialTheme.spacing.medium))
                     .background(Color(0xAA1A1A1A))
                     .fillMaxWidth()
-                    .padding(MaterialTheme.spacing.medium)
+                    .padding(MaterialTheme.spacing.medium),
             ) {
                 Column {
                     Text(
@@ -107,17 +122,14 @@ fun TourCardHeader(
                         color = Color.White,
                         text = activity.name,
                         modifier = modifier.width(200.dp),
-                        maxLines = Int.MAX_VALUE
+                        maxLines = Int.MAX_VALUE,
                     )
+
                     Spacer(modifier = Modifier.height(10.dp))
 
                     StarRatingBar(rating = activity.rating, textColor = Color.White)
                 }
             }
-
         }
-
-
     }
-
 }

@@ -33,7 +33,9 @@ fun TourListCard(
     modifier: Modifier = Modifier,
     activity: ActivityDto,
     city: String?,
-    onPress: () -> Unit
+    isFavorite: Boolean,
+    onPress: () -> Unit,
+    onFavoriteToggle: () -> Unit,
 ) {
     val imageUrl = if (activity.pictures.isNotEmpty()) activity.pictures[0] else null
     val priceText = if (activity.price.amount != "" && activity.price.currencyCode != "") {
@@ -44,11 +46,18 @@ fun TourListCard(
 
     Row(modifier = modifier.clickable(onClick = { onPress() })) {
         if (imageUrl != null) {
-            ImageCardWithFavorite(modifier = Modifier, image = imageUrl)
+            ImageCardWithFavorite(
+                modifier = Modifier,
+                image = imageUrl,
+                isFavorite = isFavorite,
+                onFavoriteToggle = onFavoriteToggle
+            )
         } else {
             ImageCardWithFavorite(
                 modifier = Modifier,
-                image = painterResource(R.drawable.tourimageplaceholder).toString()
+                image = painterResource(R.drawable.tourimageplaceholder).toString(),
+                isFavorite = isFavorite,
+                onFavoriteToggle = onFavoriteToggle,
             )
         }
 
@@ -66,7 +75,7 @@ fun TourListCard(
             )
             TourCity(city)
             PriceText(priceText)
-            if (activity.minimumDuration != ""){
+            if (activity.minimumDuration != "") {
                 DurationText(modifier = Modifier, activity.minimumDuration)
             }
 
@@ -94,7 +103,7 @@ fun TourCity(city: String?) {
             fontWeight = FontWeight.W400,
             text = city
         )
-    }else{
+    } else {
         Text(
             fontSize = 10.sp,
             fontWeight = FontWeight.W400,
