@@ -94,6 +94,8 @@ object Spacing {
     val recommendedCardWidth: Dp = 230.dp
     val recommendedSectionHeight: Dp = 700.dp
     val homeHeight: Dp = 1300.dp
+
+    val mapHeight: Dp = 200.dp
 }
 
 val LocalSpacing = staticCompositionLocalOf { Spacing }

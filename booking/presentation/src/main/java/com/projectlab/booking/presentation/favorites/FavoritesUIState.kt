@@ -8,5 +8,6 @@ data class FavoritesUIState(
     val error: String? = null,
     val destinations: List<FavoriteActivityEntity> = emptyList(),
     val favoriteActivities: List<FavoriteActivityEntity> = emptyList(),
+    val isFavoriteLoading: Boolean = false,
     // TODO hotels
 )
