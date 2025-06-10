@@ -35,4 +35,16 @@ dependencies {
     // Proto DataStore
     implementation(libs.androidx.datastore)
     implementation(libs.protobuf.javalite)
+    testImplementation(kotlin("test"))
+
+    // Para tests instrumentados
+    implementation(libs.androidx.junit.ktx)
+    androidTestImplementation(libs.mockito.android)
+    androidTestImplementation(libs.mockito.kotlin)
+    androidTestImplementation(libs.kotlinx.coroutines.test)
+
+    testImplementation(libs.mockito.core)
+    testImplementation(libs.mockito.kotlin)
+    testImplementation(libs.kotlinx.coroutines.test)
+
 }

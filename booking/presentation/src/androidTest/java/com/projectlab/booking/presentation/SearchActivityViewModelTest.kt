@@ -1,5 +1,6 @@
 package com.projectlab.booking.presentation.search.activities
 
+import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.projectlab.core.data.mapper.toDtoList
 import com.projectlab.core.data.remote.ActivitiesApiService
 import com.projectlab.core.data.usecase.GetActivitiesUseCase
@@ -25,11 +26,13 @@ import org.junit.Assert.assertEquals
 import org.junit.Assert.assertFalse
 import org.junit.Assert.assertTrue
 import org.junit.Assert.assertNull
+import org.junit.runner.RunWith
 import org.mockito.kotlin.times
 import org.mockito.kotlin.verify
 
 
 @OptIn(ExperimentalCoroutinesApi::class)
+@RunWith(AndroidJUnit4::class)
 class SearchActivityViewModelTest {
 
     private lateinit var viewModel: SearchActivityViewModel
@@ -67,7 +70,7 @@ class SearchActivityViewModelTest {
     }
 
     @Test
-    fun `should search by city when query is not blank`() = runTest {
+    fun shouldSearchByCityWhenQueryIsNotBlank() = runTest {
         val query = "Puerto Varas"
 
         viewModel.onQueryChanged(query)
@@ -109,7 +112,7 @@ class SearchActivityViewModelTest {
     }
 
     @Test
-    fun `should return activities when search by city succeeds`() = runTest {
+    fun shouldReturnActivitiesWhenSearchByCitySucceeds() = runTest {
         val fakeQuery = "Santiago"
         val fakeCoordinates = Pair(-33.4489, -70.6693)
 
@@ -186,7 +189,7 @@ class SearchActivityViewModelTest {
     }
 
     @Test
-    fun `should return activities when searching by current location`() = runTest {
+    fun shouldReturnActivitiesWhenSearchingByCurrentLocation() = runTest {
         val fakeCoordinates = Pair(-33.4489, -70.6693)
         val fakeLocation = Location(latitude = fakeCoordinates.first, longitude = fakeCoordinates.second)
         val fakeCity = "Santiago"
@@ -225,7 +228,7 @@ class SearchActivityViewModelTest {
     }
 
     @Test
-    fun `should set showAllResults to true`() = runTest {
+    fun shouldSetShowAllResultsToTrue() = runTest {
         // Act
         viewModel.showAllResults()
 
@@ -235,7 +238,7 @@ class SearchActivityViewModelTest {
     }
 
     @Test
-    fun `should update history when an entry is deleted`() = runTest {
+    fun shouldUpdateHistoryWhenAnEntryIsDeleted() = runTest {
         val fakeHistory = listOf("Santiago", "Valparaiso")
         val updatedHistory = listOf("Valparaiso") // Simula que "Santiago" fue eliminado
 
@@ -252,7 +255,7 @@ class SearchActivityViewModelTest {
     }
 
     @Test
-    fun `should update query in uiState when onQueryChanged is called`() = runTest {
+    fun shouldUpdateQueryInUiStateWhenOnQueryChangedIsCalled() = runTest {
         val newQuery = "Valdivia"
 
         // Act
@@ -265,7 +268,7 @@ class SearchActivityViewModelTest {
 
 
     @Test
-    fun `should not call API if same query and activities already loaded`() = runTest {
+    fun shouldNotCallAPIIfSameQueryAndActivitiesAlreadyLoaded() = runTest {
         val query = "Puerto Varas"
         val fakeCoordinates = Pair(-41.319, -72.985)
         val fakeActivities = listOf(
@@ -305,7 +308,7 @@ class SearchActivityViewModelTest {
     }
 
     @Test
-    fun `should show error when city not found`() = runTest {
+    fun shouldShowErrorWhenCityNotFound() = runTest {
         val query = "Ciudad Fantasma"
 
         // Simulate the scenario where tha coordinates cannot be found
@@ -325,7 +328,7 @@ class SearchActivityViewModelTest {
     }
 
     @Test
-    fun `should show error when use case throws exception`() = runTest {
+    fun shouldShowErrorWhenUseCaseThrowsException() = runTest {
         val query = "Valdivia"
         val fakeCoordinates = Pair(-39.81, -73.25)
         val exceptionMessage = "Error inesperado en el servidor"
