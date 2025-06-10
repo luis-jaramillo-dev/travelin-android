@@ -40,12 +40,10 @@ fun ItinerariesScreen(
             )
         },
         content = { innerPadding ->
-            Row(verticalAlignment = Alignment.CenterVertically) {
-                BackIconButton(
-                    onClick = { navController.popBackStack() },
-                    modifier = Modifier
-                        .size(MaterialTheme.spacing.extraLarge2)
-                        .padding(MaterialTheme.spacing.extraSmall)
+            Row() {
+                ItinerariesScreenComponent(
+                    modifier = Modifier,
+                    navController = navController
                 )
             }
         }
@@ -55,7 +53,24 @@ fun ItinerariesScreen(
 @Composable
 fun ItinerariesScreenComponent(
     modifier: Modifier = Modifier,
-){
+    navController: NavController,
+) {
+    Scaffold(
+        modifier = modifier,
+        content = { innerPadding ->
+            Row(
+                modifier = Modifier.padding(innerPadding),
+                verticalAlignment = Alignment.CenterVertically,
+            ) {
+                BackIconButton(
+                    onClick = { navController.popBackStack() },
+                    modifier = Modifier
+                        .size(MaterialTheme.spacing.extraLarge2)
+                        .padding(MaterialTheme.spacing.extraSmall)
+                )
+            }
+        }
+    )
 
     Column(
         modifier = modifier
@@ -64,7 +79,6 @@ fun ItinerariesScreenComponent(
     ) {
 
     }
-
 }
 
 @Preview(showBackground = true)
@@ -76,5 +90,13 @@ fun ItinerariesScreenPreview() {
         onFavoritesClick = {},
         onItinsClick = {},
         onProfileClick = {}
+    )
+}
+
+@Preview(showBackground = true)
+@Composable
+fun ItinerariesScreenComponentPreview() {
+    ItinerariesScreenComponent(
+        navController = NavController(LocalContext.current)
     )
 }
