@@ -5,6 +5,7 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavHostController
 import androidx.navigation.NavType
@@ -220,7 +221,7 @@ private fun NavGraphBuilder.itinerariesGraph(navController: NavHostController) {
     composable(route = ItinerariesScreens.Itineraries.route) {
         ItinerariesScreen(
             modifier = Modifier,
-            navController = navController,
+            onClickBack = {navController.popBackStack()},
             onHomeClick = { navController.navigate(HomeScreens.Home.route) },
             onFavoritesClick = { navController.navigate(FavoritesScreens.Favorites.route) },
             onItinsClick = {},

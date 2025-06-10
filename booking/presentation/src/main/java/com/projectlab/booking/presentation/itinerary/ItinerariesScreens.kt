@@ -1,12 +1,14 @@
 package com.projectlab.booking.presentation.itinerary
 
 import android.R.attr.left
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.statusBarsPadding
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
@@ -21,12 +23,14 @@ import androidx.navigation.NavController
 import com.projectlab.core.presentation.designsystem.component.BackIconButton
 import com.projectlab.core.presentation.designsystem.component.BottomNavRoute
 import com.projectlab.core.presentation.designsystem.component.BottomNavigationBar
+import com.projectlab.core.presentation.designsystem.component.IconMore
+import com.projectlab.core.presentation.designsystem.component.TravelinIconButton
 import com.projectlab.core.presentation.designsystem.theme.spacing
 
 @Composable
 fun ItinerariesScreen(
     modifier: Modifier = Modifier,
-    navController: NavController,
+    onClickBack: () -> Unit,
     onHomeClick: () -> Unit,
     onFavoritesClick: () -> Unit,
     onItinsClick: () -> Unit,
@@ -46,7 +50,7 @@ fun ItinerariesScreen(
         content = { innerPadding ->
             ItinerariesScreenComponent(
                 modifier = Modifier,
-                navController = navController
+                onClickBack = onClickBack,
             )
         }
     )
@@ -55,7 +59,7 @@ fun ItinerariesScreen(
 @Composable
 fun ItinerariesScreenComponent(
     modifier: Modifier = Modifier,
-    navController: NavController,
+    onClickBack: () -> Unit,
 ) {
     Scaffold(
         modifier = modifier,
@@ -67,7 +71,7 @@ fun ItinerariesScreenComponent(
                 verticalAlignment = Alignment.CenterVertically,
             ) {
                 BackIconButton(
-                    onClick = { navController.popBackStack() },
+                    onClick = { onClickBack() },
                     modifier = Modifier
                         .size(MaterialTheme.spacing.extraLarge2)
                         .padding(MaterialTheme.spacing.extraSmall)
@@ -88,19 +92,29 @@ fun ItinerariesScreenComponent(
                 )
             }
 
-            Row (
+            Column (
                 modifier = Modifier
                     .statusBarsPadding()
                     .padding(start = 16.dp, top = 100.dp)
                     .fillMaxWidth(),
             ) {
-                Column (
+                Row (
                     modifier = Modifier
+                        .padding(),
                 ) {
                     Text(
-                        modifier = Modifier.padding(MaterialTheme.spacing.Spacer),
+                        modifier = Modifier.padding(start = 1.dp, end = 230.dp),
                         text = "Add Itinerary",
                         style = MaterialTheme.typography.bodyLarge,
+                    )
+                    TravelinIconButton(
+                        modifier = Modifier,
+                        onClick = {},// TODO: Implement add itinerary action
+                        icon = {
+                            IconMore(
+                                modifier = Modifier,
+                            )
+                        }
                     )
                 }
             }
@@ -112,7 +126,7 @@ fun ItinerariesScreenComponent(
 @Composable
 fun ItinerariesScreenPreview() {
     ItinerariesScreen(
-        navController = NavController(LocalContext.current),
+        onClickBack = {},
         onHomeClick = {},
         onFavoritesClick = {},
         onItinsClick = {},
@@ -124,6 +138,7 @@ fun ItinerariesScreenPreview() {
 @Composable
 fun ItinerariesScreenComponentPreview() {
     ItinerariesScreenComponent(
-        navController = NavController(LocalContext.current)
+        onClickBack = {},
+        modifier = Modifier.fillMaxWidth()
     )
 }
