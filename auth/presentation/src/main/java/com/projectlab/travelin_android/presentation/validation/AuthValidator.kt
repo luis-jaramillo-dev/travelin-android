@@ -3,22 +3,26 @@ package com.projectlab.travelin_android.presentation.validation
 import android.util.Patterns
 
 object AuthValidator {
+    private val LOWERCASE = Regex("[a-z]")
+    private val UPPERCASE = Regex("[A-Z]")
+    private val DIGIT = Regex("\\d")
 
-    fun isEmailValid(email: String): Boolean {
-        return Patterns.EMAIL_ADDRESS.matcher(email.trim()).matches()
-    }
-
-    fun isPasswordValid(password: String): Boolean {
-        // Minimum of 6 characters, one letter uppercase and lowercase and a number
-        val regex = Regex("^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d).{6,}\$")
-        return regex.matches(password)
+    fun isPhoneNumberValid(age: String): Boolean {
+        return age.toIntOrNull()?.let { it > 0 } == true
     }
 
     fun isAgeValid(age: String): Boolean {
-        return age.toIntOrNull()?.let { it in 1..120 } ?: false
+        return age.toIntOrNull()?.let { it in 1..120 } == true
     }
 
-    fun isTermsAccepted(accepted: Boolean): Boolean {
-        return accepted
+    fun isEmailValid(email: String): Boolean {
+        return email.trim().matches(Patterns.EMAIL_ADDRESS.toRegex())
+    }
+
+    fun isPasswordValid(password: String): Boolean {
+        return password.length >= 6
+            && password.contains(LOWERCASE)
+            && password.contains(UPPERCASE)
+            && password.contains(DIGIT)
     }
 }

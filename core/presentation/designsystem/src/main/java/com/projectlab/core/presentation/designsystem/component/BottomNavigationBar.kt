@@ -25,11 +25,12 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clipToBounds
 import androidx.compose.ui.draw.drawWithContent
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.drawscope.clipRect
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.res.stringResource
+import com.projectlab.core.presentation.designsystem.R
 import com.projectlab.core.presentation.designsystem.theme.spacing
 
 enum class BottomNavRoute {
@@ -74,25 +75,25 @@ fun BottomNavigationBar(
         ) {
             BottomNavItem(
                 icon = Icons.Default.Home,
-                label = "Home",
+                label = stringResource(R.string.home),
                 selected = current == BottomNavRoute.HOME,
                 onClick = onHomeClick,
             )
             BottomNavItem(
                 icon = Icons.Default.Favorite,
-                label = "Favorites",
+                label = stringResource(R.string.favorites),
                 selected = current == BottomNavRoute.FAVORITES,
                 onClick = onFavoritesClick,
             )
             BottomNavItem(
                 icon = Icons.Default.Flight,
-                label = "Trips",
+                label = stringResource(R.string.trips),
                 selected = current == BottomNavRoute.TRIPS,
                 onClick = onTripsClick,
             )
             BottomNavItem(
                 icon = Icons.Default.AccountCircle,
-                label = "Profile",
+                label = stringResource(R.string.profile),
                 selected = current == BottomNavRoute.PROFILE,
                 onClick = onProfileClick,
             )

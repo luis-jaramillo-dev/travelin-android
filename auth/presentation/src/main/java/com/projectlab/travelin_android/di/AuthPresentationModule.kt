@@ -14,13 +14,11 @@ import dagger.hilt.components.SingletonComponent
 @InstallIn(SingletonComponent::class)
 @Module
 object AuthPresentationModule {
-
     @Provides
     fun provideAuthUseCase(repository: AuthRepository) = AuthUseCases(
         getCurrentUser = GetCurrentUserUseCase(repository),
         login = LoginUseCase(repository),
         logout = LogoutUseCase(repository),
-        register = RegisterUseCase(repository)
+        register = RegisterUseCase(repository),
     )
-
 }
