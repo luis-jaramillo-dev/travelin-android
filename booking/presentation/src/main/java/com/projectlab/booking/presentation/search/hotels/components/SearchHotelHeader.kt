@@ -11,7 +11,6 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import com.projectlab.booking.presentation.HotelsViewModel
 import com.projectlab.booking.presentation.screens.hotels.search.SearchHotelState
 import com.projectlab.core.presentation.designsystem.component.IconBack
 import com.projectlab.core.presentation.designsystem.theme.spacing
@@ -25,6 +24,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.contentDescription
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.text.input.ImeAction
+import com.projectlab.booking.presentation.HotelsViewModel
 import com.projectlab.core.presentation.designsystem.R
 import com.projectlab.core.presentation.designsystem.component.IconSearch
 import com.projectlab.core.presentation.designsystem.component.TravelinIconButton

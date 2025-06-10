@@ -30,7 +30,6 @@ class HomeViewModel @Inject constructor(
     private val historyProvider: SearchHistoryProvider,
     private val getCoordinatesFromCityUseCase: GetCoordinatesFromCityUseCase,
     private val activityRepository: ActivityRepository,
-    private val userSessionProvider: UserSessionProvider,
     private val dispatcher: CoroutineDispatcher
 ) : ViewModel() {
 
@@ -124,14 +123,9 @@ class HomeViewModel @Inject constructor(
 
     fun fetchFavoriteActivities() {
         viewModelScope.launch {
-            val userId = userSessionProvider.getUserSessionId()
-            if (userId != null) {
-                activityRepository.getFavoriteActivities(userId).collect { favorites ->
+                activityRepository.getFavoriteActivities().collect { favorites ->
                     _uiState.update { it.copy(favoriteActivities = favorites) }
                 }
-            } else {
-                _uiState.update { it.copy(favoriteActivities = emptyList()) }
-            }
         }
     }
 }

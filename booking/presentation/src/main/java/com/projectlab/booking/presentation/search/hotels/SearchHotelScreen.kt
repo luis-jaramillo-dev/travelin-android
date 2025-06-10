@@ -1,4 +1,4 @@
-package com.projectlab.booking.presentation.screens.hotels.search
+package com.projectlab.booking.presentation.search.hotels
 
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize

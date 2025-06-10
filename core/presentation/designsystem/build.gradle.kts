@@ -20,4 +20,8 @@ dependencies {
     implementation(libs.coil.compose)
     api(libs.androidx.compose.material3)
     implementation(libs.androidx.navigation.runtime.android)
+
+    // Mapbox
+    implementation(libs.mapbox.maps.android)
+    implementation(libs.mapbox.maps.compose)
 }

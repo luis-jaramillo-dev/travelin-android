@@ -26,7 +26,6 @@ data class FirestoreItineraryDTO (
     val startDate: Timestamp = Timestamp.now(),
     val endDate: Timestamp = Timestamp.now(),
     val totalItineraryPrice: Double = 0.0,
-    // val userRef: DocumentReference? = null
 ){
     companion object {
         @RequiresApi(Build.VERSION_CODES.O)

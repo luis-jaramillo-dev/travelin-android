@@ -1,27 +1,32 @@
 package com.projectlab.booking.presentation
 
+import android.content.Context
+import android.widget.Toast
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.projectlab.booking.models.toHotelUi
+import com.projectlab.booking.presentation.booking.hotels.BookingHotelState
 import com.projectlab.booking.presentation.screens.hotels.details.DetailHotelState
 import com.projectlab.booking.presentation.screens.hotels.search.SearchHotelState
+import com.projectlab.booking.utils.StringValue.StringResource
 import com.projectlab.core.domain.model.Hotel
 import com.projectlab.core.domain.model.User
 import com.projectlab.core.domain.repository.UserSessionProvider
 import com.projectlab.core.domain.use_cases.hotels.HotelsUseCases
-import com.projectlab.core.domain.use_cases.location.GetCityFromCoordinatesUseCase
 import com.projectlab.core.domain.use_cases.location.GetCoordinatesFromCityUseCase
 import com.projectlab.core.domain.use_cases.users.UsersUseCases
 import com.projectlab.core.domain.util.Result
+import com.projectlab.core.presentation.designsystem.R
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
+import java.time.LocalDate
 import javax.inject.Inject
 
 @HiltViewModel
@@ -39,12 +44,8 @@ class HotelsViewModel @Inject constructor(
     private val _uiStateHotelDetails = MutableStateFlow(DetailHotelState())
     val uiStateHotelDetails: StateFlow<DetailHotelState> = _uiStateHotelDetails.asStateFlow()
 
-
-    var detailHotelState by mutableStateOf(DetailHotelState())
-        private set
-
-    var searchHotelState by mutableStateOf(SearchHotelState())
-        private set
+    private val _uiStateBookingHotel = MutableStateFlow(BookingHotelState())
+    val uiStateBookingHotel: StateFlow<BookingHotelState> = _uiStateBookingHotel.asStateFlow()
 
     private var user by mutableStateOf(
         User()
@@ -52,15 +53,21 @@ class HotelsViewModel @Inject constructor(
         private set
 
     init {
-
         getUserById()
     }
 
     fun getUserById() = viewModelScope.launch {
         val userId = userSessionProvider.getUserSessionId()
-
-        usersUseCases.getUserById(userId.toString()).collect() {
-            user = it
+        usersUseCases.getUserById(userId.toString()).collect() { userDB ->
+            user = userDB
+            _uiStateBookingHotel.update {
+                it.copy(
+                    guestName = "${userDB.firstName} ${userDB.lastName}",
+                    guestNumber = userDB.phoneNumber,
+                    countryCode = userDB.countryCode,
+                    email = userDB.email,
+                )
+            }
         }
     }
 
@@ -105,6 +112,26 @@ class HotelsViewModel @Inject constructor(
         }
     }
 
+    fun confirmHotelBooking(
+        context: Context,
+        checkIn: LocalDate?,
+        checkOut: LocalDate?,
+        onSuccessBooking: () -> Unit
+    ) {
+
+
+        if (checkIn == null || checkOut == null) {
+            Toast.makeText(
+                context,
+                StringResource(R.string.error_dates).asString(context),
+                Toast.LENGTH_LONG,
+            ).show()
+        } else {
+            onSuccessBooking()
+        }
+
+    }
+
     fun showAllResults() {
         _uiStateHotelSearch.update { it.copy(showAllResults = true) }
     }
@@ -112,6 +139,7 @@ class HotelsViewModel @Inject constructor(
     fun getHotelDetails(hotelId: String) {
         val hotelFound = _uiStateHotelSearch.value.hotels.find { it.id == hotelId }
         _uiStateHotelDetails.update { it.copy(hotelUi = hotelFound!!.toHotelUi()) }
+        _uiStateBookingHotel.update { it.copy(hotelUi = hotelFound!!.toHotelUi()) }
     }
 
     fun favoriteHotel(hotelId: String) {
@@ -135,7 +163,6 @@ class HotelsViewModel @Inject constructor(
                     }
 
                 }
-
 
             } catch (e: Exception) {
                 println(e)

@@ -22,6 +22,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import com.projectlab.booking.presentation.favorites.FavoritesViewModel
 import com.projectlab.core.data.mapper.toFavoriteActivityEntity
@@ -30,6 +31,7 @@ import com.projectlab.core.presentation.designsystem.component.DescriptionBox
 import com.projectlab.core.presentation.designsystem.component.GalleryDialog
 import com.projectlab.core.presentation.designsystem.component.GallerySection
 import com.projectlab.core.presentation.designsystem.component.TourCardHeader
+import com.projectlab.core.presentation.designsystem.component.MapActivity
 import com.projectlab.core.presentation.designsystem.theme.spacing
 
 @Composable
@@ -119,6 +121,15 @@ fun ActivityDetailScreenComponent(
                     activity = it,
                 )
 
+                Spacer(modifier = Modifier.height(MaterialTheme.spacing.ScreenVerticalSpacing))
+
+                Column(
+                    modifier = modifier.height(200.dp)
+                ) {
+                    MapActivity(
+                        latitude = activity.geoCode.latitude,
+                        longitude = activity.geoCode.longitude)
+                }
 
                 Spacer(modifier = Modifier.height(MaterialTheme.spacing.ScreenVerticalSpacing))
 
