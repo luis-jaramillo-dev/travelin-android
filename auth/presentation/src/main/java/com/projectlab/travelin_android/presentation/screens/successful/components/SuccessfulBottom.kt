@@ -3,6 +3,7 @@ package com.projectlab.travelin_android.presentation.screens.successful.componen
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
@@ -27,6 +28,8 @@ fun SuccessfulBottom(
         verticalArrangement = Arrangement.Bottom,
     ) {
         ButtonSimple(
+            modifier = Modifier
+                .height(MaterialTheme.spacing.FieldHeight),
             text = stringResource(R.string.lets_explore),
             onClick = {
                 onNextClick()

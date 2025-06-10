@@ -5,7 +5,7 @@ import androidx.lifecycle.viewModelScope
 import com.projectlab.auth.domain.use_cases.AuthUseCases
 import com.projectlab.core.domain.repository.UserSessionProvider
 import com.projectlab.core.domain.use_cases.users.UsersUseCases
-import com.projectlab.travelin_android.models.toUserUi
+import com.projectlab.travelin_android.models.toUserUI
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -20,29 +20,41 @@ class ProfileViewModel @Inject constructor(
     private val usersUseCases: UsersUseCases,
     private val userSessionProvider: UserSessionProvider,
 ) : ViewModel() {
-
-    private val _state = MutableStateFlow(ProfileState())
-    val state: StateFlow<ProfileState> = _state.asStateFlow()
+    private val _state = MutableStateFlow(ProfileUIState())
+    val state: StateFlow<ProfileUIState> = _state.asStateFlow()
 
     init {
         getUserById()
     }
 
     fun logout() {
+        setAsLoading()
+
         viewModelScope.launch {
-            _state.update { it.copy(isLoading = true) }
             userSessionProvider.deleteUserSession()
             authUseCase.logout()
-            _state.update { it.copy(isLoading = false) }
+            _state.update { it.copy(loading = false) }
         }
     }
 
-    private fun getUserById() = viewModelScope.launch {
-        _state.update { it.copy(isLoading = true) }
-        val currentUser = authUseCase.getCurrentUser()
-        usersUseCases.getUserById(currentUser!!.uid).collect { user ->
-            _state.update { it.copy(userUi = user.toUserUi()) }
+    private fun getUserById() {
+        setAsLoading()
+
+        viewModelScope.launch {
+            val currentUser = authUseCase.getCurrentUser()
+            usersUseCases.getUserById(currentUser!!.uid).collect { user ->
+                _state.update { it.copy(loading = false, user = user.toUserUI()) }
+            }
         }
-        _state.update { it.copy(isLoading = false) }
+    }
+
+    private fun setAsLoading() {
+        _state.update {
+            it.copy(
+                loading = true,
+                error = null,
+                user = null,
+            )
+        }
     }
 }

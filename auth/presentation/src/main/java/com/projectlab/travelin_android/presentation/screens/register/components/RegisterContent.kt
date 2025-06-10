@@ -46,6 +46,8 @@ fun RegisterContent(
         Spacer(modifier = Modifier.height(MaterialTheme.spacing.medium))
 
         ButtonSimple(
+            modifier = Modifier
+                .height(MaterialTheme.spacing.FieldHeight),
             text = stringResource(R.string.create_account_button),
             onClick = onRegisterClick,
             enabled = formState.firstName.isNotEmpty()

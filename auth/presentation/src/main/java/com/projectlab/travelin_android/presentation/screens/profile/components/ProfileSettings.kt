@@ -4,7 +4,6 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.AccountCircle
 import androidx.compose.material.icons.filled.DarkMode
@@ -16,6 +15,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextDecoration
 import com.projectlab.core.presentation.designsystem.R
 import com.projectlab.core.presentation.designsystem.theme.spacing
 import com.projectlab.travelin_android.presentation.components.ButtonSimple
@@ -24,55 +24,63 @@ import com.projectlab.travelin_android.presentation.components.OutlinedButtonWit
 @Composable
 fun ProfileSettings(
     onLogoutClick: () -> Unit,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
 ) {
     Column(
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(horizontal = MaterialTheme.spacing.ScreenHorizontalPadding)
+        modifier = modifier
+            .fillMaxWidth(),
     ) {
         Text(
-            text = stringResource(R.string.account_setting),
+            text = stringResource(R.string.account_settings),
+            color = MaterialTheme.colorScheme.onBackground,
             style = MaterialTheme.typography.titleMedium.copy(
                 fontWeight = FontWeight.Bold,
-                color = MaterialTheme.colorScheme.onBackground
-            )
+            ),
         )
+
         Spacer(modifier = Modifier.height(MaterialTheme.spacing.SectionSpacing))
 
         OutlinedButtonWithIcons(
             icon = Icons.Default.AccountCircle,
             title = stringResource(R.string.edit_profile),
-            onClick = { }
+            onClick = { },
         )
-        Spacer(modifier = Modifier.height(MaterialTheme.spacing.ElementSpacing))
+
+        Spacer(modifier = Modifier.height(MaterialTheme.spacing.medium))
 
         OutlinedButtonWithIcons(
             icon = Icons.Default.DarkMode,
             title = stringResource(R.string.color_mode),
-            onClick = { }
+            onClick = { },
         )
-        Spacer(modifier = Modifier.height(MaterialTheme.spacing.BigSpacing))
+
+        Spacer(modifier = Modifier.height(MaterialTheme.spacing.extraLarge))
 
         ButtonSimple(
             text = stringResource(R.string.logout),
             onClick = {
                 onLogoutClick()
             },
-            modifier = Modifier.fillMaxWidth(),
+            modifier = Modifier
+                .height(MaterialTheme.spacing.ProfileButtonHeight),
             containerColor = Color.Transparent,
             contentColor = MaterialTheme.colorScheme.onBackground,
-            isOutlined = true
+            isOutlined = true,
+            outlineAlpha = 0.15f,
+            textStyle = MaterialTheme.typography.bodyLarge.copy(
+                fontWeight = FontWeight.SemiBold,
+                textDecoration = TextDecoration.Underline,
+            ),
         )
 
-        Spacer(modifier = Modifier.height(MaterialTheme.spacing.ElementSpacing))
+        Spacer(modifier = Modifier.height(MaterialTheme.spacing.SectionSpacing))
 
         Text(
-            text = stringResource(R.string.version),
-            style = MaterialTheme.typography.labelSmall.copy(
-                color = MaterialTheme.colorScheme.onSurfaceVariant
-            ),
-            modifier = Modifier.align(Alignment.CenterHorizontally)
+            // TODO where do we get the version from?
+            text = stringResource(R.string.version, "1.0.0"),
+            color = MaterialTheme.colorScheme.onSurfaceVariant,
+            style = MaterialTheme.typography.labelSmall,
+            modifier = Modifier.align(Alignment.CenterHorizontally),
         )
     }
 }

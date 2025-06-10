@@ -10,6 +10,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import com.projectlab.core.presentation.designsystem.theme.spacing
@@ -23,19 +24,23 @@ fun ButtonSimple(
     containerColor: Color = MaterialTheme.colorScheme.primary,
     contentColor: Color = MaterialTheme.colorScheme.onPrimary,
     isOutlined: Boolean = false,
+    outlineAlpha: Float = 1f,
+    textStyle: TextStyle? = null,
 ) {
     Button(
         modifier = modifier
             .fillMaxWidth()
             .height(MaterialTheme.spacing.FieldHeight)
             .then(
-                if (isOutlined)
+                if (isOutlined) {
                     Modifier.border(
                         width = 1.dp,
-                        color = MaterialTheme.colorScheme.outline,
+                        color = MaterialTheme.colorScheme.outline.copy(alpha = outlineAlpha),
                         shape = MaterialTheme.shapes.large,
                     )
-                else Modifier
+                } else {
+                    Modifier
+                }
             ),
         enabled = enabled,
         colors = ButtonDefaults.buttonColors(
@@ -55,7 +60,7 @@ fun ButtonSimple(
     ) {
         Text(
             text = text,
-            style = MaterialTheme.typography.labelLarge.copy(
+            style = textStyle ?: MaterialTheme.typography.labelLarge.copy(
                 fontWeight = FontWeight.Medium,
             ),
         )

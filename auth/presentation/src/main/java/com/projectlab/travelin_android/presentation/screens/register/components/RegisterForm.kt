@@ -77,7 +77,7 @@ fun RegisterForm(
 
         Row(
             modifier = Modifier.fillMaxWidth(),
-            verticalAlignment = Alignment.Bottom,
+            verticalAlignment = Alignment.Top,
         ) {
             DropdownOutlinedButton(
                 label = stringResource(R.string.phone),

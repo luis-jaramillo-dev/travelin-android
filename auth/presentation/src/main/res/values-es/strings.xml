@@ -39,4 +39,7 @@
     <string name="after_this_you_can_explore_any_place_you_want_enjoy_it">Después de esto puedes explorar cualquier lugar que quieras y disfrutarlo!</string>
     <string name="lets_explore">Vamos a Explorar</string>
     <string name="enter_a_valid_phone_number">Ingresa un número de teléfono válido</string>
+    <string name="failed_to_get_current_user">Error al obtener usuario actual: %1$s</string>
+    <string name="go_to">Ir a \'%1$s\'</string>
+    <string name="title_icon">Icono %1$s</string>
 </resources>

@@ -74,6 +74,10 @@ object Spacing {
     val CornerRadius: Dp = 20.dp
     val SmallCornerRadius: Dp = 12.dp
 
+    // Profile setting button
+    val ProfileButtonHeight: Dp = 62.dp
+    const val ProfileButtonArrowScale: Float = 1.25f
+
     // Search screen
     val searchPlacesPadding: Dp = 6.dp
     val searchSpacer: Dp = 10.dp

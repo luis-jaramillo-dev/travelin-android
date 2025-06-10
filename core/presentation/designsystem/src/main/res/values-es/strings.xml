@@ -51,7 +51,7 @@
     <string name="favorites">Favoritos</string>
     <string name="trips">Trips</string>
     <string name="profile">Perfil</string>
-    <string name="account_setting">Configuración de la cuenta</string>
+    <string name="account_settings">Configuraciones de la cuenta</string>
     <string name="edit_profile">Editar perfil</string>
     <string name="color_mode">Color mode</string>
     <string name="logout">Logout</string>

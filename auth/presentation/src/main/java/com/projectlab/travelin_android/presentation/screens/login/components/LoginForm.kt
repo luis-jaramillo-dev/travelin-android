@@ -58,7 +58,9 @@ fun LoginForm(
         ButtonSimple(
             text = stringResource(R.string.login),
             onClick = { onLogin() },
-            modifier = Modifier.fillMaxWidth(),
+            modifier = Modifier
+                .fillMaxWidth()
+                .height(MaterialTheme.spacing.FieldHeight),
             enabled = isEmailValid,
         )
     }
