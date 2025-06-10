@@ -78,7 +78,14 @@ private fun NavGraphBuilder.authGraph(navController: NavHostController) {
         composable(route = AuthScreens.Profile.route) {
             ProfileScreen(
                 viewModel = hiltViewModel<ProfileViewModel>(),
-                onLogoutClick = { navController.navigate(AuthScreens.Login.route) },
+                onLogoutClick = {
+                    navController.navigate(AuthScreens.Login.route) {
+                        popUpTo(navController.graph.id) {
+                            inclusive = true
+                        }
+                        launchSingleTop = true
+                    }
+                },
                 onHomeClick = { navController.navigate(HomeScreens.Home.route) },
                 onFavoritesClick = { navController.navigate(FavoritesScreens.Favorites.route) },
                 onTripsClick = {}
@@ -105,7 +112,6 @@ private fun NavGraphBuilder.searchGraph(navController: NavHostController) {
                 navController.navigate(DetailScreens.ActivityDetail.createRoute(activityId))
             }
         )
-
 
     }
 
@@ -178,7 +184,6 @@ private fun NavGraphBuilder.detailGraph(navController: NavHostController) {
             hotelId = hotelId
         )
     }
-
 }
 
 private fun NavGraphBuilder.homeGraph(navController: NavHostController) {
