@@ -220,6 +220,7 @@ private fun NavGraphBuilder.itinerariesGraph(navController: NavHostController) {
     composable(route = ItinerariesScreens.Itineraries.route) {
         ItinerariesScreen(
             modifier = Modifier,
+            navController = navController,
             onHomeClick = { navController.navigate(HomeScreens.Home.route) },
             onFavoritesClick = { navController.navigate(FavoritesScreens.Favorites.route) },
             onItinsClick = {},
