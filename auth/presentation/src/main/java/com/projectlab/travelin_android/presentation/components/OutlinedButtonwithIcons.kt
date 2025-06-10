@@ -1,20 +1,19 @@
 package com.projectlab.travelin_android.presentation.components
 
 import androidx.compose.foundation.border
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.KeyboardArrowLeft
+import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -34,7 +33,7 @@ fun OutlinedButtonWithIcons(
     onClick: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
-    Surface(
+    Button(
         modifier = modifier
             .fillMaxWidth()
             .height(MaterialTheme.spacing.ProfileButtonHeight)
@@ -42,20 +41,16 @@ fun OutlinedButtonWithIcons(
                 width = 1.dp,
                 color = MaterialTheme.colorScheme.outline.copy(alpha = 0.15f),
                 shape = MaterialTheme.shapes.large,
-            )
-            .clickable {
-                onClick()
-            },
+            ),
+        colors = ButtonDefaults.buttonColors(
+            containerColor = Color.Transparent,
+        ),
         shape = MaterialTheme.shapes.large,
-        color = Color.Transparent,
+        onClick = onClick,
     ) {
         Row(
             modifier = Modifier
-                .fillMaxSize()
-                .padding(
-                    horizontal = MaterialTheme.spacing.medium,
-                    vertical = MaterialTheme.spacing.SectionSpacing,
-                ),
+                .fillMaxSize(),
             verticalAlignment = Alignment.CenterVertically,
             horizontalArrangement = Arrangement.SpaceBetween,
         ) {
