@@ -7,5 +7,5 @@ class FavoriteHotelUseCase @Inject constructor(
     private val repository: HotelsRepository
 ) {
     suspend operator fun invoke(userId: String, hotelId: String) =
-        repository.favoriteHotel(userId, hotelId)
+        repository.favoriteHotel(hotelId)
 }

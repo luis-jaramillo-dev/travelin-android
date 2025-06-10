@@ -77,7 +77,7 @@ fun BookingScreen (
             label = { Text("User ID") },
             modifier = Modifier.fillMaxWidth(0.8f)
         )
-        Button(onClick = { viewModel.fetchAllItineraries(userIdInput)}) {
+        Button(onClick = { viewModel.fetchAllItineraries()}) {
             Text("Search Itineraries")
         }
 
@@ -99,7 +99,7 @@ fun BookingScreen (
             label = { Text("Itinerary ID") },
             modifier = Modifier.fillMaxWidth(0.8f)
         )
-        Button(onClick = { viewModel.fetchItineraryById(userIdInput, itinIdInput) }) {
+        Button(onClick = { viewModel.fetchItineraryById(itinIdInput) }) {
             Text("Search Itinerary")
         }
 

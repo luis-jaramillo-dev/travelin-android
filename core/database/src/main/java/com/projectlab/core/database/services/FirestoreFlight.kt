@@ -15,26 +15,45 @@ import kotlinx.coroutines.flow.Flow
  */
 
 interface FirestoreFlight {
-    suspend fun createFlight(flight: FlightEntity): Result<EntityId>
-    suspend fun getFlightById(userId: String, itinId: String, flightId: String): Flow<FlightEntity?>
-    suspend fun getAllFlightsForItinerary(userId: String, itinId: String): Flow<List<FlightEntity>>
-    suspend fun updateFlight(flight: FlightEntity): Result<Unit>
-    suspend fun deleteFlight(userId: String, itinId: String, flightId: String): Result<Unit>
-    suspend fun createFlightSegment(flightSegment: FlightSegmentEntity): Result<EntityId>
+    // Flight operations
+    suspend fun createFlight(
+        itinId: String,
+        flight: FlightEntity
+    ): Result<EntityId>
+    suspend fun getFlightById(
+        itinId: String,
+        flightId: String
+    ): Result<FlightEntity?>
+    suspend fun getAllFlightsForItinerary(
+        itinId: String
+    ): Result<List<FlightEntity>>
+    suspend fun updateFlight(
+        itinId: String,
+        flight: FlightEntity
+    ): Result<Unit>
+    suspend fun deleteFlight( itinId: String, flightId: String): Result<Unit>
+
+    // Flight segment operations
+    suspend fun createFlightSegment(
+        itinId: String,
+        flightId: String,
+        flightSegment: FlightSegmentEntity
+    ): Result<EntityId>
     suspend fun getFlightSegmentById(
-        userId: String,
         itinId: String,
         flightId: String,
         segmentId: String
-    ): Flow<FlightSegmentEntity?>
+    ): Result<FlightSegmentEntity?>
     suspend fun getAllFlightSegmentsForFlight(
-        userId: String,
         itinId: String,
         flightId: String
-    ): Flow<List<FlightSegmentEntity>>
-    suspend fun updateFlightSegment(flightSegment: FlightSegmentEntity): Result<Unit>
+    ): Result<List<FlightSegmentEntity>>
+    suspend fun updateFlightSegment(
+        itinId: String,
+        flightId: String,
+        flightSegment: FlightSegmentEntity
+    ): Result<Unit>
     suspend fun deleteFlightSegment(
-        userId: String,
         itinId: String,
         flightId: String,
         segmentId: String

@@ -19,11 +19,14 @@ import kotlinx.coroutines.flow.Flow
 
 interface HotelsRepository {
 
-    suspend fun createHotel(hotel: HotelEntity): kotlin.Result<EntityId>
-    suspend fun getHotelById(userId: String, itinId: String, hotelId: String): Flow<HotelEntity?>
-    suspend fun getAllHotels(userId: String, itinId: String): Flow<List<HotelEntity>>
-    suspend fun updateHotel(hotel: HotelEntity): kotlin.Result<Unit>
-    suspend fun deleteHotel(userId: String, itinId: String, hotelId: String): kotlin.Result<Unit>
+    suspend fun createHotel(
+        itinId: String,
+        hotel: HotelEntity
+    ): kotlin.Result<EntityId>
+    suspend fun getHotelById(itinId: String, hotelId: String): kotlin.Result<HotelEntity?>
+    suspend fun getAllHotels(itinId: String): kotlin.Result<List<HotelEntity>>
+    suspend fun updateHotel(itinId: String, hotel: HotelEntity): kotlin.Result<Unit>
+    suspend fun deleteHotel(itinId: String, hotelId: String): kotlin.Result<Unit>
 
     suspend fun getHotelsByCity(
         cityCode: String,
@@ -31,6 +34,6 @@ interface HotelsRepository {
         ratings: String
     ): Result<List<Hotel>, DataError.Network>
 
-    suspend fun favoriteHotel(userId: String, hotelId: String): Result<Boolean, DataError.Network>
-    suspend fun unfavoriteHotel(userId: String, hotelId: String): Result<Boolean, DataError.Network>
+    suspend fun favoriteHotel(hotelId: String): Result<Boolean, DataError.Network>
+    suspend fun unfavoriteHotel(hotelId: String): Result<Boolean, DataError.Network>
 }

@@ -20,7 +20,6 @@ import androidx.compose.ui.text.TextLayoutResult
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.text.style.TextOverflow
-import androidx.compose.ui.unit.dp
 import com.projectlab.core.data.model.ActivityDto
 import com.projectlab.core.presentation.designsystem.R
 import com.projectlab.core.presentation.designsystem.theme.spacing
@@ -35,7 +34,7 @@ fun DescriptionBox(
     var isTextOverflow by remember { mutableStateOf(false) }
     var textLayoutResult by remember { mutableStateOf<TextLayoutResult?>(null) }
 
-    val cleanDescription = activity.description
+    val cleanDescription = if(activity.description.isEmpty()) { stringResource(R.string.no_description) } else activity.description
         .replace("<br><br>", "\n\n")
         .replace("<br>", "\n")
         .replace("\\n", "\n")

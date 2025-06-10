@@ -44,8 +44,9 @@ class LocationViewModel @Inject constructor(
     }
 
     fun setUnknownLocation(context: Context) {
-        _location.value = null
-        _address.value = context.getString(R.string.unknown_location)
+        if (_location.value == null) {
+            _address.value = context.getString(R.string.unknown_location)
+        }
     }
 
     fun getCurrentLocation() {

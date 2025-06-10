@@ -11,7 +11,7 @@ import javax.inject.Inject
  * ItineraryRepositoryImpl is the implementation of the ItineraryRepository interface.
  * It performs operations on itineraries using services.
  *
- * @param firestoreItinerary The FirestoreItinerary service used for database operations.
+ * @param firestoreItinerary The FirestoreItinerary instance used for Firestore operations.
  */
 
 class ItineraryRepositoryImpl  @Inject constructor(
@@ -22,13 +22,12 @@ class ItineraryRepositoryImpl  @Inject constructor(
     }
 
     override suspend fun getItineraryById(
-        userId: String,
         itineraryId: String
-    ): Flow<ItineraryEntity?> {
-        return firestoreItinerary.getItinerariesById(userId, itineraryId)
+    ): Result<ItineraryEntity?> {
+        return firestoreItinerary.getItinerariesById(itineraryId)
     }
 
-    override suspend fun getAllItineraries(userId: String): Flow<List<ItineraryEntity>> {
+    override suspend fun getAllItineraries(userId: String): Result<List<ItineraryEntity>> {
         return firestoreItinerary.getAllItinerariesForUser(userId)
     }
 
@@ -37,9 +36,8 @@ class ItineraryRepositoryImpl  @Inject constructor(
     }
 
     override suspend fun deleteItinerary(
-        userId: String,
         itineraryId: String
     ): Result<Unit> {
-        return firestoreItinerary.deleteItinerary(userId, itineraryId)
+        return firestoreItinerary.deleteItinerary(itineraryId)
     }
 }
