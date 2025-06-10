@@ -39,6 +39,7 @@ fun ActivityDetailScreen(
     favoritesViewModel: FavoritesViewModel,
     activityId: String,
     navController: NavController,
+    onBackClick: () -> Unit
 ) {
     LaunchedEffect(Unit) {
         activityDetailViewModel.onViewDetail(activityId)
@@ -70,6 +71,7 @@ fun ActivityDetailScreen(
             navController = navController,
             onFavoriteClick = onFavoriteClick,
             isFavorite = isFavorite,
+            onBackClick = onBackClick
         )
     }
 }
@@ -81,6 +83,7 @@ fun ActivityDetailScreenComponent(
     navController: NavController,
     isFavorite: Boolean,
     onFavoriteClick: () -> Unit,
+    onBackClick: () -> Unit,
 ) {
     val activity = uiState.activity
     val scrollState = rememberScrollState()
@@ -106,6 +109,7 @@ fun ActivityDetailScreenComponent(
                     navController = navController,
                     isFavorite = isFavorite,
                     onFavoriteClick = onFavoriteClick,
+                    onBackClick = onBackClick,
                 )
 
                 Spacer(modifier = Modifier.height(MaterialTheme.spacing.ScreenVerticalSpacing))

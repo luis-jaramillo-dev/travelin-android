@@ -1,4 +1,4 @@
-package com.projectlab.booking.presentation.screens
+package com.projectlab.booking.presentation
 
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -12,6 +12,8 @@ import com.projectlab.core.domain.model.Hotel
 import com.projectlab.core.domain.model.User
 import com.projectlab.core.domain.repository.UserSessionProvider
 import com.projectlab.core.domain.use_cases.hotels.HotelsUseCases
+import com.projectlab.core.domain.use_cases.location.GetCityFromCoordinatesUseCase
+import com.projectlab.core.domain.use_cases.location.GetCoordinatesFromCityUseCase
 import com.projectlab.core.domain.use_cases.users.UsersUseCases
 import com.projectlab.core.domain.util.Result
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -27,6 +29,8 @@ class HotelsViewModel @Inject constructor(
     private val hotelsUseCases: HotelsUseCases,
     private val usersUseCases: UsersUseCases,
     private val userSessionProvider: UserSessionProvider,
+    private val getCoordinatesFromCityUseCase: GetCoordinatesFromCityUseCase
+
 ) : ViewModel() {
 
     private val _uiStateHotelSearch = MutableStateFlow(SearchHotelState())
@@ -64,31 +68,37 @@ class HotelsViewModel @Inject constructor(
         _uiStateHotelSearch.update { it.copy(query = newQuery) }
     }
 
-    fun onSearchSubmitted() {
+    fun onSearchSubmittedWithCoordinates() {
 
         viewModelScope.launch {
             _uiStateHotelSearch.update { it.copy(isLoading = true) }
+            val locationData = getCoordinatesFromCityUseCase(uiStateHotelSearch.value.query)
             try {
-                when (
-                    val result = hotelsUseCases.getHotelsByCity(_uiStateHotelSearch.value.query)) {
-                    is Result.Success -> {
+                if (locationData != null) {
+                    when (val result = hotelsUseCases.getHotelsByCoordinates(
+                        locationData.first,
+                        locationData.second
+                    )) {
+                        is Result.Success -> {
+                            _uiStateHotelSearch.update { it.copy(hotels = result.data.toMutableList()) }
+                        }
 
-                        val newFavoriteHotel = hotelsListWithFavorite(
-                            user.favoritesHotels,
-                            result.data.toMutableList()
-                        )
+                        is Result.Error -> {
+                            _uiStateHotelSearch.update { it.copy(error = "Unknown error") }
+                        }
 
-
-                        _uiStateHotelSearch.update { it.copy(hotels = newFavoriteHotel) }
-                        println(_uiStateHotelSearch.value.hotels)
                     }
-
-                    is Result.Error -> {
-                        _uiStateHotelSearch.update { it.copy(error = "Unknown error") }
+                } else {
+                    _uiStateHotelSearch.update {
+                        it.copy(error = "Could not find coordinates for the specified city")
                     }
                 }
             } catch (e: Exception) {
-                println(e)
+                _uiStateHotelSearch.update {
+                    it.copy(
+                        error = e.localizedMessage ?: "Unknown error"
+                    )
+                }
             } finally {
                 _uiStateHotelSearch.update { it.copy(isLoading = false) }
             }

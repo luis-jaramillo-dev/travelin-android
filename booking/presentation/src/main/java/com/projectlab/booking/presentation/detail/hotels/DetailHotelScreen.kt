@@ -8,7 +8,7 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
-import com.projectlab.booking.presentation.screens.HotelsViewModel
+import com.projectlab.booking.presentation.HotelsViewModel
 import com.projectlab.booking.presentation.screens.hotels.details.components.DetailHotelBottomBar
 import com.projectlab.booking.presentation.screens.hotels.details.components.DetailHotelContent
 import com.projectlab.core.presentation.designsystem.component.HeaderWithBack

@@ -10,7 +10,7 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.navigation.NavHostController
-import com.projectlab.booking.presentation.screens.HotelsViewModel
+import com.projectlab.booking.presentation.HotelsViewModel
 import com.projectlab.booking.presentation.screens.hotels.search.components.SearchHotelContent
 import com.projectlab.booking.presentation.screens.hotels.search.components.SearchHotelHeader
 import com.projectlab.core.presentation.designsystem.theme.spacing
@@ -19,7 +19,8 @@ import com.projectlab.core.presentation.designsystem.theme.spacing
 fun SearchHotelScreen(
     modifier: Modifier = Modifier,
     viewModel: HotelsViewModel,
-    navController: NavHostController
+    navController: NavHostController,
+    onBackClick: () -> Unit
 ) {
     val uiState by viewModel.uiStateHotelSearch.collectAsState()
 
@@ -29,7 +30,7 @@ fun SearchHotelScreen(
             SearchHotelHeader(
                 uiState = uiState,
                 viewModel = viewModel,
-                onBackPressed = { navController.popBackStack() })
+                onBackPressed = onBackClick)
         },
         content = {
             Box(

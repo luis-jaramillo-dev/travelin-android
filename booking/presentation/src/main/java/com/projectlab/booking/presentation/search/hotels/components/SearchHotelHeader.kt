@@ -11,7 +11,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import com.projectlab.booking.presentation.screens.HotelsViewModel
+import com.projectlab.booking.presentation.HotelsViewModel
 import com.projectlab.booking.presentation.screens.hotels.search.SearchHotelState
 import com.projectlab.core.presentation.designsystem.component.IconBack
 import com.projectlab.core.presentation.designsystem.theme.spacing
@@ -48,12 +48,16 @@ fun SearchHotelHeader(
                 query = uiState.query,
                 onEnter = {
                     if (uiState.query.isNotBlank()) {
-                        viewModel.onSearchSubmitted()
+                        viewModel.onSearchSubmittedWithCoordinates()
                     }
                 },
                 modifier = Modifier,
                 onQueryChange = { viewModel.onQueryChanged(it) },
-                onSearchPressed = {}
+                onSearchPressed = {
+                    if (uiState.query.isNotBlank()) {
+                        viewModel.onSearchSubmittedWithCoordinates()
+                    }
+                }
             )
         }
         Spacer(modifier = Modifier.height(MaterialTheme.spacing.SectionSpacing))

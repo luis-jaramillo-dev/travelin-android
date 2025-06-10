@@ -16,7 +16,7 @@ import com.projectlab.booking.presentation.detail.activities.ActivityDetailViewM
 import com.projectlab.booking.presentation.favorites.FavoritesScreen
 import com.projectlab.booking.presentation.favorites.FavoritesViewModel
 import com.projectlab.booking.presentation.home.HomeScreen
-import com.projectlab.booking.presentation.screens.HotelsViewModel
+import com.projectlab.booking.presentation.HotelsViewModel
 import com.projectlab.booking.presentation.screens.hotels.details.DetailHotelScreen
 import com.projectlab.booking.presentation.screens.hotels.search.SearchHotelScreen
 import com.projectlab.booking.presentation.search.activities.SearchActivityScreen
@@ -139,7 +139,8 @@ private fun NavGraphBuilder.searchGraph(navController: NavHostController) {
     composable(route = SearchScreens.Hotels.route) {
         SearchHotelScreen(
             viewModel = hiltViewModel<HotelsViewModel>(),
-            navController = navController
+            navController = navController,
+            onBackClick = { navController.popBackStack() }
         )
     }
 }
@@ -157,7 +158,8 @@ private fun NavGraphBuilder.detailGraph(navController: NavHostController) {
             activityDetailViewModel = hiltViewModel<ActivityDetailViewModel>(),
             activityId = activityId,
             navController = navController,
-            favoritesViewModel = hiltViewModel()
+            favoritesViewModel = hiltViewModel(),
+            onBackClick = { navController.popBackStack() }
         )
     }
 

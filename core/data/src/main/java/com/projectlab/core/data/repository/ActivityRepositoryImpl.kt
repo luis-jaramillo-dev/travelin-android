@@ -81,8 +81,6 @@ class ActivityRepositoryImpl @Inject constructor(
         }
     }
 
-
-
     override fun queryFavoriteActivities(
         nameQuery: String?,
     ): Flow<FavoriteActivityEntity> = flow {
