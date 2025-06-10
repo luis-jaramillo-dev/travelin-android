@@ -3,8 +3,8 @@ package com.projectlab.travelin_android.presentation.screens.login
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.projectlab.auth.domain.use_cases.AuthUseCases
-import com.projectlab.core.domain.model.Response
 import com.projectlab.core.domain.repository.UserSessionProvider
+import com.projectlab.core.domain.util.Result
 import com.projectlab.travelin_android.presentation.validation.AuthValidator
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -55,22 +55,20 @@ class LoginViewModel @Inject constructor(
             val result = authUseCase.login(state.value.email, state.value.password)
 
             when (result) {
-                is Response.Success -> {
+                is Result.Success -> {
                     userSessionProvider.setUserSessionId(result.data.uid)
                     _state.update { it.copy(loading = false, success = true) }
                 }
 
-                is Response.Failure -> {
+                is Result.Error -> {
                     _state.update {
                         it.copy(
                             loading = false,
                             isError = true,
-                            error = result.exception?.localizedMessage,
+                            error = result.error,
                         )
                     }
                 }
-
-                is Response.Loading -> {}
             }
         }
     }

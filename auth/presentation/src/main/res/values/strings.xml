@@ -42,4 +42,10 @@
     <string name="failed_to_get_current_user">Failed to get current user: %1$s</string>
     <string name="go_to">Go to \'%1$s\'</string>
     <string name="title_icon">%1$s Icon</string>
+    <string name="wrong_password">Wrong password</string>
+    <string name="too_many_requests">Too many requests</string>
+    <string name="unauthorized">Unauthorized</string>
+    <string name="no_internet_connection">No internet connection</string>
+    <string name="internal_error">Internal error</string>
+    <string name="account_already_exists">Account already exists</string>
 </resources>

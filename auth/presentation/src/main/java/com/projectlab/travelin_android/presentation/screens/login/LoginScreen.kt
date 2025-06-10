@@ -15,7 +15,9 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import com.projectlab.auth.presentation.R
+import com.projectlab.core.domain.util.DataError
 import com.projectlab.core.presentation.designsystem.theme.TravelinTheme
+import com.projectlab.travelin_android.error.getErrorMessage
 import com.projectlab.travelin_android.presentation.screens.login.components.LoginBottomBar
 import com.projectlab.travelin_android.presentation.screens.login.components.LoginContent
 
@@ -62,10 +64,7 @@ fun LoginScreen(
             if (state.isError) {
                 Toast.makeText(
                     LocalContext.current,
-                    stringResource(
-                        R.string.failed_to_login,
-                        state.error ?: stringResource(R.string.unknown_error),
-                    ),
+                    stringResource(R.string.failed_to_login, getErrorMessage(state.error)),
                     Toast.LENGTH_LONG,
                 ).show()
             }
@@ -74,7 +73,7 @@ fun LoginScreen(
 }
 
 @Composable
-fun LoginScreenScaffold(
+private fun LoginScreenScaffold(
     modifier: Modifier = Modifier,
     email: String,
     isEmailValid: Boolean,
@@ -101,7 +100,7 @@ fun LoginScreenScaffold(
 
 @Preview(showBackground = true)
 @Composable
-fun LoginScreenScaffoldPreview() {
+private fun LoginScreenScaffoldPreview() {
     TravelinTheme {
         LoginScreenScaffold(
             email = "my@email.com",

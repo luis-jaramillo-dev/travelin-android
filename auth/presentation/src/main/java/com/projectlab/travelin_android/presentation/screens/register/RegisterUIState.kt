@@ -1,9 +1,11 @@
 package com.projectlab.travelin_android.presentation.screens.register
 
+import com.projectlab.core.domain.util.DataError
+
 data class RegisterUIState(
     val formState: FormState = FormState(),
     val loading: Boolean = false,
-    val error: String? = null,
+    val error: DataError.FirebaseAuth? = null,
     val isError: Boolean = false,
     val success: Boolean = false,
 )

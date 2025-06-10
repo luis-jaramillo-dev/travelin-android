@@ -14,6 +14,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import com.projectlab.auth.presentation.R
+import com.projectlab.travelin_android.error.getErrorMessage
 import com.projectlab.travelin_android.presentation.screens.register.components.RegisterBottomBar
 import com.projectlab.travelin_android.presentation.screens.register.components.RegisterContent
 
@@ -56,10 +57,7 @@ fun RegisterScreen(
             if (state.isError) {
                 Toast.makeText(
                     LocalContext.current,
-                    stringResource(
-                        R.string.failed_to_register,
-                        state.error ?: stringResource(R.string.unknown_error),
-                    ),
+                    stringResource(R.string.failed_to_register, getErrorMessage(state.error)),
                     Toast.LENGTH_LONG
                 ).show()
             }
