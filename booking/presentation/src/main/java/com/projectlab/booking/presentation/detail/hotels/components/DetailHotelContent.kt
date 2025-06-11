@@ -38,6 +38,7 @@ import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.layout.onSizeChanged
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
@@ -130,7 +131,7 @@ private fun Amenities(
         verticalArrangement = Arrangement.spacedBy(20.dp)
     ) {
         Text(
-            text = "Amenities",
+            text = stringResource(R.string.amenities),
         )
         amenities.splitByRow().forEach { facilities ->
             Row(
@@ -191,7 +192,7 @@ private fun Description(
         verticalArrangement = Arrangement.spacedBy(16.dp)
     ) {
         Text(
-            text = "Description",
+            text = stringResource(R.string.description),
             fontSize = 20.sp,
             fontWeight = FontWeight.W600,
         )
@@ -223,7 +224,7 @@ private fun Details(
             LabeledIcon(
                 modifier = Modifier.weight(1f),
                 iconRes = R.drawable.ic_hotel,
-                text = "Hotel"
+                text = stringResource(R.string.hotel),
             )
             LabeledIcon(
                 modifier = Modifier.weight(1f),
@@ -240,8 +241,8 @@ private fun Details(
             LabeledIcon(
                 modifier = Modifier.weight(1f),
                 iconRes = R.drawable.ic_square,
-                text = "${hotelOffer.room.squareMeters} sqm"
-            )
+                text = stringResource(R.string.sqm,hotelOffer.room.squareMeters ),
+             )
         }
     }
 }

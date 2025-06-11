@@ -8,7 +8,7 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
-import com.projectlab.booking.presentation.screens.HotelsViewModel
+import com.projectlab.booking.presentation.HotelsViewModel
 import com.projectlab.booking.presentation.screens.hotels.details.components.DetailHotelBottomBar
 import com.projectlab.booking.presentation.screens.hotels.details.components.DetailHotelContent
 import com.projectlab.core.presentation.designsystem.component.HeaderWithBack
@@ -18,8 +18,8 @@ fun DetailHotelScreen(
     modifier: Modifier = Modifier,
     viewModel: HotelsViewModel,
     hotelId: String,
-    onClickBack: () -> Unit
-
+    onClickBack: () -> Unit,
+    onClickBookingHotel: () -> Unit
 ) {
     val state by viewModel.uiStateHotelDetails.collectAsState()
 
@@ -37,7 +37,12 @@ fun DetailHotelScreen(
                     hotelUi = state.hotelUi!!
                 )
             },
-            bottomBar = { DetailHotelBottomBar(hotelUi = state.hotelUi!!) }
+            bottomBar = {
+                DetailHotelBottomBar(
+                    hotelUi = state.hotelUi!!,
+                    onClickBookingHotel = { onClickBookingHotel() }
+                )
+            }
         )
     }
 }

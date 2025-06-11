@@ -1,5 +1,7 @@
 package com.projectlab.travelin_android.navigation
 
+import android.os.Build
+import androidx.annotation.RequiresApi
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.remember
@@ -13,15 +15,17 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.navigation
 import androidx.navigation.navArgument
+import com.projectlab.booking.presentation.booking.hotels.BookingHotelScreen
+import com.projectlab.booking.presentation.booking.successful.BookingSuccessfulScreen
 import com.projectlab.booking.presentation.detail.activities.ActivityDetailScreen
 import com.projectlab.booking.presentation.detail.activities.ActivityDetailViewModel
 import com.projectlab.booking.presentation.favorites.FavoritesScreen
 import com.projectlab.booking.presentation.favorites.FavoritesViewModel
 import com.projectlab.booking.presentation.home.HomeScreen
 import com.projectlab.booking.presentation.itinerary.ItinerariesScreen
-import com.projectlab.booking.presentation.screens.HotelsViewModel
+import com.projectlab.booking.presentation.HotelsViewModel
 import com.projectlab.booking.presentation.screens.hotels.details.DetailHotelScreen
-import com.projectlab.booking.presentation.screens.hotels.search.SearchHotelScreen
+import com.projectlab.booking.presentation.search.hotels.SearchHotelScreen
 import com.projectlab.booking.presentation.search.activities.SearchActivityScreen
 import com.projectlab.booking.presentation.search.activities.SearchActivityViewModel
 import com.projectlab.core.presentation.ui.viewmodel.LocationViewModel
@@ -34,6 +38,7 @@ import com.projectlab.travelin_android.presentation.screens.register.RegisterScr
 import com.projectlab.travelin_android.presentation.screens.register.RegisterViewModel
 import com.projectlab.travelin_android.presentation.screens.successful.SuccessfulScreen
 
+@RequiresApi(Build.VERSION_CODES.O)
 @Composable
 fun NavigationRoot(
     navController: NavHostController,
@@ -47,6 +52,7 @@ fun NavigationRoot(
         detailGraph(navController)
         homeGraph(navController)
         favoritesGraph(navController)
+        bookingGraph(navController)
         itinerariesGraph(navController)
     }
 }
@@ -67,7 +73,7 @@ private fun NavGraphBuilder.authGraph(navController: NavHostController) {
             LoginScreen(
                 viewModel = hiltViewModel<LoginViewModel>(),
                 onRegisterClick = { navController.navigate(AuthScreens.Register.route) },
-                onLoggedIn = { navController.navigate(HomeScreens.Home.route) },
+                onLoggedIn = { navController.navigate(HomeScreens.Home.route) }
             )
         }
 
@@ -82,7 +88,14 @@ private fun NavGraphBuilder.authGraph(navController: NavHostController) {
         composable(route = AuthScreens.Profile.route) {
             ProfileScreen(
                 viewModel = hiltViewModel<ProfileViewModel>(),
-                onLogoutClick = { navController.navigate(AuthScreens.Login.route) },
+                onLogoutClick = {
+                    navController.navigate(AuthScreens.Login.route) {
+                        popUpTo(navController.graph.id) {
+                            inclusive = true
+                        }
+                        launchSingleTop = true
+                    }
+                },
                 onHomeClick = { navController.navigate(HomeScreens.Home.route) },
                 onFavoritesClick = { navController.navigate(FavoritesScreens.Favorites.route) },
                 onItinsClick = { navController.navigate(ItinerariesScreens.Itineraries.route) },
@@ -109,7 +122,6 @@ private fun NavGraphBuilder.searchGraph(navController: NavHostController) {
                 navController.navigate(DetailScreens.ActivityDetail.createRoute(activityId))
             }
         )
-
 
     }
 
@@ -143,7 +155,8 @@ private fun NavGraphBuilder.searchGraph(navController: NavHostController) {
     composable(route = SearchScreens.Hotels.route) {
         SearchHotelScreen(
             viewModel = hiltViewModel<HotelsViewModel>(),
-            navController = navController
+            navController = navController,
+            onBackClick = { navController.popBackStack() }
         )
     }
 }
@@ -161,7 +174,8 @@ private fun NavGraphBuilder.detailGraph(navController: NavHostController) {
             activityDetailViewModel = hiltViewModel<ActivityDetailViewModel>(),
             activityId = activityId,
             navController = navController,
-            favoritesViewModel = hiltViewModel()
+            favoritesViewModel = hiltViewModel(),
+            onBackClick = { navController.popBackStack() }
         )
     }
 
@@ -178,11 +192,11 @@ private fun NavGraphBuilder.detailGraph(navController: NavHostController) {
 
         DetailHotelScreen(
             viewModel = hiltViewModel<HotelsViewModel>(parentEntry),
+            hotelId = hotelId,
             onClickBack = { navController.popBackStack() },
-            hotelId = hotelId
+            onClickBookingHotel = { navController.navigate(BookingScreens.HotelBooking.route) }
         )
     }
-
 }
 
 private fun NavGraphBuilder.homeGraph(navController: NavHostController) {
@@ -213,6 +227,28 @@ private fun NavGraphBuilder.favoritesGraph(navController: NavHostController) {
             onActivityClick = { activityId ->
                 navController.navigate(DetailScreens.ActivityDetail.createRoute(activityId))
             }
+        )
+    }
+}
+
+@RequiresApi(Build.VERSION_CODES.O)
+private fun NavGraphBuilder.bookingGraph(navController: NavHostController) {
+
+    composable(route = BookingScreens.HotelBooking.route) { backStackEntry ->
+        val parentEntry = remember(backStackEntry) {
+            navController.getBackStackEntry(SearchScreens.Hotels.route)
+        }
+
+        BookingHotelScreen(
+            onSuccessBooking = { navController.navigate(BookingScreens.Successful.route) },
+            onClickBack = { navController.popBackStack() },
+            viewModel = hiltViewModel<HotelsViewModel>(parentEntry),
+        )
+    }
+
+    composable(route = BookingScreens.Successful.route) {
+        BookingSuccessfulScreen(
+            onHomeClick = { navController.navigate(HomeScreens.Home.route) },
         )
     }
 }

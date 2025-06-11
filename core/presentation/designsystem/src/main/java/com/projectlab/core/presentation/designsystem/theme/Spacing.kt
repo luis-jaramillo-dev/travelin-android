@@ -46,6 +46,9 @@ object Spacing {
     /** 64.dp */
     val huge: Dp = 64.dp
 
+    // Global styles
+    val FieldHeight: Dp = 52.dp
+
     // Auth Layout spacing
     val ScreenHorizontalPadding: Dp = 30.dp
     val ScreenVerticalSpacing: Dp = 14.dp
@@ -62,13 +65,18 @@ object Spacing {
     val IconSize: Dp = 24.dp
     val SmallIconSize: Dp = 20.dp
     val ImageSize: Dp = 80.dp
-    val LogoWidth: Dp = 137.dp
-    val LogoHeight: Dp = 139.dp
+    val LoginLogoWidth: Dp = 103.dp
+    val LoginLogoHeight: Dp = 102.dp
+    val RegisteredLogoWidth: Dp = 137.dp
+    val RegisteredLogoHeight: Dp = 139.dp
 
     // Auth Container styles
     val CornerRadius: Dp = 20.dp
     val SmallCornerRadius: Dp = 12.dp
-    val FieldHeight: Dp = 56.dp
+
+    // Profile setting button
+    val ProfileButtonHeight: Dp = 62.dp
+    const val ProfileButtonArrowScale: Float = 1.25f
 
     // Search screen
     val searchPlacesPadding: Dp = 6.dp
@@ -94,6 +102,13 @@ object Spacing {
     val recommendedCardWidth: Dp = 230.dp
     val recommendedSectionHeight: Dp = 700.dp
     val homeHeight: Dp = 1300.dp
+
+    val mapHeight: Dp = 200.dp
+  
+    // Booking
+    val BookingLogoWidth: Dp = 137.dp
+    val BookingLogoHeight: Dp = 139.dp
+
 }
 
 val LocalSpacing = staticCompositionLocalOf { Spacing }

@@ -11,34 +11,41 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.unit.dp
+import com.projectlab.auth.presentation.R
+import com.projectlab.core.presentation.designsystem.theme.spacing
 
 @Composable
-fun RegisterHeader() {
-    Column(modifier = Modifier) {
-        IconButton(onClick = { }) {
+fun RegisterHeader(
+    modifier: Modifier = Modifier,
+    onLoginClick: () -> Unit,
+) {
+    Column(modifier = modifier) {
+        IconButton(onClick = onLoginClick) {
             Icon(
                 imageVector = Icons.AutoMirrored.Filled.KeyboardArrowLeft,
-                contentDescription = "Back arrow"
+                contentDescription = stringResource(R.string.go_back),
             )
         }
 
-        Spacer(modifier = Modifier.height(8.dp))
+        Spacer(modifier = Modifier.height(MaterialTheme.spacing.regular))
 
         Text(
-            text = "Create account",
-            style = MaterialTheme.typography.headlineSmall.copy(
+            text = stringResource(R.string.create_account_header),
+            style = MaterialTheme.typography.titleLarge.copy(
                 color = MaterialTheme.colorScheme.onSurface,
-                fontWeight = FontWeight.Bold
-            )
+                fontWeight = FontWeight.SemiBold,
+            ),
         )
 
+        Spacer(modifier = Modifier.height(MaterialTheme.spacing.extraSmall))
+
         Text(
-            text = "Get the best out of Derleng by creating an account",
+            text = stringResource(R.string.get_the_best_out_of_discover_by_creating_an_account),
             style = MaterialTheme.typography.bodySmall.copy(
-                color = MaterialTheme.colorScheme.onSurfaceVariant
-            )
+                color = MaterialTheme.colorScheme.onSurfaceVariant,
+            ),
         )
     }
 }

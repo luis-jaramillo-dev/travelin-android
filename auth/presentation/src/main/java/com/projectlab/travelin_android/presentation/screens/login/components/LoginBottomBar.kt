@@ -12,7 +12,9 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
+import com.projectlab.auth.presentation.R
 import com.projectlab.core.presentation.designsystem.theme.spacing
 
 @Composable
@@ -23,26 +25,27 @@ fun LoginBottomBar(
     Row(
         modifier = modifier
             .fillMaxWidth()
-            .padding(bottom = MaterialTheme.spacing.regular)
-            .navigationBarsPadding()
-            .clickable { onRegisterClick() },
+            .padding(bottom = MaterialTheme.spacing.semiHuge)
+            .navigationBarsPadding(),
         horizontalArrangement = Arrangement.Center,
     ) {
-        Text(
-            text = "Doesn’t have account on discover?",
-            style = MaterialTheme.typography.labelSmall.copy(
-                color = MaterialTheme.colorScheme.onSurfaceVariant,
-            ),
-        )
+        Row(modifier = Modifier.clickable { onRegisterClick() }) {
+            Text(
+                text = stringResource(R.string.no_account),
+                style = MaterialTheme.typography.labelSmall.copy(
+                    color = MaterialTheme.colorScheme.onSurfaceVariant,
+                ),
+            )
 
-        Spacer(modifier = Modifier.width(MaterialTheme.spacing.extraSmall))
+            Spacer(modifier = Modifier.width(MaterialTheme.spacing.extraSmall))
 
-        Text(
-            text = "Create Account",
-            style = MaterialTheme.typography.labelSmall.copy(
-                fontWeight = FontWeight.Bold,
-                color = MaterialTheme.colorScheme.onBackground,
-            ),
-        )
+            Text(
+                text = stringResource(R.string.create_account),
+                style = MaterialTheme.typography.labelSmall.copy(
+                    fontWeight = FontWeight.Bold,
+                    color = MaterialTheme.colorScheme.onBackground,
+                ),
+            )
+        }
     }
 }

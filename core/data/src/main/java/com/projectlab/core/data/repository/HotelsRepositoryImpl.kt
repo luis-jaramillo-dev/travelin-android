@@ -39,6 +39,7 @@ class HotelsRepositoryImpl @Inject constructor(
     private val userSessionProvider: UserSessionProvider,
 ) : HotelsRepository {
 
+
     override suspend fun createHotel(
         itinId: String,
         hotel: HotelEntity
@@ -83,6 +84,53 @@ class HotelsRepositoryImpl @Inject constructor(
             val ratingQuery = "2, 3, 4, 5"
             val response =
                 apiService.getHotelsByCity(cityCode, ratings = ratingQuery)
+
+            val hotelsResponse = response.data.map { it ->
+                val hotelOffers =
+                    randomHotelOffers(stars = it.stars, countryCode = it.address.countryCode)
+                val minHotelOffer = hotelOffers.minOf { it.price.amount }
+                Hotel(
+                    id = it.hotelId,
+                    name = it.name,
+                    location = HotelLocation(
+                        longitude = it.geoCode.longitude,
+                        latitude = it.geoCode.latitude,
+                        country = it.address.countryCode,
+                        city = it.iataCode,
+                        // TODO GET LOCATION BY LON+LAT
+                        address = "Plaza Parade, London NW6 5RP,",
+                    ),
+                    rating = randomHotelRating(it.stars),
+                    displayPrice = minHotelOffer.toString(),
+                    isFavourite = false,
+                    displayImageUrl = randomHotelDisplayImageUrl(),
+                    hotelOffers = hotelOffers,
+                    amenities = randomHotelAmenities(),
+                    photoUrls = randomHotelPhotoUrls(),
+                    phoneNumber = randomHotelPhoneNumber()
+                )
+            }
+            Result.Success(hotelsResponse)
+        } catch (e: Exception) {
+            e.printStackTrace()
+            Result.Error(DataError.Network.UNKNOWN)
+        }
+    }
+
+    override suspend fun getHotelsByCoordinates(
+        latitude: Double,
+        longitude: Double,
+        amenities: String,
+        ratings: String
+    ): Result<List<Hotel>, DataError.Network> {
+        return try {
+            val ratingQuery = "2, 3, 4, 5"
+            val response =
+                apiService.getHotelsByCoordinates(
+                    latitude = latitude,
+                    longitude = longitude,
+                    ratings = ratingQuery
+                )
 
             val hotelsResponse = response.data.map { it ->
                 val hotelOffers =

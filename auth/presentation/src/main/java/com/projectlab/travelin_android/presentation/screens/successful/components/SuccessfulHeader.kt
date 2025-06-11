@@ -14,6 +14,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import com.projectlab.auth.presentation.R
@@ -25,32 +26,33 @@ fun SuccessfulHeader(modifier: Modifier = Modifier) {
         modifier = modifier
             .fillMaxWidth()
             .padding(horizontal = MaterialTheme.spacing.ScreenHorizontalPadding),
-        horizontalAlignment = Alignment.CenterHorizontally
+        horizontalAlignment = Alignment.CenterHorizontally,
     ) {
         Image(
             painter = painterResource(R.drawable.white_logo_travelin),
-            contentDescription = "Traveling logo in white",
+            contentDescription = stringResource(R.string.discover_logo),
             modifier = Modifier
-                .width(MaterialTheme.spacing.LogoWidth)
-                .height(MaterialTheme.spacing.LogoHeight),
+                .width(MaterialTheme.spacing.RegisteredLogoWidth)
+                .height(MaterialTheme.spacing.RegisteredLogoHeight),
         )
+
         Spacer(modifier = Modifier.height(MaterialTheme.spacing.SmallSpacing))
 
         Text(
-            text = "Successfully created an account",
-            style = MaterialTheme.typography.headlineLarge,
+            text = stringResource(R.string.successfully_created_an_account),
+            style = MaterialTheme.typography.headlineMedium,
             color = Color.White,
             textAlign = TextAlign.Center,
-            fontWeight = FontWeight.Bold
+            fontWeight = FontWeight.Bold,
         )
 
         Spacer(modifier = Modifier.height(MaterialTheme.spacing.SmallSpacing))
 
         Text(
-            text = "After this you can explore any place you want enjoy it!",
+            text = stringResource(R.string.after_this_you_can_explore_any_place_you_want_enjoy_it),
             style = MaterialTheme.typography.bodyMedium,
             color = Color.White,
-            textAlign = TextAlign.Center
+            textAlign = TextAlign.Center,
         )
     }
 }

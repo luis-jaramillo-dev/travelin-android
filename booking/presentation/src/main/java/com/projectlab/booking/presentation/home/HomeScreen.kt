@@ -20,7 +20,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.snapshotFlow
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
@@ -35,8 +34,6 @@ import com.projectlab.core.presentation.designsystem.component.BottomNavRoute
 import com.projectlab.core.presentation.designsystem.component.BottomNavigationBar
 import com.projectlab.core.presentation.designsystem.theme.spacing
 import com.projectlab.core.presentation.ui.viewmodel.LocationViewModel
-import kotlinx.coroutines.flow.filterNotNull
-import kotlinx.coroutines.flow.firstOrNull
 
 @Composable
 fun HomeScreen(
@@ -54,12 +51,7 @@ fun HomeScreen(
     val context = LocalContext.current
     val currentLocation = locationViewModel.location.value
     val uiState by homeViewModel.uiState.collectAsState()
-
     val favoriteIds = favoritesViewModel.favoriteActivityIds.collectAsState().value
-
-    val recommendedActivities = uiState.recommendedActivities.map { activity ->
-        activity to favoriteIds.contains(activity.id)
-    }
 
     val permissionLauncher = rememberLauncherForActivityResult(
         ActivityResultContracts.RequestPermission()
@@ -71,22 +63,16 @@ fun HomeScreen(
         }
     }
 
-
-
     LaunchedEffect(Unit) {
         if (!locationViewModel.hasLocationPermission()) {
             permissionLauncher.launch(Manifest.permission.ACCESS_FINE_LOCATION)
         } else {
             locationViewModel.getCurrentLocation()
         }
-        snapshotFlow { locationViewModel.location.value }
-            .filterNotNull()
-            .firstOrNull()
-            ?.let { location ->
-                homeViewModel.fetchRecommendedActivities(location)
-            } ?: run {
-            homeViewModel.fetchRecommendedActivities(null)
-        }
+    }
+
+    LaunchedEffect(currentLocation) {
+        homeViewModel.fetchRecommendedActivities(currentLocation)
     }
 
     LaunchedEffect(Unit) {

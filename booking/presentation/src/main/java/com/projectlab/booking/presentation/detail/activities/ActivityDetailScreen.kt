@@ -22,6 +22,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import com.projectlab.booking.presentation.favorites.FavoritesViewModel
 import com.projectlab.core.data.mapper.toFavoriteActivityEntity
@@ -30,6 +31,7 @@ import com.projectlab.core.presentation.designsystem.component.DescriptionBox
 import com.projectlab.core.presentation.designsystem.component.GalleryDialog
 import com.projectlab.core.presentation.designsystem.component.GallerySection
 import com.projectlab.core.presentation.designsystem.component.TourCardHeader
+import com.projectlab.core.presentation.designsystem.component.MapActivity
 import com.projectlab.core.presentation.designsystem.theme.spacing
 
 @Composable
@@ -39,15 +41,18 @@ fun ActivityDetailScreen(
     favoritesViewModel: FavoritesViewModel,
     activityId: String,
     navController: NavController,
+    onBackClick: () -> Unit
 ) {
     LaunchedEffect(Unit) {
         activityDetailViewModel.onViewDetail(activityId)
     }
 
     val uiState by activityDetailViewModel.uiState.collectAsState()
+    val favoritesUiState by favoritesViewModel.uiState.collectAsState()
 
     val favoriteIds by favoritesViewModel.favoriteActivityIds.collectAsState()
     val isFavorite = favoriteIds.contains(activityId)
+    val isFavoriteLoading = favoritesUiState.isFavoriteLoading
 
     val onFavoriteClick: () -> Unit = {
         uiState.activity?.let { activity ->
@@ -70,6 +75,8 @@ fun ActivityDetailScreen(
             navController = navController,
             onFavoriteClick = onFavoriteClick,
             isFavorite = isFavorite,
+            isFavoriteLoading = isFavoriteLoading,
+            onBackClick = onBackClick
         )
     }
 }
@@ -80,7 +87,9 @@ fun ActivityDetailScreenComponent(
     uiState: ActivityDetailUiState,
     navController: NavController,
     isFavorite: Boolean,
+    isFavoriteLoading: Boolean,
     onFavoriteClick: () -> Unit,
+    onBackClick: () -> Unit,
 ) {
     val activity = uiState.activity
     val scrollState = rememberScrollState()
@@ -105,7 +114,9 @@ fun ActivityDetailScreenComponent(
                     activity = it,
                     navController = navController,
                     isFavorite = isFavorite,
+                    isFavoriteLoading = isFavoriteLoading,
                     onFavoriteClick = onFavoriteClick,
+                    onBackClick = onBackClick,
                 )
 
                 Spacer(modifier = Modifier.height(MaterialTheme.spacing.ScreenVerticalSpacing))
@@ -115,6 +126,18 @@ fun ActivityDetailScreenComponent(
                     activity = it,
                 )
 
+                Spacer(modifier = Modifier.height(MaterialTheme.spacing.ScreenVerticalSpacing))
+
+                Column(
+                    modifier = modifier
+                        .height(MaterialTheme.spacing.mapHeight)
+                        .padding(MaterialTheme.spacing.semiLarge)
+                ) {
+                    MapActivity(
+                        latitude = activity.geoCode.latitude,
+                        longitude = activity.geoCode.longitude
+                    )
+                }
 
                 Spacer(modifier = Modifier.height(MaterialTheme.spacing.ScreenVerticalSpacing))
 

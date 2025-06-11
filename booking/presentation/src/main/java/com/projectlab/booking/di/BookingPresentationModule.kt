@@ -4,6 +4,7 @@ import com.projectlab.core.domain.repository.HotelsRepository
 import com.projectlab.core.domain.repository.UsersRepository
 import com.projectlab.core.domain.use_cases.hotels.FavoriteHotelUseCase
 import com.projectlab.core.domain.use_cases.hotels.GetHotelsByCityUseCase
+import com.projectlab.core.domain.use_cases.hotels.GetHotelsByCoordinatesUseCase
 import com.projectlab.core.domain.use_cases.hotels.HotelsUseCases
 import com.projectlab.core.domain.use_cases.hotels.UnfavoriteHotelUseCase
 import com.projectlab.core.domain.use_cases.users.UsersUseCases
@@ -20,5 +21,6 @@ object BookingPresentationModule {
         getHotelsByCity = GetHotelsByCityUseCase(repository),
         favoriteHotel = FavoriteHotelUseCase(repository),
         unfavoriteHotel = UnfavoriteHotelUseCase(repository),
+        getHotelsByCoordinates = GetHotelsByCoordinatesUseCase(repository),
     )
 }

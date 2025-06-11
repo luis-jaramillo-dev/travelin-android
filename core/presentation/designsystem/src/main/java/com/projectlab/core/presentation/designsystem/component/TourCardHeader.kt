@@ -39,7 +39,9 @@ fun TourCardHeader(
     activity: ActivityDto,
     navController: NavController,
     isFavorite: Boolean,
+    isFavoriteLoading: Boolean,
     onFavoriteClick: () -> Unit,
+    onBackClick: () -> Unit,
 ) {
     val favoriteIcon = if (isFavorite) {
         painterResource(R.drawable.saved_product)
@@ -79,7 +81,7 @@ fun TourCardHeader(
                     .fillMaxWidth(),
             ) {
                 BackArrowIconButton(
-                    onClick = { navController.popBackStack() },
+                    onClick = onBackClick,
                     modifier = Modifier
                         .size(50.dp)
                         .padding(5.dp),
@@ -93,6 +95,13 @@ fun TourCardHeader(
                             .size(50.dp)
                             .padding(5.dp),
                     )
+                    if (isFavoriteLoading){
+                        CircularProgressIndicator(
+                            modifier = Modifier
+                                .size(50.dp)
+                                .padding(5.dp),
+                        )
+                    }else {
 
                         Image(
                             painter = favoriteIcon,
@@ -104,6 +113,7 @@ fun TourCardHeader(
                                     onFavoriteClick()
                                 },
                         )
+                    }
 
                 }
             }

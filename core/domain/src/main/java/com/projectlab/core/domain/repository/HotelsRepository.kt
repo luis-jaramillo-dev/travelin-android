@@ -34,6 +34,13 @@ interface HotelsRepository {
         ratings: String
     ): Result<List<Hotel>, DataError.Network>
 
+    suspend fun getHotelsByCoordinates(
+        latitude: Double,
+        longitude: Double,
+        amenities: String,
+        ratings: String
+    ): Result<List<Hotel>, DataError.Network>
+
     suspend fun favoriteHotel(hotelId: String): Result<Boolean, DataError.Network>
     suspend fun unfavoriteHotel(hotelId: String): Result<Boolean, DataError.Network>
 }
