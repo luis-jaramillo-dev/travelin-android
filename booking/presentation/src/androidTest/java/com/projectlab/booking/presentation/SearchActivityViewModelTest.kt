@@ -1,17 +1,20 @@
-package com.projectlab.booking.presentation.search.activities
+package com.projectlab.booking.presentation
 
 import androidx.test.ext.junit.runners.AndroidJUnit4
+import com.projectlab.booking.presentation.search.activities.SearchActivityViewModel
 import com.projectlab.core.data.mapper.toDtoList
-import com.projectlab.core.data.remote.ActivitiesApiService
-import com.projectlab.core.data.usecase.GetActivitiesUseCase
+import com.projectlab.core.data.remote.ActivityApiService
 import com.projectlab.core.domain.model.Activity
 import com.projectlab.core.domain.model.Location
 import com.projectlab.core.domain.proto.SearchHistory
 import com.projectlab.core.domain.repository.SearchHistoryProvider
+import com.projectlab.core.domain.use_cases.activities.GetActivitiesUseCase
+import com.projectlab.core.domain.use_cases.activities.RemoveFavoriteActivityByIdUseCase
+import com.projectlab.core.domain.use_cases.activities.SaveFavoriteActivityUseCase
+import com.projectlab.core.domain.use_cases.error.ErrorMapper
 import com.projectlab.core.domain.use_cases.location.GetCityFromCoordinatesUseCase
 import com.projectlab.core.domain.use_cases.location.GetCoordinatesFromCityUseCase
 import com.projectlab.core.domain.util.Result
-import com.projectlab.core.presentation.ui.utils.ErrorMapper
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.runTest
 import kotlinx.coroutines.test.UnconfinedTestDispatcher
@@ -23,25 +26,30 @@ import org.junit.Test
 import org.mockito.kotlin.mock
 import org.mockito.kotlin.whenever
 import org.junit.Assert.assertEquals
+import org.mockito.Mockito.mock
 import org.junit.Assert.assertFalse
 import org.junit.Assert.assertTrue
 import org.junit.Assert.assertNull
 import org.junit.runner.RunWith
 import org.mockito.kotlin.times
 import org.mockito.kotlin.verify
+import kotlin.invoke
 
 
 @OptIn(ExperimentalCoroutinesApi::class)
 @RunWith(AndroidJUnit4::class)
 class SearchActivityViewModelTest {
 
-    private lateinit var viewModel: SearchActivityViewModel
-    private lateinit var activitiesApiService: ActivitiesApiService
     private lateinit var getActivitiesUseCase: GetActivitiesUseCase
     private lateinit var getCoordinatesFromCityUseCase: GetCoordinatesFromCityUseCase
     private lateinit var getCityFromCoordinatesUseCase: GetCityFromCoordinatesUseCase
-    private lateinit var searchHistoryProvider: SearchHistoryProvider
     private lateinit var errorMapper: ErrorMapper
+    private lateinit var historyProvider: SearchHistoryProvider
+    private lateinit var saveFavoriteActivityUseCase: SaveFavoriteActivityUseCase
+    private lateinit var removeFavoriteActivityByIdUseCase: RemoveFavoriteActivityByIdUseCase
+    private lateinit var viewModel: SearchActivityViewModel
+    private lateinit var activitiesApiService: ActivityApiService
+    private lateinit var searchHistoryProvider: SearchHistoryProvider
 
     @Before
     fun setup() = runTest {
@@ -52,6 +60,8 @@ class SearchActivityViewModelTest {
         getCoordinatesFromCityUseCase = mock()
         getCityFromCoordinatesUseCase = mock()
         searchHistoryProvider = mock()
+        saveFavoriteActivityUseCase = mock()
+        removeFavoriteActivityByIdUseCase = mock()
         errorMapper = mock()
 
         whenever(searchHistoryProvider.getSearchHistory(SearchHistory.HistoryType.ACTIVITY)).thenReturn(
@@ -59,14 +69,14 @@ class SearchActivityViewModelTest {
         )
 
         viewModel = SearchActivityViewModel(
-            activitiesApiService,
-            getActivitiesUseCase,
-            getCoordinatesFromCityUseCase,
-            getCityFromCoordinatesUseCase,
-            errorMapper,
-            searchHistoryProvider
+            getActivitiesUseCase = getActivitiesUseCase,
+            getCoordinatesFromCityUseCase = getCoordinatesFromCityUseCase,
+            getCityFromCoordinatesUseCase = getCityFromCoordinatesUseCase,
+            errorMapper = errorMapper,
+            historyProvider = historyProvider,
+            saveFavoriteActivityUseCase = saveFavoriteActivityUseCase,
+            removeFavoriteActivityByIdUseCase = removeFavoriteActivityByIdUseCase
         )
-
     }
 
     @Test
@@ -112,6 +122,18 @@ class SearchActivityViewModelTest {
     }
 
     @Test
+    fun queryStateUpdatesWithNewQuery() = runTest {
+        viewModel.onQueryChanged("Barcelona")
+        assertEquals("Barcelona", viewModel.uiState.value.query)
+    }
+
+    @Test
+    fun searchWithInitialQueryUpdatesStateCorrectly() = runTest {
+        viewModel.searchWithInitialQuery("Paris")
+        assertEquals("Paris", viewModel.uiState.value.query)
+    }
+
+    @Test
     fun shouldReturnActivitiesWhenSearchByCitySucceeds() = runTest {
         val fakeQuery = "Santiago"
         val fakeCoordinates = Pair(-33.4489, -70.6693)
@@ -147,7 +169,12 @@ class SearchActivityViewModelTest {
         whenever(searchHistoryProvider.getSearchHistory(SearchHistory.HistoryType.ACTIVITY))
             .thenReturn(emptyList())
 
-        whenever(searchHistoryProvider.addSearchEntry(SearchHistory.HistoryType.ACTIVITY, fakeQuery))
+        whenever(
+            searchHistoryProvider.addSearchEntry(
+                SearchHistory.HistoryType.ACTIVITY,
+                fakeQuery
+            )
+        )
             .thenReturn(listOf())
 
         whenever(getCoordinatesFromCityUseCase(fakeQuery))
@@ -157,12 +184,13 @@ class SearchActivityViewModelTest {
             .thenReturn(Result.Success(fakeActivities))
 
         viewModel = SearchActivityViewModel(
-            activitiesApiService,
-            getActivitiesUseCase,
-            getCoordinatesFromCityUseCase,
-            getCityFromCoordinatesUseCase,
-            errorMapper,
-            searchHistoryProvider
+            getActivitiesUseCase = getActivitiesUseCase,
+            getCoordinatesFromCityUseCase = getCoordinatesFromCityUseCase,
+            getCityFromCoordinatesUseCase = getCityFromCoordinatesUseCase,
+            errorMapper = errorMapper,
+            historyProvider = historyProvider,
+            saveFavoriteActivityUseCase = saveFavoriteActivityUseCase,
+            removeFavoriteActivityByIdUseCase = removeFavoriteActivityByIdUseCase
         )
 
         viewModel.searchWithInitialQuery(fakeQuery)
@@ -191,7 +219,8 @@ class SearchActivityViewModelTest {
     @Test
     fun shouldReturnActivitiesWhenSearchingByCurrentLocation() = runTest {
         val fakeCoordinates = Pair(-33.4489, -70.6693)
-        val fakeLocation = Location(latitude = fakeCoordinates.first, longitude = fakeCoordinates.second)
+        val fakeLocation =
+            Location(latitude = fakeCoordinates.first, longitude = fakeCoordinates.second)
         val fakeCity = "Santiago"
 
         val fakeActivities = listOf(
@@ -209,9 +238,18 @@ class SearchActivityViewModelTest {
             )
         )
 
-        whenever(searchHistoryProvider.getSearchHistory(SearchHistory.HistoryType.ACTIVITY)).thenReturn(emptyList())
-        whenever(getCityFromCoordinatesUseCase(fakeCoordinates.first, fakeCoordinates.second)).thenReturn(fakeCity)
-        whenever(getActivitiesUseCase(fakeCoordinates.first, fakeCoordinates.second)).thenReturn(Result.Success(fakeActivities))
+        whenever(searchHistoryProvider.getSearchHistory(SearchHistory.HistoryType.ACTIVITY)).thenReturn(
+            emptyList()
+        )
+        whenever(
+            getCityFromCoordinatesUseCase(
+                fakeCoordinates.first,
+                fakeCoordinates.second
+            )
+        ).thenReturn(fakeCity)
+        whenever(getActivitiesUseCase(fakeCoordinates.first, fakeCoordinates.second)).thenReturn(
+            Result.Success(fakeActivities)
+        )
 
 
         viewModel.searchByCurrentLocation(fakeLocation)
@@ -242,7 +280,12 @@ class SearchActivityViewModelTest {
         val fakeHistory = listOf("Santiago", "Valparaiso")
         val updatedHistory = listOf("Valparaiso") // Simula que "Santiago" fue eliminado
 
-        whenever(searchHistoryProvider.removeSearchEntry(SearchHistory.HistoryType.ACTIVITY, "Santiago"))
+        whenever(
+            searchHistoryProvider.removeSearchEntry(
+                SearchHistory.HistoryType.ACTIVITY,
+                "Santiago"
+            )
+        )
             .thenReturn(updatedHistory)
 
         // Act
@@ -304,7 +347,10 @@ class SearchActivityViewModelTest {
         // Verify methods was called only once
         verify(getCoordinatesFromCityUseCase, times(1)).invoke(query)
         verify(getActivitiesUseCase, times(1)).invoke(fakeCoordinates.first, fakeCoordinates.second)
-        verify(searchHistoryProvider, times(1)).addSearchEntry(SearchHistory.HistoryType.ACTIVITY, query)
+        verify(searchHistoryProvider, times(1)).addSearchEntry(
+            SearchHistory.HistoryType.ACTIVITY,
+            query
+        )
     }
 
     @Test
@@ -349,5 +395,4 @@ class SearchActivityViewModelTest {
         assertTrue(state.activities.isEmpty())
         assertFalse(state.isLoading)
     }
-
 }

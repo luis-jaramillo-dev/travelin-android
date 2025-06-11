@@ -5,7 +5,6 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.Checkbox
@@ -15,144 +14,155 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.text.SpanStyle
-import androidx.compose.ui.text.buildAnnotatedString
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.style.TextDecoration
-import androidx.compose.ui.unit.dp
+import com.projectlab.auth.presentation.R
+import com.projectlab.core.presentation.designsystem.theme.spacing
 import com.projectlab.travelin_android.presentation.components.DropdownOutlinedButton
 import com.projectlab.travelin_android.presentation.components.OutlinedTextFieldPassword
 import com.projectlab.travelin_android.presentation.components.OutlinedTextFieldSimple
-import com.projectlab.travelin_android.presentation.screens.register.RegisterViewModel
+import com.projectlab.travelin_android.presentation.screens.register.FormAction
+import com.projectlab.travelin_android.presentation.screens.register.FormState
+
+private val phoneCountryCodes = listOf(
+    "+1",
+    "+44",
+    "+33",
+    "+49",
+    "+81",
+    "+82",
+    "+91",
+    "+55",
+    "+61",
+    "+86",
+    "+7",
+    "+52",
+    "+56",
+    "+57",
+    "+58",
+    "+54",
+    "+90",
+    "+34",
+    "+123",
+)
 
 @Composable
 fun RegisterForm(
-    viewModel: RegisterViewModel
+    modifier: Modifier = Modifier,
+    formState: FormState,
+    onFormAction: (FormAction) -> Unit,
 ) {
-
-    val phoneCountryCodes = listOf(
-        "+1",
-        "+44",
-        "+33",
-        "+49",
-        "+81",
-        "+82",
-        "+91",
-        "+55",
-        "+61",
-        "+86",
-        "+7",
-        "+52",
-        "+56",
-        "+57",
-        "+58",
-        "+54",
-        "+90",
-        "+34"
-    )
-
-    Column {
+    Column(
+        modifier = modifier,
+        verticalArrangement = Arrangement.spacedBy(MaterialTheme.spacing.ElementSpacing),
+    ) {
         OutlinedTextFieldSimple(
-            label = "First name",
-            placeholderText = "Enter your first name",
-            value = viewModel.firstName,
+            label = stringResource(R.string.first_name),
+            placeholderText = stringResource(R.string.enter_your_first_name),
+            value = formState.firstName,
+            onValueChange = { value ->
+                onFormAction(FormAction.OnFirstNameChange(value))
+            },
         )
-        Spacer(modifier = Modifier.height(20.dp))
 
         OutlinedTextFieldSimple(
-            label = "Last name",
-            placeholderText = "Enter your last name",
-            value = viewModel.lastName,
-        )
-        Spacer(modifier = Modifier.height(20.dp))
-
-        Text(
-            text = "Phone",
-            style = MaterialTheme.typography.labelMedium,
-            color = MaterialTheme.colorScheme.onSurfaceVariant
+            label = stringResource(R.string.last_name),
+            placeholderText = stringResource(R.string.enter_your_last_name),
+            value = formState.lastName,
+            onValueChange = { value ->
+                onFormAction(FormAction.OnLastNameChange(value))
+            },
         )
 
         Row(
             modifier = Modifier.fillMaxWidth(),
-            horizontalArrangement = Arrangement.Center,
-            verticalAlignment = Alignment.CenterVertically
+            verticalAlignment = Alignment.Top,
         ) {
             DropdownOutlinedButton(
-                label = "",
-                placeholder = "+56",
+                label = stringResource(R.string.phone),
+                placeholder = "",
                 options = phoneCountryCodes,
-                selectedOption = viewModel.countryCode,
-                modifier = Modifier.weight(0.38f)
+                selectedOption = formState.countryCode,
+                onSelectedOption = { value ->
+                    onFormAction(FormAction.OnCountryCodeChange(value))
+                },
+                modifier = Modifier.weight(0.30f),
             )
-            Spacer(modifier = Modifier.width(4.dp))
+
+            Spacer(modifier = Modifier.width(MaterialTheme.spacing.extraSmall))
+
             OutlinedTextFieldSimple(
                 label = "",
-                placeholderText = "Enter your phone number",
-                value = viewModel.phoneNumber,
+                placeholderText = stringResource(R.string.enter_your_phone_number),
+                value = formState.phoneNumber,
+                onValueChange = { value ->
+                    onFormAction(FormAction.OnPhoneNumberChange(value))
+                },
+                isError = formState.phoneNumber.isNotEmpty() && !formState.isPhoneNumberValid,
+                errorMessage = stringResource(R.string.enter_a_valid_phone_number),
                 keyboardOptions = KeyboardOptions.Default.copy(keyboardType = KeyboardType.Number),
-                modifier = Modifier.weight(0.62f)
+                modifier = Modifier.weight(0.70f),
             )
         }
-        Spacer(modifier = Modifier.height(12.dp))
 
         OutlinedTextFieldSimple(
-            label = "Age",
-            placeholderText = "Enter your age",
-            value = viewModel.age,
-            isError = viewModel.ageError.value != null,
-            errorMessage = viewModel.ageError.value,
+            label = stringResource(R.string.age),
+            placeholderText = stringResource(R.string.enter_your_age),
+            value = formState.age,
+            onValueChange = { value ->
+                onFormAction(FormAction.OnAgeChange(value))
+            },
+            isError = formState.age.isNotEmpty() && !formState.isAgeValid,
+            errorMessage = stringResource(R.string.enter_a_valid_age),
             keyboardOptions = KeyboardOptions.Default.copy(keyboardType = KeyboardType.Number),
-            modifier = Modifier
         )
-        Spacer(modifier = Modifier.height(12.dp))
 
         OutlinedTextFieldSimple(
-            label = "Email",
-            placeholderText = "Enter your email address",
-            value = viewModel.email,
-            isError = viewModel.emailError.value != null,
-            errorMessage = viewModel.emailError.value,
+            label = stringResource(R.string.email),
+            placeholderText = stringResource(R.string.enter_your_email_address),
+            value = formState.email,
+            onValueChange = { value ->
+                onFormAction(FormAction.OnEmailChange(value))
+            },
+            isError = formState.email.isNotEmpty() && !formState.isEmailValid,
+            errorMessage = stringResource(R.string.enter_a_valid_email),
             keyboardOptions = KeyboardOptions.Default.copy(keyboardType = KeyboardType.Email),
-            modifier = Modifier
         )
-        Spacer(modifier = Modifier.height(12.dp))
 
         OutlinedTextFieldPassword(
-            label = "Password",
-            placeholderText = "Enter your password",
-            value = viewModel.password,
-            isError = viewModel.passwordError.value != null,
-            errorMessage = viewModel.passwordError.value,
+            label = stringResource(R.string.password),
+            placeholderText = stringResource(R.string.enter_your_password),
+            value = formState.password,
+            onValueChange = { value ->
+                onFormAction(FormAction.OnPasswordChange(value))
+            },
+            isError = formState.password.isNotEmpty() && !formState.isPasswordValid,
+            errorMessage = stringResource(R.string.enter_a_valid_password),
             keyboardOptions = KeyboardOptions.Default.copy(keyboardType = KeyboardType.Password),
-            modifier = Modifier
         )
 
         Row(
             verticalAlignment = Alignment.CenterVertically,
-            horizontalArrangement = Arrangement.Start
         ) {
             Checkbox(
-                checked = viewModel.termsAndConditions.value,
-                onCheckedChange = { viewModel.termsAndConditions.value = it },
+                checked = formState.acceptedTOS,
+                onCheckedChange = { value ->
+                    onFormAction(FormAction.OnAcceptedTOSChange(value))
+                },
                 colors = CheckboxDefaults.colors(
                     uncheckedColor = MaterialTheme.colorScheme.outline,
                     checkmarkColor = MaterialTheme.colorScheme.primary,
-                    checkedColor = MaterialTheme.colorScheme.primary
-                )
+                    checkedColor = MaterialTheme.colorScheme.primary,
+                ),
             )
+
             Text(
-                text = buildAnnotatedString {
-                    append("")
-                    pushStyle(
-                        SpanStyle(
-                            color = MaterialTheme.colorScheme.onSurface,
-                            textDecoration = TextDecoration.Underline
-                        )
-                    )
-                    append("I accept term and condition")
-                    pop()
-                },
-                style = MaterialTheme.typography.labelMedium
+                text = stringResource(R.string.i_accept_the_terms_and_conditions),
+                style = MaterialTheme.typography.labelMedium.copy(
+                    color = MaterialTheme.colorScheme.onSurface,
+                    textDecoration = TextDecoration.Underline,
+                ),
             )
         }
     }

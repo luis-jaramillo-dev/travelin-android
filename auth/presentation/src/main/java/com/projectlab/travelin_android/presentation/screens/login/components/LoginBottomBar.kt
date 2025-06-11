@@ -5,39 +5,47 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.unit.dp
-import androidx.navigation.NavHostController
+import com.projectlab.auth.presentation.R
+import com.projectlab.core.presentation.designsystem.theme.spacing
 
 @Composable
 fun LoginBottomBar(
     modifier: Modifier = Modifier,
-    onRegisterClick: () -> Unit
+    onRegisterClick: () -> Unit,
 ) {
     Row(
-        modifier = Modifier
+        modifier = modifier
             .fillMaxWidth()
-            .padding(bottom = 20.dp)
-            .clickable { onRegisterClick() },
+            .padding(bottom = MaterialTheme.spacing.semiHuge)
+            .navigationBarsPadding(),
         horizontalArrangement = Arrangement.Center,
     ) {
-        Text(
-            text = "Doesn’t have account on discover?",
-            style = MaterialTheme.typography.labelSmall.copy(color = MaterialTheme.colorScheme.onSurfaceVariant)
-        )
-        Spacer(modifier = Modifier.width(4.dp))
-        Text(
-            text = "Create Account",
-            style = MaterialTheme.typography.labelSmall.copy(
-                fontWeight = FontWeight.Bold,
-                color = MaterialTheme.colorScheme.onBackground
+        Row(modifier = Modifier.clickable { onRegisterClick() }) {
+            Text(
+                text = stringResource(R.string.no_account),
+                style = MaterialTheme.typography.labelSmall.copy(
+                    color = MaterialTheme.colorScheme.onSurfaceVariant,
+                ),
             )
-        )
+
+            Spacer(modifier = Modifier.width(MaterialTheme.spacing.extraSmall))
+
+            Text(
+                text = stringResource(R.string.create_account),
+                style = MaterialTheme.typography.labelSmall.copy(
+                    fontWeight = FontWeight.Bold,
+                    color = MaterialTheme.colorScheme.onBackground,
+                ),
+            )
+        }
     }
 }

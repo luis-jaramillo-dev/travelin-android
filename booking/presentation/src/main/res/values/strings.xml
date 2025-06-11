@@ -2,4 +2,20 @@
 <resources>
     <string name="exploreTheWorld">Explore the\nworld today</string>
     <string name="travelNextLevel">TravelIn - take your travel to the next level</string>
+    <string name="search_into_your_favorites">Search into your favorites</string>
+    <string name="search_favorites_input">Search Favorites Input</string>
+    <string name="destinations">Destinations</string>
+    <string name="hotels">Hotels</string>
+    <string name="favorites">Favorites</string>
+    <string name="no_description">Dive into a unique experience and embrace the unexpected. While this activity doesn\'t currently have a detailed description, it has been carefully selected to offer you memorable moments. Get ready to explore, enjoy, and be surprised by what awaits. Whether you\'re looking for adventure, relaxation, or culture, this activity has the potential to become one of your favorites.</string>
+    <string name="recommended_activities_near_you">Recommended activities near you</string>
+    <string name="recommended_hotels_near_you">Recommended hotels near you</string>
+    <string name="successfully_booked">Successfully booked</string>
+    <string name="travelin_logo_white">Travelin logo in white</string>
+    <string name="price_per_night">%1$s /per night</string>
+    <string name="book_now">Book now!</string>
+    <string name="amenities">Amenities</string>
+
+
+
 </resources>

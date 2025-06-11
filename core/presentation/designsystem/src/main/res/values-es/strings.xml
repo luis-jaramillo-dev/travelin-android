@@ -43,4 +43,32 @@
     <string name="pricePerPerson">$%1$s/persona</string>
     <string name="bookNow">Book Now</string>
     <string name="addToItinerary">Añadir al Itinerario</string>
+    <string name="remove_favorite">Remover Favorito</string>
+    <string name="image_of">Imagen de %1$s</string>
+
+    <!--    Auth-->
+    <string name="home">Home</string>
+    <string name="favorites">Favoritos</string>
+    <string name="trips">Trips</string>
+    <string name="profile">Perfil</string>
+    <string name="account_settings">Configuraciones de la cuenta</string>
+    <string name="edit_profile">Editar perfil</string>
+    <string name="color_mode">Color mode</string>
+    <string name="logout">Logout</string>
+    <string name="version">Versión %1$s</string>
+    <string name="profile_photo">Foto de Perfil</string>
+
+    <!--    Hotels-->
+    <string name="price_per_night">desde %1$s /por noche</string>
+    <string name="favorite_hotel">Guardar hotel  %1$s en favoritos</string>
+    <string name="unfavorite_hotel">Borrar hotel  %1$s desde favoritos</string>
+    <string name="no_description">Sumérgete en una experiencia única y descubre lo inesperado. Esta actividad ha sido seleccionada cuidadosamente para brindarte momentos memorables, aunque actualmente no cuenta con una descripción detallada. Prepárate para explorar, disfrutar y dejarte sorprender por lo que te espera. Ya sea que busques aventura, relajación o cultura, esta propuesta tiene todo el potencial para convertirse en una de tus favoritas.</string>
+    <string name="error_dates">Por favor, revise las fechas del booking</string>
+    <string name="go_home">Ir al home</string>
+    <string name="amenities">Amenities</string>
+    <string name="description">Descripción</string>
+    <string name="details">Detalles</string>
+    <string name="hotel">Hotel</string>
+    <string name="sqm">%1$s sqm</string>
+
 </resources>

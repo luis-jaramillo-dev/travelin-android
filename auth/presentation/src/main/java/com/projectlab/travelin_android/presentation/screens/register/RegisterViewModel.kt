@@ -1,101 +1,162 @@
 package com.projectlab.travelin_android.presentation.screens.register
 
-import androidx.compose.runtime.MutableState
-import androidx.compose.runtime.derivedStateOf
-import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.google.firebase.auth.FirebaseUser
 import com.projectlab.auth.domain.use_cases.AuthUseCases
-import com.projectlab.core.domain.model.Response
-import com.projectlab.core.domain.entity.UserEntity
-import com.projectlab.core.domain.model.EntityId
+import com.projectlab.core.domain.model.User
+import com.projectlab.core.domain.repository.UserSessionProvider
 import com.projectlab.core.domain.use_cases.users.UsersUseCases
+import com.projectlab.core.domain.util.Result
 import com.projectlab.travelin_android.presentation.validation.AuthValidator
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
 class RegisterViewModel @Inject constructor(
     private val usersUseCases: UsersUseCases,
-    private val authUseCases: AuthUseCases
+    private val authUseCases: AuthUseCases,
+    private val userSessionProvider: UserSessionProvider,
 ) : ViewModel() {
-
-    val firstName: MutableState<String> = mutableStateOf("")
-    val lastName: MutableState<String> = mutableStateOf("")
-    val countryCode: MutableState<String> = mutableStateOf("+56")
-    val phoneNumber: MutableState<String> = mutableStateOf("")
-    val age: MutableState<String> = mutableStateOf("")
-    val email: MutableState<String> = mutableStateOf("")
-    val password: MutableState<String> = mutableStateOf("")
-    val termsAndConditions: MutableState<Boolean> = mutableStateOf(false)
-
-
-    val isAgeValid = derivedStateOf { AuthValidator.isAgeValid(age.value) }
-    val ageError = derivedStateOf {
-        if (age.value.isNotEmpty() && !isAgeValid.value) "Enter a valid age" else null
-    }
-
-    val isEmailValid = derivedStateOf { AuthValidator.isEmailValid(email.value) }
-    val emailError = derivedStateOf {
-        if (email.value.isNotEmpty() && !isEmailValid.value) "Enter a valid email" else null
-    }
-
-    val isPasswordValid = derivedStateOf { AuthValidator.isPasswordValid(password.value) }
-    val passwordError = derivedStateOf {
-        if (password.value.isNotEmpty() && !isPasswordValid.value) "Password must be at least 6 characters, include an uppercase and a number" else null
-    }
-
-    val isTermsAccepted = derivedStateOf { AuthValidator.isTermsAccepted(termsAndConditions.value) }
-    val termsError = derivedStateOf {
-        if (!termsAndConditions.value) "You must accept the terms and conditions" else null
-    }
-
-    val isFormValid = derivedStateOf {
-        listOf(
-            ageError.value,
-            emailError.value,
-            passwordError.value,
-            termsError.value
-        ).all { it == null } &&
-                firstName.value.isNotBlank() &&
-                lastName.value.isNotBlank() &&
-                phoneNumber.value.isNotBlank()
-    }
-
-    private val _registerFlow = MutableStateFlow<Response<FirebaseUser>?>(value = null)
-    val registerFlow: StateFlow<Response<FirebaseUser>?> = _registerFlow
+    private val _state = MutableStateFlow(RegisterUIState())
+    val state: StateFlow<RegisterUIState> = _state.asStateFlow()
 
     init {
         val currentUser = authUseCases.getCurrentUser()
 
         if (currentUser != null) {
-            _registerFlow.value = Response.Success(currentUser)
+            _state.update { it.copy(success = true) }
         }
     }
 
-    fun register() = viewModelScope.launch {
-        _registerFlow.value = Response.Loading
-        val result = authUseCases.register(email.value, password.value)
-        _registerFlow.value = result
+    fun onFormAction(action: FormAction) {
+        when (action) {
+            is FormAction.OnFirstNameChange -> {
+                _state.update {
+                    it.copy(formState = it.formState.copy(firstName = action.value))
+                }
+            }
+
+            is FormAction.OnLastNameChange -> {
+                _state.update {
+                    it.copy(formState = it.formState.copy(lastName = action.value))
+                }
+            }
+
+            is FormAction.OnCountryCodeChange -> {
+                _state.update {
+                    it.copy(formState = it.formState.copy(countryCode = action.value))
+                }
+            }
+
+            is FormAction.OnPhoneNumberChange -> {
+                _state.update {
+                    it.copy(
+                        formState = it.formState.copy(
+                            phoneNumber = action.value,
+                            isPhoneNumberValid = AuthValidator.isPhoneNumberValid(action.value),
+                        )
+                    )
+                }
+            }
+
+            is FormAction.OnAgeChange -> {
+                _state.update {
+                    it.copy(
+                        formState = it.formState.copy(
+                            age = action.value,
+                            isAgeValid = AuthValidator.isAgeValid(action.value),
+                        )
+                    )
+                }
+            }
+
+            is FormAction.OnEmailChange -> {
+                _state.update {
+                    it.copy(
+                        formState = it.formState.copy(
+                            email = action.value,
+                            isEmailValid = AuthValidator.isEmailValid(action.value),
+                        )
+                    )
+                }
+            }
+
+            is FormAction.OnPasswordChange -> {
+                _state.update {
+                    it.copy(
+                        formState = it.formState.copy(
+                            password = action.value,
+                            isPasswordValid = AuthValidator.isPasswordValid(action.value),
+                        )
+                    )
+                }
+            }
+
+            is FormAction.OnAcceptedTOSChange -> {
+                _state.update {
+                    it.copy(formState = it.formState.copy(acceptedTOS = action.value))
+                }
+            }
+        }
     }
 
-    fun createUser() = viewModelScope.launch {
-        val currentUser = authUseCases.getCurrentUser()
+    fun register() {
+        setAsLoading()
 
-        val newUserEntity = UserEntity(
-            // id = EntityId(currentUser!!.uid), TODO: check if we use EntityId or not
-            id = currentUser!!.uid,
-            email = email.value,
-            age = age.value,
-            firstName = firstName.value,
-            lastName = lastName.value,
-            countryCode = countryCode.value,
-            phoneNumber = phoneNumber.value
+        viewModelScope.launch {
+            val formState = state.value.formState
+            val result = authUseCases.register(formState.email, formState.password)
+
+            when (result) {
+                is Result.Success -> {
+                    createUser()
+
+                    _state.update { it.copy(loading = false, success = true) }
+                }
+
+                is Result.Error -> {
+                    _state.update {
+                        it.copy(
+                            loading = false,
+                            isError = true,
+                            error = result.error,
+                        )
+                    }
+                }
+            }
+        }
+    }
+
+    private suspend fun createUser() {
+        val currentUser = authUseCases.getCurrentUser()
+        userSessionProvider.setUserSessionId(currentUser!!.uid)
+
+        val newUser = User(
+            id = currentUser.uid,
+            email = state.value.formState.email,
+            age = state.value.formState.age,
+            firstName = state.value.formState.firstName,
+            lastName = state.value.formState.lastName,
+            countryCode = state.value.formState.countryCode,
+            phoneNumber = state.value.formState.phoneNumber
         )
-        usersUseCases.createUser(newUserEntity)
+
+        usersUseCases.createUser(newUser)
+    }
+
+    private fun setAsLoading() {
+        _state.update {
+            it.copy(
+                loading = true,
+                isError = false,
+                error = null,
+                success = false,
+            )
+        }
     }
 }

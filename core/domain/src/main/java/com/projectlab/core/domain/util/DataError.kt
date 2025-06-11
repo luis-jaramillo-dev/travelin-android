@@ -13,6 +13,16 @@ sealed interface DataError: Error {
         UNKNOWN
     }
 
+    enum class FirebaseAuth : DataError {
+        INVALID_CREDENTIAL,
+        TOO_MANY_REQUESTS,
+        UNAUTHORIZED,
+        NO_INTERNET,
+        INTERNAL_ERROR,
+        EMAIL_ALREADY_IN_USE,
+        UNKNOWN
+    }
+
     enum class Local: DataError {
         DISK_FULL
     }

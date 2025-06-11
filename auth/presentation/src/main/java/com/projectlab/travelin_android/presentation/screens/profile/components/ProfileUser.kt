@@ -5,7 +5,6 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.CircleShape
@@ -16,63 +15,58 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import com.projectlab.auth.presentation.R
 import com.projectlab.core.presentation.designsystem.theme.spacing
-import com.projectlab.travelin_android.presentation.screens.profile.ProfileViewModel
+import com.projectlab.travelin_android.models.UserUI
 
 @Composable
 fun ProfileUser(
+    user: UserUI,
     modifier: Modifier = Modifier,
-    viewModel: ProfileViewModel
 ) {
-    val userName = "John Doe"
-    val userBio = "Mars, Solar System"
-
     Row(
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(horizontal = MaterialTheme.spacing.ScreenHorizontalPadding),
+        modifier = modifier
+            .fillMaxWidth(),
         verticalAlignment = Alignment.CenterVertically
     ) {
-
         Image(
             painter = painterResource(id = R.drawable.blank_profile_picture),
-            contentDescription = "Profile Photo",
+            contentDescription = stringResource(com.projectlab.core.presentation.designsystem.R.string.profile_photo),
             modifier = Modifier
                 .size(MaterialTheme.spacing.ImageSize)
-                .clip(CircleShape)
+                .clip(CircleShape),
         )
+
         Spacer(modifier = Modifier.width(MaterialTheme.spacing.SectionSpacing))
 
         Column {
             Text(
-                text = viewModel.currentUser!!.email!!,
+                text = user.name,
                 style = MaterialTheme.typography.titleMedium.copy(
                     fontWeight = FontWeight.Bold,
-                    color = MaterialTheme.colorScheme.onBackground
-                )
-            )
-            Text(
-                text = userBio,
-                style = MaterialTheme.typography.bodyMedium.copy(
-                    color = MaterialTheme.colorScheme.onSurfaceVariant
-                )
+                ),
             )
 
             Text(
-                text = viewModel.userEntityData.email,
-                style = MaterialTheme.typography.titleMedium.copy(
-                    fontWeight = FontWeight.Bold,
-                    color = MaterialTheme.colorScheme.onBackground
-                )
+                text = user.email,
+                color = MaterialTheme.colorScheme.onSurfaceVariant,
+                style = MaterialTheme.typography.bodyMedium,
             )
+
             Text(
-                text = viewModel.userEntityData.age,
+                text = user.age,
                 style = MaterialTheme.typography.titleMedium.copy(
                     fontWeight = FontWeight.Bold,
-                    color = MaterialTheme.colorScheme.onBackground
-                )
+                ),
+            )
+
+            Text(
+                text = user.phoneNumber,
+                style = MaterialTheme.typography.titleMedium.copy(
+                    fontWeight = FontWeight.Bold,
+                ),
             )
         }
     }

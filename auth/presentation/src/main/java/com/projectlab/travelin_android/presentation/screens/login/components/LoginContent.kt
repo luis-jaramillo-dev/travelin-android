@@ -1,32 +1,43 @@
 package com.projectlab.travelin_android.presentation.screens.login.components
 
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.unit.dp
-import com.projectlab.travelin_android.presentation.screens.login.LoginViewModel
+import com.projectlab.core.presentation.designsystem.theme.spacing
 
 @Composable
 fun LoginContent(
     modifier: Modifier = Modifier,
-    paddingValues: PaddingValues,
-    viewModel: LoginViewModel
+    email: String,
+    isEmailValid: Boolean,
+    password: String,
+    onEmailChange: (String) -> Unit,
+    onPasswordChange: (String) -> Unit,
+    onLogin: () -> Unit,
 ) {
     Column(
-        modifier = Modifier
+        modifier = modifier
             .fillMaxSize()
-            .padding(paddingValues),
+            .padding(top = MaterialTheme.spacing.BigSpacing),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        Spacer(modifier = Modifier.height(70.dp))
         LoginHeader()
-        Spacer(modifier = Modifier.height(20.dp))
-        LoginForm(viewModel = viewModel)
+
+        Spacer(modifier = Modifier.height(MaterialTheme.spacing.large))
+
+        LoginForm(
+            email = email,
+            isEmailValid = isEmailValid,
+            password = password,
+            onEmailChange = onEmailChange,
+            onPasswordChange = onPasswordChange,
+            onLogin = onLogin,
+        )
     }
 }

@@ -1,6 +1,7 @@
 plugins {
     alias(libs.plugins.travelinandroid.android.library.compose)
     alias(libs.plugins.travelinandroid.android.hilt)
+    alias(libs.plugins.travelinandroid.android.library.jacoco)
 }
 
 android {
@@ -47,4 +48,9 @@ dependencies {
     testImplementation(libs.mockito.kotlin)
     testImplementation(libs.kotlinx.coroutines.test)
 
+    // Testing
+    implementation(libs.androidx.junit.ktx)
+    testImplementation(libs.mockito.kotlin)
+    androidTestImplementation(libs.mockito.android)
+    testImplementation(libs.kotlinx.coroutines.test)
 }

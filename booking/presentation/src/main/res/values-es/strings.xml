@@ -2,4 +2,18 @@
 <resources>
     <string name="exploreTheWorld">Explora el\nmundo hoy</string>
     <string name="travelNextLevel">TravelIn - lleva tus viajes al siguiente nivel</string>
+    <string name="search_into_your_favorites">Busca en tus favoritos</string>
+    <string name="search_favorites_input">Input de búsqueda de favoritos</string>
+    <string name="destinations">Destinos</string>
+    <string name="hotels">Hoteles</string>
+    <string name="favorites">Favoritos</string>
+    <string name="no_description">Sumérgete en una experiencia única y descubre lo inesperado. Esta actividad ha sido seleccionada cuidadosamente para brindarte momentos memorables, aunque actualmente no cuenta con una descripción detallada. Prepárate para explorar, disfrutar y dejarte sorprender por lo que te espera. Ya sea que busques aventura, relajación o cultura, esta propuesta tiene todo el potencial para convertirse en una de tus favoritas.</string>
+    <string name="recommended_activities_near_you">Actividades recomendadas cerca de ti</string>
+    <string name="recommended_hotels_near_you">Hoteles recomendados cerca de ti</string>
+    <string name="successfully_booked">Reserva exitosa</string>
+    <string name="travelin_logo_white">Travelin logo en blanco</string>
+    <string name="price_per_night">%1$s /por noche</string>
+    <string name="book_now">Reserva ahora!</string>
+    <string name="amenities">Facilidades</string>
+
 </resources>

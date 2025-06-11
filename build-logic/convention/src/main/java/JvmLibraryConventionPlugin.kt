@@ -1,3 +1,4 @@
+import com.kotlinpl.convention.configureJacocoJvm
 import com.kotlinpl.convention.configureKotlinJvm
 import org.gradle.api.Plugin
 import org.gradle.api.Project

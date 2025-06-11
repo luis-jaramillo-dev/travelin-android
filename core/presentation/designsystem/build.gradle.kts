@@ -1,5 +1,6 @@
 plugins {
     alias(libs.plugins.travelinandroid.android.library.compose)
+    alias(libs.plugins.travelinandroid.android.library.jacoco)
 }
 
 android {
@@ -9,18 +10,18 @@ android {
 dependencies {
 
     // Core System
+    // TODO: check which core.data dependencies are used
+    // in this module, and create an abstraction
     implementation(projects.core.data)
     implementation(projects.core.domain)
 
-    // Core
-    implementation(libs.androidx.core.ktx)
-    implementation(libs.androidx.appcompat)
-
-    // UI
-//    implementation(platform(libs.androidx.compose.bom))
     implementation(libs.compose.google.fonts)
     implementation(libs.androidx.compose.material.icons)
     implementation(libs.coil.compose)
     api(libs.androidx.compose.material3)
     implementation(libs.androidx.navigation.runtime.android)
+
+    // Mapbox
+    implementation(libs.mapbox.maps.android)
+    implementation(libs.mapbox.maps.compose)
 }

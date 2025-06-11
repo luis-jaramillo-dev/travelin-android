@@ -1,0 +1,100 @@
+name: CI Pipeline
+
+on:
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      # Checkout the code
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      # Create google-services.json
+      - name: Create google-services from secret
+        env:
+          GOOGLE_SERVICES_JSON_CONTENT: ${{ secrets.GOOGLE_SERVICES_JSON }}
+        run: |
+          TARGET_PATH="$GITHUB_WORKSPACE/app/google-services.json"
+          if [ -n "$GOOGLE_SERVICES_JSON_CONTENT" ]; then
+            echo "Creating $TARGET_PATH"
+            echo "$GOOGLE_SERVICES_JSON_CONTENT" > $TARGET_PATH
+          else
+            echo "GOOGLE_SERVICES_JSON secret not found. Exiting build"
+            exit 1
+          fi
+
+      # Set up JDK
+      - name: Set up JDK 17
+        uses: actions/setup-java@v4
+        with:
+          distribution: 'temurin'
+          java-version: '17'
+
+      # Cache Gradle dependencies
+      - name: Cache Gradle dependencies
+        uses: actions/cache@v4
+        with:
+          path: ~/.gradle/caches
+          key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle*', '**/gradle-wrapper.properties') }}
+          restore-keys: |
+            ${{ runner.os }}-gradle-
+
+      # Run tests
+      - name: Run tests
+        run: ./gradlew test
+
+      # Check code style
+      - name: Check code style
+        run: ./gradlew check
+
+      # Generate coverage report
+      - name: Generate coverage report
+        run: ./gradlew createDebugCombinedReport
+
+      # Enforce minimum coverage
+      - name: Enforce minimum coverage
+        run: |
+          MODULES=$(find "$GITHUB_WORKSPACE" -maxdepth 1 -type d | grep -vE '(gradle|build|build-logic|navigation|^.\/\.\w+|\.$)$')
+          echo "Modules list: $MODULES"
+
+          LOC_COVERED=0
+          LOC_MISSED=0
+
+          for MODULE in $MODULES; do
+            echo "Analysing module $MODULE"
+            REPORTS=$(find "$MODULE" -maxdepth 8 -type f -name "*DebugCombinedCoverageReport.csv")
+            BRANCH_COVERED=0
+            BRANCH_MISSED=0
+
+            for REPORT in $REPORTS; do
+              echo "Analysing report: $REPORT"
+              BRANCH_COVERED=$( awk -F ',' 'BEGIN { sum_branch_covered=0; } { sum_branch_covered += $7; } END { print sum_branch_covered }' "$REPORT" )
+              BRANCH_MISSED=$( awk -F ',' 'BEGIN { sum_branch_missed=0; } { sum_branch_missed += $6; } END { print sum_branch_missed }' "$REPORT" )
+            done
+
+            LOC_COVERED=$(( LOC_COVERED + BRANCH_COVERED ))
+            LOC_MISSED=$(( LOC_MISSED + BRANCH_MISSED ))
+            echo "Branch covered: $LOC_COVERED"
+            echo "Branch missed: $LOC_MISSED"
+          done
+
+          echo "BRANCH_COVERED: $LOC_COVERED"
+          echo "BRANCH_MISSED: $LOC_MISSED"
+
+          COVERAGE=$( awk "BEGIN {printf \"%.2f\", $LOC_COVERED / ($LOC_MISSED + $LOC_COVERED) * 100}" )
+          MIN_COVERAGE=0.0
+
+          echo "COVERAGE: $COVERAGE"
+          echo "MIN_COVERAGE: $MIN_COVERAGE"
+
+          if (( $(awk "BEGIN {print ($COVERAGE < $MIN_COVERAGE) ? 1 : 0}") )); then
+            echo "Code coverage ($COVERAGE%) is below the minimum threshold ($MIN_COVERAGE%)"
+            exit 1
+          else
+            echo "Test Coverage of ($MIN_COVERAGE) fulfilled"
+          fi
