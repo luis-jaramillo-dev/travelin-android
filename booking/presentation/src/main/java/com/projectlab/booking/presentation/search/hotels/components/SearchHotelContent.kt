@@ -13,7 +13,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
 import com.projectlab.booking.models.toHotelUi
-import com.projectlab.booking.presentation.screens.HotelsViewModel
+import com.projectlab.booking.presentation.HotelsViewModel
 import com.projectlab.booking.presentation.screens.hotels.search.SearchHotelState
 import com.projectlab.booking.presentation.search.hotels.components.SearchHotelListItem
 import com.projectlab.core.presentation.designsystem.R

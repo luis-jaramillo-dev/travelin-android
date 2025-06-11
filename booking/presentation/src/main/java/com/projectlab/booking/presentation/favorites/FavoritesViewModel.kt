@@ -98,6 +98,7 @@ class FavoritesViewModel @Inject constructor(
     }
 
     fun toggleFavorite(activity: FavoriteActivityEntity) {
+        _uiState.update { it.copy(isFavoriteLoading = true) }
         viewModelScope.launch {
             try {
                 if (favoriteIdsSet.contains(activity.id)) {
@@ -113,6 +114,8 @@ class FavoritesViewModel @Inject constructor(
                 _favoriteActivityIds.value = favoriteIdsSet.toList()
             } catch (e: Exception) {
                 _uiState.update { it.copy(error = e.localizedMessage ?: "Unknown error") }
+            } finally {
+                _uiState.update { it.copy(isFavoriteLoading = false) }
             }
         }
     }

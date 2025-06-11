@@ -41,15 +41,18 @@ fun ActivityDetailScreen(
     favoritesViewModel: FavoritesViewModel,
     activityId: String,
     navController: NavController,
+    onBackClick: () -> Unit
 ) {
     LaunchedEffect(Unit) {
         activityDetailViewModel.onViewDetail(activityId)
     }
 
     val uiState by activityDetailViewModel.uiState.collectAsState()
+    val favoritesUiState by favoritesViewModel.uiState.collectAsState()
 
     val favoriteIds by favoritesViewModel.favoriteActivityIds.collectAsState()
     val isFavorite = favoriteIds.contains(activityId)
+    val isFavoriteLoading = favoritesUiState.isFavoriteLoading
 
     val onFavoriteClick: () -> Unit = {
         uiState.activity?.let { activity ->
@@ -72,6 +75,8 @@ fun ActivityDetailScreen(
             navController = navController,
             onFavoriteClick = onFavoriteClick,
             isFavorite = isFavorite,
+            isFavoriteLoading = isFavoriteLoading,
+            onBackClick = onBackClick
         )
     }
 }
@@ -82,7 +87,9 @@ fun ActivityDetailScreenComponent(
     uiState: ActivityDetailUiState,
     navController: NavController,
     isFavorite: Boolean,
+    isFavoriteLoading: Boolean,
     onFavoriteClick: () -> Unit,
+    onBackClick: () -> Unit,
 ) {
     val activity = uiState.activity
     val scrollState = rememberScrollState()
@@ -107,7 +114,9 @@ fun ActivityDetailScreenComponent(
                     activity = it,
                     navController = navController,
                     isFavorite = isFavorite,
+                    isFavoriteLoading = isFavoriteLoading,
                     onFavoriteClick = onFavoriteClick,
+                    onBackClick = onBackClick,
                 )
 
                 Spacer(modifier = Modifier.height(MaterialTheme.spacing.ScreenVerticalSpacing))
@@ -120,11 +129,14 @@ fun ActivityDetailScreenComponent(
                 Spacer(modifier = Modifier.height(MaterialTheme.spacing.ScreenVerticalSpacing))
 
                 Column(
-                    modifier = modifier.height(200.dp)
+                    modifier = modifier
+                        .height(MaterialTheme.spacing.mapHeight)
+                        .padding(MaterialTheme.spacing.semiLarge)
                 ) {
                     MapActivity(
                         latitude = activity.geoCode.latitude,
-                        longitude = activity.geoCode.longitude)
+                        longitude = activity.geoCode.longitude
+                    )
                 }
 
                 Spacer(modifier = Modifier.height(MaterialTheme.spacing.ScreenVerticalSpacing))

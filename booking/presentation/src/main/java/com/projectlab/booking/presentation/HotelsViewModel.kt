@@ -1,24 +1,22 @@
-package com.projectlab.booking.presentation.screens
+package com.projectlab.booking.presentation
 
 import android.content.Context
 import android.widget.Toast
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
-import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.res.stringResource
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.projectlab.booking.models.toHotelUi
 import com.projectlab.booking.presentation.booking.hotels.BookingHotelState
 import com.projectlab.booking.presentation.screens.hotels.details.DetailHotelState
 import com.projectlab.booking.presentation.screens.hotels.search.SearchHotelState
-import com.projectlab.booking.utils.StringValue
 import com.projectlab.booking.utils.StringValue.StringResource
 import com.projectlab.core.domain.model.Hotel
 import com.projectlab.core.domain.model.User
 import com.projectlab.core.domain.repository.UserSessionProvider
 import com.projectlab.core.domain.use_cases.hotels.HotelsUseCases
+import com.projectlab.core.domain.use_cases.location.GetCoordinatesFromCityUseCase
 import com.projectlab.core.domain.use_cases.users.UsersUseCases
 import com.projectlab.core.domain.util.Result
 import com.projectlab.core.presentation.designsystem.R
@@ -36,6 +34,8 @@ class HotelsViewModel @Inject constructor(
     private val hotelsUseCases: HotelsUseCases,
     private val usersUseCases: UsersUseCases,
     private val userSessionProvider: UserSessionProvider,
+    private val getCoordinatesFromCityUseCase: GetCoordinatesFromCityUseCase
+
 ) : ViewModel() {
 
     private val _uiStateHotelSearch = MutableStateFlow(SearchHotelState())
@@ -75,26 +75,37 @@ class HotelsViewModel @Inject constructor(
         _uiStateHotelSearch.update { it.copy(query = newQuery) }
     }
 
-    fun onSearchSubmitted() {
+    fun onSearchSubmittedWithCoordinates() {
+
         viewModelScope.launch {
             _uiStateHotelSearch.update { it.copy(isLoading = true) }
+            val locationData = getCoordinatesFromCityUseCase(uiStateHotelSearch.value.query)
             try {
-                when (
-                    val result = hotelsUseCases.getHotelsByCity(_uiStateHotelSearch.value.query)) {
-                    is Result.Success -> {
-                        val newFavoriteHotel = hotelsListWithFavorite(
-                            user.favoritesHotels,
-                            result.data.toMutableList()
-                        )
-                        _uiStateHotelSearch.update { it.copy(hotels = newFavoriteHotel) }
-                    }
+                if (locationData != null) {
+                    when (val result = hotelsUseCases.getHotelsByCoordinates(
+                        locationData.first,
+                        locationData.second
+                    )) {
+                        is Result.Success -> {
+                            _uiStateHotelSearch.update { it.copy(hotels = result.data.toMutableList()) }
+                        }
 
-                    is Result.Error -> {
-                        _uiStateHotelSearch.update { it.copy(error = "Unknown error") }
+                        is Result.Error -> {
+                            _uiStateHotelSearch.update { it.copy(error = "Unknown error") }
+                        }
+
+                    }
+                } else {
+                    _uiStateHotelSearch.update {
+                        it.copy(error = "Could not find coordinates for the specified city")
                     }
                 }
             } catch (e: Exception) {
-                println(e)
+                _uiStateHotelSearch.update {
+                    it.copy(
+                        error = e.localizedMessage ?: "Unknown error"
+                    )
+                }
             } finally {
                 _uiStateHotelSearch.update { it.copy(isLoading = false) }
             }

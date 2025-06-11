@@ -14,6 +14,13 @@ interface HotelsApiService {
         @Query("ratings") ratings: String
     ): HotelsSearchResponse
 
+    @GET("v1/reference-data/locations/hotels/by-geocode")
+    suspend fun getHotelsByCoordinates(
+        @Query("latitude") latitude: Double,
+        @Query("longitude") longitude: Double,
+        @Query("ratings") ratings: String
+    ): HotelsSearchResponse
+
     @GET("v2/e-reputation/hotel-sentiments")
     suspend fun getHotelRatingById(
         @Query("hotelIds") hotelIds: String,

@@ -1,7 +1,6 @@
 package com.projectlab.booking.presentation.booking.hotels
 
 import android.os.Build
-import android.widget.Toast
 import androidx.annotation.RequiresApi
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
@@ -16,7 +15,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import com.projectlab.booking.presentation.booking.hotels.components.BookingHotelContent
 import com.projectlab.booking.presentation.booking.hotels.components.BookingHotelFooter
-import com.projectlab.booking.presentation.screens.HotelsViewModel
+import com.projectlab.booking.presentation.HotelsViewModel
 import com.projectlab.core.presentation.designsystem.component.HeaderWithBack
 import java.time.LocalDate
 

@@ -103,9 +103,12 @@ object Spacing {
     val recommendedSectionHeight: Dp = 700.dp
     val homeHeight: Dp = 1300.dp
 
+    val mapHeight: Dp = 200.dp
+  
     // Booking
     val BookingLogoWidth: Dp = 137.dp
     val BookingLogoHeight: Dp = 139.dp
+
 }
 
 val LocalSpacing = staticCompositionLocalOf { Spacing }
