@@ -110,7 +110,7 @@ fun ItinerariesScreenComponent(
                         .padding(),
                 ) {
                     Text(
-                        modifier = Modifier.padding(start = 1.dp, end = 230.dp),
+                        modifier = Modifier.padding(start = 1.dp, top = 10.dp, end = 230.dp),
                         text = "Add Itinerary",
                         style = MaterialTheme.typography.bodyLarge,
                     )
@@ -131,7 +131,7 @@ fun ItinerariesScreenComponent(
             Row (
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(top = 160.dp),
+                    .padding(top = 210.dp),
                 horizontalArrangement = Arrangement.spacedBy(MaterialTheme.spacing.medium),
                 verticalAlignment = Alignment.CenterVertically,
             ) {
@@ -181,8 +181,8 @@ fun ItinerariesScreenPreview() {
 @Composable
 fun ItinerariesScreenComponentPreview() {
     ItinerariesScreenComponent(
-        onClickBack = {},
+        modifier = Modifier,
         uiState = ItinerariesUiState(),
-        modifier = Modifier.fillMaxWidth()
+        onClickBack = {},
     )
 }
