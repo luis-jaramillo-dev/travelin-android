@@ -128,6 +128,7 @@ fun ItinerariesScreenComponent(
             // Spacer to add space between the title and the itineraries list
             Spacer(modifier = Modifier.height(MaterialTheme.spacing.searchSpacer))
 
+            // TODO: Implement LazyColumn
             Row (
                 modifier = Modifier
                     .fillMaxWidth()
