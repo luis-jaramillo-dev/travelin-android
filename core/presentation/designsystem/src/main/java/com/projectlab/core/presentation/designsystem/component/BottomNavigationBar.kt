@@ -86,7 +86,8 @@ fun BottomNavigationBar(
             )
             BottomNavItem(
                 icon = Icons.Default.Flight,
-                label = stringResource(R.string.trips),
+                // label = stringResource(R.string.trips), // TODO: Update Resource with correct string
+                label = "Itineraries", // Temporary label until resource is updated
                 selected = current == BottomNavRoute.TRIPS,
                 onClick = onItinsClick,
             )
