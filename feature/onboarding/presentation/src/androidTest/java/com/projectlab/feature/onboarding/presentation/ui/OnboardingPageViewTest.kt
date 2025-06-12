@@ -47,7 +47,7 @@ class OnboardingPageViewTest {
 
         // 3) We press the button and check that the callback changed the variable
         composeTestRule
-            .onNodeWithTag("OnboardingNextButton")
+            .onNodeWithTag("onboardingNextButton")
             .performClick()
 
         assert(clicked)

@@ -1,4 +1,4 @@
-package com.projectlab.presentation.ui
+package com.projectlab.core.presentation.ui
 
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.platform.app.InstrumentationRegistry
@@ -13,7 +13,7 @@ class ExampleInstrumentedTest {
     fun useAppContext() {
         // Context of the app under test.
         val appContext = InstrumentationRegistry.getInstrumentation().targetContext
-        assertEquals("com.projectlab.core.data.test", appContext.packageName)
+        assertEquals("com.projectlab.core.presentation.ui.test", appContext.packageName)
     }
 }
 

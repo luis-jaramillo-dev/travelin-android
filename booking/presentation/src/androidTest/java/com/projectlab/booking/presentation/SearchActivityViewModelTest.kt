@@ -26,25 +26,21 @@ import org.junit.Test
 import org.mockito.kotlin.mock
 import org.mockito.kotlin.whenever
 import org.junit.Assert.assertEquals
-import org.mockito.Mockito.mock
 import org.junit.Assert.assertFalse
 import org.junit.Assert.assertTrue
 import org.junit.Assert.assertNull
 import org.junit.runner.RunWith
 import org.mockito.kotlin.times
 import org.mockito.kotlin.verify
-import kotlin.invoke
 
 
 @OptIn(ExperimentalCoroutinesApi::class)
 @RunWith(AndroidJUnit4::class)
 class SearchActivityViewModelTest {
-
     private lateinit var getActivitiesUseCase: GetActivitiesUseCase
     private lateinit var getCoordinatesFromCityUseCase: GetCoordinatesFromCityUseCase
     private lateinit var getCityFromCoordinatesUseCase: GetCityFromCoordinatesUseCase
     private lateinit var errorMapper: ErrorMapper
-    private lateinit var historyProvider: SearchHistoryProvider
     private lateinit var saveFavoriteActivityUseCase: SaveFavoriteActivityUseCase
     private lateinit var removeFavoriteActivityByIdUseCase: RemoveFavoriteActivityByIdUseCase
     private lateinit var viewModel: SearchActivityViewModel
@@ -73,7 +69,7 @@ class SearchActivityViewModelTest {
             getCoordinatesFromCityUseCase = getCoordinatesFromCityUseCase,
             getCityFromCoordinatesUseCase = getCityFromCoordinatesUseCase,
             errorMapper = errorMapper,
-            historyProvider = historyProvider,
+            historyProvider = searchHistoryProvider,
             saveFavoriteActivityUseCase = saveFavoriteActivityUseCase,
             removeFavoriteActivityByIdUseCase = removeFavoriteActivityByIdUseCase
         )
@@ -188,7 +184,7 @@ class SearchActivityViewModelTest {
             getCoordinatesFromCityUseCase = getCoordinatesFromCityUseCase,
             getCityFromCoordinatesUseCase = getCityFromCoordinatesUseCase,
             errorMapper = errorMapper,
-            historyProvider = historyProvider,
+            historyProvider = searchHistoryProvider,
             saveFavoriteActivityUseCase = saveFavoriteActivityUseCase,
             removeFavoriteActivityByIdUseCase = removeFavoriteActivityByIdUseCase
         )
@@ -277,7 +273,6 @@ class SearchActivityViewModelTest {
 
     @Test
     fun shouldUpdateHistoryWhenAnEntryIsDeleted() = runTest {
-        val fakeHistory = listOf("Santiago", "Valparaiso")
         val updatedHistory = listOf("Valparaiso") // Simula que "Santiago" fue eliminado
 
         whenever(
