@@ -70,5 +70,6 @@
     <string name="details">Detalles</string>
     <string name="hotel">Hotel</string>
     <string name="sqm">%1$s sqm</string>
+    <string name="no_results_found">No hay resultados para esa ubicación. Por favor intenta con otra ciudad.</string>
 
 </resources>

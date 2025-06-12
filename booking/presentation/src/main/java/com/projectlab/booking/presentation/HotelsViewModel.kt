@@ -84,7 +84,9 @@ class HotelsViewModel @Inject constructor(
                 if (locationData != null) {
                     when (val result = hotelsUseCases.getHotelsByCoordinates(
                         locationData.first,
-                        locationData.second
+                        locationData.second,
+                        emptyList(),
+                        emptyList()
                     )) {
                         is Result.Success -> {
                             _uiStateHotelSearch.update { it.copy(hotels = result.data.toMutableList()) }
@@ -142,14 +144,14 @@ class HotelsViewModel @Inject constructor(
         _uiStateBookingHotel.update { it.copy(hotelUi = hotelFound!!.toHotelUi()) }
     }
 
-    fun favoriteHotel(hotelId: String) {
+    fun favoriteHotel(hotel: Hotel) {
         viewModelScope.launch {
             try {
-                when (hotelsUseCases.favoriteHotel(user.id, hotelId)) {
+                when (hotelsUseCases.favoriteHotel(user.id, hotel)) {
                     is Result.Success -> {
 
                         val updatedHotels = _uiStateHotelSearch.value.hotels.map {
-                            if (it.id == hotelId) {
+                            if (it == hotel) {
                                 it.copy(isFavourite = true)
                             } else {
                                 it
@@ -176,7 +178,7 @@ class HotelsViewModel @Inject constructor(
     fun unfavoriteHotel(hotelId: String) {
         viewModelScope.launch {
             try {
-                when (hotelsUseCases.unfavoriteHotel(user.id, hotelId)) {
+                when (hotelsUseCases.unfavoriteHotel(hotelId)) {
                     is Result.Success -> {
 
                         val updatedHotels = _uiStateHotelSearch.value.hotels.map {

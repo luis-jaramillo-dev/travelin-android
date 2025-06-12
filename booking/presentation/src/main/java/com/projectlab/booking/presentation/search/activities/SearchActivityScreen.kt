@@ -28,12 +28,8 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
-import androidx.navigation.NavController
-import androidx.navigation.compose.currentBackStackEntryAsState
-import com.projectlab.booking.presentation.favorites.FavoritesViewModel
 import com.projectlab.core.data.mapper.toFavoriteActivityEntity
 import com.projectlab.core.data.model.ActivityDto
-import com.projectlab.core.domain.entity.FavoriteActivityEntity
 import com.projectlab.core.domain.model.Location
 import com.projectlab.core.presentation.designsystem.R
 import com.projectlab.core.presentation.designsystem.component.BackIconButton
@@ -59,21 +55,15 @@ fun SearchActivityScreen(
     modifier: Modifier = Modifier,
     locationViewModel: LocationViewModel,
     searchActivityViewModel: SearchActivityViewModel,
-    favoritesViewModel: FavoritesViewModel,
-    navController: NavController,
+    initialQuery: String,
     onActivityClick: (String) -> Unit,
+    onBackClick: () -> Unit,
 ) {
     val context = LocalContext.current
     val address by locationViewModel.address
     val currentLocation = locationViewModel.location.value
     val uiState by searchActivityViewModel.uiState.collectAsState()
-    val favoriteIds by favoritesViewModel.favoriteActivityIds.collectAsState()
-
-    val backStackEntry by navController.currentBackStackEntryAsState()
-    val initialQuery = backStackEntry
-        ?.arguments
-        ?.getString("query")
-        .orEmpty()
+    val favoriteIds = searchActivityViewModel.favoriteActivityIds.collectAsState().value
 
     // As soon as the Composable is mounted, start the search
     LaunchedEffect(initialQuery) {
@@ -101,7 +91,7 @@ fun SearchActivityScreen(
     }
 
     LaunchedEffect(Unit) {
-        favoritesViewModel.queryFavoriteActivities()
+        searchActivityViewModel.fetchFavoriteActivities()
     }
 
     /**
@@ -129,7 +119,7 @@ fun SearchActivityScreen(
     }
 
     val onFavoriteToggle: (ActivityDto) -> Unit = { activity ->
-        favoritesViewModel.toggleFavorite(activity.toFavoriteActivityEntity())
+        searchActivityViewModel.toggleFavoriteActivity(activity.toFavoriteActivityEntity())
     }
 
     Column(
@@ -139,7 +129,7 @@ fun SearchActivityScreen(
     ) {
         Row(verticalAlignment = Alignment.CenterVertically) {
             BackIconButton(
-                onClick = { navController.popBackStack() },
+                onClick = onBackClick,
                 modifier = Modifier
                     .size(MaterialTheme.spacing.extraLarge2)
                     .padding(MaterialTheme.spacing.extraSmall)
@@ -168,14 +158,22 @@ fun SearchActivityScreen(
         )
 
         Spacer(modifier = Modifier.height(MaterialTheme.spacing.extraLarge))
-        SearchActivityResultsComponent(
-            uiState = uiState,
-            onShowAllResults = { searchActivityViewModel.showAllResults() },
-            navController = navController,
-            favoriteIds = favoriteIds,
-            onFavoriteToggle = onFavoriteToggle,
-            reverseGeocode = { location -> locationViewModel.reverseGeocodeLocation(location) }
-        )
+        if (uiState.activities.isEmpty() && !uiState.isLoading) {
+            Text(
+                text = stringResource(R.string.no_results_found),
+                style = MaterialTheme.typography.titleMedium,
+                modifier = Modifier.padding(start = MaterialTheme.spacing.extraSmall)
+            )
+        } else {
+            SearchActivityResultsComponent(
+                uiState = uiState,
+                onShowAllResults = { searchActivityViewModel.showAllResults() },
+                favoriteIds = favoriteIds,
+                onFavoriteToggle = onFavoriteToggle,
+                onPress = onActivityClick,
+                reverseGeocode = { location -> locationViewModel.reverseGeocodeLocation(location) }
+            )
+        }
     }
 }
 
@@ -183,8 +181,8 @@ fun SearchActivityScreen(
 fun SearchActivityResultsComponent(
     uiState: SearchActivityUiState,
     onShowAllResults: () -> Unit,
-    navController: NavController,
     favoriteIds: List<String>,
+    onPress: (String) -> Unit,
     onFavoriteToggle: (ActivityDto) -> Unit,
     reverseGeocode: suspend (Location) -> String,
 ) {
@@ -238,9 +236,7 @@ fun SearchActivityResultsComponent(
                     activity = activity,
                     modifier = Modifier.fillMaxWidth(),
                     city = city,
-                    onPress = {
-                        navController.navigate("activityDetail/${activity.id}")
-                    },
+                    onPress = {onPress},
                     isFavorite = isFavorite,
                     onFavoriteToggle = {onFavoriteToggle(activity)}
                 )

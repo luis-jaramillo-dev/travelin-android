@@ -11,5 +11,4 @@ class GetHotelsByCityUseCase @Inject constructor(private val repository: HotelsR
         amenities: List<String> = emptyList(),
         ratings: List<String> = emptyList()
     ) = repository.getHotelsByCity(cityCode, amenities.toString(), ratings.toString())
-
 }

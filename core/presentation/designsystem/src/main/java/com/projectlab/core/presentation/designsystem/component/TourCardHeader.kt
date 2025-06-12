@@ -27,7 +27,6 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.navigation.NavController
 import coil.compose.AsyncImage
 import com.projectlab.core.data.model.ActivityDto
 import com.projectlab.core.presentation.designsystem.R
@@ -37,7 +36,6 @@ import com.projectlab.core.presentation.designsystem.theme.spacing
 fun TourCardHeader(
     modifier: Modifier = Modifier,
     activity: ActivityDto,
-    navController: NavController,
     isFavorite: Boolean,
     isFavoriteLoading: Boolean,
     onFavoriteClick: () -> Unit,
@@ -137,7 +135,7 @@ fun TourCardHeader(
 
                     Spacer(modifier = Modifier.height(10.dp))
 
-                    StarRatingBar(rating = activity.rating, textColor = Color.White)
+                    StarRatingBar(rating = activity.rating.toString(), textColor = Color.White)
                 }
             }
         }

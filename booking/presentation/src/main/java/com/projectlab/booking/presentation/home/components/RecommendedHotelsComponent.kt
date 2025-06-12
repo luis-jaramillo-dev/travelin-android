@@ -15,9 +15,11 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.sp
+import com.projectlab.booking.models.HotelUi
+import com.projectlab.booking.models.toHotelUi
 import com.projectlab.booking.presentation.R
 import com.projectlab.booking.presentation.home.HomeUiState
-import com.projectlab.core.data.model.ActivityDto
+import com.projectlab.core.domain.model.Hotel
 import com.projectlab.core.presentation.designsystem.component.VerticalFavoriteCard
 import com.projectlab.core.presentation.designsystem.theme.spacing
 
@@ -25,10 +27,9 @@ import com.projectlab.core.presentation.designsystem.theme.spacing
 fun RecommendedHotelsComponent(
     modifier: Modifier = Modifier,
     uiState: HomeUiState,
-    location: String,
     favoriteIds: List<String>,
-    onFavoriteClick: (ActivityDto) -> Unit,
-    onItemClick: (String) -> Unit
+    onFavoriteClick: (Hotel) -> Unit,
+    onItemClick: (HotelUi) -> Unit
 ) {
     if (!uiState.isLoading) {
         Column(
@@ -36,31 +37,27 @@ fun RecommendedHotelsComponent(
             verticalArrangement = Arrangement.spacedBy(MaterialTheme.spacing.ElementSpacing)
         ) {
             Text(
-                text = stringResource(R.string.recommended_hotels_near_you),
+                text = stringResource(R.string.recommended_hotels),
                 fontSize = 18.sp,
                 fontWeight = FontWeight.W600,
                 color = MaterialTheme.colorScheme.onBackground,
             )
             Spacer(modifier = Modifier.height(MaterialTheme.spacing.small))
-            if (uiState.recommendedActivities.isNotEmpty()) {
+            if (uiState.recommendedHotels.isNotEmpty()) {
                 LazyRow(
                     horizontalArrangement = Arrangement.spacedBy(MaterialTheme.spacing.ElementSpacing),
                 ) {
-                    items(uiState.recommendedActivities) { activity ->
-                        val isFavorite = favoriteIds.contains(activity.id)
+                    items(uiState.recommendedHotels) { hotel ->
+                        val isFavorite = favoriteIds.contains(hotel.id)
                         VerticalFavoriteCard(
-                            name = activity.name,
-                            description = if (activity.description.isNotEmpty()) {
-                                activity.description
-                            } else {
-                                stringResource(R.string.no_description)
-                            },
-                            location = location,
-                            rating = activity.rating,
-                            pictureUrl = activity.pictures.firstOrNull() ?: "",
-                            onFavoriteClick = { onFavoriteClick(activity) },
+                            name = hotel.name,
+                            description = hotel.amenities.toString(),
+                            location = hotel.location.address,
+                            rating = hotel.rating.overallRating.toString(),
+                            pictureUrl = hotel.displayImageUrl,
+                            onFavoriteClick = {onFavoriteClick(hotel)},
                             isFavorite = isFavorite,
-                            onClick = { onItemClick(activity.id) },
+                            onClick = { onItemClick(hotel.toHotelUi()) },
                             modifier = Modifier.width(MaterialTheme.spacing.recommendedCardWidth)
                         )
                     }

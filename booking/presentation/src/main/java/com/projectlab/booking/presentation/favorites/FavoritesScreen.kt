@@ -52,6 +52,7 @@ fun FavoritesScreen(
 ) {
     LaunchedEffect(Unit) {
         viewModel.queryFavoriteActivities()
+        viewModel.queryFavoriteHotels()
     }
 
     Scaffold(
@@ -89,7 +90,7 @@ private fun FavoritesScreenComponent(
     val onSearchPressed: () -> Unit = {
         when (selectedTab) {
             FavoriteTabItem.DESTINATIONS -> viewModel.queryFavoriteActivities()
-            FavoriteTabItem.HOTELS -> null // TODO
+            FavoriteTabItem.HOTELS -> viewModel.queryFavoriteHotels()
         }
     }
 
@@ -170,12 +171,12 @@ private fun FavoritesScreenComponent(
             ) {
                 when (selectedTab) {
                     FavoriteTabItem.DESTINATIONS -> {
-                        items(uiState.destinations) { favorite ->
+                        items(uiState.activities) { favorite ->
                             VerticalFavoriteCard(
                                 name = favorite.name,
                                 description = favorite.description,
-                                location = favorite.location,
-                                rating = favorite.rating,
+                                location = favorite.location.toString(),
+                                rating = favorite.rating.toString(),
                                 pictureUrl = favorite.pictures.getOrElse(0) { null },
                                 isFavorite = true,
                                 onFavoriteClick = { viewModel.removeFavoriteActivity(favorite.id) },
@@ -188,7 +189,20 @@ private fun FavoritesScreenComponent(
                     }
 
                     FavoriteTabItem.HOTELS -> {
-                        // TODO
+                        items(uiState.hotels) { hotel ->
+                            VerticalFavoriteCard(
+                                name = hotel.name,
+                                description = hotel.amenities.toString(),
+                                location = hotel.address,
+                                rating = hotel.rating.toString(),
+                                pictureUrl = hotel.displayImageUrl,
+                                isFavorite = true,
+                                onFavoriteClick = { viewModel.removeFavoriteHotel(hotel.id) },
+                                onClick = { onActivityClick(hotel.id) },
+                                modifier = Modifier
+                                    .height(MaterialTheme.spacing.favoriteCardHeight)
+                            )
+                        }
                     }
                 }
             }

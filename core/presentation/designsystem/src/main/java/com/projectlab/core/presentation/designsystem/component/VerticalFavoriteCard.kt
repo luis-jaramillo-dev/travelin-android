@@ -37,7 +37,7 @@ fun VerticalFavoriteCard(
     name: String,
     description: String,
     location: String,
-    rating: Float,
+    rating: String,
     pictureUrl: String?,
     isFavorite: Boolean,
     onFavoriteClick: () -> Unit,
