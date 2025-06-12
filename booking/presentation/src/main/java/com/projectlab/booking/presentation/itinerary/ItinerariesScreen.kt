@@ -1,6 +1,7 @@
 package com.projectlab.booking.presentation.itinerary
 
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
@@ -68,18 +69,29 @@ fun ItinerariesScreenComponent(
 ) {
     val itineraries = uiState.itineraries
 
+    Column(
+        modifier = modifier
+            .fillMaxSize()
+            .statusBarsPadding()
+            .padding(horizontal = 16.dp)
+    ) {
+
+
+    }
+
+    // Back button at the top of the screen
     Row(
         modifier = Modifier
-            .fillMaxWidth(),
+            .padding(top = MaterialTheme.spacing.extraLarge2),
         verticalAlignment = Alignment.CenterVertically,
     ) {
         BackIconButton(
             onClick = { onClickBack() },
             modifier = Modifier
                 .size(MaterialTheme.spacing.extraLarge2)
-                .padding(MaterialTheme.spacing.extraSmall)
         )
     }
+    // Title of the screen
     Row(
         modifier = modifier
             .statusBarsPadding()
@@ -88,17 +100,18 @@ fun ItinerariesScreenComponent(
     ) {
         Text(
             modifier = Modifier
-                .padding(MaterialTheme.spacing.Spacer),
+                .padding(vertical = MaterialTheme.spacing.medium),
             text = "Itineraries",
             style = MaterialTheme.typography.titleLarge,
             fontWeight = FontWeight.Bold,
         )
     }
 
+    // Add Itinerary and button at the top of the screen
     Column(
         modifier = Modifier
             .statusBarsPadding()
-            .padding(start = 16.dp, top = 100.dp)
+            .padding(start = 16.dp, top = 105.dp)
             .fillMaxWidth(),
     ) {
         Row(
@@ -124,6 +137,39 @@ fun ItinerariesScreenComponent(
     // Spacer to add space between the title and the itineraries list
     Spacer(modifier = Modifier.height(MaterialTheme.spacing.searchSpacer))
 
+    Box (
+        modifier = Modifier
+            .fillMaxWidth(),
+        contentAlignment = Alignment.Center,
+    ) {
+
+        when {
+            uiState.isLoading -> {
+                CircularProgressIndicator()
+            }
+            uiState.error != null -> {
+                Text("Error: ${uiState.error}")
+            }
+            else -> {
+                LazyColumn(
+                    modifier = Modifier
+                        .padding(top = 140.dp),
+                    verticalArrangement = Arrangement.spacedBy(MaterialTheme.spacing.small),
+                ) {
+                    lazyItems(
+                        uiState.itineraries,
+                        //key = {it.id}
+                    ) { itinerary ->
+                        ItineraryCard(
+                            modifier = Modifier
+                                .padding(top = 5.dp),
+                            onClick = {}
+                        )
+                    }
+                }
+            }
+        }
+    }
 //            // TODO: Implement LazyColumn
 //            Row (
 //                modifier = Modifier
@@ -138,36 +184,13 @@ fun ItinerariesScreenComponent(
 //                )
 //            }
 
-
-    if (uiState.isLoading) {
-        CircularProgressIndicator()
-    } else if (uiState.error != null) {
-        Text("Error: ${uiState.error}")
-    } else {
-        LazyColumn(
-            modifier = Modifier
-                .fillMaxSize()
-                .padding(top = 2.dp)
-        ) {
-            lazyItems(
-                uiState.itineraries,
-                //key = {it.id}
-            ) { itinerary ->
-                ItineraryCard(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(horizontal = 16.dp, vertical = 8.dp),
-                    onClick = {}
-                )
-            }
-        }
-    }
 }
 
 @Preview(showBackground = true)
 @Composable
 fun ItinerariesScreenPreview() {
     ItinerariesScreen(
+        modifier = Modifier,
         onClickBack = {},
         onHomeClick = {},
         onFavoritesClick = {},
