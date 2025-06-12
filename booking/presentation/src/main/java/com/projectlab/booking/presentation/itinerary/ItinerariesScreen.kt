@@ -128,40 +128,44 @@ fun ItinerariesScreenComponent(
             // Spacer to add space between the title and the itineraries list
             Spacer(modifier = Modifier.height(MaterialTheme.spacing.searchSpacer))
 
-            // TODO: Implement LazyColumn
-            Row (
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(top = 210.dp),
-                horizontalArrangement = Arrangement.spacedBy(MaterialTheme.spacing.medium),
-                verticalAlignment = Alignment.CenterVertically,
-            ) {
-                ItineraryCard(
-                    modifier = Modifier,
-                    onClick = {}
-                )
-            }
-
-
-//            if (uiState.isLoading) {
-//                CircularProgressIndicator()
-//            } else if (uiState.error != null) {
-//                Text("Error: ${uiState.error}")
-//            } else {
-//                LazyColumn (
-//                    modifier = Modifier.fillMaxSize(),
-//                    contentPadding = PaddingValues(vertical = 8.dp)
-//                ){
-//                    lazyItems(uiState.itineraries, key = {it.id}) { itinerary ->
-//                        ItineraryCard(
-//                            modifier = Modifier
-//                                .fillMaxWidth()
-//                                .padding(horizontal = 16.dp, vertical = 8.dp),
-//                            onClick = {}
-//                        )
-//                    }
-//                }
+//            // TODO: Implement LazyColumn
+//            Row (
+//                modifier = Modifier
+//                    .fillMaxWidth()
+//                    .padding(top = 210.dp),
+//                horizontalArrangement = Arrangement.spacedBy(MaterialTheme.spacing.medium),
+//                verticalAlignment = Alignment.CenterVertically,
+//            ) {
+//                ItineraryCard(
+//                    modifier = Modifier,
+//                    onClick = {}
+//                )
 //            }
+
+
+            if (uiState.isLoading) {
+                CircularProgressIndicator()
+            } else if (uiState.error != null) {
+                Text("Error: ${uiState.error}")
+            } else {
+                LazyColumn (
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .padding(top = 210.dp)
+                ){
+                    lazyItems(
+                        uiState.itineraries,
+                        //key = {it.id}
+                    ) { itinerary ->
+                        ItineraryCard(
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .padding(horizontal = 16.dp, vertical = 8.dp),
+                            onClick = {}
+                        )
+                    }
+                }
+            }
         }
     )
 }
