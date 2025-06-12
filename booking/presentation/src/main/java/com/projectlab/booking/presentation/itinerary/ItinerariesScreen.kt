@@ -68,65 +68,61 @@ fun ItinerariesScreenComponent(
 ) {
     val itineraries = uiState.itineraries
 
-    Scaffold(
-        modifier = modifier,
-        content = { innerPadding ->
-            Row(
-                modifier = Modifier
-                    .padding(innerPadding)
-                    .fillMaxWidth(),
-                verticalAlignment = Alignment.CenterVertically,
-            ) {
-                BackIconButton(
-                    onClick = { onClickBack() },
-                    modifier = Modifier
-                        .size(MaterialTheme.spacing.extraLarge2)
-                        .padding(MaterialTheme.spacing.extraSmall)
-                )
-            }
-            Row(
-                modifier = modifier
-                    .statusBarsPadding()
-                    .padding(start = 16.dp, top = 60.dp)
-                    .fillMaxWidth()
-            ) {
-                Text(
-                    modifier = Modifier
-                        .padding(MaterialTheme.spacing.Spacer),
-                    text = "Itineraries",
-                    style = MaterialTheme.typography.titleLarge,
-                    fontWeight = FontWeight.Bold,
-                )
-            }
+    Row(
+        modifier = Modifier
+            .fillMaxWidth(),
+        verticalAlignment = Alignment.CenterVertically,
+    ) {
+        BackIconButton(
+            onClick = { onClickBack() },
+            modifier = Modifier
+                .size(MaterialTheme.spacing.extraLarge2)
+                .padding(MaterialTheme.spacing.extraSmall)
+        )
+    }
+    Row(
+        modifier = modifier
+            .statusBarsPadding()
+            .padding(start = 16.dp, top = 60.dp)
+            .fillMaxWidth()
+    ) {
+        Text(
+            modifier = Modifier
+                .padding(MaterialTheme.spacing.Spacer),
+            text = "Itineraries",
+            style = MaterialTheme.typography.titleLarge,
+            fontWeight = FontWeight.Bold,
+        )
+    }
 
-            Column (
-                modifier = Modifier
-                    .statusBarsPadding()
-                    .padding(start = 16.dp, top = 100.dp)
-                    .fillMaxWidth(),
-            ) {
-                Row (
-                    modifier = Modifier
-                        .padding(),
-                ) {
-                    Text(
-                        modifier = Modifier.padding(start = 1.dp, top = 10.dp, end = 230.dp),
-                        text = "Add Itinerary",
-                        style = MaterialTheme.typography.bodyLarge,
-                    )
-                    TravelinIconButton(
+    Column(
+        modifier = Modifier
+            .statusBarsPadding()
+            .padding(start = 16.dp, top = 100.dp)
+            .fillMaxWidth(),
+    ) {
+        Row(
+            modifier = Modifier
+                .padding(),
+        ) {
+            Text(
+                modifier = Modifier.padding(start = 1.dp, top = 10.dp, end = 230.dp),
+                text = "Add Itinerary",
+                style = MaterialTheme.typography.bodyLarge,
+            )
+            TravelinIconButton(
+                modifier = Modifier,
+                onClick = {},// TODO: Implement add itinerary action
+                icon = {
+                    IconMore(
                         modifier = Modifier,
-                        onClick = {},// TODO: Implement add itinerary action
-                        icon = {
-                            IconMore(
-                                modifier = Modifier,
-                            )
-                        }
                     )
                 }
-            }
-            // Spacer to add space between the title and the itineraries list
-            Spacer(modifier = Modifier.height(MaterialTheme.spacing.searchSpacer))
+            )
+        }
+    }
+    // Spacer to add space between the title and the itineraries list
+    Spacer(modifier = Modifier.height(MaterialTheme.spacing.searchSpacer))
 
 //            // TODO: Implement LazyColumn
 //            Row (
@@ -143,31 +139,29 @@ fun ItinerariesScreenComponent(
 //            }
 
 
-            if (uiState.isLoading) {
-                CircularProgressIndicator()
-            } else if (uiState.error != null) {
-                Text("Error: ${uiState.error}")
-            } else {
-                LazyColumn (
+    if (uiState.isLoading) {
+        CircularProgressIndicator()
+    } else if (uiState.error != null) {
+        Text("Error: ${uiState.error}")
+    } else {
+        LazyColumn(
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(top = 2.dp)
+        ) {
+            lazyItems(
+                uiState.itineraries,
+                //key = {it.id}
+            ) { itinerary ->
+                ItineraryCard(
                     modifier = Modifier
-                        .fillMaxSize()
-                        .padding(top = 210.dp)
-                ){
-                    lazyItems(
-                        uiState.itineraries,
-                        //key = {it.id}
-                    ) { itinerary ->
-                        ItineraryCard(
-                            modifier = Modifier
-                                .fillMaxWidth()
-                                .padding(horizontal = 16.dp, vertical = 8.dp),
-                            onClick = {}
-                        )
-                    }
-                }
+                        .fillMaxWidth()
+                        .padding(horizontal = 16.dp, vertical = 8.dp),
+                    onClick = {}
+                )
             }
         }
-    )
+    }
 }
 
 @Preview(showBackground = true)
@@ -187,7 +181,11 @@ fun ItinerariesScreenPreview() {
 fun ItinerariesScreenComponentPreview() {
     ItinerariesScreenComponent(
         modifier = Modifier,
-        uiState = ItinerariesUiState(),
+        uiState = ItinerariesUiState(
+            itineraries = listOf("Itinerary 1", "Itinerary 2"),
+            isLoading = false,
+            error = null
+        ),
         onClickBack = {},
     )
 }
