@@ -53,7 +53,7 @@ fun ItinerariesScreen(
         },
         content = { innerPadding ->
             ItinerariesScreenComponent(
-                modifier = Modifier,
+                modifier = Modifier.padding(innerPadding),
                 uiState = ItinerariesUiState(),
                 onClickBack = onClickBack,
             )
@@ -93,14 +93,13 @@ fun ItinerariesScreenComponent(
     }
     // Title of the screen
     Row(
-        modifier = modifier
+        modifier = Modifier
             .statusBarsPadding()
             .padding(start = 16.dp, top = 60.dp)
             .fillMaxWidth()
     ) {
         Text(
-            modifier = Modifier
-                .padding(vertical = MaterialTheme.spacing.medium),
+            modifier = Modifier,
             text = "Itineraries",
             style = MaterialTheme.typography.titleLarge,
             fontWeight = FontWeight.Bold,
