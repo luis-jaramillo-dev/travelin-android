@@ -96,7 +96,7 @@ class BookingViewModelTest @Inject constructor(
 
         // 2) We create a Itinerary:
         val itinerary = ItineraryEntity(
-            id                  = "",
+            id = "",
             title = "Trip to saturn, earth and the sun :)",
             startDate = Instant.now(),
             endDate = Instant.now().plusSeconds(2592000),

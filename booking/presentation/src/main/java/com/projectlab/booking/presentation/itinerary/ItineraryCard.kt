@@ -16,12 +16,14 @@ import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.font.FontWeight.Companion.Bold
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.projectlab.core.presentation.designsystem.component.IconBus
+import com.projectlab.core.domain.entity.ItineraryEntity
+import com.projectlab.core.presentation.designsystem.component.IconItinerary
 import com.projectlab.core.presentation.designsystem.theme.spacing
 
 @Composable
 fun ItineraryCard(
     modifier: Modifier,
+    itinerary: ItineraryEntity,
     onClick: () -> Unit,
 ) {
     Row (
@@ -34,7 +36,7 @@ fun ItineraryCard(
                 .padding(start = 2.dp, top = 9.dp, end = 2.dp, bottom = 2.dp),
         ) {
             //Insert Icon from design system:
-            IconBus(
+            IconItinerary(
                 modifier = modifier
                     .size(50.dp)
             )
@@ -49,7 +51,7 @@ fun ItineraryCard(
         ) {
             // Insert text for itinerary details
             Text(
-                text = "Itinerary Title", // TODO: Replace with correct title
+                text = itinerary.title,
                 style = MaterialTheme.typography.bodyLarge,
                 fontWeight = Bold,
             )
@@ -58,7 +60,7 @@ fun ItineraryCard(
                 style = MaterialTheme.typography.bodyMedium,
             )
             Text(
-                text = "July 1, 2025", //TODO: Replace with correct date
+                text = itinerary.startDate.toString(),
                 style = MaterialTheme.typography.bodySmall,
                 fontStyle = FontStyle.Italic
             )
@@ -79,7 +81,7 @@ fun ItineraryCard(
                 style = MaterialTheme.typography.bodyMedium,
             )
             Text(
-                text = "July 20, 2025", //TODO: Replace with correct date
+                text = itinerary.endDate.toString(),
                 style = MaterialTheme.typography.bodySmall,
                 fontStyle = FontStyle.Italic
             )
@@ -90,8 +92,16 @@ fun ItineraryCard(
 @Preview (showBackground = true)
 @Composable
 fun ItineraryCardPreview() {
+    val itineraryEntity = ItineraryEntity(
+        id = "1",
+        title = "Sample Itinerary",
+        startDate = java.time.Instant.parse("2025-07-01T00:00:00Z"),
+        endDate = java.time.Instant.parse("2025-07-20T00:00:00Z"),
+        totalItineraryPrice = 1000.0
+    )
     ItineraryCard(
         modifier = Modifier,
+        itinerary = itineraryEntity,
         onClick = {},
     )
 }

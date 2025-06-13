@@ -1,5 +1,4 @@
 package com.projectlab.core.domain.entity
-import com.projectlab.core.domain.model.EntityId
 import java.time.Instant
  /**
  * ItineraryEntity represents a travel itinerary in the database system inside the app.
@@ -13,9 +12,9 @@ import java.time.Instant
  */
 
 data class ItineraryEntity(
-    val id : String = "",
-    val title: String = "",
-    val startDate : Instant,
-    val endDate : Instant,
-    val totalItineraryPrice: Double = 0.0,
+     val id: String = "",
+     val title: String = "",
+     val startDate: Instant?,
+     val endDate: Instant?,
+     val totalItineraryPrice: Double = 0.0,
 )

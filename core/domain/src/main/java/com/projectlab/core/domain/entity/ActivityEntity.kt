@@ -22,7 +22,7 @@ data class ActivityEntity(
     val name : String = "",
     val latitude : Double = 0.0,
     val longitude : Double = 0.0,
-    val activityDate : Instant,
+    val activityDate : Instant? = null,
     val description : String = "",
     val amount : String = "",
     val currencyCode : String = "",

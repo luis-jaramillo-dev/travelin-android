@@ -3,7 +3,6 @@ package com.projectlab.booking.presentation.itinerary
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
@@ -13,7 +12,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.items as lazyItems
+import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
@@ -24,6 +23,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.material3.CircularProgressIndicator
+import com.projectlab.core.domain.entity.ItineraryEntity
 import com.projectlab.core.presentation.designsystem.component.BackIconButton
 import com.projectlab.core.presentation.designsystem.component.BottomNavRoute
 import com.projectlab.core.presentation.designsystem.component.BottomNavigationBar
@@ -34,6 +34,7 @@ import com.projectlab.core.presentation.designsystem.theme.spacing
 @Composable
 fun ItinerariesScreen(
     modifier: Modifier = Modifier,
+    viewModel: ItinerariesViewModel,
     onClickBack: () -> Unit,
     onHomeClick: () -> Unit,
     onFavoritesClick: () -> Unit,
@@ -155,13 +156,14 @@ fun ItinerariesScreenComponent(
                         .padding(top = 140.dp),
                     verticalArrangement = Arrangement.spacedBy(MaterialTheme.spacing.small),
                 ) {
-                    lazyItems(
+                    items(
                         uiState.itineraries,
-                        //key = {it.id}
+                        key = {it.id}
                     ) { itinerary ->
                         ItineraryCard(
                             modifier = Modifier
                                 .padding(top = 5.dp),
+                            itinerary = itinerary,
                             onClick = {}
                         )
                     }
@@ -169,34 +171,23 @@ fun ItinerariesScreenComponent(
             }
         }
     }
-//            // TODO: Implement LazyColumn
-//            Row (
-//                modifier = Modifier
-//                    .fillMaxWidth()
-//                    .padding(top = 210.dp),
-//                horizontalArrangement = Arrangement.spacedBy(MaterialTheme.spacing.medium),
-//                verticalAlignment = Alignment.CenterVertically,
-//            ) {
-//                ItineraryCard(
-//                    modifier = Modifier,
-//                    onClick = {}
-//                )
-//            }
-
 }
 
-@Preview(showBackground = true)
-@Composable
-fun ItinerariesScreenPreview() {
-    ItinerariesScreen(
-        modifier = Modifier,
-        onClickBack = {},
-        onHomeClick = {},
-        onFavoritesClick = {},
-        onItinsClick = {},
-        onProfileClick = {}
-    )
-}
+//@Preview(showBackground = true)
+//@Composable
+//fun ItinerariesScreenPreview() {
+//    ItinerariesScreen(
+//        modifier = Modifier,
+//        viewModel = ItinerariesViewModel(),
+//        onClickBack = {},
+//        onHomeClick = {},
+//        onFavoritesClick = {},
+//        onItinsClick = {},
+//        onProfileClick = {}
+//    )
+//}
+
+// QWEasd123
 
 @Preview(showBackground = true)
 @Composable
@@ -204,7 +195,22 @@ fun ItinerariesScreenComponentPreview() {
     ItinerariesScreenComponent(
         modifier = Modifier,
         uiState = ItinerariesUiState(
-            itineraries = listOf("Itinerary 1", "Itinerary 2"),
+            itineraries = listOf(
+                ItineraryEntity(
+                    id = "1",
+                    title = "Sample Itinerary",
+                    startDate = java.time.Instant.parse("2025-07-01T00:00:00Z"),
+                    endDate = java.time.Instant.parse("2025-07-20T00:00:00Z"),
+                    totalItineraryPrice = 1000.0
+                ),
+                ItineraryEntity(
+                    id = "2",
+                    title = "Another Itinerary",
+                    startDate = java.time.Instant.parse("2025-08-01T00:00:00Z"),
+                    endDate = java.time.Instant.parse("2025-08-15T00:00:00Z"),
+                    totalItineraryPrice = 1500.0
+                )
+            ),
             isLoading = false,
             error = null
         ),

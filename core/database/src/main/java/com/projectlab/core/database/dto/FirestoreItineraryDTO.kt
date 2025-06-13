@@ -3,7 +3,6 @@ package com.projectlab.core.database.dto
 import android.os.Build
 import androidx.annotation.RequiresApi
 import com.google.firebase.Timestamp
-import com.google.firebase.firestore.DocumentReference
 import com.projectlab.core.domain.model.EntityId
 import com.projectlab.core.domain.entity.ItineraryEntity
 import java.time.Instant
