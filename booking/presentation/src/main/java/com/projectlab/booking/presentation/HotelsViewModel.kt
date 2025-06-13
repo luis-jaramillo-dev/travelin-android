@@ -12,10 +12,13 @@ import com.projectlab.booking.presentation.booking.hotels.BookingHotelState
 import com.projectlab.booking.presentation.screens.hotels.details.DetailHotelState
 import com.projectlab.booking.presentation.screens.hotels.search.SearchHotelState
 import com.projectlab.booking.utils.StringValue.StringResource
+import com.projectlab.core.domain.entity.HotelEntity
+import com.projectlab.core.domain.entity.ItineraryEntity
 import com.projectlab.core.domain.model.Hotel
 import com.projectlab.core.domain.model.User
 import com.projectlab.core.domain.repository.UserSessionProvider
 import com.projectlab.core.domain.use_cases.hotels.HotelsUseCases
+import com.projectlab.core.domain.use_cases.itineraries.ItinerariesUseCases
 import com.projectlab.core.domain.use_cases.location.GetCoordinatesFromCityUseCase
 import com.projectlab.core.domain.use_cases.users.UsersUseCases
 import com.projectlab.core.domain.util.Result
@@ -27,14 +30,18 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import java.time.LocalDate
+import java.time.ZoneId
 import javax.inject.Inject
+import kotlin.random.Random
 
 @HiltViewModel
 class HotelsViewModel @Inject constructor(
     private val hotelsUseCases: HotelsUseCases,
     private val usersUseCases: UsersUseCases,
     private val userSessionProvider: UserSessionProvider,
-    private val getCoordinatesFromCityUseCase: GetCoordinatesFromCityUseCase
+    private val getCoordinatesFromCityUseCase: GetCoordinatesFromCityUseCase,
+    private val itinerariesUseCases: ItinerariesUseCases
+
 
 ) : ViewModel() {
 
@@ -112,6 +119,53 @@ class HotelsViewModel @Inject constructor(
         }
     }
 
+    fun saveHotelBooking(startDate: LocalDate, endDate: LocalDate) {
+        viewModelScope.launch {
+            val checkIn = startDate.atStartOfDay(ZoneId.systemDefault()).toInstant()
+            val checkOut = endDate.atStartOfDay(ZoneId.systemDefault()).toInstant()
+
+
+            val newItinerary = ItineraryEntity(
+                id = LocalDate.now().toString(),
+                title = LocalDate.now().toString(),
+                startDate = checkIn,
+                endDate = checkOut,
+                totalItineraryPrice = 15.00
+            )
+
+            val newHotelBooking = HotelEntity(
+                id = LocalDate.now().toString(),
+                hotelName = uiStateBookingHotel.value.hotelUi!!.name,
+                hotelRoomNumber = Random.nextInt(from = 1, until = 100),
+                hotelPhone = Random.nextInt(from = 1000000, until = 99999999),
+                locationRef = null,
+                guestName = uiStateBookingHotel.value.guestName,
+                guestPhone = Random.nextInt(from = 1000000, until = 99999999),
+                idNumber = Random.nextInt(from = 1000000, until = 99999999),
+                checkInDate = checkIn,
+                checkOutDate = checkOut,
+                hotelPrice = uiStateBookingHotel.value.hotelUi!!.price.value.amount
+            )
+
+            try {
+                val result = itinerariesUseCases.createItinerary(newItinerary)
+                var itinId = ""
+
+                if (result.isSuccess) {
+                    itinId = result.getOrNull()?.value.toString()
+
+                    val result2 = itinerariesUseCases.addHotelToItinerary(itinId, newHotelBooking)
+                    println(result2)
+                }
+                println(itinId)
+            } catch (e: Exception) {
+                println(e)
+            }
+
+
+        }
+    }
+
     fun confirmHotelBooking(
         context: Context,
         checkIn: LocalDate?,
@@ -127,6 +181,10 @@ class HotelsViewModel @Inject constructor(
                 Toast.LENGTH_LONG,
             ).show()
         } else {
+            saveHotelBooking(
+                checkIn,
+                checkOut
+            )
             onSuccessBooking()
         }
 

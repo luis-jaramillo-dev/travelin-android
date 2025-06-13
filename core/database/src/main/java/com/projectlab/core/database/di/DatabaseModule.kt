@@ -1,7 +1,9 @@
 package com.projectlab.core.database.di
 
+import com.projectlab.core.domain.repository.HotelsRepository
 import com.projectlab.core.domain.repository.ItineraryRepository
 import com.projectlab.core.domain.repository.UsersRepository
+import com.projectlab.core.domain.use_cases.itineraries.AddHotelToItineraryUseCase
 import com.projectlab.core.domain.use_cases.itineraries.CreateItineraryUseCase
 import com.projectlab.core.domain.use_cases.itineraries.GetItinerariesByUserUseCase
 import com.projectlab.core.domain.use_cases.itineraries.ItinerariesUseCases
@@ -24,9 +26,13 @@ object DatabaseModule {
     )
 
     @Provides
-    fun provideItinerariesUseCases(repository: ItineraryRepository) = ItinerariesUseCases(
-        createItinerary = CreateItineraryUseCase(repository),
-        getItinerariesByUser = GetItinerariesByUserUseCase(repository)
+    fun provideItinerariesUseCases(
+        itineraryRepository: ItineraryRepository,
+        hotelRepository: HotelsRepository
+    ) = ItinerariesUseCases(
+        createItinerary = CreateItineraryUseCase(itineraryRepository),
+        getItinerariesByUser = GetItinerariesByUserUseCase(itineraryRepository),
+        addHotelToItinerary = AddHotelToItineraryUseCase(hotelRepository)
     )
 
 }
