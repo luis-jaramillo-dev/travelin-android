@@ -1,9 +1,9 @@
 package com.projectlab.core.domain.repository
 
+import com.projectlab.core.domain.entity.FavoriteHotelEntity
 import com.projectlab.core.domain.entity.HotelEntity
 import com.projectlab.core.domain.model.EntityId
 import com.projectlab.core.domain.model.Hotel
-import com.projectlab.core.domain.model.Response
 import com.projectlab.core.domain.util.DataError
 import com.projectlab.core.domain.util.Result
 import kotlinx.coroutines.flow.Flow
@@ -41,6 +41,17 @@ interface HotelsRepository {
         ratings: String
     ): Result<List<Hotel>, DataError.Network>
 
-    suspend fun favoriteHotel(hotelId: String): Result<Boolean, DataError.Network>
+
+    suspend fun favoriteHotel(hotel: Hotel): Result<Boolean, DataError.Network>
     suspend fun unfavoriteHotel(hotelId: String): Result<Boolean, DataError.Network>
+
+    fun getFavoriteHotels(): Flow<List<FavoriteHotelEntity>>
+    fun queryFavoriteHotels(
+        nameQuery: String? = null,
+    ): Flow<FavoriteHotelEntity>
+    suspend fun saveFavoriteHotel(hotel: FavoriteHotelEntity): Result<Unit, DataError.Network>
+    suspend fun removeFavoriteHotelById(hotelId: String): Result<Unit, DataError.Network>
+    suspend fun isFavoriteHotel(hotelId: String): Result<Boolean, DataError.Network>
+
 }
+

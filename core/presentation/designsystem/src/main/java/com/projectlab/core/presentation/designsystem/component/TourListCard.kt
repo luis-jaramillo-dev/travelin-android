@@ -70,7 +70,7 @@ fun TourListCard(
             TourName(modifier = Modifier, activity.name)
             StarRatingBar(
                 maxStars = 5,
-                rating = activity.rating,
+                rating = activity.rating.toString(),
                 textColor = Color.Black
             )
             TourCity(city)

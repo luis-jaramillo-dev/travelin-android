@@ -16,6 +16,8 @@ import com.projectlab.core.domain.model.Hotel
 import com.projectlab.core.domain.model.User
 import com.projectlab.core.domain.repository.UserSessionProvider
 import com.projectlab.core.domain.use_cases.hotels.HotelsUseCases
+import com.projectlab.core.domain.use_cases.hotels.RemoveFavoriteHotelUseCase
+import com.projectlab.core.domain.use_cases.hotels.SaveFavoriteHotelUseCase
 import com.projectlab.core.domain.use_cases.location.GetCoordinatesFromCityUseCase
 import com.projectlab.core.domain.use_cases.users.UsersUseCases
 import com.projectlab.core.domain.util.Result
@@ -34,7 +36,9 @@ class HotelsViewModel @Inject constructor(
     private val hotelsUseCases: HotelsUseCases,
     private val usersUseCases: UsersUseCases,
     private val userSessionProvider: UserSessionProvider,
-    private val getCoordinatesFromCityUseCase: GetCoordinatesFromCityUseCase
+    private val getCoordinatesFromCityUseCase: GetCoordinatesFromCityUseCase,
+    private val saveFavoriteHotelUseCase: SaveFavoriteHotelUseCase,
+    private val removeFavoriteHotelUseCase: RemoveFavoriteHotelUseCase
 
 ) : ViewModel() {
 
@@ -84,7 +88,9 @@ class HotelsViewModel @Inject constructor(
                 if (locationData != null) {
                     when (val result = hotelsUseCases.getHotelsByCoordinates(
                         locationData.first,
-                        locationData.second
+                        locationData.second,
+                        emptyList(),
+                        emptyList()
                     )) {
                         is Result.Success -> {
                             _uiStateHotelSearch.update { it.copy(hotels = result.data.toMutableList()) }
@@ -142,33 +148,23 @@ class HotelsViewModel @Inject constructor(
         _uiStateBookingHotel.update { it.copy(hotelUi = hotelFound!!.toHotelUi()) }
     }
 
-    fun favoriteHotel(hotelId: String) {
+    fun favoriteHotel(hotel: Hotel) {
         viewModelScope.launch {
             try {
-                when (hotelsUseCases.favoriteHotel(user.id, hotelId)) {
+                when (saveFavoriteHotelUseCase(hotel)) {
                     is Result.Success -> {
-
                         val updatedHotels = _uiStateHotelSearch.value.hotels.map {
-                            if (it.id == hotelId) {
-                                it.copy(isFavourite = true)
-                            } else {
-                                it
-                            }
+                            if (it.id == hotel.id) it.copy(isFavourite = true) else it
                         }
                         _uiStateHotelSearch.update { it.copy(hotels = updatedHotels) }
                     }
 
                     is Result.Error -> {
-                        _uiStateHotelSearch.update { it.copy(error = "Unknown error") }
+                        _uiStateHotelSearch.update { it.copy(error = "Error saving favorite") }
                     }
-
                 }
-
             } catch (e: Exception) {
-                println(e)
-
-            } finally {
-                _uiStateHotelSearch.update { it.copy(isLoading = false) }
+                _uiStateHotelSearch.update { it.copy(error = e.message ?: "Unknown error") }
             }
         }
     }
@@ -176,28 +172,20 @@ class HotelsViewModel @Inject constructor(
     fun unfavoriteHotel(hotelId: String) {
         viewModelScope.launch {
             try {
-                when (hotelsUseCases.unfavoriteHotel(user.id, hotelId)) {
+                when (removeFavoriteHotelUseCase(hotelId)) {
                     is Result.Success -> {
-
                         val updatedHotels = _uiStateHotelSearch.value.hotels.map {
-                            if (it.id == hotelId) {
-                                it.copy(isFavourite = false)
-                            } else {
-                                it
-                            }
+                            if (it.id == hotelId) it.copy(isFavourite = false) else it
                         }
                         _uiStateHotelSearch.update { it.copy(hotels = updatedHotels) }
                     }
 
                     is Result.Error -> {
-                        _uiStateHotelSearch.update { it.copy(error = "Unknown error") }
+                        _uiStateHotelSearch.update { it.copy(error = "Error removing favorite") }
                     }
                 }
             } catch (e: Exception) {
-                println(e)
-
-            } finally {
-                _uiStateHotelSearch.update { it.copy(isLoading = false) }
+                _uiStateHotelSearch.update { it.copy(error = e.message ?: "Unknown error") }
             }
         }
     }

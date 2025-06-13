@@ -25,7 +25,7 @@ import com.projectlab.core.presentation.designsystem.theme.spacing
 fun RecommendedActivitiesComponent(
     modifier: Modifier = Modifier,
     uiState: HomeUiState,
-    location: String,
+    cityMap: Map<String, String?>,
     favoriteIds: List<String>,
     onFavoriteClick: (ActivityDto) -> Unit,
     onItemClick: (String) -> Unit
@@ -36,7 +36,7 @@ fun RecommendedActivitiesComponent(
             verticalArrangement = Arrangement.spacedBy(MaterialTheme.spacing.ElementSpacing)
         ) {
             Text(
-                text = stringResource(R.string.recommended_activities_near_you),
+                text = stringResource(R.string.recommended_activities),
                 fontSize = 18.sp,
                 fontWeight = FontWeight.W600,
                 color = MaterialTheme.colorScheme.onBackground
@@ -47,6 +47,7 @@ fun RecommendedActivitiesComponent(
             ) {
                 items(uiState.recommendedActivities) { activity ->
                     val isFavorite = favoriteIds.contains(activity.id)
+                    val locationLabel = cityMap[activity.id] ?: ""
                     VerticalFavoriteCard(
                         name = activity.name,
                         description = if (activity.description.isNotEmpty()) {
@@ -54,8 +55,8 @@ fun RecommendedActivitiesComponent(
                         } else {
                             stringResource(R.string.no_description)
                         },
-                        location = location,
-                        rating = activity.rating,
+                        location = locationLabel,
+                        rating = activity.rating.toString(),
                         pictureUrl = activity.pictures.firstOrNull() ?: "",
                         onFavoriteClick = { onFavoriteClick(activity) },
                         isFavorite = isFavorite,
