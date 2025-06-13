@@ -19,7 +19,7 @@ class ItinerariesViewModel @Inject constructor(
     private val _uiState = MutableStateFlow(ItinerariesUiState(isLoading = true))
     val uiState: StateFlow<ItinerariesUiState> = _uiState
 
-    init {
+    fun loadItineraries() {
         viewModelScope.launch {
             getAllItinerariesUseCase(userSessionProvider.getUserSessionId().toString())
                 .onSuccess { list ->
@@ -30,4 +30,16 @@ class ItinerariesViewModel @Inject constructor(
                 }
         }
     }
+
+//    init {
+//        viewModelScope.launch {
+//            getAllItinerariesUseCase(userSessionProvider.getUserSessionId().toString())
+//                .onSuccess { list ->
+//                    _uiState.value = ItinerariesUiState(itineraries = list)
+//                }
+//                .onFailure { error ->
+//                    _uiState.value = ItinerariesUiState(error = error.message)
+//                }
+//        }
+//    }
 }

@@ -23,6 +23,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.material3.CircularProgressIndicator
+import androidx.compose.runtime.LaunchedEffect
 import com.projectlab.core.domain.entity.ItineraryEntity
 import com.projectlab.core.presentation.designsystem.component.BackIconButton
 import com.projectlab.core.presentation.designsystem.component.BottomNavRoute
@@ -41,6 +42,11 @@ fun ItinerariesScreen(
     onItinsClick: () -> Unit,
     onProfileClick: () -> Unit,
 ) {
+
+    LaunchedEffect(Unit) {
+        viewModel.loadItineraries()
+    }
+
     Scaffold(
         modifier = modifier,
         bottomBar = {
@@ -157,8 +163,8 @@ fun ItinerariesScreenComponent(
                     verticalArrangement = Arrangement.spacedBy(MaterialTheme.spacing.small),
                 ) {
                     items(
-                        uiState.itineraries,
-                        key = {it.id}
+                        itineraries,
+                       // key = {it.id}
                     ) { itinerary ->
                         ItineraryCard(
                             modifier = Modifier

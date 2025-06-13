@@ -33,7 +33,7 @@ class AddActivityToItineraryUseCaseImpl  @Inject constructor(
                 )
             ).getOrNull()
             if (resultId != null) {
-                itineraryId = resultId.toString()
+                itineraryId = resultId.value
             }
         } else {
             itineraryId = itineraryList.get(0).id
