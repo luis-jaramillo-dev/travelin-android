@@ -24,6 +24,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
 import com.projectlab.core.domain.entity.ItineraryEntity
 import com.projectlab.core.presentation.designsystem.component.BackIconButton
 import com.projectlab.core.presentation.designsystem.component.BottomNavRoute
@@ -31,6 +32,8 @@ import com.projectlab.core.presentation.designsystem.component.BottomNavigationB
 import com.projectlab.core.presentation.designsystem.component.IconMore
 import com.projectlab.core.presentation.designsystem.component.TravelinIconButton
 import com.projectlab.core.presentation.designsystem.theme.spacing
+import androidx.compose.runtime.getValue
+
 
 @Composable
 fun ItinerariesScreen(
@@ -59,9 +62,10 @@ fun ItinerariesScreen(
             )
         },
         content = { innerPadding ->
+            val uiState by viewModel.uiState.collectAsState()
             ItinerariesScreenComponent(
                 modifier = Modifier.padding(innerPadding),
-                uiState = ItinerariesUiState(),
+                uiState = uiState,
                 onClickBack = onClickBack,
             )
         }
@@ -159,7 +163,7 @@ fun ItinerariesScreenComponent(
             else -> {
                 LazyColumn(
                     modifier = Modifier
-                        .padding(top = 140.dp),
+                        .padding(top = 240.dp),
                     verticalArrangement = Arrangement.spacedBy(MaterialTheme.spacing.small),
                 ) {
                     items(
