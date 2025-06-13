@@ -23,8 +23,8 @@ import javax.inject.Inject
  * @author ricardoceadev
  */
 
-class FirestoreHotelImpl @Inject constructor (
-    private val firestore : FirebaseFirestore,
+class FirestoreHotelImpl @Inject constructor(
+    private val firestore: FirebaseFirestore,
     private val userSessionProvider: UserSessionProvider,
 ) : FirestoreHotel {
 
@@ -45,14 +45,14 @@ class FirestoreHotelImpl @Inject constructor (
             .collection("Itineraries")
             .document(itinId)
         // Location reference:
-        var locationDoc = firestore
-            .collection("Locations")
-            .document(hotel.locationRef?.value ?: throw IllegalArgumentException("locationRef is null"))
+//        var locationDoc = firestore
+//            .collection("Locations")
+//            .document(hotel.locationRef?.value ?: throw IllegalArgumentException("locationRef is null"))
         // create dto:
-        val dto = FirestoreHotelDTO.fromDomain(hotel, userDoc, itinDoc, locationDoc)
+        val dto = FirestoreHotelDTO.fromDomain(hotel, userDoc, itinDoc)
         // add to firestore:
         val hotelCol = itinDoc.collection("Hotels")
-        val docRef  = hotelCol.document()
+        val docRef = hotelCol.document()
         docRef.set(dto).await()
         // return id:
         EntityId(docRef.id)
@@ -77,12 +77,12 @@ class FirestoreHotelImpl @Inject constructor (
         if (snap.exists()) {
             val dto = snap.toObject(FirestoreHotelDTO::class.java)
             (
-                dto?.toDomain(
-                    snap.id,
-                    EntityId(userId),
-                    EntityId(itinId)
-                )
-            )
+                    dto?.toDomain(
+                        snap.id,
+                        EntityId(userId),
+                        EntityId(itinId)
+                    )
+                    )
         } else {
             (null)
         }
@@ -129,8 +129,11 @@ class FirestoreHotelImpl @Inject constructor (
             domain = hotel,
             userDocRef = userDoc,
             itineraryDocRef = itinDoc,
-            locationDocRef = firestore.collection("Locations")
-                .document(hotel.locationRef?.value ?: throw IllegalArgumentException("locationRef is null"))
+//            locationDocRef = firestore.collection("Locations")
+//                .document(
+//                    hotel.locationRef?.value
+//                        ?: throw IllegalArgumentException("locationRef is null")
+//                )
         )
 
         // Overwrite, set() the specific hotel document. TODO: handle errors.
