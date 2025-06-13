@@ -7,6 +7,7 @@ import com.projectlab.core.data.model.ActivityDto
 import com.projectlab.core.domain.entity.FavoriteActivityEntity
 import com.projectlab.core.domain.model.Location
 import com.projectlab.core.domain.proto.SearchHistory.HistoryType
+import com.projectlab.core.domain.repository.ActivityRepository
 import com.projectlab.core.domain.repository.SearchHistoryProvider
 import com.projectlab.core.domain.use_cases.activities.GetActivitiesUseCase
 import com.projectlab.core.domain.use_cases.activities.RemoveFavoriteActivityByIdUseCase
@@ -38,11 +39,17 @@ class SearchActivityViewModel @Inject constructor(
     private val getCityFromCoordinatesUseCase: GetCityFromCoordinatesUseCase,
     private val saveFavoriteActivityUseCase: SaveFavoriteActivityUseCase,
     private val removeFavoriteActivityByIdUseCase: RemoveFavoriteActivityByIdUseCase,
+    private val activityRepository: ActivityRepository,
     private val errorMapper: ErrorMapper,
     private val historyProvider: SearchHistoryProvider,
 ) : ViewModel() {
     private val _uiState = MutableStateFlow(SearchActivityUiState())
     val uiState: StateFlow<SearchActivityUiState> = _uiState.asStateFlow()
+
+    private val _favoriteActivityIds = MutableStateFlow<List<String>>(emptyList())
+    val favoriteActivityIds: StateFlow<List<String>> = _favoriteActivityIds.asStateFlow()
+
+    private val favoriteIdsSet: MutableSet<String> = mutableSetOf()
 
     init {
         // Load search history when the ViewModel is created
@@ -195,6 +202,37 @@ class SearchActivityViewModel @Inject constructor(
                 _uiState.update { it.copy(error = e.localizedMessage ?: "Unknown error") }
             } finally {
                 _uiState.update { it.copy(isLoading = false) }
+            }
+        }
+    }
+
+    fun fetchFavoriteActivities() {
+        viewModelScope.launch {
+            activityRepository.getFavoriteActivities().collect { favorites ->
+                _uiState.update { it.copy(favoriteActivities = favorites) }
+            }
+        }
+    }
+
+    fun toggleFavoriteActivity(activity: FavoriteActivityEntity) {
+        _uiState.update { it.copy(isFavoriteLoading = true) }
+        viewModelScope.launch {
+            try {
+                if (favoriteIdsSet.contains(activity.id)) {
+                    removeFavoriteActivityByIdUseCase(activity.id)
+                    favoriteIdsSet.remove(activity.id)
+                } else {
+                    val result = saveFavoriteActivityUseCase(activity)
+                    if (result.isFailure) {
+                        throw result.exceptionOrNull() ?: Exception("Unknown error saving favorite")
+                    }
+                    favoriteIdsSet.add(activity.id)
+                }
+                _favoriteActivityIds.value = favoriteIdsSet.toList()
+            } catch (e: Exception) {
+                _uiState.update { it.copy(error = e.localizedMessage ?: "Unknown error") }
+            } finally {
+                _uiState.update { it.copy(isFavoriteLoading = false) }
             }
         }
     }

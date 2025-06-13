@@ -22,8 +22,6 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.unit.dp
-import androidx.navigation.NavController
 import com.projectlab.booking.presentation.favorites.FavoritesViewModel
 import com.projectlab.core.data.mapper.toFavoriteActivityEntity
 import com.projectlab.core.presentation.designsystem.component.BottomBookBar
@@ -40,7 +38,6 @@ fun ActivityDetailScreen(
     activityDetailViewModel: ActivityDetailViewModel,
     favoritesViewModel: FavoritesViewModel,
     activityId: String,
-    navController: NavController,
     onBackClick: () -> Unit
 ) {
     LaunchedEffect(Unit) {
@@ -56,7 +53,7 @@ fun ActivityDetailScreen(
 
     val onFavoriteClick: () -> Unit = {
         uiState.activity?.let { activity ->
-            favoritesViewModel.toggleFavorite(activity.toFavoriteActivityEntity())
+            favoritesViewModel.toggleFavoriteActivity(activity.toFavoriteActivityEntity())
         }
     }
 
@@ -72,7 +69,6 @@ fun ActivityDetailScreen(
         ActivityDetailScreenComponent(
             modifier = modifier,
             uiState = uiState,
-            navController = navController,
             onFavoriteClick = onFavoriteClick,
             isFavorite = isFavorite,
             isFavoriteLoading = isFavoriteLoading,
@@ -85,7 +81,6 @@ fun ActivityDetailScreen(
 fun ActivityDetailScreenComponent(
     modifier: Modifier = Modifier,
     uiState: ActivityDetailUiState,
-    navController: NavController,
     isFavorite: Boolean,
     isFavoriteLoading: Boolean,
     onFavoriteClick: () -> Unit,
@@ -112,7 +107,6 @@ fun ActivityDetailScreenComponent(
                 TourCardHeader(
                     modifier = Modifier,
                     activity = it,
-                    navController = navController,
                     isFavorite = isFavorite,
                     isFavoriteLoading = isFavoriteLoading,
                     onFavoriteClick = onFavoriteClick,

@@ -3,7 +3,6 @@ package com.projectlab.travelin_android.navigation
 import android.os.Build
 import androidx.annotation.RequiresApi
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.remember
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavGraphBuilder
@@ -18,9 +17,12 @@ import com.projectlab.booking.presentation.booking.successful.BookingSuccessfulS
 import com.projectlab.booking.presentation.detail.activities.ActivityDetailScreen
 import com.projectlab.booking.presentation.detail.activities.ActivityDetailViewModel
 import com.projectlab.booking.presentation.favorites.FavoritesScreen
-import com.projectlab.booking.presentation.favorites.FavoritesViewModel
 import com.projectlab.booking.presentation.home.HomeScreen
 import com.projectlab.booking.presentation.HotelsViewModel
+import com.projectlab.booking.presentation.detail.hotels.HomeHotelDetailScreen
+import com.projectlab.booking.presentation.detail.hotels.HomeHotelDetailViewModel
+import com.projectlab.booking.presentation.favorites.FavoritesViewModel
+import com.projectlab.booking.presentation.home.HomeViewModel
 import com.projectlab.booking.presentation.screens.hotels.details.DetailHotelScreen
 import com.projectlab.booking.presentation.search.hotels.SearchHotelScreen
 import com.projectlab.booking.presentation.search.activities.SearchActivityScreen
@@ -108,17 +110,18 @@ private fun NavGraphBuilder.authGraph(navController: NavHostController) {
 
 private fun NavGraphBuilder.searchGraph(navController: NavHostController) {
 
-    composable(route = SearchScreens.Activities.route) {
+    composable(route = SearchScreens.Activities.route) { backStackEntry ->
+        val query = backStackEntry.arguments?.getString("query").orEmpty()
         SearchActivityScreen(
             locationViewModel = hiltViewModel(),
             searchActivityViewModel = hiltViewModel(),
             favoritesViewModel = hiltViewModel(),
-            navController = navController,
+            initialQuery = query,
             onActivityClick = { activityId ->
                 navController.navigate(DetailScreens.ActivityDetail.createRoute(activityId))
-            }
+            },
+            onBackClick = { navController.popBackStack() }
         )
-
     }
 
     composable(
@@ -132,18 +135,15 @@ private fun NavGraphBuilder.searchGraph(navController: NavHostController) {
         val searchActivityViewModel: SearchActivityViewModel = hiltViewModel()
         val favoritesViewModel: FavoritesViewModel = hiltViewModel()
 
-        LaunchedEffect(query) {
-            searchActivityViewModel.searchWithInitialQuery(query)
-        }
-
         SearchActivityScreen(
             locationViewModel = locationViewModel,
             searchActivityViewModel = searchActivityViewModel,
             favoritesViewModel = favoritesViewModel,
-            navController = navController,
+            initialQuery = query,
             onActivityClick = { activityId ->
                 navController.navigate(DetailScreens.ActivityDetail.createRoute(activityId))
             },
+            onBackClick = { navController.popBackStack() }
         )
 
     }
@@ -168,9 +168,8 @@ private fun NavGraphBuilder.detailGraph(navController: NavHostController) {
 
         ActivityDetailScreen(
             activityDetailViewModel = hiltViewModel<ActivityDetailViewModel>(),
-            activityId = activityId,
-            navController = navController,
             favoritesViewModel = hiltViewModel(),
+            activityId = activityId,
             onBackClick = { navController.popBackStack() }
         )
     }
@@ -193,22 +192,43 @@ private fun NavGraphBuilder.detailGraph(navController: NavHostController) {
             onClickBookingHotel = { navController.navigate(BookingScreens.HotelBooking.route) }
         )
     }
+
+    composable(route = DetailScreens.HomeHotelDetail.route) { backStackEntry ->
+        val parentEntry = remember(backStackEntry) {
+            navController.getBackStackEntry(HomeScreens.Home.route)
+        }
+        val viewModel: HomeHotelDetailViewModel = hiltViewModel(parentEntry)
+
+        HomeHotelDetailScreen(
+            viewModel = viewModel,
+            onClickBack = { navController.popBackStack() },
+            onClickBookingHotel = { navController.navigate(BookingScreens.HotelBooking.route) }
+        )
+    }
 }
 
 private fun NavGraphBuilder.homeGraph(navController: NavHostController) {
+
     composable(route = HomeScreens.Home.route) {
+        val locationViewModel: LocationViewModel = hiltViewModel()
+        val homeViewModel: HomeViewModel = hiltViewModel()
+        val homeHotelDetailViewModel: HomeHotelDetailViewModel = hiltViewModel()
+
         HomeScreen(
-            locationViewModel = hiltViewModel(),
-            homeViewModel = hiltViewModel(),
-            navController = navController,
+            locationViewModel = locationViewModel,
+            homeViewModel = homeViewModel,
             onClickSearchHotel = { navController.navigate(SearchScreens.Hotels.route) },
             onFavoritesClick = { navController.navigate(FavoritesScreens.Favorites.route) },
             onTripsClick = {},
             onProfileClick = { navController.navigate(AuthScreens.Profile.route) },
-            onItemClick = { activityId ->
+            onActivityItemClick = { activityId ->
                 navController.navigate(DetailScreens.ActivityDetail.createRoute(activityId))
             },
-            favoritesViewModel = hiltViewModel()
+            onHotelItemClick = { hotel ->
+                homeHotelDetailViewModel.selectHotel(hotel)
+                navController.navigate(DetailScreens.HomeHotelDetail.route)
+            },
+            navController = navController
         )
     }
 }

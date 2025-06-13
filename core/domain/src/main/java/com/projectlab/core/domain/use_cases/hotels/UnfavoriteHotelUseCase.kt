@@ -6,6 +6,6 @@ import javax.inject.Inject
 class UnfavoriteHotelUseCase @Inject constructor(
     private val repository: HotelsRepository
 ) {
-    suspend operator fun invoke(userId: String, hotelId: String) =
+    suspend operator fun invoke(hotelId: String) =
         repository.unfavoriteHotel(hotelId)
 }

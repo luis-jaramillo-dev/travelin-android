@@ -9,16 +9,20 @@ import com.projectlab.core.domain.model.Location
 import com.projectlab.core.domain.proto.SearchHistory.HistoryType
 import com.projectlab.core.domain.repository.ActivityRepository
 import com.projectlab.core.domain.repository.SearchHistoryProvider
-import com.projectlab.core.domain.repository.UserSessionProvider
 import com.projectlab.core.domain.use_cases.activities.GetActivitiesUseCase
+import com.projectlab.core.domain.use_cases.activities.RemoveFavoriteActivityByIdUseCase
+import com.projectlab.core.domain.use_cases.activities.SaveFavoriteActivityUseCase
 import com.projectlab.core.domain.use_cases.error.ErrorMapper
+import com.projectlab.core.domain.use_cases.hotels.GetFavoriteHotelsUseCase
+import com.projectlab.core.domain.use_cases.hotels.GetHotelsByCoordinatesUseCase
+import com.projectlab.core.domain.use_cases.hotels.RemoveFavoriteHotelUseCase
+import com.projectlab.core.domain.use_cases.hotels.SaveFavoriteHotelUseCase
 import com.projectlab.core.domain.use_cases.location.GetCoordinatesFromCityUseCase
 import com.projectlab.core.domain.util.Result
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.advanceUntilIdle
 import kotlinx.coroutines.test.runTest
 import org.junit.Assert.assertEquals
-import org.junit.Assert.assertTrue
 import org.junit.Before
 import org.junit.After
 import org.mockito.Mockito.mock
@@ -42,7 +46,12 @@ class HomeViewModelTest {
     private val historyProvider = mock<SearchHistoryProvider>()
     private val getCoordinatesFromCityUseCase = mock<GetCoordinatesFromCityUseCase>()
     private val activityRepository = mock<ActivityRepository>()
-
+    private val getHotelsByCoordinatesUseCase = mock<GetHotelsByCoordinatesUseCase>()
+    private val saveFavoriteActivityUseCase = mock<SaveFavoriteActivityUseCase>()
+    private val saveFavoriteHotelUseCase = mock<SaveFavoriteHotelUseCase>()
+    private val removeFavoriteActivityByIdUseCase = mock<RemoveFavoriteActivityByIdUseCase>()
+    private val getFavoriteHotelsUseCase = mock<GetFavoriteHotelsUseCase>()
+    private val removeFavoriteHotelUseCase = mock<RemoveFavoriteHotelUseCase>()
 
     private lateinit var homeViewModel: HomeViewModel
 
@@ -53,12 +62,18 @@ class HomeViewModelTest {
         Dispatchers.setMain(dispatcher)
 
         homeViewModel = HomeViewModel(
-            getActivitiesUseCase,
-            errorMapper,
-            historyProvider,
-            getCoordinatesFromCityUseCase,
-            activityRepository,
-            dispatcher
+            getActivitiesUseCase = getActivitiesUseCase,
+            errorMapper = errorMapper,
+            historyProvider = historyProvider,
+            getCoordinatesFromCityUseCase = getCoordinatesFromCityUseCase,
+            getHotelsByCoordinatesUseCase = getHotelsByCoordinatesUseCase,
+            saveFavoriteActivityUseCase = saveFavoriteActivityUseCase,
+            saveFavoriteHotelUseCase = saveFavoriteHotelUseCase,
+            removeFavoriteActivityByIdUseCase = removeFavoriteActivityByIdUseCase,
+            getFavoriteHotelsUseCase = getFavoriteHotelsUseCase,
+            removeFavoriteHotelUseCase = removeFavoriteHotelUseCase,
+            activityRepository = activityRepository,
+            dispatcher = dispatcher
         )
     }
 
@@ -119,7 +134,8 @@ class HomeViewModelTest {
 
         val dtoActivities = fakeActivities.map { it.toDto() }
 
-        Mockito.`when`(getActivitiesUseCase(10.500000, -66.916664)).thenReturn(Result.Success(fakeActivities))
+        Mockito.`when`(getActivitiesUseCase(10.500000, -66.916664))
+            .thenReturn(Result.Success(fakeActivities))
         Mockito.`when`(activityRepository.getFavoriteActivities())
             .thenReturn(flowOf(emptyList()))
 
@@ -137,7 +153,8 @@ class HomeViewModelTest {
 
         val favoriteActivities = listOf(fakeFavoriteActivities.first())
 
-        Mockito.`when`(activityRepository.getFavoriteActivities()).thenReturn(flowOf(favoriteActivities))
+        Mockito.`when`(activityRepository.getFavoriteActivities())
+            .thenReturn(flowOf(favoriteActivities))
 
         homeViewModel.fetchFavoriteActivities()
         advanceUntilIdle()
