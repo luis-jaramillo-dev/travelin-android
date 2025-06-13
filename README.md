@@ -18,14 +18,23 @@ Most of the classes are injected, so you can [mock them in your tests][2].
 
 ## Running Tests
 
-If you want to run the tests, you can use the following command:
+In order to run tests you must run 
+
+```bash
+./gradlew test 
+```
+
+## Create coverage report
+
+Coverage reports came in two "flavours" `release` and `debug`, as CI pipeline we are using
+`debug` variant, you can create each variant using:
 
 ```bash
 ./gradlew createDebugCombinedReport # for debug variant
 ./gradlew createReleaseCombinedReport # for release variant
 # ./gradlew createJVMCombinedReport # for jvm libraries not yet implemented
-```
 
+```
 
 
 [1]: https://developer.android.com/training/dependency-injection/hilt-android "Dependency Injection Framwork"
