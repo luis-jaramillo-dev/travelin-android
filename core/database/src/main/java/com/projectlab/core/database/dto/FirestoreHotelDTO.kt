@@ -45,13 +45,13 @@ data class FirestoreHotelDTO (
             domain: HotelEntity,
             userDocRef: DocumentReference,
             itineraryDocRef: DocumentReference,
-            locationDocRef: DocumentReference
+//            locationDocRef: DocumentReference
         ): FirestoreHotelDTO =
             FirestoreHotelDTO(
             hotelName = domain.hotelName,
             hotelRoomNumber = domain.hotelRoomNumber,
             hotelPhone = domain.hotelPhone,
-            locationRef = locationDocRef,
+//            locationRef = locationDocRef,
             guestName = domain.guestName,
             guestPhone = domain.guestPhone,
             idNumber = domain.idNumber,
