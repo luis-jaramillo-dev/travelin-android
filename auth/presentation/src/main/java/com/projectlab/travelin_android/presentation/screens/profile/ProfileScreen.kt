@@ -25,7 +25,7 @@ fun ProfileScreen(
     onLogoutClick: () -> Unit,
     onHomeClick: () -> Unit,
     onFavoritesClick: () -> Unit,
-    onTripsClick: () -> Unit,
+    onItinsClick: () -> Unit,
 ) {
     val state by viewModel.state.collectAsState()
 
@@ -48,7 +48,7 @@ fun ProfileScreen(
                 },
                 onHomeClick = onHomeClick,
                 onFavoritesClick = onFavoritesClick,
-                onTripsClick = onTripsClick,
+                onItinsClick = onItinsClick,
             )
 
             if (state.error != null) {
@@ -71,7 +71,7 @@ private fun ProfileScreenScaffold(
     onLogoutClick: () -> Unit,
     onHomeClick: () -> Unit,
     onFavoritesClick: () -> Unit,
-    onTripsClick: () -> Unit,
+    onItinsClick: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
     Scaffold(
@@ -80,7 +80,7 @@ private fun ProfileScreenScaffold(
                 BottomNavRoute.PROFILE,
                 onHomeClick,
                 onFavoritesClick,
-                onTripsClick,
+                onItinsClick,
                 onProfileClick = {},
             )
         },

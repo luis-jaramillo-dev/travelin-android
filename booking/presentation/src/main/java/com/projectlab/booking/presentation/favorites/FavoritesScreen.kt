@@ -46,7 +46,7 @@ private enum class FavoriteTabItem {
 fun FavoritesScreen(
     viewModel: FavoritesViewModel,
     onHomeClick: () -> Unit,
-    onTripsClick: () -> Unit,
+    onItinsClick: () -> Unit,
     onProfileClick: () -> Unit,
     onActivityClick: (id: String) -> Unit,
 ) {
@@ -61,7 +61,7 @@ fun FavoritesScreen(
                 BottomNavRoute.FAVORITES,
                 onHomeClick,
                 onFavoritesClick = {},
-                onTripsClick,
+                onItinsClick,
                 onProfileClick,
             )
         },

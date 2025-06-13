@@ -95,6 +95,13 @@ sealed interface FavoritesScreens {
     }
 }
 
+sealed interface ItinerariesScreens {
+    val route: String
+
+    data object Itineraries : ItinerariesScreens {
+        override val route = "itineraries"
+    }
+}
 sealed interface BookingScreens {
     val route: String
 

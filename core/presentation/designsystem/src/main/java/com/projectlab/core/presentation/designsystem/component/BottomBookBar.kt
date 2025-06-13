@@ -18,7 +18,10 @@ import com.projectlab.core.presentation.designsystem.R
 import com.projectlab.core.presentation.designsystem.theme.spacing
 
 @Composable
-fun BottomBookBar(activity: ActivityDto) {
+fun BottomBookBar(
+    activity: ActivityDto,
+    onClick: () -> Unit = {},
+) {
     Row(
         modifier = Modifier
             .fillMaxWidth()
@@ -49,7 +52,7 @@ fun BottomBookBar(activity: ActivityDto) {
 
         ButtonComponent(
             text = stringResource(R.string.addToItinerary),
-            onClick = { },
+            onClick = onClick ,
             variant = ButtonVariant.Primary,
         )
     }

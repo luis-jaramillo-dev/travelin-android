@@ -10,6 +10,7 @@ import androidx.compose.material.icons.filled.ArrowDropDown
 import androidx.compose.material.icons.filled.DoNotDisturbOn
 import androidx.compose.material.icons.outlined.Favorite
 import androidx.compose.material.icons.outlined.FavoriteBorder
+import androidx.compose.material.icons.outlined.Hail
 import androidx.compose.material.icons.outlined.LocationOn
 import androidx.compose.material.icons.outlined.Search
 import androidx.compose.material.icons.rounded.AccountCircle
@@ -51,6 +52,7 @@ object TravelinIcon {
     val Star = Icons.Rounded.Star //grade
     val Time = R.drawable.schedule_fill_24px
     val VisibilityOff = R.drawable.visibility_off_24px
+    val Hail = Icons.Outlined.Hail
 }
 
 //Search destination
@@ -593,6 +595,24 @@ fun IconCross(
 ) {
     Icon(
         painter = painterResource(TravelinIcon.Cross),
+        contentDescription = contentDescription,
+        tint = tint,
+        modifier = modifier
+            .size(size.dp)
+            .alpha(alpha),
+    )
+}
+
+@Composable
+fun IconItinerary(
+    modifier: Modifier,
+    size: Int = 24,
+    tint: Color = Color.Black,
+    alpha: Float = 1f,
+    contentDescription: String? = null,
+) {
+    Icon(
+        imageVector = TravelinIcon.Hail,
         contentDescription = contentDescription,
         tint = tint,
         modifier = modifier

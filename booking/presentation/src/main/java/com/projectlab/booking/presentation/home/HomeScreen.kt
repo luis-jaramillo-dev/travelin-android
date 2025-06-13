@@ -49,7 +49,7 @@ fun HomeScreen(
     homeViewModel: HomeViewModel,
     navController: NavController,
     onFavoritesClick: () -> Unit,
-    onTripsClick: () -> Unit,
+    onItinsClick: () -> Unit,
     onProfileClick: () -> Unit,
     onClickSearchHotel: () -> Unit,
     onActivityItemClick: (String) -> Unit,
@@ -121,7 +121,7 @@ fun HomeScreen(
                 BottomNavRoute.HOME,
                 onHomeClick = {},
                 onFavoritesClick,
-                onTripsClick,
+                onItinsClick,
                 onProfileClick,
             )
         },

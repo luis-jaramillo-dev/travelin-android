@@ -72,7 +72,12 @@ fun ActivityDetailScreen(
             onFavoriteClick = onFavoriteClick,
             isFavorite = isFavorite,
             isFavoriteLoading = isFavoriteLoading,
-            onBackClick = onBackClick
+            onBackClick = onBackClick,
+            onAddToItineraryClick = {
+                uiState.activity?.let { activity ->
+                    activityDetailViewModel.addActivityToItinerary(activity.id)
+                }
+            },
         )
     }
 }
@@ -85,6 +90,7 @@ fun ActivityDetailScreenComponent(
     isFavoriteLoading: Boolean,
     onFavoriteClick: () -> Unit,
     onBackClick: () -> Unit,
+    onAddToItineraryClick: () -> Unit = {},
 ) {
     val activity = uiState.activity
     val scrollState = rememberScrollState()
@@ -94,7 +100,10 @@ fun ActivityDetailScreenComponent(
         Scaffold(
             modifier = Modifier.fillMaxSize(),
             bottomBar = {
-                BottomBookBar(activity = activity)
+                BottomBookBar(
+                    activity = activity,
+                    onClick = onAddToItineraryClick,
+                )
             },
         ) { innerPadding ->
             Column(

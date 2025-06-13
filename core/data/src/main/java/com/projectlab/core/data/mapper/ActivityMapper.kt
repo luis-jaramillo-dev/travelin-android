@@ -4,7 +4,10 @@ import com.projectlab.core.data.model.ActivityDto
 import com.projectlab.core.domain.model.Activity
 import com.projectlab.core.data.model.LocationDataDto
 import com.projectlab.core.data.model.PriceDto
+import com.projectlab.core.domain.entity.ActivityEntity
 import com.projectlab.core.domain.entity.FavoriteActivityEntity
+import com.projectlab.core.domain.repository.ActivityRepository
+import java.time.Instant
 
 /**
  * Extension function to convert an ActivityDto to a domain model Activity.
@@ -26,6 +29,21 @@ fun ActivityDto.toDomain(): Activity {
         rating = rating ?: 0f
     )
 }
+
+fun ActivityDto.toEntity(activityDate: Instant? = null): ActivityEntity {
+    return ActivityEntity(
+        id = id,
+        name = name ?: "Unknown",
+        latitude = geoCode.latitude ?: 0.0,
+        longitude = geoCode.longitude ?: 0.0,
+        activityDate = activityDate,
+        description = description ?: "",
+        amount = price.amount ?: "",
+        currencyCode = price.currencyCode ?: "",
+    )
+}
+
+
 
 /**
  * Converts a list of ActivityDto objects to a list of Activity domain models.
