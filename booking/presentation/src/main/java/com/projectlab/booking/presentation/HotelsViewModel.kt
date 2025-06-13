@@ -139,7 +139,9 @@ class HotelsViewModel @Inject constructor(
     }
 
     fun showAllResults() {
+        _uiStateHotelSearch.update { it.copy(isLoading = true) }
         _uiStateHotelSearch.update { it.copy(showAllResults = true) }
+        _uiStateHotelSearch.update { it.copy(isLoading = false) }
     }
 
     fun getHotelDetails(hotelId: String) {
