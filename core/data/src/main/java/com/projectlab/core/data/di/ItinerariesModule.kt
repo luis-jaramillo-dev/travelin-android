@@ -1,10 +1,8 @@
 package com.projectlab.core.data.di
 
-import com.projectlab.core.data.repository.ItineraryRepositoryImpl
+import com.projectlab.core.data.usecase.AddActivityToItineraryUseCaseImpl
 import com.projectlab.core.data.usecase.GetAllItinerariesUseCaseImpl
-import com.projectlab.core.data.usecase.QueryFavoriteActivitiesUseCaseImpl
-import com.projectlab.core.domain.repository.ItineraryRepository
-import com.projectlab.core.domain.use_cases.activities.QueryFavoriteActivitiesUseCase
+import com.projectlab.core.domain.use_cases.itineraries.AddActivityToItineraryUseCase
 import com.projectlab.core.domain.use_cases.itineraries.GetAllItinerariesUseCase
 import dagger.Module
 import dagger.Provides
@@ -23,9 +21,14 @@ object ItinerariesModule {
 //    }
 
     @Provides
-    fun getAllItinerariesUseCase(
+    fun provideGetAllItinerariesUseCase(
         impl: GetAllItinerariesUseCaseImpl,
     ): GetAllItinerariesUseCase = impl
+
+    @Provides
+    fun provideAddActivityToItineraryUseCase(
+        impl: AddActivityToItineraryUseCaseImpl,
+    ): AddActivityToItineraryUseCase = impl
 
 
 

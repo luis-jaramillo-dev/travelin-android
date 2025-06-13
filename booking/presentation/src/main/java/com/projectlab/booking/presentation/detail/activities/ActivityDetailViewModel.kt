@@ -3,12 +3,16 @@ package com.projectlab.booking.presentation.detail.activities
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.projectlab.core.data.mapper.toDto
+import com.projectlab.core.data.mapper.toEntity
 import com.projectlab.core.domain.use_cases.error.ErrorMapper
 import com.projectlab.core.domain.entity.FavoriteActivityEntity
+import com.projectlab.core.domain.mapper.toEntity
+import com.projectlab.core.domain.repository.UserSessionProvider
 import com.projectlab.core.domain.use_cases.activities.GetActivityUseCase
 import com.projectlab.core.domain.use_cases.activities.IsFavoriteActivityUseCase
 import com.projectlab.core.domain.use_cases.activities.RemoveFavoriteActivityByIdUseCase
 import com.projectlab.core.domain.use_cases.activities.SaveFavoriteActivityUseCase
+import com.projectlab.core.domain.use_cases.itineraries.AddActivityToItineraryUseCase
 import com.projectlab.core.domain.use_cases.location.GetCityFromCoordinatesUseCase
 import com.projectlab.core.domain.util.Result
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -26,6 +30,8 @@ class ActivityDetailViewModel @Inject constructor(
     private val removeFavoriteActivityByIdUseCase: RemoveFavoriteActivityByIdUseCase,
     private val getCityFromCoordinatesUseCase: GetCityFromCoordinatesUseCase,
     private val getActivityUseCase: GetActivityUseCase,
+    private val addActivityToItineraryUseCase: AddActivityToItineraryUseCase,
+    private val userSessionProvider: UserSessionProvider,
     private val errorMapper: ErrorMapper,
 ) : ViewModel() {
     private val _uiState = MutableStateFlow(ActivityDetailUiState())
@@ -92,6 +98,28 @@ class ActivityDetailViewModel @Inject constructor(
                 _uiState.update { it.copy(error = e.localizedMessage ?: "Unknown error") }
             } finally {
                 _uiState.update { it.copy(isFavoriteLoading = false) }
+            }
+        }
+    }
+
+    fun addActivityToItinerary(activityId: String) {
+        viewModelScope.launch {
+            _uiState.update { it.copy(isLoading = true) }
+            try {
+                val activity = uiState.value.activity ?: throw Exception("Activity not found")
+                if (activity !== null) {
+                    val activityEntity = activity.toEntity()
+                    val userId = userSessionProvider.getUserSessionId()
+                    val addResult = addActivityToItineraryUseCase(userId.toString(), activityEntity)
+                    if (addResult.isFailure) {
+                        throw addResult.exceptionOrNull()
+                            ?: Exception("Unknown error adding activity to itinerary")
+                    }
+                }
+            } catch (e: Exception) {
+                _uiState.update { it.copy(error = e.localizedMessage ?: "Unknown error") }
+            } finally {
+                _uiState.update { it.copy(isLoading = false) }
             }
         }
     }
