@@ -66,12 +66,12 @@ fun ItineraryCard(
             )
         }
         // Spacer to separate the text from the another Text
-        Spacer(modifier = Modifier.width(MaterialTheme.spacing.semiHuge))
+        Spacer(modifier = Modifier.width(MaterialTheme.spacing.medium))
 
         Column (
             modifier = modifier
                 .fillMaxWidth()
-                .padding(start = 40.dp, top = 29.dp, end = 2.dp, bottom = 2.dp),
+                .padding(start = 1.dp, top = 29.dp, end = 2.dp, bottom = 2.dp),
 
             verticalArrangement = androidx.compose.foundation.layout.Arrangement.Center,
         ) {
