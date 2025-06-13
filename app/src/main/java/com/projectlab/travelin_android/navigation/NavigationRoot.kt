@@ -21,6 +21,7 @@ import com.projectlab.booking.presentation.home.HomeScreen
 import com.projectlab.booking.presentation.HotelsViewModel
 import com.projectlab.booking.presentation.detail.hotels.HomeHotelDetailScreen
 import com.projectlab.booking.presentation.detail.hotels.HomeHotelDetailViewModel
+import com.projectlab.booking.presentation.favorites.FavoritesViewModel
 import com.projectlab.booking.presentation.home.HomeViewModel
 import com.projectlab.booking.presentation.screens.hotels.details.DetailHotelScreen
 import com.projectlab.booking.presentation.search.hotels.SearchHotelScreen
@@ -114,6 +115,7 @@ private fun NavGraphBuilder.searchGraph(navController: NavHostController) {
         SearchActivityScreen(
             locationViewModel = hiltViewModel(),
             searchActivityViewModel = hiltViewModel(),
+            favoritesViewModel = hiltViewModel(),
             initialQuery = query,
             onActivityClick = { activityId ->
                 navController.navigate(DetailScreens.ActivityDetail.createRoute(activityId))
@@ -131,10 +133,12 @@ private fun NavGraphBuilder.searchGraph(navController: NavHostController) {
 
         val locationViewModel: LocationViewModel = hiltViewModel()
         val searchActivityViewModel: SearchActivityViewModel = hiltViewModel()
+        val favoritesViewModel: FavoritesViewModel = hiltViewModel()
 
         SearchActivityScreen(
             locationViewModel = locationViewModel,
             searchActivityViewModel = searchActivityViewModel,
+            favoritesViewModel = favoritesViewModel,
             initialQuery = query,
             onActivityClick = { activityId ->
                 navController.navigate(DetailScreens.ActivityDetail.createRoute(activityId))
@@ -164,6 +168,7 @@ private fun NavGraphBuilder.detailGraph(navController: NavHostController) {
 
         ActivityDetailScreen(
             activityDetailViewModel = hiltViewModel<ActivityDetailViewModel>(),
+            favoritesViewModel = hiltViewModel(),
             activityId = activityId,
             onBackClick = { navController.popBackStack() }
         )

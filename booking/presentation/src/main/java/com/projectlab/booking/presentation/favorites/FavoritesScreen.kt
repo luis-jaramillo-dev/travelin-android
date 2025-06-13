@@ -97,7 +97,7 @@ private fun FavoritesScreenComponent(
     Column(
         modifier = modifier
             .fillMaxSize()
-            .padding(vertical = MaterialTheme.spacing.regular),
+            .padding(top = MaterialTheme.spacing.regular),
     ) {
         SearchBar(
             query = uiState.query,
@@ -119,7 +119,6 @@ private fun FavoritesScreenComponent(
                 .padding(
                     start = MaterialTheme.spacing.semiLarge,
                     end = MaterialTheme.spacing.semiLarge,
-                    bottom = MaterialTheme.spacing.semiLarge,
                 ),
         ) {
             Text(

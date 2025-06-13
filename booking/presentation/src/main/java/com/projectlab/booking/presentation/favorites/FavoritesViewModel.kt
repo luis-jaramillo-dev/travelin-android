@@ -6,6 +6,7 @@ import com.projectlab.core.domain.entity.FavoriteActivityEntity
 import com.projectlab.core.domain.entity.FavoriteHotelEntity
 import com.projectlab.core.domain.use_cases.activities.QueryFavoriteActivitiesUseCase
 import com.projectlab.core.domain.use_cases.activities.RemoveFavoriteActivityByIdUseCase
+import com.projectlab.core.domain.use_cases.activities.SaveFavoriteActivityUseCase
 import com.projectlab.core.domain.use_cases.hotels.QueryFavoriteHotelsUseCase
 import com.projectlab.core.domain.use_cases.hotels.RemoveFavoriteHotelUseCase
 import com.projectlab.core.domain.use_cases.location.GetCityFromCoordinatesUseCase
@@ -27,7 +28,8 @@ class FavoritesViewModel @Inject constructor(
     private val removeFavoriteActivityByIdUseCase: RemoveFavoriteActivityByIdUseCase,
     private val queryFavoriteHotelsUseCase: QueryFavoriteHotelsUseCase,
     private val removeFavoriteHotelUseCase: RemoveFavoriteHotelUseCase,
-    private val getCityFromCoordinatesUseCase: GetCityFromCoordinatesUseCase
+    private val getCityFromCoordinatesUseCase: GetCityFromCoordinatesUseCase,
+    private val saveFavoriteActivityUseCase: SaveFavoriteActivityUseCase,
 ) : ViewModel() {
     private val _uiState = MutableStateFlow(FavoritesUIState())
     val uiState: StateFlow<FavoritesUIState> = _uiState.asStateFlow()
@@ -168,6 +170,29 @@ class FavoritesViewModel @Inject constructor(
                 queryFavoriteHotels()
             } catch (e: Exception) {
                 _uiState.update { it.copy(error = e.localizedMessage ?: "Unknown error") }
+            }
+        }
+    }
+
+    fun toggleFavoriteActivity(activity: FavoriteActivityEntity) {
+        _uiState.update { it.copy(isFavoriteLoading = true) }
+        viewModelScope.launch {
+            try {
+                if (favoriteIdsSet.contains(activity.id)) {
+                    removeFavoriteActivityByIdUseCase(activity.id)
+                    favoriteIdsSet.remove(activity.id)
+                } else {
+                    val result = saveFavoriteActivityUseCase(activity)
+                    if (result.isFailure) {
+                        throw result.exceptionOrNull() ?: Exception("Unknown error saving favorite")
+                    }
+                    favoriteIdsSet.add(activity.id)
+                }
+                _favoriteActivityIds.value = favoriteIdsSet.toList()
+            } catch (e: Exception) {
+                _uiState.update { it.copy(error = e.localizedMessage ?: "Unknown error") }
+            } finally {
+                _uiState.update { it.copy(isFavoriteLoading = false) }
             }
         }
     }

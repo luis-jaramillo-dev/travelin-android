@@ -22,6 +22,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import com.projectlab.booking.presentation.favorites.FavoritesViewModel
 import com.projectlab.core.data.mapper.toFavoriteActivityEntity
 import com.projectlab.core.presentation.designsystem.component.BottomBookBar
 import com.projectlab.core.presentation.designsystem.component.DescriptionBox
@@ -35,6 +36,7 @@ import com.projectlab.core.presentation.designsystem.theme.spacing
 fun ActivityDetailScreen(
     modifier: Modifier = Modifier,
     activityDetailViewModel: ActivityDetailViewModel,
+    favoritesViewModel: FavoritesViewModel,
     activityId: String,
     onBackClick: () -> Unit
 ) {
@@ -43,15 +45,15 @@ fun ActivityDetailScreen(
     }
 
     val uiState by activityDetailViewModel.uiState.collectAsState()
+    val favoritesUiState by favoritesViewModel.uiState.collectAsState()
 
-
-    val favoriteIds by activityDetailViewModel.favoriteActivityIds.collectAsState()
+    val favoriteIds by favoritesViewModel.favoriteActivityIds.collectAsState()
     val isFavorite = favoriteIds.contains(activityId)
-    val isFavoriteLoading = uiState.isFavoriteLoading
+    val isFavoriteLoading = favoritesUiState.isFavoriteLoading
 
     val onFavoriteClick: () -> Unit = {
         uiState.activity?.let { activity ->
-            activityDetailViewModel.toggleFavoriteActivity(activity.toFavoriteActivityEntity())
+            favoritesViewModel.toggleFavoriteActivity(activity.toFavoriteActivityEntity())
         }
     }
 

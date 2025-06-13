@@ -28,6 +28,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
+import com.projectlab.booking.presentation.favorites.FavoritesViewModel
 import com.projectlab.core.data.mapper.toFavoriteActivityEntity
 import com.projectlab.core.data.model.ActivityDto
 import com.projectlab.core.domain.model.Location
@@ -55,6 +56,7 @@ fun SearchActivityScreen(
     modifier: Modifier = Modifier,
     locationViewModel: LocationViewModel,
     searchActivityViewModel: SearchActivityViewModel,
+    favoritesViewModel: FavoritesViewModel,
     initialQuery: String,
     onActivityClick: (String) -> Unit,
     onBackClick: () -> Unit,
@@ -63,7 +65,7 @@ fun SearchActivityScreen(
     val address by locationViewModel.address
     val currentLocation = locationViewModel.location.value
     val uiState by searchActivityViewModel.uiState.collectAsState()
-    val favoriteIds = searchActivityViewModel.favoriteActivityIds.collectAsState().value
+    val favoriteIds by favoritesViewModel.favoriteActivityIds.collectAsState()
 
     // As soon as the Composable is mounted, start the search
     LaunchedEffect(initialQuery) {
@@ -91,7 +93,7 @@ fun SearchActivityScreen(
     }
 
     LaunchedEffect(Unit) {
-        searchActivityViewModel.fetchFavoriteActivities()
+        favoritesViewModel.queryFavoriteActivities()
     }
 
     /**
@@ -119,7 +121,7 @@ fun SearchActivityScreen(
     }
 
     val onFavoriteToggle: (ActivityDto) -> Unit = { activity ->
-        searchActivityViewModel.toggleFavoriteActivity(activity.toFavoriteActivityEntity())
+        favoritesViewModel.toggleFavoriteActivity(activity.toFavoriteActivityEntity())
     }
 
     Column(
@@ -204,7 +206,7 @@ fun SearchActivityResultsComponent(
         }
     }
 
-    if (uiState.isLoading) {
+    if (uiState.isLoading ) {
         Box(
             modifier = Modifier.fillMaxSize(),
             contentAlignment = Alignment.Center,
@@ -236,7 +238,7 @@ fun SearchActivityResultsComponent(
                     activity = activity,
                     modifier = Modifier.fillMaxWidth(),
                     city = city,
-                    onPress = {onPress},
+                    onPress = {onPress(activity.id)},
                     isFavorite = isFavorite,
                     onFavoriteToggle = {onFavoriteToggle(activity)}
                 )
