@@ -61,7 +61,7 @@ fun SearchHotelsResultsComponent(
                     hotelUi = it.toHotelUi(),
                     onClickDetail = { navController.navigate("hotelDetail/${it.id}") },
                     onClickFavorite = { viewModel.unfavoriteHotel(it.id) },
-                    onClickUnfavorite = { viewModel.favoriteHotel(it.id) },
+                    onClickUnfavorite = { viewModel.favoriteHotel(it) },
                 )
 
                 Spacer(modifier = Modifier.height(16.dp))

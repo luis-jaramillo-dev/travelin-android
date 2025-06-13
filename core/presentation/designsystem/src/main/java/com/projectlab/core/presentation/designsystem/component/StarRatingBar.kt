@@ -14,9 +14,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
-import androidx.compose.ui.unit.dp
 import com.projectlab.core.presentation.designsystem.R
 import com.projectlab.core.presentation.designsystem.theme.gold
 import com.projectlab.core.presentation.designsystem.theme.spacing
@@ -24,7 +22,7 @@ import kotlin.math.ceil
 
 @Composable
 fun StarRatingBar(
-    rating: Float,
+    rating: String,
     modifier: Modifier = Modifier,
     starSize: Dp = MaterialTheme.spacing.ElementSpacing,
     spaceBetween: Dp = MaterialTheme.spacing.extraSmall,
@@ -35,6 +33,7 @@ fun StarRatingBar(
     val star = painterResource(R.drawable.star_24px)
     val starHalf = painterResource(R.drawable.star_half_24px)
     val starFull = painterResource(R.drawable.star_full_24px)
+    val ratingFloat = rating.toFloatOrNull() ?: 0f
 
     Row(
         modifier = modifier.selectableGroup(),
@@ -42,8 +41,8 @@ fun StarRatingBar(
     ) {
         for (i in 1..maxStars) {
             val icon = when {
-                i <= rating -> starFull
-                i == ceil(rating).toInt() -> starHalf
+                i <= ratingFloat -> starFull
+                i == ceil(ratingFloat).toInt() -> starHalf
                 else -> star
             }
 
@@ -63,7 +62,7 @@ fun StarRatingBar(
             Spacer(modifier = Modifier.width(MaterialTheme.spacing.small))
 
             Text(
-                text = if (rating > 0) {
+                text = if (ratingFloat > 0) {
                     rating.toString()
                 } else {
                     stringResource(R.string.tour_list_card_no_reviews)
@@ -74,15 +73,4 @@ fun StarRatingBar(
             )
         }
     }
-}
-
-@Preview(showBackground = true)
-@Composable
-fun StarRatingBarPreview() {
-    StarRatingBar(
-        rating = 3.2f,
-        starSize = 16.dp,
-        spaceBetween = 0.dp,
-        textColor = Color.Black,
-    )
 }

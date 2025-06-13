@@ -20,38 +20,48 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateMapOf
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.navigation.NavController
-import com.projectlab.booking.presentation.favorites.FavoritesViewModel
+import com.projectlab.booking.models.HotelUi
 import com.projectlab.booking.presentation.home.components.HomeSearchComponent
 import com.projectlab.booking.presentation.home.components.RecommendedActivitiesComponent
 import com.projectlab.booking.presentation.home.components.RecommendedHotelsComponent
 import com.projectlab.core.data.mapper.toFavoriteActivityEntity
 import com.projectlab.core.data.model.ActivityDto
+import com.projectlab.core.domain.model.Hotel
+import com.projectlab.core.domain.model.Location
 import com.projectlab.core.presentation.designsystem.component.BottomNavRoute
 import com.projectlab.core.presentation.designsystem.component.BottomNavigationBar
 import com.projectlab.core.presentation.designsystem.theme.spacing
 import com.projectlab.core.presentation.ui.viewmodel.LocationViewModel
+import kotlin.collections.set
 
 @Composable
 fun HomeScreen(
     modifier: Modifier = Modifier,
     locationViewModel: LocationViewModel,
     homeViewModel: HomeViewModel,
-    favoritesViewModel: FavoritesViewModel,
     navController: NavController,
     onFavoritesClick: () -> Unit,
     onItinsClick: () -> Unit,
     onProfileClick: () -> Unit,
     onClickSearchHotel: () -> Unit,
-    onItemClick: (String) -> Unit,
+    onActivityItemClick: (String) -> Unit,
+    onHotelItemClick: (HotelUi) -> Unit,
 ) {
     val context = LocalContext.current
     val currentLocation = locationViewModel.location.value
     val uiState by homeViewModel.uiState.collectAsState()
-    val favoriteIds = favoritesViewModel.favoriteActivityIds.collectAsState().value
+    val favoriteActivityIds = homeViewModel.favoriteActivityIds.collectAsState().value
+    val favoriteHotelIds = homeViewModel.favoriteHotelsIds.collectAsState().value
+
+    var location by remember { mutableStateOf("") }
 
     val permissionLauncher = rememberLauncherForActivityResult(
         ActivityResultContracts.RequestPermission()
@@ -72,7 +82,19 @@ fun HomeScreen(
     }
 
     LaunchedEffect(currentLocation) {
-        homeViewModel.fetchRecommendedActivities(currentLocation)
+        currentLocation?.let { location = locationViewModel.reverseGeocodeLocation(it) }
+    }
+
+    LaunchedEffect(currentLocation?.latitude, currentLocation?.longitude) {
+        if (currentLocation != null) {
+            homeViewModel.fetchRecommendedActivities(currentLocation)
+        }
+    }
+
+    LaunchedEffect(currentLocation?.latitude, currentLocation?.longitude) {
+        if (currentLocation != null) {
+        homeViewModel.fetchRecommendedHotels(currentLocation)
+            }
     }
 
     LaunchedEffect(Unit) {
@@ -86,7 +108,11 @@ fun HomeScreen(
     }
 
     LaunchedEffect(Unit) {
-        favoritesViewModel.queryFavoriteActivities()
+        homeViewModel.fetchFavoriteActivities()
+    }
+
+    LaunchedEffect(Unit) {
+        homeViewModel.fetchFavoriteHotels()
     }
 
     Scaffold(
@@ -111,12 +137,18 @@ fun HomeScreen(
                     },
                     onDeleteHistoryEntry = homeViewModel::onDeleteHistoryEntry,
                     onClickSearchHotel = { onClickSearchHotel() },
-                    location = locationViewModel.address.value,
-                    favoriteIds = favoriteIds,
-                    onActivityClick = onItemClick,
-                    onFavoritesToggle = { activity ->
-                        favoritesViewModel.toggleFavorite(activity.toFavoriteActivityEntity())
-                    }
+                    location = location,
+                    favoriteActivityIds = favoriteActivityIds,
+                    favoriteHotelIds = favoriteHotelIds,
+                    onActivityClick = onActivityItemClick,
+                    onHotelClick = onHotelItemClick,
+                    onActivityFavoritesToggle = { activity ->
+                        homeViewModel.toggleFavoriteActivity(activity.toFavoriteActivityEntity())
+                    },
+                    onHotelFavoritesToggle = { hotel ->
+                        homeViewModel.toggleFavoriteHotel(hotel)
+                    },
+                    reverseGeocode = { location -> locationViewModel.reverseGeocodeLocation(location) }
                 )
             }
     )
@@ -128,15 +160,36 @@ fun HomeScreenComponent(
     modifier: Modifier = Modifier,
     uiState: HomeUiState,
     location: String,
-    favoriteIds: List<String>,
+    favoriteActivityIds: List<String>,
+    favoriteHotelIds: List<String>,
     contentPadding: PaddingValues = PaddingValues(MaterialTheme.spacing.none),
     onQueryChange: (String) -> Unit,
     onQuerySubmitted: () -> Unit,
     onDeleteHistoryEntry: (String) -> Unit,
     onClickSearchHotel: () -> Unit,
     onActivityClick: (id: String) -> Unit,
-    onFavoritesToggle: (ActivityDto) -> Unit
+    onHotelClick: (HotelUi) -> Unit,
+    onActivityFavoritesToggle: (ActivityDto) -> Unit,
+    onHotelFavoritesToggle: (Hotel) -> Unit,
+    reverseGeocode: suspend (Location) -> String,
 ) {
+
+    val recommendedActivities = uiState.recommendedActivities
+    val cityMap = remember { mutableStateMapOf<String, String?>() }
+
+    LaunchedEffect(recommendedActivities) {
+        recommendedActivities.forEach { activity ->
+            if (!cityMap.containsKey(activity.id)) {
+                val location = Location(
+                    latitude = activity.geoCode.latitude,
+                    longitude = activity.geoCode.longitude
+                )
+                val city = reverseGeocode(location)
+                cityMap[activity.id] = city
+            }
+        }
+    }
+
 
     Column(
         modifier = modifier
@@ -153,7 +206,7 @@ fun HomeScreenComponent(
         )
         Spacer(modifier.height(MaterialTheme.spacing.semiHuge))
         Box(
-            modifier = Modifier
+            modifier = modifier
                 .fillMaxSize(),
             contentAlignment = Alignment.Center
         ) {
@@ -164,19 +217,18 @@ fun HomeScreenComponent(
 
                     RecommendedActivitiesComponent(
                         uiState = uiState,
-                        location = location,
-                        favoriteIds = favoriteIds,
-                        onFavoriteClick = onFavoritesToggle,
+                        cityMap = cityMap,
+                        favoriteIds = favoriteActivityIds,
+                        onFavoriteClick = onActivityFavoritesToggle,
                         onItemClick = onActivityClick
                     )
 
                     Spacer(modifier.height(MaterialTheme.spacing.semiHuge))
                     RecommendedHotelsComponent(
                         uiState = uiState,
-                        location = location,
-                        favoriteIds = favoriteIds,
-                        onFavoriteClick = onFavoritesToggle,
-                        onItemClick = onActivityClick
+                        favoriteIds = favoriteHotelIds,
+                        onFavoriteClick = onHotelFavoritesToggle,
+                        onItemClick = onHotelClick
                     )
                 }
             }

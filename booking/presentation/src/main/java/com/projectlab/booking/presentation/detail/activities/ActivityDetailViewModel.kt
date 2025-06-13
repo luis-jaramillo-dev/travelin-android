@@ -31,6 +31,11 @@ class ActivityDetailViewModel @Inject constructor(
     private val _uiState = MutableStateFlow(ActivityDetailUiState())
     val uiState: StateFlow<ActivityDetailUiState> = _uiState.asStateFlow()
 
+    private val _favoriteActivityIds = MutableStateFlow<List<String>>(emptyList())
+    val favoriteActivityIds: StateFlow<List<String>> = _favoriteActivityIds.asStateFlow()
+
+    private val favoriteIdsSet: MutableSet<String> = mutableSetOf()
+
     fun onViewDetail(activityId: String) {
         viewModelScope.launch {
             _uiState.update { it.copy(isLoading = true) }
@@ -68,44 +73,21 @@ class ActivityDetailViewModel @Inject constructor(
         }
     }
 
-    fun updateFavorite() {
-        val activity = _uiState.value.activity
-
-        if (activity == null) {
-            _uiState.update { it.copy(error = "Could not get current activity") }
-            return
-        }
-
+    fun toggleFavoriteActivity(activity: FavoriteActivityEntity) {
+        _uiState.update { it.copy(isFavoriteLoading = true) }
         viewModelScope.launch {
-            _uiState.update { it.copy(isFavoriteLoading = true) }
-
             try {
-                if (_uiState.value.isFavorite) {
+                if (favoriteIdsSet.contains(activity.id)) {
                     removeFavoriteActivityByIdUseCase(activity.id)
-                    _uiState.update { it.copy(isFavorite = false) }
+                    favoriteIdsSet.remove(activity.id)
                 } else {
-                    val location = getCityFromCoordinatesUseCase(
-                        activity.geoCode.latitude,
-                        activity.geoCode.longitude,
-                    )
-
-                    val favoriteActivity = FavoriteActivityEntity(
-                        id = activity.id,
-                        name = activity.name,
-                        description = activity.description,
-                        minimumDuration = activity.minimumDuration,
-                        price = activity.price.amount,
-                        currency = activity.price.currencyCode,
-                        rating = activity.rating,
-                        location = location,
-                        latitude = activity.geoCode.latitude,
-                        longitude = activity.geoCode.longitude,
-                        pictures = activity.pictures,
-                    )
-
-                    saveFavoriteActivityUseCase(favoriteActivity)
-                    _uiState.update { it.copy(isFavorite = true) }
+                    val result = saveFavoriteActivityUseCase(activity)
+                    if (result.isFailure) {
+                        throw result.exceptionOrNull() ?: Exception("Unknown error saving favorite")
+                    }
+                    favoriteIdsSet.add(activity.id)
                 }
+                _favoriteActivityIds.value = favoriteIdsSet.toList()
             } catch (e: Exception) {
                 _uiState.update { it.copy(error = e.localizedMessage ?: "Unknown error") }
             } finally {

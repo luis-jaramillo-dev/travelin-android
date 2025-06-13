@@ -71,6 +71,12 @@ sealed interface DetailScreens {
         override val route = "hotelDetail/{hotelId}"
         fun createRoute(hotelId: String): String = "hotelDetail/$hotelId"
     }
+
+    @Serializable
+    data object HomeHotelDetail : DetailScreens {
+        override val route = "home/hotelDetail/{hotelId}"
+        fun createRoute(hotelId: String): String = "hotelDetail/$hotelId"
+    }
 }
 
 sealed interface HomeScreens {

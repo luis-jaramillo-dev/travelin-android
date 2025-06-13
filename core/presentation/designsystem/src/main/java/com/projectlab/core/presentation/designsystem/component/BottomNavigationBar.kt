@@ -67,7 +67,6 @@ fun BottomNavigationBar(
         Row(
             modifier = Modifier
                 .fillMaxWidth()
-                .height(MaterialTheme.spacing.BottomBarHeight)
                 .background(MaterialTheme.colorScheme.background),
             horizontalArrangement = Arrangement.SpaceEvenly,
             verticalAlignment = Alignment.CenterVertically,
@@ -111,7 +110,8 @@ fun BottomNavItem(
     Column(
         modifier = Modifier
             .clickable(onClick = onClick)
-            .padding(vertical = MaterialTheme.spacing.SmallSpacing),
+            .padding(vertical = MaterialTheme.spacing.SmallSpacing)
+            .navigationBarsPadding(),
         horizontalAlignment = Alignment.CenterHorizontally,
     ) {
         Icon(

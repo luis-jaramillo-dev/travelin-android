@@ -1,14 +1,14 @@
 package com.projectlab.core.domain.use_cases.hotels
 
-import com.projectlab.core.domain.repository.HotelsRepository
-import javax.inject.Inject
+import com.projectlab.core.domain.model.Hotel
+import com.projectlab.core.domain.util.DataError
+import com.projectlab.core.domain.util.Result
 
-class GetHotelsByCoordinatesUseCase @Inject constructor(private val repository: HotelsRepository){
-
+fun interface GetHotelsByCoordinatesUseCase {
     suspend operator fun invoke(
         latitude: Double,
         longitude: Double,
-        amenities: List<String> = emptyList(),
-        ratings: List<String> = emptyList()
-    ) = repository.getHotelsByCoordinates(latitude, longitude, amenities.toString(), ratings.toString())
+        amenities: List<String>,
+        ratings: List<String>
+    ): Result<List<Hotel>, DataError>
 }

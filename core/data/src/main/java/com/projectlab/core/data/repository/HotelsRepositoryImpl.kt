@@ -2,6 +2,7 @@ package com.projectlab.core.data.repository
 
 import com.google.firebase.firestore.CollectionReference
 import com.google.firebase.firestore.FieldValue
+import com.google.firebase.firestore.FirebaseFirestore
 import com.projectlab.core.data.mock.randomHotelAmenities
 import com.projectlab.core.data.mock.randomHotelDisplayImageUrl
 import com.projectlab.core.data.mock.randomHotelOffers
@@ -10,15 +11,18 @@ import com.projectlab.core.data.mock.randomHotelPhotoUrls
 import com.projectlab.core.data.mock.randomHotelRating
 import com.projectlab.core.data.remote.hotels.HotelsApiService
 import com.projectlab.core.database.services.FirestoreHotel
+import com.projectlab.core.domain.entity.FavoriteHotelEntity
 import com.projectlab.core.domain.entity.HotelEntity
 import com.projectlab.core.domain.model.EntityId
 import com.projectlab.core.domain.model.Hotel
 import com.projectlab.core.domain.model.HotelLocation
 import com.projectlab.core.domain.repository.HotelsRepository
 import com.projectlab.core.domain.repository.UserSessionProvider
+import com.projectlab.core.domain.use_cases.location.GetCityFromCoordinatesUseCase
 import com.projectlab.core.domain.util.DataError
 import com.projectlab.core.domain.util.Result
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.tasks.await
 import javax.inject.Inject
 
@@ -34,9 +38,11 @@ import javax.inject.Inject
 
 class HotelsRepositoryImpl @Inject constructor(
     private val firestoreHotel: FirestoreHotel,
+    private val firestore: FirebaseFirestore,
     private val apiService: HotelsApiService,
     private val usersRef: CollectionReference,
     private val userSessionProvider: UserSessionProvider,
+    private val getCityFromCoordinatesUseCase: GetCityFromCoordinatesUseCase
 ) : HotelsRepository {
 
 
@@ -89,17 +95,24 @@ class HotelsRepositoryImpl @Inject constructor(
                 val hotelOffers =
                     randomHotelOffers(stars = it.stars, countryCode = it.address.countryCode)
                 val minHotelOffer = hotelOffers.minOf { it.price.amount }
+
+                val address = getCityFromCoordinatesUseCase(
+                    lat = it.geoCode.latitude,
+                    lng = it.geoCode.longitude
+                )
+
+                val locationWithAddress = HotelLocation(
+                    longitude = it.geoCode.longitude,
+                    latitude = it.geoCode.latitude,
+                    country = it.address.countryCode,
+                    city = it.iataCode,
+                    address = address
+                )
+
                 Hotel(
                     id = it.hotelId,
                     name = it.name,
-                    location = HotelLocation(
-                        longitude = it.geoCode.longitude,
-                        latitude = it.geoCode.latitude,
-                        country = it.address.countryCode,
-                        city = it.iataCode,
-                        // TODO GET LOCATION BY LON+LAT
-                        address = "Plaza Parade, London NW6 5RP,",
-                    ),
+                    location = locationWithAddress,
                     rating = randomHotelRating(it.stars),
                     displayPrice = minHotelOffer.toString(),
                     isFavourite = false,
@@ -136,6 +149,12 @@ class HotelsRepositoryImpl @Inject constructor(
                 val hotelOffers =
                     randomHotelOffers(stars = it.stars, countryCode = it.address.countryCode)
                 val minHotelOffer = hotelOffers.minOf { it.price.amount }
+
+                val address = getCityFromCoordinatesUseCase(
+                    lat = it.geoCode.latitude,
+                    lng = it.geoCode.longitude
+                )
+
                 Hotel(
                     id = it.hotelId,
                     name = it.name,
@@ -144,8 +163,7 @@ class HotelsRepositoryImpl @Inject constructor(
                         latitude = it.geoCode.latitude,
                         country = it.address.countryCode,
                         city = it.iataCode,
-                        // TODO GET LOCATION BY LON+LAT
-                        address = "Plaza Parade, London NW6 5RP,",
+                        address = address,
                     ),
                     rating = randomHotelRating(it.stars),
                     displayPrice = minHotelOffer.toString(),
@@ -165,13 +183,13 @@ class HotelsRepositoryImpl @Inject constructor(
     }
 
     override suspend fun favoriteHotel(
-        hotelId: String
+        hotel: Hotel
     ): Result<Boolean, DataError.Network> {
         // Get the user ID from the session provider
         val userId = userSessionProvider.getUserSessionId()
             ?: throw NullPointerException("userId is null")
         return try {
-            usersRef.document(userId).update("favoritesHotels", FieldValue.arrayUnion(hotelId))
+            usersRef.document(userId).update("favoritesHotels", FieldValue.arrayUnion())
                 .await()
             Result.Success(true)
 
@@ -190,6 +208,115 @@ class HotelsRepositoryImpl @Inject constructor(
             usersRef.document(userId).update("favoritesHotels", FieldValue.arrayRemove(hotelId))
                 .await()
             Result.Success(true)
+        } catch (e: Exception) {
+            Result.Error(DataError.Network.UNKNOWN)
+        }
+    }
+
+    override fun getFavoriteHotels(): Flow<List<FavoriteHotelEntity>> = flow {
+        val userId = userSessionProvider.getUserSessionId()
+            ?: throw NullPointerException("userId is null")
+        val userDoc = firestore
+            .collection("Users")
+            .document(userId)
+
+        val documents = userDoc
+            .collection("FavoriteHotels")
+            .get()
+            .await()
+
+        val hotels = documents.map { doc ->
+            doc.toObject(FavoriteHotelEntity::class.java)
+        }
+
+        emit(hotels)
+    }
+
+    override fun queryFavoriteHotels(
+        nameQuery: String?,
+    ): Flow<FavoriteHotelEntity> = flow {
+
+        val userId = userSessionProvider.getUserSessionId()
+            ?: throw NullPointerException("userId is null")
+
+        val userDoc = firestore
+            .collection("Users")
+            .document(userId)
+
+        val documents = userDoc
+            .collection("FavoriteHotels")
+            .get()
+            .await()
+
+        documents.map { doc ->
+            val hotel = doc.toObject(FavoriteHotelEntity::class.java)
+
+            val include = nameQuery == null
+                    || nameQuery.isEmpty()
+                    || hotel.name.contains(nameQuery, ignoreCase = true)
+
+            if (include) {
+                emit(hotel)
+            }
+        }
+    }
+
+    override suspend fun saveFavoriteHotel(hotel: FavoriteHotelEntity): Result<Unit, DataError.Network> {
+        return try {
+            val userId = userSessionProvider.getUserSessionId()
+                ?: throw NullPointerException("userId is null")
+
+            val userDoc = firestore
+                .collection("Users")
+                .document(userId)
+
+            val favoritesCollection = userDoc.collection("FavoriteHotels")
+            val docRef = favoritesCollection.document(hotel.id)
+            docRef.set(hotel).await()
+
+            Result.Success(Unit)
+        } catch (e: Exception) {
+            Result.Error(DataError.Network.UNKNOWN)
+        }
+    }
+
+    override suspend fun removeFavoriteHotelById(hotelId: String): Result<Unit, DataError.Network> {
+        return try {
+            val userId = userSessionProvider.getUserSessionId()
+                ?: throw NullPointerException("userId is null")
+
+            val userDoc = firestore
+                .collection("Users")
+                .document(userId)
+
+            val hotelDoc = userDoc
+                .collection("FavoriteHotels")
+                .document(hotelId)
+
+            hotelDoc.delete().await()
+
+            Result.Success(Unit)
+        } catch (e: Exception) {
+            Result.Error(DataError.Network.UNKNOWN)
+        }
+    }
+
+    override suspend fun isFavoriteHotel(hotelId: String): Result<Boolean, DataError.Network> {
+        return try {
+            val userId = userSessionProvider.getUserSessionId()
+                ?: throw NullPointerException("userId is null")
+
+            val userDoc = firestore
+                .collection("Users")
+                .document(userId)
+
+            val document = userDoc
+                .collection("FavoriteHotels")
+                .document(hotelId)
+                .get()
+                .await()
+
+            Result.Success(document.exists())
         } catch (e: Exception) {
             Result.Error(DataError.Network.UNKNOWN)
         }

@@ -2,6 +2,7 @@ package com.projectlab.booking.presentation
 
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.projectlab.booking.presentation.search.activities.SearchActivityViewModel
+import com.projectlab.core.domain.repository.ActivityRepository
 import com.projectlab.core.domain.repository.SearchHistoryProvider
 import com.projectlab.core.domain.use_cases.activities.GetActivitiesUseCase
 import com.projectlab.core.domain.use_cases.activities.RemoveFavoriteActivityByIdUseCase
@@ -26,6 +27,7 @@ class SearchActivityViewModelTest {
     private val historyProvider = mock<SearchHistoryProvider>()
     private val saveFavoriteActivityUseCase = mock<SaveFavoriteActivityUseCase>()
     private val removeFavoriteActivityByIdUseCase = mock<RemoveFavoriteActivityByIdUseCase>()
+    private val activityRepository = mock<ActivityRepository>()
 
     private val searchActivityViewModel = SearchActivityViewModel(
         getActivitiesUseCase = getActivitiesUseCase,
@@ -34,7 +36,8 @@ class SearchActivityViewModelTest {
         errorMapper = errorMapper,
         historyProvider = historyProvider,
         saveFavoriteActivityUseCase = saveFavoriteActivityUseCase,
-        removeFavoriteActivityByIdUseCase = removeFavoriteActivityByIdUseCase
+        removeFavoriteActivityByIdUseCase = removeFavoriteActivityByIdUseCase,
+        activityRepository = activityRepository
     )
 
     @Test
