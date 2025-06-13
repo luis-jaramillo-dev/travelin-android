@@ -20,6 +20,7 @@ import com.projectlab.core.domain.repository.UserSessionProvider
 import com.projectlab.core.domain.use_cases.hotels.HotelsUseCases
 import com.projectlab.core.domain.use_cases.hotels.RemoveFavoriteHotelUseCase
 import com.projectlab.core.domain.use_cases.hotels.SaveFavoriteHotelUseCase
+import com.projectlab.core.domain.use_cases.itineraries.ItinerariesUseCases
 import com.projectlab.core.domain.use_cases.location.GetCoordinatesFromCityUseCase
 import com.projectlab.core.domain.use_cases.users.UsersUseCases
 import com.projectlab.core.domain.util.Result
@@ -42,8 +43,7 @@ class HotelsViewModel @Inject constructor(
     private val userSessionProvider: UserSessionProvider,
     private val getCoordinatesFromCityUseCase: GetCoordinatesFromCityUseCase,
     private val saveFavoriteHotelUseCase: SaveFavoriteHotelUseCase,
-    private val removeFavoriteHotelUseCase: RemoveFavoriteHotelUseCase
-    private val getCoordinatesFromCityUseCase: GetCoordinatesFromCityUseCase,
+    private val removeFavoriteHotelUseCase: RemoveFavoriteHotelUseCase,
     private val itinerariesUseCases: ItinerariesUseCases
 
 
